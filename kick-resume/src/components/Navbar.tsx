@@ -28,10 +28,10 @@ const Navbar = () => {
 
           {/* Button Side */}
           <div className="lg:flex hidden gap-4">
-            <button className=" py-1 px-4 focus:outline-none  rounded-lg text-base mt-4 md:mt-0 text-myWhite border border-myWhite">
+            <button className=" py-1 px-4 focus:outline-none  rounded-lg text-base mt-4 md:mt-0 text-myWhite border border-myWhite hover:bg-myWhite hover:text-primaryColor transition-all duration-300">
               Log In
             </button>
-            <button className="py-1 focus:outline-none  rounded text-base mt-4 md:mt-0 text-myWhite">
+            <button className="py-1 px-2 focus:outline-none  rounded text-base mt-4 md:mt-0 text-myWhite hover:bg-gray-600">
               Create My resume
             </button>
           </div>

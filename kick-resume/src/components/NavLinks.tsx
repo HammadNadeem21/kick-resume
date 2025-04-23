@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import Link from "next/link";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import { cn } from "@/lib/utils";
 // import { Icons } from "@/components/icons"
 import {
   NavigationMenu,
@@ -13,102 +13,282 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu";
+import Image, { StaticImageData } from "next/image";
+import { coverLetter, features, resume } from "@/lib/data";
 
-const components: { title: string; href: string; description: string }[] = [
+const components: {
+  title: string;
+  href: string;
+  description: string;
+  icon: JSX.Element | string;
+}[] = [
   {
     title: "Alert Dialog",
     href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
+    description: "Create Your Resume yet.",
+    icon: <MdKeyboardArrowRight />,
   },
   {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
+    title: "Alert Dialog",
+    href: "/docs/primitives/alert-dialog",
+    description: "Create Your Resume yet.",
+    icon: (
+      <Image
+        src="/icon-cvbuilder.svg"
+        alt="icon"
+        height={300}
+        width={300}
+        className="h-[50px] w-16"
+      />
+    ),
   },
-  {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-]
+];
 
 export function NavigationMenuDemo() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
 
-      <NavigationMenuItem>
+          {/* Features */}
+
+        <NavigationMenuItem>
           <NavigationMenuTrigger>Features</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
+          <NavigationMenuContent className="bg-primaryColor">
+            <ul className="flex w-[400px] gap-5 py-5 px-2 md:w-[500px] md:grid-rows-2 lg:w-[750px]">
+              <div className="flex flex-col gap-5 ">
+                {features.slice(0, 4).map((component) => (
+                  <Link
+                    href={component.href}
+                    key={component.title}
+                    className="flex gap-2 hover:translate-x-4 duration-300"
+                  >
+                    <span className="text-myMidblue h-10 w-10  flex items-center">
+                      {component.icon}
+                    </span>
+
+                    <div className="leading-tight">
+                      <h2 className="text-xs text-myMidblue">
+                        {component.title}
+                      </h2>
+                      <p className="text-[10px]">{component.description}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="flex flex-col gap-5 border-l border-myMidblue border-opacity-20 px-1">
+                {features.slice(4, 8).map((component) => (
+                  <Link
+                    href={component.href}
+                    key={component.title}
+                    className="flex gap-2 hover:translate-x-4 duration-300"
+                  >
+                    <span className="text-myMidblue h-10 w-10  flex items-center">
+                      {component.icon}
+                    </span>
+
+                    <div className="leading-tight">
+                      <h2 className="text-xs text-myMidblue">
+                        {component.title}
+                      </h2>
+                      <p className="text-[10px]">{component.description}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="flex flex-col gap-2 border-l border-myMidblue border-opacity-20 px-5">
+                Resume Examples
+                {features.slice(8).map((component) => (
+                  <Link
+                    href={component.href}
+                    key={component.title}
+                    className="flex items-center justify-between gap-2 hover:translate-x-4 duration-300"
+                  >
+                    <h2 className="text-myMidblue text-sm">
+                      {component.title}
+                    </h2>
+
+                    <span className="text-xl text-myMidblue">
+                      {component.icon}
+                    </span>
+                  </Link>
+                ))}
+                <Link
+                  href={"/"}
+                  className="text-sm text-myWhite hover:underline "
                 >
-                  {component.description}
-                </ListItem>
-              ))}
+                  View all Examples
+                </Link>
+              </div>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
 
+        {/* Resume */}
         <NavigationMenuItem>
           <NavigationMenuTrigger>Resume</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
+          <NavigationMenuContent className="bg-primaryColor">
+            <ul className="flex w-[400px] gap-5 py-5 px-2 md:w-[500px] md:grid-rows-2 lg:w-[750px]">
+              <div className="flex flex-col gap-10 ">
+                {resume.slice(0, 4).map((component) => (
+                  <Link
+                    href={component.href}
+                    key={component.title}
+                    className="flex gap-2 hover:translate-x-4 duration-300"
+                  >
+                    <span className="text-myMidblue h-10 w-10  flex items-center">
+                      {component.icon}
+                    </span>
+
+                    <div className="leading-tight">
+                      <h2 className="text-xs text-myMidblue">
+                        {component.title}
+                      </h2>
+                      <p className="text-[10px]">{component.description}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+
+              <div className="flex flex-col gap-4 border-l border-myMidblue border-opacity-20 px-5">
+                Resume Examples
+                {resume.slice(4,10).map((component) => (
+                  <Link
+                    href={component.href}
+                    key={component.title}
+                    className="flex items-center justify-between gap-2 hover:translate-x-4 duration-300"
+                  >
+                    <h2 className="text-myMidblue text-sm">
+                      {component.title}
+                    </h2>
+
+                    <span className="text-xl text-myMidblue">
+                      {component.icon}
+                    </span>
+                  </Link>
+                ))}
+                <Link
+                  href={"/"}
+                  className="text-sm text-myWhite hover:underline "
                 >
-                  {component.description}
-                </ListItem>
-              ))}
+                  View all Examples
+                </Link>
+              </div>
+              
+
+              <div className="flex flex-col gap-2 border-l border-myMidblue border-opacity-20 px-2">
+                Guides
+                {resume.slice(10).map((component) => (
+                  <Link
+                    href={component.href}
+                    key={component.title}
+                    className="flex items-center justify-between gap-2 hover:translate-x-4 duration-300 w-[180px] "
+                  >
+                    <h2 className="text-myMidblue text-xs">
+                      {component.title}
+                    </h2>
+
+                    <span className="text-xl text-myMidblue">
+                      {component.icon}
+                    </span>
+                  </Link>
+                ))}
+                <Link
+                  href={"/"}
+                  className="text-sm text-myWhite hover:underline "
+                >
+                  View all Guides
+                </Link>
+              </div>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
 
+        {/* Cover Letter */}
         <NavigationMenuItem>
           <NavigationMenuTrigger>Cover Letter</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
+          <NavigationMenuContent className="bg-primaryColor">
+          <ul className="flex w-[400px] gap-5 py-5 px-2 md:w-[500px] md:grid-rows-2 lg:w-[750px]">
+              <div className="flex flex-col gap-10 ">
+                {coverLetter.slice(0, 3).map((component) => (
+                  <Link
+                    href={component.href}
+                    key={component.title}
+                    className="flex gap-2 hover:translate-x-4 duration-300"
+                  >
+                    <span className="text-myMidblue h-10 w-10  flex items-center">
+                      {component.icon}
+                    </span>
+
+                    <div className="leading-tight">
+                      <h2 className="text-xs text-myMidblue">
+                        {component.title}
+                      </h2>
+                      <p className="text-[10px]">{component.description}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+
+              <div className="flex flex-col gap-5 border-l border-myMidblue border-opacity-20 px-5">
+                Cover Letter Examples
+                {coverLetter.slice(3,9).map((component) => (
+                  <Link
+                    href={component.href}
+                    key={component.title}
+                    className="flex items-center justify-between gap-2 hover:translate-x-4 duration-300"
+                  >
+                    <h2 className="text-myMidblue text-sm">
+                      {component.title}
+                    </h2>
+
+                    <span className="text-xl text-myMidblue">
+                      {component.icon}
+                    </span>
+                  </Link>
+                ))}
+                <Link
+                  href={"/"}
+                  className="text-sm text-myWhite hover:underline "
                 >
-                  {component.description}
-                </ListItem>
-              ))}
+                  View all Examples
+                </Link>
+              </div>
+              
+
+              <div className="flex flex-col gap-2 border-l border-myMidblue border-opacity-20 px-2">
+                Guides
+                {coverLetter.slice(9).map((component) => (
+                  <Link
+                    href={component.href}
+                    key={component.title}
+                    className="flex items-center justify-between gap-2 hover:translate-x-4 duration-300 w-[180px] "
+                  >
+                    <h2 className="text-myMidblue text-xs">
+                      {component.title}
+                    </h2>
+
+                    <span className="text-xl text-myMidblue">
+                      {component.icon}
+                    </span>
+                  </Link>
+                ))}
+                <Link
+                  href={"/"}
+                  className="text-sm text-myWhite hover:underline "
+                >
+                  View all Guides
+                </Link>
+              </div>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
 
+        {/* Pricing */}
         <NavigationMenuItem>
           <Link href="/docs" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -118,7 +298,7 @@ export function NavigationMenuDemo() {
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 }
 
 const ListItem = React.forwardRef<
@@ -143,6 +323,6 @@ const ListItem = React.forwardRef<
         </a>
       </NavigationMenuLink>
     </li>
-  )
-})
-ListItem.displayName = "ListItem"
+  );
+});
+ListItem.displayName = "ListItem";
