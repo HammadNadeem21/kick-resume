@@ -411,7 +411,6 @@ export const Resources = [
   { title: "Beyond Report Work Report" },
   { title: "Our Community" },
   { title: "Blog" },
-
 ];
 
 export const designTemplates = [
@@ -423,9 +422,7 @@ export const designTemplates = [
   { title: "Simple Resume Templates" },
   { title: "Professional Resume Templates" },
   { title: "Creative Resume Templates" },
-
-]
-
+];
 
 export const articles = [
   { title: "How to Create a Resume on an iPhone" },
@@ -444,16 +441,67 @@ export const articles = [
   { title: "Kickresume vs Enhance CV" },
   { title: "Kickresume vs Teal" },
   { title: "Recruiter Study" },
-
-]
+];
 
 export const company = [
-  {title: "About Us"},
-  {title: "Contact Us"},
-  {title: "Tearms"},
-  {title: "Privacy Policy"},
-  {title: "Cookie Settings"},
-  {title: "Media / Press"},
-  {title: "Affiliates"},
-  {title: "Feedback"},
-]
+  { title: "About Us" },
+  { title: "Contact Us" },
+  { title: "Tearms" },
+  { title: "Privacy Policy" },
+  { title: "Cookie Settings" },
+  { title: "Media / Press" },
+  { title: "Affiliates" },
+  { title: "Feedback" },
+];
+
+// Feature Section
+export const featureSection = [
+  {
+    heading: "Find out your resume score, see how you compare.",
+    paragraph:
+      "Our resume checker puts your resume up against other resumes from our database that were written by people who got hired at the world’s top companies.",
+    points: [
+      "Check how your resume score compares against the best",
+      "Get a detailed resume review report",
+      "Improve your CV with personalized tips",
+    ],
+    lastLine: "Check my resume score now",
+    image: "/feature1.png",
+  },
+  {
+    heading: "How do we calculate your resume score?",
+    paragraph:
+      "Our online resume checker grades your resume based on three different types of criteria. These were chosen based on what recruiters usually look for in a resume.",
+    points: [
+      "Does the resume contain everything it should?",
+      "Are you using the space effectively?",
+      "Any overused expressions? Action verbs?",
+    ],
+    lastLine: "Review my resume score now",
+    image: "/feature2.png",
+  },
+  {
+    heading: "Improve your resume’s quality with a single click.",
+    paragraph:
+      "Each resume metric comes with a set of suggested resume revision tips that will help you quickly improve your resume and its overall strength.",
+    points: [
+      "Accept suggested revisions with a single click",
+      "Custom-tailored resume tips",
+      "Increase your resume score & get hired faster",
+    ],
+    lastLine: "Make my resume better now",
+    image: "/feature3.png",
+  },
+  {
+    heading: "Get instant resume feedback from our AI recruiter.",
+    paragraph:
+      "Let our GPT-4-powered analyzer review your resume and go over its strongest and weakest points. The AI is meant to simulate a real recruiter’s resume feedback and will give you additional tips on how to make your CV stand out.",
+    points: [
+      "Detailed analysis of your CV’s strongest and weakest points",
+      "Simulates resume feedback from a real recruiter with AI",
+      "Get tailored feedback for each version of your resume",
+    ],
+
+    image: "/feature4.png",
+  },
+];
