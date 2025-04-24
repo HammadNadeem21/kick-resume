@@ -14,36 +14,8 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import Image, { StaticImageData } from "next/image";
 import { coverLetter, features, resume } from "@/lib/data";
 
-const components: {
-  title: string;
-  href: string;
-  description: string;
-  icon: JSX.Element | string;
-}[] = [
-  {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description: "Create Your Resume yet.",
-    icon: <MdKeyboardArrowRight />,
-  },
-  {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description: "Create Your Resume yet.",
-    icon: (
-      <Image
-        src="/icon-cvbuilder.svg"
-        alt="icon"
-        height={300}
-        width={300}
-        className="h-[50px] w-16"
-      />
-    ),
-  },
-];
 
 export function NavigationMenuDemo() {
   return (

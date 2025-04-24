@@ -1,7 +1,6 @@
 import Link from "next/link";
 import React from "react";
 
-
 // icons
 import { FiFileText } from "react-icons/fi";
 import { IoEye } from "react-icons/io5";
@@ -26,16 +25,14 @@ import {
   Resources,
 } from "@/lib/data";
 
-
-
 import Image from "next/image";
 import { HoverButton } from "./HoverButton";
 
 const Footer = () => {
   return (
-    <div className="grid grid-cols-2 gap-3 bg-primaryColor pt-16 px-[100px]">
+    <div className="grid sm:grid-cols-2 grid-cols-1  gap-3 bg-primaryColor pt-16 md:px-[100px] px-10">
       {/* left-side */}
-      <div className=" grid lg:grid-cols-2 grid-cols-1 gap-5">
+      <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 ">
         <div className=" flex flex-col gap-2">
           <div className="flex items-center gap-3">
             <FiFileText size={20} className="text-myMidblue" />
@@ -102,8 +99,7 @@ const Footer = () => {
       </div>
 
       {/* right-side */}
-      <div className="grid lg:grid-cols-2 grid-cols-1 grid-rows-3 gap-5">
-
+      <div className="grid lg:grid-cols-2 grid-cols-1 grid-rows-3 gap-5 ">
         <div className=" flex flex-col gap-2 row-span-2">
           <div className="flex items-center gap-3">
             <FaBookOpen size={20} className="text-myMidblue" />
@@ -186,49 +182,110 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="flex justify-between items-center">
-          <Image src="/cprw.svg" alt="image" height={10} width={90} className="xl:h-16 xl:w-24 lg:h-10 lg:w-16 h-16 w-24  bg-blue-500"/>
-          <Image src="/parwcc.svg" alt="image" height={80} width={170} className="xl:h-24 xl:w-[150px] lg:h-16 lg:w-[120px] h-24 w-[150px] bg-slate-500"/>
+        <div className="flex flex-wrap gap-3 justify-between items-center">
+          <Image
+            src="/cprw.svg"
+            alt="image"
+            height={10}
+            width={90}
+            className="xl:h-16 xl:w-24 lg:h-10 lg:w-16 sm:h-16 sm:w-24 h-[70px] w-[100px] "
+          />
+          <Image
+            src="/parwcc.svg"
+            alt="image"
+            height={80}
+            width={170}
+            className="xl:h-24 xl:w-[150px] lg:h-16 lg:w-[120px] sm:h-24 sm:w-[150px] h-[80px] w-[180px]"
+          />
+        </div>
+      </div>
+
+      <div className="sm:col-span-2 col-span-1">
+        <div className=" border-t border-myMidblue py-5 flex flex-wrap justify-center xl:gap-[50px] gap-[40px]">
+          <h1 className="flex items-center gap-1 text-myWhite">
+            Made with <FaHeart /> by Kickresume
+          </h1>
+
+          <HoverButton />
+
+          <div className="flex items-center gap-5">
+            <Link href="/">
+              <RiTwitterXFill size={30} className="text-myWhite" />
+            </Link>
+
+            <Link href="/">
+              <FaFacebookF size={30} className="text-myWhite" />
+            </Link>
+            <Link href="/">
+              <IoLogoInstagram size={30} className="text-myWhite" />
+            </Link>
+            <Link href="/">
+              <FaLinkedinIn size={30} className="text-myWhite" />
+            </Link>
+            <Link href="/">
+              <FaYoutube size={30} className="text-myWhite" />
+            </Link>
+          </div>
+
+          <Link href="/">
+            <Image
+              src="/icon-app-store.svg"
+              alt="app-store"
+              height={100}
+              width={100}
+              className="h-10 w-[130px]"
+            />
+          </Link>
+
+          <Link href="/">
+            <Image
+              src="/icon-google-play.svg"
+              alt="app-store"
+              height={100}
+              width={100}
+              className="h-10 w-[130px]"
+            />
+          </Link>
         </div>
 
+        <div className="flex justify-center sm:gap-6 gap-4">
+          <Image
+            src="/template-1.png"
+            alt="template-1"
+            height={400}
+            width={500}
+            className="lg:h-[90px] lg:w-[190px] h-[70px] w-[160px] mt-3"
+          />
+          <Image
+            src="/template-2.png"
+            alt="template-2"
+            height={400}
+            width={300}
+            className="h-[90px] w-[250px] mt-3 hidden xl:block"
+          />
+          <Image
+            src="/template-3.png"
+            alt="template-3"
+            height={400}
+            width={500}
+            className="lg:h-[90px] lg:w-[180px] h-[70px] w-[150px] mt-3 hidden md:block"
+          />
+          <Image
+            src="/template-4.png"
+            alt="template-4"
+            height={400}
+            width={500}
+            className="lg:h-[90px] lg:w-[180px] h-[70px] w-[150px] mt-3 hidden sm:block"
+          />
+          <Image
+            src="/template-5.png"
+            alt="template-5"
+            height={400}
+            width={500}
+            className="lg:h-[90px] lg:w-[250px] mt-3 h-[70px] w-[160px]"
+          />
+        </div>
       </div>
-
-<div className="col-span-2">
-      <div className=" border-t border-myMidblue py-5 flex justify-center xl:gap-[50px] gap-[40px]">
-      <h1 className="flex items-center gap-1 text-myWhite">Made with <FaHeart/> by Kickresume</h1>
-
-      <HoverButton/>
-
-      <div className="flex items-center gap-5">
-
-        <Link href='/'><RiTwitterXFill size={30} className="text-myWhite"/></Link>
-
-
-        <Link href='/'><FaFacebookF size={30} className="text-myWhite"/></Link>
-        <Link href='/'><IoLogoInstagram size={30} className="text-myWhite"/></Link>
-        <Link href='/'><FaLinkedinIn size={30} className="text-myWhite"/></Link>
-        <Link href='/'><FaYoutube size={30} className="text-myWhite"/></Link>
-      </div>
-
-      <Link href='/'>
-      <Image src="/icon-app-store.svg" alt="app-store" height={100} width={100} className="h-10 w-[130px]"/>
-      </Link>
-
-      <Link href='/'>
-      <Image src="/icon-google-play.svg" alt="app-store" height={100} width={100} className="h-10 w-[130px]"/>
-      </Link>
-      </div>
-
-      <div className="flex justify-center gap-6">
-        <Image src="/template-1.png" alt="template-1" height={400} width={500} className="lg:h-[90px] lg:w-[190px] h-[70px] w-[160px] mt-3"/>
-        <Image src="/template-2.png" alt="template-2" height={400} width={300} className="h-[90px] w-[250px] mt-3 hidden xl:block"/>
-        <Image src="/template-3.png" alt="template-3" height={400} width={500} className="lg:h-[90px] lg:w-[180px] h-[70px] w-[150px] mt-3"/>
-        <Image src="/template-4.png" alt="template-4" height={400} width={500} className="lg:h-[90px] lg:w-[180px] h-[70px] w-[150px] mt-3"/>
-        <Image src="/template-5.png" alt="template-5" height={400} width={500} className="lg:h-[90px] lg:w-[250px] mt-3 h-[70px] w-[160px]"/>
-      </div>
-
-      </div>
-
     </div>
   );
 };
