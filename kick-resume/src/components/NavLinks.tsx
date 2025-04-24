@@ -71,7 +71,7 @@ export function NavigationMenuDemo() {
                       <h2 className="text-xs text-myMidblue">
                         {component.title}
                       </h2>
-                      <p className="text-[10px]">{component.description}</p>
+                      <p className="text-[10px] text-myWhite">{component.description}</p>
                     </div>
                   </Link>
                 ))}
@@ -92,13 +92,13 @@ export function NavigationMenuDemo() {
                       <h2 className="text-xs text-myMidblue">
                         {component.title}
                       </h2>
-                      <p className="text-[10px]">{component.description}</p>
+                      <p className="text-[10px] text-myWhite">{component.description}</p>
                     </div>
                   </Link>
                 ))}
               </div>
 
-              <div className="flex flex-col gap-2 border-l border-myMidblue border-opacity-20 px-5">
+              <div className="flex flex-col gap-2 border-l border-myMidblue border-opacity-20 px-5 text-myWhite">
                 Resume Examples
                 {features.slice(8).map((component) => (
                   <Link
@@ -131,7 +131,7 @@ export function NavigationMenuDemo() {
           <NavigationMenuTrigger>Resume</NavigationMenuTrigger>
           <NavigationMenuContent className="bg-primaryColor">
             <ul className="flex w-[400px] gap-5 py-5 px-2 md:w-[500px] md:grid-rows-2 lg:w-[750px]">
-              <div className="flex flex-col gap-10 ">
+              <div className="flex flex-col gap-5 ">
                 {resume.slice(0, 4).map((component) => (
                   <Link
                     href={component.href}
@@ -146,14 +146,14 @@ export function NavigationMenuDemo() {
                       <h2 className="text-xs text-myMidblue">
                         {component.title}
                       </h2>
-                      <p className="text-[10px]">{component.description}</p>
+                      <p className="text-[10px] text-myWhite">{component.description}</p>
                     </div>
                   </Link>
                 ))}
               </div>
 
 
-              <div className="flex flex-col gap-4 border-l border-myMidblue border-opacity-20 px-5">
+              <div className="flex flex-col gap-4 border-l border-myMidblue border-opacity-20 px-5 text-myWhite">
                 Resume Examples
                 {resume.slice(4,10).map((component) => (
                   <Link
@@ -179,7 +179,7 @@ export function NavigationMenuDemo() {
               </div>
               
 
-              <div className="flex flex-col gap-2 border-l border-myMidblue border-opacity-20 px-2">
+              <div className="flex flex-col gap-2 border-l border-myMidblue border-opacity-20 px-2 text-myWhite">
                 Guides
                 {resume.slice(10).map((component) => (
                   <Link
@@ -212,7 +212,7 @@ export function NavigationMenuDemo() {
           <NavigationMenuTrigger>Cover Letter</NavigationMenuTrigger>
           <NavigationMenuContent className="bg-primaryColor">
           <ul className="flex w-[400px] gap-5 py-5 px-2 md:w-[500px] md:grid-rows-2 lg:w-[750px]">
-              <div className="flex flex-col gap-10 ">
+              <div className="flex flex-col gap-5 ">
                 {coverLetter.slice(0, 3).map((component) => (
                   <Link
                     href={component.href}
@@ -227,14 +227,14 @@ export function NavigationMenuDemo() {
                       <h2 className="text-xs text-myMidblue">
                         {component.title}
                       </h2>
-                      <p className="text-[10px]">{component.description}</p>
+                      <p className="text-[10px] text-myWhite">{component.description}</p>
                     </div>
                   </Link>
                 ))}
               </div>
 
 
-              <div className="flex flex-col gap-5 border-l border-myMidblue border-opacity-20 px-5">
+              <div className="flex flex-col gap-5 border-l border-myMidblue border-opacity-20 px-5 text-myWhite">
                 Cover Letter Examples
                 {coverLetter.slice(3,9).map((component) => (
                   <Link
@@ -260,7 +260,7 @@ export function NavigationMenuDemo() {
               </div>
               
 
-              <div className="flex flex-col gap-2 border-l border-myMidblue border-opacity-20 px-2">
+              <div className="flex flex-col gap-2 border-l border-myMidblue border-opacity-20 px-2 text-myWhite">
                 Guides
                 {coverLetter.slice(9).map((component) => (
                   <Link
