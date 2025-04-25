@@ -19,10 +19,6 @@ const DropzoneUploader = () => {
     setFileName(file.name);
     setError(null);
 
-    // Optional: Upload to server
-    // const formData = new FormData();
-    // formData.append('file', file);
-    // upload logic here
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -37,7 +33,7 @@ const DropzoneUploader = () => {
     <div className="flex flex-col items-center gap-2 mt-8">
       <div
         {...getRootProps()}
-        className={`w-[300px] h-[150px] border-2 border-dashed rounded-lg p-4 flex flex-col items-center text-center cursor-pointer transition ${
+        className={`sm:w-[400px] sm:h-[200px] w-[200px] h-[100px] border-2 border-myMidblue border-dashed rounded-lg flex flex-col gap-2 items-center justify-center text-center cursor-pointer transition ${
           isDragActive ? 'bg-blue-100 border-blue-500' : 'border-gray-400'
         }`}
       >
@@ -46,17 +42,19 @@ const DropzoneUploader = () => {
         {isDragActive ? (
           <p className="text-blue-500">Drop the PDF here...</p>
         ) : (
-          <p className="text-gray-500">Drag & drop PDF file here, or click to select</p>
+          <p className="text-myMidblue">Drag & drop PDF file here, or click to select</p>
         )}
-      </div>
 
-      {fileName && (
+{fileName && (
         <p className="text-sm text-green-600">✅ Selected: {fileName}</p>
       )}
 
       {error && (
         <p className="text-sm text-red-500">❌ {error}</p>
       )}
+      </div>
+
+      
     </div>
   );
 };

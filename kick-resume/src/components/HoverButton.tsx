@@ -15,11 +15,11 @@ export function HoverButton() {
         <TooltipTrigger asChild>
           <Button variant="outline" className="text-myWhite hover:text-myWhite outline-none border-none bg-myMidblue/30 hover:bg-myMidblue/30"><AiOutlineGlobal/>English</Button>
         </TooltipTrigger>
-        <TooltipContent>
-          <p className="hover:bg-myLightBlue py-2 px-2 rounded-md">French</p>
-          <p className="hover:bg-myLightBlue py-2 px-2 rounded-md">Italian</p>
-          <p className="hover:bg-myLightBlue py-2 px-2 rounded-md">Arabic</p>
-          <p className="hover:bg-myLightBlue py-2 px-2 rounded-md">Spanish</p>
+        <TooltipContent >
+          <p className="hover:bg-myLightBlue text-myWhite py-2 px-2 rounded-md">French</p>
+          <p className="hover:bg-myLightBlue text-myWhite py-2 px-2 rounded-md">Italian</p>
+          <p className="hover:bg-myLightBlue text-myWhite py-2 px-2 rounded-md">Arabic</p>
+          <p className="hover:bg-myLightBlue text-myWhite py-2 px-2 rounded-md">Spanish</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

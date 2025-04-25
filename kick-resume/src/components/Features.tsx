@@ -10,7 +10,7 @@ const Features = () => {
         <h1 className="lg:text-4xl sm:text-2xl text-xl text-myDarkBlue font-semibold">
           An AI resume review tool designed by recruiters.
         </h1>
-        <p className="lg:text-xl sm:text-sm text-xs text-myDarkBlue">
+        <p className="lg:text-xl sm:text-sm text-xs text-myDarkBlue mt-2">
           Kickresume&apos;s online resume checker was designed by a team of
           experienced recruiters, data analysts, and software engineers.
         </p>

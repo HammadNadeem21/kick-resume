@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { title } from "process";
+import { MdOutlineSecurity } from "react-icons/md";
+
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 // Nav-Links
@@ -505,3 +506,30 @@ export const featureSection = [
     image: "/feature4.png",
   },
 ];
+
+
+
+// Security Section data
+export const securitySection = [
+  {
+    heading1: "Hosted in the",
+    heading2: "European Union",
+    content: "We’re based in the EU, which means that you’re being protected by the world’s toughest privacy and security law (GDPR). This gives you a complete control over your data and ensures maximum transparency.",
+    icon: <MdOutlineSecurity size={60} className='text-red-600'/>
+    
+  },
+  {
+    heading1: "Trust",
+    heading2: "Loyal to our customers",
+    content: "We believe that being loyal to you, our customers, always pays off. Kickresume was built on your trust and we don’t want to lose it. We don’t share your data with third parties unless you tell us to.",
+    icon: <MdOutlineSecurity size={60} className='text-green-600'/>
+    
+  },
+  {
+    heading1: "Bulletproof",
+    heading2: "Pentested by ethical hackers",
+    content: "Thanks to our partnership with a leading IT security company whose name is subject to confidentiality, we are able to do regular penetration testing of our infrastructure and ensure that your data stays safe with us.",
+    icon: <MdOutlineSecurity size={60} color="#2563eb"/>
+    
+  }
+]
