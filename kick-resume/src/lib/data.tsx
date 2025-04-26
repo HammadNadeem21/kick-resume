@@ -515,7 +515,7 @@ export const securitySection = [
     heading1: "Hosted in the",
     heading2: "European Union",
     content: "We’re based in the EU, which means that you’re being protected by the world’s toughest privacy and security law (GDPR). This gives you a complete control over your data and ensures maximum transparency.",
-    icon: <MdOutlineSecurity size={60} className='text-red-600'/>
+    icon: <MdOutlineSecurity size={60} color="#ff0000" className='text-red-600'/>
     
   },
   {

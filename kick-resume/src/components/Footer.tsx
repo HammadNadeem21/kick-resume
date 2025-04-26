@@ -200,6 +200,7 @@ const Footer = () => {
         </div>
       </div>
 
+{/* Buttom */}
       <div className="sm:col-span-2 col-span-1">
         <div className=" border-t border-myMidblue py-5 flex flex-wrap justify-center xl:gap-[50px] gap-[40px]">
           <h1 className="flex items-center gap-1 text-myWhite">
