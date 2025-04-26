@@ -18,9 +18,9 @@ export const features: {
       <Image
         src="/icon-cvbuilder.svg"
         alt="icon"
-        height={300}
-        width={300}
-        className="h-[50px] w-16"
+        height={100}
+        width={100}
+        
       />
     ),
   },
@@ -34,7 +34,7 @@ export const features: {
         alt="icon"
         height={300}
         width={300}
-        className="h-[50px] w-16"
+        
       />
     ),
   },
@@ -48,7 +48,7 @@ export const features: {
         alt="icon"
         height={300}
         width={300}
-        className="h-[50px] w-16"
+        
       />
     ),
   },
@@ -62,7 +62,7 @@ export const features: {
         alt="icon"
         height={300}
         width={300}
-        className="h-[50px] w-16"
+        
       />
     ),
   },
@@ -76,7 +76,7 @@ export const features: {
         alt="icon"
         height={300}
         width={300}
-        className="h-[50px] w-16"
+        
       />
     ),
   },
@@ -90,7 +90,7 @@ export const features: {
         alt="icon"
         height={300}
         width={300}
-        className="h-[50px] w-16"
+        
       />
     ),
   },
@@ -104,7 +104,7 @@ export const features: {
         alt="icon"
         height={300}
         width={300}
-        className="h-[50px] w-16"
+        
       />
     ),
   },
@@ -118,7 +118,7 @@ export const features: {
         alt="icon"
         height={300}
         width={300}
-        className="h-[50px] w-16"
+        
       />
     ),
   },

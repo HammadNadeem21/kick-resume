@@ -28,14 +28,14 @@ export function NavigationMenuDemo() {
           <NavigationMenuTrigger>Features</NavigationMenuTrigger>
           <NavigationMenuContent className="bg-primaryColor">
             <ul className="flex w-[400px] gap-5 py-5 px-2 md:w-[500px] md:grid-rows-2 lg:w-[750px]">
-              <div className="flex flex-col gap-5 ">
+              <div className="flex flex-col gap-6 ">
                 {features.slice(0, 4).map((component) => (
                   <Link
                     href={component.href}
                     key={component.title}
                     className="flex gap-2 hover:translate-x-4 duration-300"
                   >
-                    <span className="text-myMidblue h-10 w-10  flex items-center">
+                    <span className="text-myMidblue h-[20px] w-[40px]  flex items-center">
                       {component.icon}
                     </span>
 
@@ -49,14 +49,14 @@ export function NavigationMenuDemo() {
                 ))}
               </div>
 
-              <div className="flex flex-col gap-5 border-l border-myMidblue border-opacity-20 px-1">
+              <div className="flex flex-col gap-6 border-l border-myMidblue border-opacity-20 px-1">
                 {features.slice(4, 8).map((component) => (
                   <Link
                     href={component.href}
                     key={component.title}
                     className="flex gap-2 hover:translate-x-4 duration-300"
                   >
-                    <span className="text-myMidblue h-10 w-10  flex items-center">
+                    <span className="text-myMidblue h-[20px] w-[40px]  flex items-center">
                       {component.icon}
                     </span>
 
@@ -103,14 +103,14 @@ export function NavigationMenuDemo() {
           <NavigationMenuTrigger>Resume</NavigationMenuTrigger>
           <NavigationMenuContent className="bg-primaryColor">
             <ul className="flex w-[400px] gap-5 py-5 px-2 md:w-[500px] md:grid-rows-2 lg:w-[750px]">
-              <div className="flex flex-col gap-5 ">
+              <div className="flex flex-col gap-6 ">
                 {resume.slice(0, 4).map((component) => (
                   <Link
                     href={component.href}
                     key={component.title}
                     className="flex gap-2 hover:translate-x-4 duration-300"
                   >
-                    <span className="text-myMidblue h-10 w-10  flex items-center">
+                    <span className="text-myMidblue h-[20px] w-[40px]  flex items-center">
                       {component.icon}
                     </span>
 
@@ -184,14 +184,14 @@ export function NavigationMenuDemo() {
           <NavigationMenuTrigger>Cover Letter</NavigationMenuTrigger>
           <NavigationMenuContent className="bg-primaryColor">
           <ul className="flex w-[400px] gap-5 py-5 px-2 md:w-[500px] md:grid-rows-2 lg:w-[750px]">
-              <div className="flex flex-col gap-5 ">
+              <div className="flex flex-col gap-6 ">
                 {coverLetter.slice(0, 3).map((component) => (
                   <Link
                     href={component.href}
                     key={component.title}
-                    className="flex gap-2 hover:translate-x-4 duration-300"
+                    className="flex gap-3 hover:translate-x-4 duration-300"
                   >
-                    <span className="text-myMidblue h-10 w-10  flex items-center">
+                    <span className="text-myMidblue h-[20px] w-[40px]  flex items-center">
                       {component.icon}
                     </span>
 

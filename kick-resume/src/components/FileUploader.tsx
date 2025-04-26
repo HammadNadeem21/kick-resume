@@ -33,7 +33,7 @@ const DropzoneUploader = () => {
     <div className="flex flex-col items-center gap-2 mt-8">
       <div
         {...getRootProps()}
-        className={`sm:w-[400px] sm:h-[200px] w-[200px] h-[100px] border-2 border-myMidblue border-dashed rounded-xl flex flex-col gap-2 items-center justify-center text-center cursor-pointer transition ${
+        className={`sm:w-[400px] sm:h-[200px] w-[300px] h-[160px] border-2 border-myMidblue border-dashed rounded-xl flex flex-col gap-2 items-center justify-center text-center cursor-pointer transition ${
           isDragActive ? 'bg-blue-100 border-blue-500' : 'border-gray-400'
         }`}
       >
@@ -42,11 +42,11 @@ const DropzoneUploader = () => {
         {isDragActive ? (
           <p className="text-blue-500">Drop the PDF here...</p>
         ) : (
-          <p className="text-myMidblue">Drag & drop PDF file here, or click to select</p>
+          <p className="text-myMidblue sm:text-lg text-sm">Drag & drop PDF file here, or click to select</p>
         )}
 
 {fileName && (
-        <p className="text-sm text-green-600">✅ Selected: {fileName}</p>
+        <p className="text-sm text-green-600">{fileName}</p>
       )}
 
       {error && (

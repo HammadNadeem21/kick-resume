@@ -62,8 +62,8 @@ const MobileNav = () => {
                 <ul className="mt-2 bg-myDarkBlue rounded-xl w-full p-4 rounded-box space-y-2 ">
                   {features.slice(0,8).map((item) => (
                     <li key={item.title} className=" hover:translate-x-3 duration-300 p-3 rounded-md ">
-                      <Link href={item.href} className="flex gap-1">
-                      <span>{item.icon}</span>
+                      <Link href={item.href} className="flex gap-3">
+                      <span className="h-[20px] w-[40px]">{item.icon}</span>
                         <div>
                           <p>{item.title}</p>
                           <p className="text-sm text-white/70">{item.description}</p>
@@ -101,8 +101,8 @@ const MobileNav = () => {
                 <ul className="mt-2 bg-myDarkBlue rounded-xl w-full p-4 rounded-box space-y-2 ">
                 {resume.slice(0,4).map((item) => (
                   <li key={item.title} className=" hover:translate-x-3 duration-300 p-3 rounded-md ">
-                    <Link href={item.href} className="flex gap-1">
-                    <span>{item.icon}</span>
+                    <Link href={item.href} className="flex gap-3">
+                    <span className="h-[20px] w-[40px]">{item.icon}</span>
                       <div>
                         <p>{item.title}</p>
                         <p className="text-sm text-white/70">{item.description}</p>
@@ -140,9 +140,9 @@ const MobileNav = () => {
                 <ul className="mt-2 bg-myDarkBlue rounded-xl w-full p-4 rounded-box space-y-2 ">
                 {coverLetter.slice(0,3).map((item) => (
                   <li key={item.title} className=" hover:translate-x-3 duration-300 p-3 rounded-md ">
-                    <Link href={item.href} className="flex gap-1">
-                    <span>{item.icon}</span>
-                      <div>
+                    <Link href={item.href} className="flex items-center gap-3">
+                    <div className="h-[20px] w-[40px] flex items-center ">{item.icon}</div>
+                      <div className="">
                         <p>{item.title}</p>
                         <p className="text-sm text-white/70">{item.description}</p>
                       </div>
