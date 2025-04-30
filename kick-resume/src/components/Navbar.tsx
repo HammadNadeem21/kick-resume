@@ -11,13 +11,14 @@ const Navbar = () => {
         <div className="container  flex items-center justify-between py-5 px-3">
           {/* Logo */}
           <Link href={"/"}>
-            <div className="h-10 w-[180px] flex items-center">
-              <Image
+            <div className="h-10 w-[180px] flex items-center text-myWhite">
+              {/* <Image
                 src="/kickresume-logo-white.svg"
                 alt="logo"
                 height={300}
                 width={300}
-              />
+              /> */}
+              @ABC
             </div>
           </Link>
 

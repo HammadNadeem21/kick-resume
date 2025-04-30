@@ -1,5 +1,4 @@
 import React from "react";
-import { MdOutlineSecurity } from "react-icons/md";
 
 const SecurityCard = (props: {
   heading1: string;

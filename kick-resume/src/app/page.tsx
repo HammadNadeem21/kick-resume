@@ -3,6 +3,7 @@ import Features from "../components/Features";
 import Security from "@/components/Security";
 import FileUploaderSection from "@/components/FileUploaderSection";
 import ToolBoxSection from "@/components/ToolBoxSection";
+import QuestionSection from "@/components/QuestionSection";
 
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <Security/>
       <FileUploaderSection/>
       <ToolBoxSection/>
+      <QuestionSection/>
     </div>
   );
 }

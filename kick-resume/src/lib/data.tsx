@@ -533,3 +533,58 @@ export const securitySection = [
     
   }
 ]
+
+
+// Toolbox Section
+export const toolbox = [
+  {
+    image: "/ai-resume-builder.svg",
+    heading: "AI Resume Builder",
+    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+  },
+  {
+    image: "/ai-cover-letter.svg",
+    heading: "AI Cover Letter Builder",
+    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+  },
+  {
+    image: "/professional-template.svg",
+    heading: "40+ Professional Templates",
+    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+  },
+  {
+    image: "/ai-resignation-letter.svg",
+    heading: "AI Resignation Letter Generator Builder",
+    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+  },
+  {
+    image: "/resume-example.svg",
+    heading: "1500+ Resume Examples",
+    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+  },
+  {
+    image: "/ats-resume-checker.svg",
+    heading: "ATS Resume Checker",
+    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+  },
+  {
+    image: "/website-builder.svg",
+    heading: "Website Builder",
+    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+  },
+  {
+    image: "/proofreading.svg",
+    heading: "Proofreading",
+    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+  },
+  {
+    image: "/career-map.svg",
+    heading: "Career Map",
+    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+  },
+  {
+    image: "/ai-rewriter.svg",
+    heading: "AI ReWriter",
+    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+  }
+]
