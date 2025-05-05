@@ -1,0 +1,128 @@
+/* DropzoneUploader.module.css */
+
+/* Dropzone container styles */
+.dropzone {
+    width: 100%;
+    max-width: 400px;
+    height: 200px;
+    border: 2px dashed #0f766e;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  
+  .dropzone p {
+    margin: 0;
+    font-size: 14px;
+  }
+  
+  .dropzone input {
+    display: none;
+  }
+  
+  /* When file is dragged over the dropzone */
+  .dropzone.bg-blue-100 {
+    background-color: #ebf8ff;
+  }
+  
+  .dropzone.border-blue-500 {
+    border-color: #3b82f6;
+  }
+  
+  /* Button styles */
+  .analyzeButton {
+    padding: 12px 24px;
+    background-color: #0f766e;
+    color: #ffffff;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .analyzeButton:hover {
+    background-color: #0f766e80;
+  }
+  
+  .analyzeButton:disabled {
+    background-color: #d1d5db;
+    cursor: not-allowed;
+  }
+  
+  /* Report container styles */
+  .reportContainer {
+    width: 100%;
+    max-width: 500px;
+    background-color: #f0fdf4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+  
+  .reportContainer h3 {
+    font-size: 20px;
+    color: #0f766e;
+    font-weight: bold;
+  }
+  
+  /* Progress bar container styles */
+  .progressBar {
+    width: 100%;
+    height: 160px;
+  }
+  
+  .ratingText {
+    font-size: 14px;
+    font-weight: bold;
+    color: #0f766e;
+    margin-top: 10px;
+  }
+  
+  /* Weaknesses and Suggestions container styles */
+  .weaknessesContainer,
+  .suggestionsContainer {
+    margin-top: 20px;
+  }
+  
+  .weaknessesContainer ul,
+  .suggestionsContainer ul {
+    padding-left: 20px;
+  }
+  
+  .weaknessesContainer h4,
+  .suggestionsContainer h4 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #0f766e;
+  }
+  
+  /* Raw analysis output styles */
+  .rawAnalysis {
+    margin-top: 20px;
+    font-size: 14px;
+    white-space: pre-wrap;
+    background-color: #f9fafb;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  .rawAnalysis summary {
+    font-size: 16px;
+    font-weight: bold;
+    color: #0f766e;
+    cursor: pointer;
+  }
+  
+  .rawAnalysis pre {
+    font-size: 14px;
+    color: #374151;
+  }
+  
