@@ -5,16 +5,15 @@ import FileUploaderSection from "@/components/FileUploaderSection";
 import ToolBoxSection from "@/components/ToolBoxSection";
 import QuestionSection from "@/components/QuestionSection";
 
-
 export default function Home() {
   return (
-    <div>
-      <Hero/>
-      <Features/>
-      <Security/>
-      <FileUploaderSection/>
-      <ToolBoxSection/>
-      <QuestionSection/>
-    </div>
+    <>
+      <Hero />
+      <Features />
+      <Security />
+      <FileUploaderSection />
+      <ToolBoxSection />
+      <QuestionSection />
+    </>
   );
 }
