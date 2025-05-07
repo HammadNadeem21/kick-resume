@@ -463,8 +463,9 @@ const DropzoneUploader = () => {
             parts: [
               {
                 text: `Please analyze the following resume text and provide:
-1. The ATS Score out of 100 based on the provided resume.
-2. Identify and suggest improvements for the sections like 'Skills', 'Experience', and 'Keywords'.
+1. A short summary of the candidate’s profile.
+2. An ATS Score out of 100.
+3. Suggestions for improvement.
 
 Resume Text:
 \n\n${pdfText}`,
@@ -474,8 +475,6 @@ Resume Text:
         ],
       });
 
-      console.log("abc", result);
-      
       const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
 
       // ✅ ATS Score extract karo from AI response
@@ -579,7 +578,7 @@ Resume Text:
         {/* Summary */}
         {/* <div className="ml-4 flex flex-col justify-center">
           <h3 className="font-bold text-lg text-myMidblue">Summary</h3>
-          <p className="text-sm text-gray-600">{suggestions}</p>
+          <p className="text-sm text-gray-600">{suggestions}</p> 
         </div> */}
       </div>
     )}
