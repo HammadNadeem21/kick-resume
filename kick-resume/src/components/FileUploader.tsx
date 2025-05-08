@@ -439,22 +439,23 @@ const DropzoneUploader = () => {
     multiple: false,
   });
 
+
   const handleAnalyze = async () => {
     if (!file) return;
     setLoading(true);
     setSuggestions(null);
     setError(null);
-
+  
     try {
       // Step 1: Extract text from PDF
       const pdfText = await extractTextFromPDF(file);
-
+  
       // Step 2: Call Gemini API using @google/genai
-      const { GoogleGenAI } = await import("@google/genai"); // dynamic import for Next.js
+      const { GoogleGenAI } = await import("@google/genai");
       const ai = new GoogleGenAI({
-        apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY!, // 👈 env var must start with NEXT_PUBLIC_
+        apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY!,
       });
-
+  
       const result = await ai.models.generateContent({
         model: "gemini-1.5-flash",
         contents: [
@@ -462,27 +463,49 @@ const DropzoneUploader = () => {
             role: "user",
             parts: [
               {
-                text: `Please analyze the following resume text and provide:
-1. A short summary of the candidate’s profile.
-2. An ATS Score out of 100.
-3. Suggestions for improvement.
-
-Resume Text:
-\n\n${pdfText}`,
+                text: `Analyze this resume strictly for ATS (Applicant Tracking System) compatibility. Return ONLY:
+  
+  1. ATS Score (out of 100),
+  2. A short summary of the candidate’s profile,
+  3. Key suggestions for improvement (focus on ATS-specific improvements).
+  
+  Resume:
+  
+  \n\n${pdfText}`,
               },
             ],
           },
         ],
       });
-
+  
       const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-      // ✅ ATS Score extract karo from AI response
-      const match = text?.match(/ATS Score[:\-]?\s*(\d+)/i);
-      if (match) {
-        setScore(Number(match[1]));
+  
+      console.log("Gemini raw response:", text); // ✅ Helpful for debugging
+  
+      // ✅ More flexible ATS score extraction
+      let extractedScore = null;
+      const patterns = [
+        /ATS\s*Score\s*[:\-]?\s*(\d{1,3})/i,
+        /Score\s*is\s*(\d{1,3})/i,
+        /Score\s*[:\-]?\s*(\d{1,3})/i,
+        /(\d{1,3})\s*\/\s*100/, // e.g. 85/100
+        /(\d{1,3})\s*out\s*of\s*100/i,
+      ];
+  
+      for (const pattern of patterns) {
+        const match = text?.match(pattern);
+        if (match) {
+          extractedScore = Number(match[1]);
+          break;
+        }
       }
-
+  
+      if (extractedScore !== null) {
+        setScore(extractedScore);
+      } else {
+        console.warn("⚠️ Could not extract ATS score from response.");
+      }
+  
       setSuggestions(text || "No suggestions found.");
     } catch (err) {
       setError("Something went wrong while analyzing.");
@@ -491,7 +514,7 @@ Resume Text:
       setLoading(false);
     }
   };
-
+  
   const extractTextFromPDF = async (file: File): Promise<string> => {
     const pdfjsLib = await import("pdfjs-dist/build/pdf");
     const pdfjsWorker = await import("pdfjs-dist/build/pdf.worker.entry");
@@ -546,47 +569,25 @@ Resume Text:
       </button>
 
       {/* ATS Score Circle and Text */}
-      {/* {score !== null && (
+      {score !== null && (
         <div className="mt-6 flex flex-col items-center w-full">
           <div className="flex justify-between w-full">
             <div className="flex items-center">
               <ATSCircleChart score={score} />
-              <p className="ml-4 text-xl font-bold text-myLightBlue">{score} / 100</p>
+              {/* <p className="ml-4 text-xl font-bold text-myLightBlue">{score} / 100</p> */}
             </div>
             
           </div>
         </div>
-      )} */}
+      )}
 
       {/* Suggestions from AI */}
-      {/* {suggestions && (
+       {suggestions && (
         <div className="mt-6 border rounded-xl p-4 bg-gray-50 w-full max-w-xl prose">
           <h3 className="font-bold text-lg mb-2">Suggestions:</h3>
           <ReactMarkdown>{suggestions}</ReactMarkdown>
         </div>
-      )} */}
-{suggestions && (
-  <div className="mt-6 border rounded-xl p-4 bg-gray-50 w-full max-w-xl prose">
-    {/* ATS Score Chart and Summary side by side */}
-    {score !== null && (
-      <div className="mt-4 flex justify-between items-center w-full">
-        {/* ATS Score Chart */}
-        <div className="flex items-center">
-          <ATSCircleChart score={score} />
-        </div>
-
-        {/* Summary */}
-        {/* <div className="ml-4 flex flex-col justify-center">
-          <h3 className="font-bold text-lg text-myMidblue">Summary</h3>
-          <p className="text-sm text-gray-600">{suggestions}</p> 
-        </div> */}
-      </div>
-    )}
-
-    <h3 className="font-bold text-lg mb-2">Suggestions:</h3>
-    <ReactMarkdown>{suggestions}</ReactMarkdown> {/* Display AI suggestions here */}
-  </div>
-)}
+      )} 
 
 
     </div>
