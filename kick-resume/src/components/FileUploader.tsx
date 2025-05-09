@@ -463,13 +463,20 @@ const DropzoneUploader = () => {
             role: "user",
             parts: [
               {
-                text: `Analyze this resume strictly for ATS (Applicant Tracking System) compatibility. Return ONLY:
-  
-  1. ATS Score (out of 100),
-  2. A short summary of the candidate’s profile,
-  3. Key suggestions for improvement (focus on ATS-specific improvements).
-  
-  Resume:
+                text: `Analyze this resume strictly for ATS (Applicant Tracking System) compatibility. Return the analysis in the following structured format:
+
+ATS Score: [Score out of 100]
+Overall Assessment: [A short sentence describing the overall ATS compatibility]
+Summary: [A concise summary of the candidate's profile from an ATS perspective]
+Top Improvement Areas:
+- [Suggestion 1]
+- [Suggestion 2]
+- [Suggestion 3]
+...
+
+Focus on aspects such as proper formatting and sectioning, presence of key sections (Contact, Summary, Experience, Skills, Education), keyword optimization, and ATS readability (file formatting, fonts, layouts).
+
+Resume:
   
   \n\n${pdfText}`,
               },
