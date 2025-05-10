@@ -244,7 +244,6 @@
 //   // For ATS Score
 //   const [score, setScore] = useState<number | null>(null);
 
-
 //   const onDrop = useCallback((acceptedFiles: File[], fileRejections: any[]) => {
 //     if (fileRejections.length > 0) {
 //       setError("Only PDF files are allowed");
@@ -264,8 +263,6 @@
 //     accept: { "application/pdf": [".pdf"] },
 //     multiple: false,
 //   });
-
-
 
 //   const handleAnalyze = async () => {
 //     if (!file) return;
@@ -382,23 +379,18 @@
 //         </div>
 //       )}
 //       {suggestions && (
-        
+
 //         <div className="mt-6 border rounded-xl p-4 bg-gray-50 w-full max-w-xl prose">
 //           <h3 className="font-bold text-lg mb-2">Suggestions:</h3>
 //           <ReactMarkdown>{suggestions}</ReactMarkdown>
 //         </div>
 //       )}
 
-      
 //     </div>
 //   );
 // };
 
 // export default DropzoneUploader;
-
-
-
-
 
 "use client";
 
@@ -439,23 +431,21 @@ const DropzoneUploader = () => {
     multiple: false,
   });
 
-
   const handleAnalyze = async () => {
     if (!file) return;
     setLoading(true);
     setSuggestions(null);
     setError(null);
-  
+
     try {
       // Step 1: Extract text from PDF
       const pdfText = await extractTextFromPDF(file);
-  
+
       // Step 2: Call Gemini API using @google/genai
       const { GoogleGenAI } = await import("@google/genai");
       const ai = new GoogleGenAI({
         apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY!,
       });
-  
       const result = await ai.models.generateContent({
         model: "gemini-1.5-flash",
         contents: [
@@ -463,32 +453,48 @@ const DropzoneUploader = () => {
             role: "user",
             parts: [
               {
-                text: `Analyze this resume strictly for ATS (Applicant Tracking System) compatibility. Return the analysis in the following structured format:
-
-ATS Score: [Score out of 100]
-Overall Assessment: [A short sentence describing the overall ATS compatibility]
-Summary: [A concise summary of the candidate's profile from an ATS perspective]
-Top Improvement Areas:
-- [Suggestion 1]
-- [Suggestion 2]
-- [Suggestion 3]
-...
-
-Focus on aspects such as proper formatting and sectioning, presence of key sections (Contact, Summary, Experience, Skills, Education), keyword optimization, and ATS readability (file formatting, fonts, layouts).
-
-Resume:
-  
-  \n\n${pdfText}`,
+                text: `You are an expert in Applicant Tracking Systems (ATS) and resume optimization.
+      
+      Analyze the following resume *strictly* for ATS compatibility and provide your response in the exact structured format below:
+      
+      ---
+      ATS Score: [Score out of 100]
+      
+      Overall Assessment: [A one-sentence judgment of the resume's ATS-friendliness]
+      
+      Summary: [2-4 sentence summary of the resume's content and structure from an ATS perspective]
+      
+      Top Improvement Areas:
+      - [Improvement Area 1: Clear and actionable]
+      - [Improvement Area 2: Clear and actionable]
+      - [Improvement Area 3: Clear and actionable]
+      - ...
+      
+      Only consider ATS-related factors such as:
+      - Section presence and clarity (Contact Info, Summary, Experience, Skills, Education)
+      - Proper file formatting (PDF or DOCX, no images, no tables or columns)
+      - Use of standard fonts and font sizes
+      - Use of keywords relevant to the target job role(s)
+      - Chronological and reverse-chronological structure
+      - Readability by parsing engines (no graphics, text embedded in images, etc.)
+      
+      DO NOT evaluate writing style, career performance, or visual design. Focus solely on machine readability and ATS compliance.
+      
+      Resume:
+      
+      ${pdfText}
+      `,
               },
             ],
           },
         ],
       });
-  
+      
+
       const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-  
+
       console.log("Gemini raw response:", text); // ✅ Helpful for debugging
-  
+
       // ✅ More flexible ATS score extraction
       let extractedScore = null;
       const patterns = [
@@ -498,7 +504,7 @@ Resume:
         /(\d{1,3})\s*\/\s*100/, // e.g. 85/100
         /(\d{1,3})\s*out\s*of\s*100/i,
       ];
-  
+
       for (const pattern of patterns) {
         const match = text?.match(pattern);
         if (match) {
@@ -506,13 +512,13 @@ Resume:
           break;
         }
       }
-  
+
       if (extractedScore !== null) {
         setScore(extractedScore);
       } else {
         console.warn("⚠️ Could not extract ATS score from response.");
       }
-  
+
       setSuggestions(text || "No suggestions found.");
     } catch (err) {
       setError("Something went wrong while analyzing.");
@@ -521,7 +527,7 @@ Resume:
       setLoading(false);
     }
   };
-  
+
   const extractTextFromPDF = async (file: File): Promise<string> => {
     const pdfjsLib = await import("pdfjs-dist/build/pdf");
     const pdfjsWorker = await import("pdfjs-dist/build/pdf.worker.entry");
@@ -583,20 +589,17 @@ Resume:
               <ATSCircleChart score={score} />
               {/* <p className="ml-4 text-xl font-bold text-myLightBlue">{score} / 100</p> */}
             </div>
-            
           </div>
         </div>
       )}
 
       {/* Suggestions from AI */}
-       {suggestions && (
+      {suggestions && (
         <div className="mt-6 border rounded-xl p-4 bg-gray-50 w-full max-w-xl prose">
           <h3 className="font-bold text-lg mb-2">Suggestions:</h3>
           <ReactMarkdown>{suggestions}</ReactMarkdown>
         </div>
-      )} 
-
-
+      )}
     </div>
   );
 };
