@@ -5,6 +5,30 @@ import TwitterProvider from "next-auth/providers/twitter"
 
 import CredentialsProvider from "next-auth/providers/credentials";
 
+// Add JWT and Session interface extensions
+import { JWT } from "next-auth/jwt";
+import { Session } from "next-auth";
+
+// Extend the types
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id?: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      accessToken?: string;
+    }
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id?: string;
+    accessToken?: string;
+  }
+}
+
 export const options: NextAuthOptions = {
   providers: [
    
@@ -78,11 +102,38 @@ export const options: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
+    // TwitterProvider({
+    //   clientId: process.env.TWITTER_CLIENT_ID as string,
+    //   clientSecret: process.env.TWITTER_CLIENT_SECRET as string,
+    //   version: "2.0",
+    // })
+
     TwitterProvider({
       clientId: process.env.TWITTER_CLIENT_ID as string,
       clientSecret: process.env.TWITTER_CLIENT_SECRET as string,
-      version: "2.0",
-    })
+      version: "2.0", // ✅ Ensure OAuth 2.0 is used
+    }),
   ],
-  
+  session: {
+    strategy: "jwt",
+  },
+  callbacks: {
+    async jwt({ token, account, profile }) {
+      if (account) {
+        token.accessToken = account.access_token;
+        token.id = account.providerAccountId;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.accessToken = token.accessToken;
+      }
+      return session;
+    },
+  },
 };
+
+  
+
