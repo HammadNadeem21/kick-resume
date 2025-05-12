@@ -61,7 +61,7 @@ const Navbar = () => {
                     className="rounded-full object-cover"
                   />
                 ) : (
-                  <span>{session?.user?.name?.charAt(0).toUpperCase()}</span>
+                  <span>{session?.user?.email?.charAt(0).toUpperCase()}</span>
                 )}
               </div>
             </>
@@ -75,7 +75,7 @@ const Navbar = () => {
                 Log In
               </button>
               <button
-                onClick={() => signIn("google")}
+                onClick={() => signIn()}
                 className="py-1 px-2 rounded-lg text-myWhite hover:bg-myMidblue/30"
               >
                 SignUp
