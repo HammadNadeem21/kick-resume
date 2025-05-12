@@ -112,10 +112,20 @@ export const options: NextAuthOptions = {
       clientId: process.env.TWITTER_CLIENT_ID as string,
       clientSecret: process.env.TWITTER_CLIENT_SECRET as string,
       version: "2.0", // ✅ Ensure OAuth 2.0 is used
+      authorization: {
+        params: {
+          scope: "users.read tweet.read offline.access",
+        },
+      },
     }),
   ],
   session: {
     strategy: "jwt",
+  },
+  debug: process.env.NODE_ENV === "development",
+  pages: {
+    signIn: '/api/auth/signin',
+    error: '/api/auth/error',
   },
   callbacks: {
     async jwt({ token, account, profile }) {
@@ -133,6 +143,8 @@ export const options: NextAuthOptions = {
       return session;
     },
   },
+  // Add explicit URL for Vercel deployment
+  // The 'url' property is not valid in the AuthOptions object, so it should be removed.
 };
 
   
