@@ -30,6 +30,8 @@ const Hero = () => {
         />
       </div>
 
+      <div> report</div>
+
       <div className="lg:col-span-2 col-span-1 text-center mt-[100px] px-2">
         <h1 className="text-myWhite">
           Kickresume helps people get hired at the world&apos;s top companies

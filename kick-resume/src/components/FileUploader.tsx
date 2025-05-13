@@ -222,6 +222,7 @@
 "use client";
 
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -283,30 +284,30 @@ const DropzoneUploader = () => {
               {
                 text: `You are an expert in Applicant Tracking Systems (ATS) and resume optimization.
 
-Analyze the following resume *strictly* for ATS compatibility and provide your response in the exact structured format below:
+Analyze the following resume *strictly* for ATS compatibility and provide your response in the exact structured format below, using Markdown for styling:
 
 ---
-ATS Score: [Score out of 100]
+**ATS Score:** **[Score out of 100]**
 
-Overall Assessment: [A one-sentence judgment of the resume's ATS-friendliness]
+**Overall Assessment:** *[A one-sentence judgment of the resume's ATS-friendliness]*
 
-Summary: [2-4 sentence summary of the resume's content and structure from an ATS perspective]
+**Summary:** *[2-4 sentence summary of the resume's content and structure from an ATS perspective]*
 
-Top Improvement Areas:
-- [Improvement Area 1: Clear and actionable]
-- [Improvement Area 2: Clear and actionable]
-- [Improvement Area 3: Clear and actionable]
+**Top Improvement Areas:**
+- **[Improvement Area 1: Clear and actionable]**
+- **[Improvement Area 2: Clear and actionable]**
+- **[Improvement Area 3: Clear and actionable]**
 - ...
 
 Only consider ATS-related factors such as:
-- Section presence and clarity (Contact Info, Summary, Experience, Skills, Education)
-- Proper file formatting (PDF or DOCX, no images, no tables or columns)
-- Use of standard fonts and font sizes
-- Use of keywords relevant to the target job role(s)
-- Chronological and reverse-chronological structure
-- Readability by parsing engines (no graphics, text embedded in images, etc.)
+- **Section presence and clarity** (Contact Info, Summary, Experience, Skills, Education)
+- **Proper file formatting** (PDF or DOCX, no images, no tables or columns)
+- **Use of standard fonts and font sizes**
+- **Use of keywords relevant to the target job role(s)**
+- **Chronological and reverse-chronological structure**
+- **Readability by parsing engines** (no graphics, text embedded in images, etc.)
 
-DO NOT evaluate writing style, career performance, or visual design. Focus solely on machine readability and ATS compliance.
+**DO NOT** evaluate writing style, career performance, or visual design. Focus solely on machine readability and ATS compliance.
 
 Resume:
 
@@ -316,6 +317,8 @@ ${pdfText}`,
           },
         ],
       });
+
+      console.log("result",result);
 
       const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
 
@@ -375,6 +378,18 @@ ${pdfText}`,
     });
   };
 
+
+
+
+  const markdownComponents = {
+    h1: ({ node, ...props }: { node: any; [key: string]: any }) => <h1 className="text-3xl font-bold text-blue-600" {...props} />,
+    h2: ({ node, ...props }: { node: any; [key: string]: any }) => <h2 className="text-2xl font-semibold text-blue-500" {...props} />,
+    h3: ({ node, ...props }: { node: any; [key: string]: any }) => <h3 className="text-xl font-medium text-blue-400" {...props} />,
+    strong: ({ node, ...props }: { node: any; [key: string]: any }) => <strong className="text-red-500" {...props} />,
+    ul: ({ node, ...props }: { node: any; [key: string]: any }) => <ul className="list-disc pl-5 text-gray-700" {...props} />,
+  };
+
+
   return (
     <div className="flex flex-col items-center gap-2 mt-8">
       {/* Dropzone */}
@@ -427,7 +442,7 @@ ${pdfText}`,
       {suggestions && (
         <div className="mt-6 border rounded-xl p-4 bg-gray-50 w-full max-w-xl prose">
           <h3 className="font-bold text-lg mb-2">Suggestions:</h3>
-          <ReactMarkdown>{suggestions}</ReactMarkdown>
+          <ReactMarkdown components={markdownComponents as any} rehypePlugins={[rehypeRaw]}>{suggestions}</ReactMarkdown>
         </div>
       )}
     </div>
