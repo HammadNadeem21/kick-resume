@@ -1,4 +1,3 @@
-
 // "use client";
 
 // import ReactMarkdown from "react-markdown";
@@ -61,22 +60,22 @@
 //             parts: [
 //               {
 //                 text: `You are an expert in Applicant Tracking Systems (ATS) and resume optimization.
-      
+
 //       Analyze the following resume *strictly* for ATS compatibility and provide your response in the exact structured format below:
-      
+
 //       ---
 //       ATS Score: [Score out of 100]
-      
+
 //       Overall Assessment: [A one-sentence judgment of the resume's ATS-friendliness]
-      
+
 //       Summary: [2-4 sentence summary of the resume's content and structure from an ATS perspective]
-      
+
 //       Top Improvement Areas:
 //       - [Improvement Area 1: Clear and actionable]
 //       - [Improvement Area 2: Clear and actionable]
 //       - [Improvement Area 3: Clear and actionable]
 //       - ...
-      
+
 //       Only consider ATS-related factors such as:
 //       - Section presence and clarity (Contact Info, Summary, Experience, Skills, Education)
 //       - Proper file formatting (PDF or DOCX, no images, no tables or columns)
@@ -84,11 +83,11 @@
 //       - Use of keywords relevant to the target job role(s)
 //       - Chronological and reverse-chronological structure
 //       - Readability by parsing engines (no graphics, text embedded in images, etc.)
-      
+
 //       DO NOT evaluate writing style, career performance, or visual design. Focus solely on machine readability and ATS compliance.
-      
+
 //       Resume:
-      
+
 //       ${pdfText}
 //       `,
 //               },
@@ -96,7 +95,6 @@
 //           },
 //         ],
 //       });
-      
 
 //       const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
 
@@ -213,12 +211,6 @@
 
 // export default DropzoneUploader;
 
-
-
-
-
-
-
 "use client";
 
 import ReactMarkdown from "react-markdown";
@@ -241,6 +233,7 @@ const DropzoneUploader = () => {
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<string | null>(null);
   const [score, setScore] = useState<number | null>(null);
+  const [overall, setOverall] = useState<string | null>(null);
 
   const onDrop = useCallback((acceptedFiles: File[], fileRejections: any[]) => {
     if (fileRejections.length > 0) {
@@ -284,32 +277,46 @@ const DropzoneUploader = () => {
               {
                 text: `You are an expert in Applicant Tracking Systems (ATS) and resume optimization.
 
-Analyze the following resume *strictly* for ATS compatibility and provide your response in the exact structured format below, using Markdown for styling:
+Your task is to analyze the following resume *strictly* for ATS compatibility and return your response in **exactly** the Markdown structure provided below. Use **emojis** to enhance readability and make it visually clear. DO NOT add anything outside the structure.
+
+Return your response in this format:
 
 ---
+
 **ATS Score:** **[Score out of 100]**
 
-**Overall Assessment:** *[A one-sentence judgment of the resume's ATS-friendliness]*
+**Overall Assessment:** *[One-sentence judgment about ATS-friendliness]*
 
-**Summary:** *[2-4 sentence summary of the resume's content and structure from an ATS perspective]*
+---
 
-**Top Improvement Areas:**
-- **[Improvement Area 1: Clear and actionable]**
-- **[Improvement Area 2: Clear and actionable]**
-- **[Improvement Area 3: Clear and actionable]**
-- ...
+### 📋 Summary
 
-Only consider ATS-related factors such as:
-- **Section presence and clarity** (Contact Info, Summary, Experience, Skills, Education)
-- **Proper file formatting** (PDF or DOCX, no images, no tables or columns)
-- **Use of standard fonts and font sizes**
-- **Use of keywords relevant to the target job role(s)**
-- **Chronological and reverse-chronological structure**
-- **Readability by parsing engines** (no graphics, text embedded in images, etc.)
+[A short paragraph (2–4 sentences) summarizing the resume's structure and ATS compatibility.]
 
-**DO NOT** evaluate writing style, career performance, or visual design. Focus solely on machine readability and ATS compliance.
+---
 
-Resume:
+### 🔧 Top Improvement Areas
+
+- ✅ **[Improvement Suggestion 1: Clear and actionable]**
+- ✅ **[Improvement Suggestion 2: Clear and actionable]**
+- ✅ **[Improvement Suggestion 3: Clear and actionable]**
+- ✅ **[Optional Suggestion 4 or more]**
+
+---
+
+✅ *Only consider the following ATS-related factors:*
+- Section presence (Contact Info, Summary, Experience, Skills, Education)
+- Proper file formatting (PDF or DOCX, no tables, no columns, no images)
+- Use of standard fonts and font sizes
+- Keyword relevance to target job roles
+- Chronological/reverse-chronological structure
+- Readability for parsing engines (no graphics, no text embedded in images)
+
+🚫 *DO NOT evaluate writing style, visual design, or job performance.*
+
+---
+
+Resume to analyze:
 
 ${pdfText}`,
               },
@@ -318,7 +325,7 @@ ${pdfText}`,
         ],
       });
 
-      console.log("result",result);
+      console.log("result", result);
 
       const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
 
@@ -344,8 +351,15 @@ ${pdfText}`,
       } else {
         console.warn("⚠️ Could not extract ATS score from response.");
       }
+      const overallMatch = text?.match(/\*\*Overall Assessment:\*\*\s*(.*)/i);
+      if (overallMatch && overallMatch[1]) {
+        setOverall(overallMatch[1].trim());
+      }
 
-      setSuggestions(text || "No suggestions found.");
+const cleanedText = text?
+        text.replace(/(\*\*ATS Score:\*\*.*)/i, "")
+        .replace(/(\*\*Overall Assessment:\*\*\s*(.*))/i, ""):"";
+      setSuggestions(cleanedText.trim());
     } catch (err) {
       setError("Something went wrong while analyzing.");
       console.error(err);
@@ -378,23 +392,80 @@ ${pdfText}`,
     });
   };
 
-
-
-
   const markdownComponents = {
-    h1: ({ node, ...props }: { node: any; [key: string]: any }) => <h1 className="text-3xl font-bold text-blue-600" {...props} />,
-    h2: ({ node, ...props }: { node: any; [key: string]: any }) => <h2 className="text-2xl font-semibold text-blue-500" {...props} />,
-    h3: ({ node, ...props }: { node: any; [key: string]: any }) => <h3 className="text-xl font-medium text-blue-400" {...props} />,
-    strong: ({ node, ...props }: { node: any; [key: string]: any }) => <strong className="text-red-500" {...props} />,
-    ul: ({ node, ...props }: { node: any; [key: string]: any }) => <ul className="list-disc pl-5 text-gray-700" {...props} />,
+    h1: ({ node, ...props }: { node: any; [key: string]: any }) => (
+      <h1 className="text-xl font-bold text-myDarkblue mt-4 mb-2" {...props} />
+    ),
+  
+    h2: ({ node, ...props }: { node: any; [key: string]: any }) => {
+      const headingText = props.children[0];
+      const text = typeof headingText === "string" ? headingText.toLowerCase() : "";
+  
+      let style = "text-myDarkblue";
+      let icon = "";
+  
+      if (text.includes("keywords")) {
+        style = "text-yellow-600 border-l-4 border-yellow-400 pl-3";
+        icon = "🗝️ ";
+      } else if (text.includes("formatting")) {
+        style = "text-purple-600 border-l-4 border-purple-400 pl-3";
+        icon = "🖋️ ";
+      } else if (text.includes("experience")) {
+        style = "text-green-600 border-l-4 border-green-400 pl-3";
+        icon = "💼 ";
+      } else if (text.includes("education")) {
+        style = "text-blue-600 border-l-4 border-blue-400 pl-3";
+        icon = "🎓 ";
+      }
+  
+      return (
+        <h2 className={`text-xl font-semibold mt-4 mb-2 ${style}`} {...props}>
+          {icon}
+          {headingText}
+        </h2>
+      );
+    },
+  
+    h3: ({ node, ...props }: { node: any; [key: string]: any }) => (
+      <h3 className="text-xl font-medium text-myDarkblue mt-4 mb-2" {...props} />
+    ),
+  
+    strong: ({ node, ...props }: { node: any; [key: string]: any }) => (
+      <strong className="text-black text-xl font-semibold" {...props} />
+    ),
+  
+    ul: ({ node, ...props }: { node: any; [key: string]: any }) => (
+      <ul className="list-disc pl-5 text-gray-700 space-y-1" {...props} />
+    ),
+  
+    li: ({ node, ...props }: { node: any; [key: string]: any }) => {
+      const content = props.children[0];
+      const isImportant =
+        typeof content === "string" && content.toLowerCase().includes("missing");
+  
+      return (
+        <li
+          className={`text-gray-700 ${
+            isImportant ? "text-red-600 font-semibold" : ""
+          }`}
+          {...props}
+        />
+      );
+    },
+  
+    p: ({ node, ...props }: { node: any; [key: string]: any }) => (
+      <p className="text-gray-800 mb-2" {...props} />
+    ),
   };
-
+  
+  console.log("h1",markdownComponents.h1);
+  
 
   return (
     <div className="flex flex-col items-center gap-2 mt-8">
       {/* Dropzone */}
       <div
-         {...getRootProps({
+        {...getRootProps({
           onClick: (e) => {
             if (!session) {
               e.preventDefault();
@@ -428,23 +499,35 @@ ${pdfText}`,
       </button>
 
       {/* ATS Score Circle and Text */}
-      {score !== null && (
-        <div className="mt-6 flex flex-col items-center w-full">
-          <div className="flex justify-between w-full">
-            <div className="flex items-center">
-              <ATSCircleChart score={score} />
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Suggestions from AI */}
       {suggestions && (
-        <div className="mt-6 border rounded-xl p-4 bg-gray-50 w-full max-w-xl prose">
-          <h3 className="font-bold text-lg mb-2">Suggestions:</h3>
-          <ReactMarkdown components={markdownComponents as any} rehypePlugins={[rehypeRaw]}>{suggestions}</ReactMarkdown>
-        </div>
-      )}
+  <div className="mt-6 p-6 bg-white border rounded-xl shadow-md max-w-2xl w-full">
+    <h3 className="text-2xl font-bold mb-4 text-myMidblue">
+    Resume Analysis
+    </h3>
+
+    {/* ATS Score Chart (Overall) */}
+    {score !== null && overall && (
+  <div className="mb-6 flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
+    <div className="sm:w-1/2 w-full flex justify-center">
+      <ATSCircleChart score={score} />
+    </div>
+    <div className="sm:w-1/2 w-full">
+      <h4 className="text-lg font-semibold text-myDarkblue mb-2">📌 Summary</h4>
+      <p className="text-gray-700 italic">{overall}</p>
+    </div>
+  </div>
+)}
+
+    {/* Detailed Markdown Suggestions */}
+    <ReactMarkdown
+      components={markdownComponents as any}
+      rehypePlugins={[rehypeRaw]}
+    >
+      {suggestions}
+    </ReactMarkdown>
+  </div>
+)}
+
     </div>
   );
 };
