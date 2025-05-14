@@ -563,9 +563,39 @@ ${pdfText}`,
           {/* Keywords Section */}
           {keywords && (
             <div className="mb-6">
+              <div className="flex justify-between items-center mb-2">
               <h4 className="text-xl font-bold text-myDarkBlue mb-2">
                Keywords
               </h4>
+              <div className="relative w-12 h-12">
+        <svg className="transform -rotate-90" viewBox="0 0 36 36">
+          <path
+            className="text-gray-200"
+            strokeWidth="4"
+            stroke="currentColor"
+            fill="none"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+          <path
+            className="text-myDarkBlue"
+            strokeWidth="4"
+            strokeDasharray={`${score}, 100`}
+            stroke="currentColor"
+            fill="none"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+        </svg>
+        <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-myDarkBlue">
+          {score}%
+        </span>
+    </div>
+    </div>
+
+
               <ReactMarkdown
                 components={markdownComponents as any}
                 rehypePlugins={[rehypeRaw]}
@@ -579,9 +609,37 @@ ${pdfText}`,
           {/* Formatting Section */}
           {formatting && (
             <div className="mb-6">
+                        <div className="flex justify-between items-center mb-2">
               <h4 className="text-xl font-bold text-myDarkBlue mb-2">
-                Formatting
+               Formating
               </h4>
+              <div className="relative w-12 h-12">
+        <svg className="transform -rotate-90" viewBox="0 0 36 36">
+          <path
+            className="text-gray-200"
+            strokeWidth="4"
+            stroke="currentColor"
+            fill="none"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+          <path
+            className="text-myDarkBlue"
+            strokeWidth="4"
+            strokeDasharray={`${score}, 100`}
+            stroke="currentColor"
+            fill="none"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+        </svg>
+        <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-myDarkBlue">
+          {score}%
+        </span>
+    </div>
+    </div>
               <ReactMarkdown
                 components={markdownComponents as any}
                 rehypePlugins={[rehypeRaw]}
@@ -595,9 +653,37 @@ ${pdfText}`,
           {/* Education Section */}
           {education && (
             <div className="mb-6">
+                         <div className="flex justify-between items-center mb-2">
               <h4 className="text-xl font-bold text-myDarkBlue mb-2">
-              Education 
+               Education
               </h4>
+              <div className="relative w-12 h-12">
+        <svg className="transform -rotate-90" viewBox="0 0 36 36">
+          <path
+            className="text-gray-200"
+            strokeWidth="4"
+            stroke="currentColor"
+            fill="none"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+          <path
+            className="text-myDarkBlue"
+            strokeWidth="4"
+            strokeDasharray={`${score}, 100`}
+            stroke="currentColor"
+            fill="none"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+        </svg>
+        <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-myDarkBlue">
+          {score}%
+        </span>
+    </div>
+    </div>
               <ReactMarkdown
                 components={markdownComponents as any}
                 rehypePlugins={[rehypeRaw]}
@@ -611,9 +697,37 @@ ${pdfText}`,
           {/* Experience Section */}
           {experience && (
             <div className="mb-6">
+                         <div className="flex justify-between items-center mb-2">
               <h4 className="text-xl font-bold text-myDarkBlue mb-2">
-                Experience
+               Experience
               </h4>
+              <div className="relative w-12 h-12">
+        <svg className="transform -rotate-90" viewBox="0 0 36 36">
+          <path
+            className="text-gray-200"
+            strokeWidth="4"
+            stroke="currentColor"
+            fill="none"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+          <path
+            className="text-myDarkBlue"
+            strokeWidth="4"
+            strokeDasharray={`${score}, 100`}
+            stroke="currentColor"
+            fill="none"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+        </svg>
+        <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-myDarkBlue">
+          {score}%
+        </span>
+    </div>
+    </div>
               <ReactMarkdown
                 components={markdownComponents as any}
                 rehypePlugins={[rehypeRaw]}
