@@ -235,6 +235,11 @@ const DropzoneUploader = () => {
   const [score, setScore] = useState<number | null>(null);
   const [overall, setOverall] = useState<string | null>(null);
 
+  const [keywords, setKeywords] = useState<string | null>(null);
+  const [formatting, setFormatting] = useState<string | null>(null);
+  const [education, setEducation] = useState<string | null>(null);
+  const [experience, setExperience] = useState<string | null>(null);
+
   const onDrop = useCallback((acceptedFiles: File[], fileRejections: any[]) => {
     if (fileRejections.length > 0) {
       setError("Only PDF files are allowed");
@@ -277,7 +282,7 @@ const DropzoneUploader = () => {
               {
                 text: `You are an expert in Applicant Tracking Systems (ATS) and resume optimization.
 
-Your task is to analyze the following resume *strictly* for ATS compatibility and return your response in **exactly** the Markdown structure provided below. Use **emojis** to enhance readability and make it visually clear. DO NOT add anything outside the structure.
+Your task is to analyze the following resume *strictly* for ATS compatibility and return your response in **exactly** the Markdown structure provided below. Use **emojis** to enhance readability. DO NOT add anything outside the structure.
 
 Return your response in this format:
 
@@ -285,34 +290,48 @@ Return your response in this format:
 
 **ATS Score:** **[Score out of 100]**
 
-**Overall Assessment:** *[One-sentence judgment about ATS-friendliness]*
+**Overall Assessment:** *[2–4 sentence summary of the resume's ATS compatibility]*
 
 ---
 
-### 📋 Summary
+## 🗝️ Keywords Suggestions
 
-[A short paragraph (2–4 sentences) summarizing the resume's structure and ATS compatibility.]
+- ✅ **[Keyword Suggestion 1]**
+- ✅ **[Keyword Suggestion 2]**
+- ✅ **[Keyword Suggestion 3]**
 
 ---
 
-### 🔧 Top Improvement Areas
+## 🖋️ Formatting Suggestions
 
-- ✅ **[Improvement Suggestion 1: Clear and actionable]**
-- ✅ **[Improvement Suggestion 2: Clear and actionable]**
-- ✅ **[Improvement Suggestion 3: Clear and actionable]**
-- ✅ **[Optional Suggestion 4 or more]**
+- ✅ **[Formatting Suggestion 1]**
+- ✅ **[Formatting Suggestion 2]**
+
+---
+
+## 🎓 Education Suggestions
+
+- ✅ **[Education Suggestion 1]**
+- ✅ **[Education Suggestion 2]**
+
+---
+
+## 💼 Experience Suggestions
+
+- ✅ **[Experience Suggestion 1]**
+- ✅ **[Experience Suggestion 2]**
 
 ---
 
 ✅ *Only consider the following ATS-related factors:*
 - Section presence (Contact Info, Summary, Experience, Skills, Education)
-- Proper file formatting (PDF or DOCX, no tables, no columns, no images)
-- Use of standard fonts and font sizes
-- Keyword relevance to target job roles
-- Chronological/reverse-chronological structure
-- Readability for parsing engines (no graphics, no text embedded in images)
+- File formatting (PDF/DOCX, no tables, columns, images)
+- Standard fonts/sizes
+- Keyword relevance
+- Structure (chronological)
+- Parsing readability
 
-🚫 *DO NOT evaluate writing style, visual design, or job performance.*
+🚫 *DO NOT evaluate job performance or design.*
 
 ---
 
@@ -356,10 +375,24 @@ ${pdfText}`,
         setOverall(overallMatch[1].trim());
       }
 
-const cleanedText = text?
-        text.replace(/(\*\*ATS Score:\*\*.*)/i, "")
-        .replace(/(\*\*Overall Assessment:\*\*\s*(.*))/i, ""):"";
+      const cleanedText = text
+        ? text
+            .replace(/(\*\*ATS Score:\*\*.*)/i, "")
+            .replace(/(\*\*Overall Assessment:\*\*\s*(.*))/i, "")
+        : "";
       setSuggestions(cleanedText.trim());
+      if (text) {
+        const keywordsMatch = text.match(/## 🗝️ Keywords Suggestions([\s\S]*?)---/);
+        const formattingMatch = text.match(/## 🖋️ Formatting Suggestions([\s\S]*?)---/);
+        const educationMatch = text.match(/## 🎓 Education Suggestions([\s\S]*?)---/);
+        const experienceMatch = text.match(/## 💼 Experience Suggestions([\s\S]*?)---/);
+      
+        if (keywordsMatch) setKeywords(keywordsMatch[1].trim());
+        if (formattingMatch) setFormatting(formattingMatch[1].trim());
+        if (educationMatch) setEducation(educationMatch[1].trim());
+        if (experienceMatch) setExperience(experienceMatch[1].trim());
+      }
+      
     } catch (err) {
       setError("Something went wrong while analyzing.");
       console.error(err);
@@ -396,14 +429,15 @@ const cleanedText = text?
     h1: ({ node, ...props }: { node: any; [key: string]: any }) => (
       <h1 className="text-xl font-bold text-myDarkblue mt-4 mb-2" {...props} />
     ),
-  
+
     h2: ({ node, ...props }: { node: any; [key: string]: any }) => {
       const headingText = props.children[0];
-      const text = typeof headingText === "string" ? headingText.toLowerCase() : "";
-  
+      const text =
+        typeof headingText === "string" ? headingText.toLowerCase() : "";
+
       let style = "text-myDarkblue";
       let icon = "";
-  
+
       if (text.includes("keywords")) {
         style = "text-yellow-600 border-l-4 border-yellow-400 pl-3";
         icon = "🗝️ ";
@@ -417,7 +451,7 @@ const cleanedText = text?
         style = "text-blue-600 border-l-4 border-blue-400 pl-3";
         icon = "🎓 ";
       }
-  
+
       return (
         <h2 className={`text-xl font-semibold mt-4 mb-2 ${style}`} {...props}>
           {icon}
@@ -425,24 +459,28 @@ const cleanedText = text?
         </h2>
       );
     },
-  
+
     h3: ({ node, ...props }: { node: any; [key: string]: any }) => (
-      <h3 className="text-xl font-medium text-myDarkblue mt-4 mb-2" {...props} />
+      <h3
+        className="text-xl font-medium text-myDarkblue mt-4 mb-2"
+        {...props}
+      />
     ),
-  
+
     strong: ({ node, ...props }: { node: any; [key: string]: any }) => (
-      <strong className="text-black text-xl font-semibold" {...props} />
+      <strong className="text-black text-lg font-[400]" {...props} />
     ),
-  
+
     ul: ({ node, ...props }: { node: any; [key: string]: any }) => (
       <ul className="list-disc pl-5 text-gray-700 space-y-1" {...props} />
     ),
-  
+
     li: ({ node, ...props }: { node: any; [key: string]: any }) => {
       const content = props.children[0];
       const isImportant =
-        typeof content === "string" && content.toLowerCase().includes("missing");
-  
+        typeof content === "string" &&
+        content.toLowerCase().includes("missing");
+
       return (
         <li
           className={`text-gray-700 ${
@@ -452,14 +490,13 @@ const cleanedText = text?
         />
       );
     },
-  
+
     p: ({ node, ...props }: { node: any; [key: string]: any }) => (
       <p className="text-gray-800 mb-2" {...props} />
     ),
   };
-  
-  console.log("h1",markdownComponents.h1);
-  
+
+  console.log("h1", markdownComponents.h1);
 
   return (
     <div className="flex flex-col items-center gap-2 mt-8">
@@ -500,34 +537,93 @@ const cleanedText = text?
 
       {/* ATS Score Circle and Text */}
       {suggestions && (
-  <div className="mt-6 p-6 bg-white border rounded-xl shadow-md max-w-2xl w-full">
-    <h3 className="text-2xl font-bold mb-4 text-myMidblue">
-    Resume Analysis
-    </h3>
+        <div className="mt-6 p-6 bg-white border rounded-xl shadow-md w-full">
+          <h3 className="text-3xl font-bold mb-4 text-primaryColor text-center">
+            Resume Analysis
+          </h3>
 
-    {/* ATS Score Chart (Overall) */}
-    {score !== null && overall && (
-  <div className="mb-6 flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
-    <div className="sm:w-1/2 w-full flex justify-center">
-      <ATSCircleChart score={score} />
-    </div>
-    <div className="sm:w-1/2 w-full">
-      <h4 className="text-lg font-semibold text-myDarkblue mb-2">📌 Summary</h4>
-      <p className="text-gray-700 italic">{overall}</p>
-    </div>
-  </div>
-)}
+          {/* ATS Score Chart and Summary */}
+          {score !== null && overall && (
+            <div className="mb-6 flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
+              <div className="sm:w-1/2 w-full flex flex-col items-center">
+              <h4 className="text-xl font-bold text-myDarkBlue mb-2">
+                Overall ATS Score
+              </h4>
+                <ATSCircleChart score={score} />
+              </div>
+              <div className="sm:w-1/2 w-full">
+                <h4 className="text-xl font-bold text-myDarkBlue mb-2">
+                  Summary
+                </h4>
+                <p className="text-gray-700">{overall}</p>
+              </div>
+            </div>
+          )}
+<div className="h-[1px] w-full bg-myMidblue mb-5"></div>
+          {/* Keywords Section */}
+          {keywords && (
+            <div className="mb-6">
+              <h4 className="text-xl font-bold text-myDarkBlue mb-2">
+               Keywords
+              </h4>
+              <ReactMarkdown
+                components={markdownComponents as any}
+                rehypePlugins={[rehypeRaw]}
+              >
+                {keywords}
+              </ReactMarkdown>
+            </div>
+          )}
+<div className="h-[1px] w-full bg-myMidblue mb-5"></div>
 
-    {/* Detailed Markdown Suggestions */}
-    <ReactMarkdown
-      components={markdownComponents as any}
-      rehypePlugins={[rehypeRaw]}
-    >
-      {suggestions}
-    </ReactMarkdown>
-  </div>
-)}
+          {/* Formatting Section */}
+          {formatting && (
+            <div className="mb-6">
+              <h4 className="text-xl font-bold text-myDarkBlue mb-2">
+                Formatting
+              </h4>
+              <ReactMarkdown
+                components={markdownComponents as any}
+                rehypePlugins={[rehypeRaw]}
+              >
+                {formatting}
+              </ReactMarkdown>
+            </div>
+          )}
+<div className="h-[1px] w-full bg-myMidblue mb-5"></div>
 
+          {/* Education Section */}
+          {education && (
+            <div className="mb-6">
+              <h4 className="text-xl font-bold text-myDarkBlue mb-2">
+              Education 
+              </h4>
+              <ReactMarkdown
+                components={markdownComponents as any}
+                rehypePlugins={[rehypeRaw]}
+              >
+                {education}
+              </ReactMarkdown>
+            </div>
+          )}
+<div className="h-[1px] w-full bg-myMidblue mb-5"></div>
+
+          {/* Experience Section */}
+          {experience && (
+            <div className="mb-6">
+              <h4 className="text-xl font-bold text-myDarkBlue mb-2">
+                Experience
+              </h4>
+              <ReactMarkdown
+                components={markdownComponents as any}
+                rehypePlugins={[rehypeRaw]}
+              >
+                {experience}
+              </ReactMarkdown>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
