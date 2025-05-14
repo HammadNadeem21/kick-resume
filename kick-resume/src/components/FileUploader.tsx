@@ -224,6 +224,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { GoogleGenAI } from "@google/genai";
 import ATSCircleChart from "./ATSCircleChart";
+import AccordionSection from "./AccordianSection";
 
 const DropzoneUploader = () => {
   const { data: session } = useSession();
@@ -245,7 +246,7 @@ const DropzoneUploader = () => {
   const [formattingScore, setFormattingScore] = useState<number | null>(null);
   const [educationScore, setEducationScore] = useState<number | null>(null);
   const [experienceScore, setExperienceScore] = useState<number | null>(null);
-  const [sectionSuggestions, setSectionSuggestions] = useState<{ [key: string]: string }>({});
+  const [actualSummary, setactualSummary] = useState<{ [key: string]: string }>({});
 
   const onDrop = useCallback((acceptedFiles: File[], fileRejections: any[]) => {
     if (fileRejections.length > 0) {
@@ -295,12 +296,19 @@ Return your response in this format:
 
 ---
 
+
+
 **ATS Score:** **[Score out of 100]**
 
 **Overall Assessment:** *[2–4 sentence summary of the resume's ATS compatibility]*
 
-**Summary:** *[summary suggestions and highlight if there is any mistake]*
+**Actua Summary:** *[give me actual summary of resume]*
 
+**Summary Mistakes:** *[highlight if there is any mistake]*
+
+
+
+highlight if there is any mistake
 ---
 
 ## 🗝️ Keywords Suggestions (Score: [out of 100])
@@ -615,12 +623,12 @@ ${pdfText}`,
           <div className="h-[1px] w-full bg-myMidblue mb-5"></div>
 
           {/* Suggestion */}
-          {suggestions && (
+          {/* {suggestions && (
             <div className="mb-8">
             <h4 className="text-2xl font-bold text-myDarkBlue mb-4">AI Suggested Updates</h4>
             <p className="text-lg text-myDarkGray">{suggestions}</p>
           </div>
-          )}
+          )} */}
           {/* Keywords Section */}
           {keywords && (
             <div className="mb-6">
@@ -656,15 +664,18 @@ ${pdfText}`,
                 </div>
               </div>
 
+              <AccordionSection title="">
+
               <ReactMarkdown
                 components={markdownComponents as any}
                 rehypePlugins={[rehypeRaw]}
               >
                 {keywords}
               </ReactMarkdown>
+              </AccordionSection>
             </div>
           )}
-          <div className="h-[1px] w-full bg-myMidblue mb-5"></div>
+          {/* <div className="h-[1px] w-full bg-myMidblue mb-5"></div> */}
 
           {/* Formatting Section */}
           {formatting && (
@@ -700,15 +711,18 @@ ${pdfText}`,
                   </span>
                 </div>
               </div>
+
+              <AccordionSection title="">
               <ReactMarkdown
                 components={markdownComponents as any}
                 rehypePlugins={[rehypeRaw]}
               >
                 {formatting}
               </ReactMarkdown>
+              </AccordionSection>
             </div>
           )}
-          <div className="h-[1px] w-full bg-myMidblue mb-5"></div>
+          {/* <div className="h-[1px] w-full bg-myMidblue mb-5"></div> */}
 
           {/* Education Section */}
           {education && (
@@ -744,15 +758,17 @@ ${pdfText}`,
                   </span>
                 </div>
               </div>
+<AccordionSection title="">
               <ReactMarkdown
                 components={markdownComponents as any}
                 rehypePlugins={[rehypeRaw]}
               >
                 {education}
               </ReactMarkdown>
+              </AccordionSection>
             </div>
           )}
-          <div className="h-[1px] w-full bg-myMidblue mb-5"></div>
+          {/* <div className="h-[1px] w-full bg-myMidblue mb-5"></div> */}
 
           {/* Experience Section */}
           {experience && (
@@ -788,12 +804,15 @@ ${pdfText}`,
                   </span>
                 </div>
               </div>
+
+              <AccordionSection title="">
               <ReactMarkdown
                 components={markdownComponents as any}
                 rehypePlugins={[rehypeRaw]}
               >
                 {experience}
               </ReactMarkdown>
+              </AccordionSection>
             </div>
           )}
         </div>
