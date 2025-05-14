@@ -211,6 +211,8 @@
 
 // export default DropzoneUploader;
 
+
+
 "use client";
 
 import ReactMarkdown from "react-markdown";
@@ -239,6 +241,11 @@ const DropzoneUploader = () => {
   const [formatting, setFormatting] = useState<string | null>(null);
   const [education, setEducation] = useState<string | null>(null);
   const [experience, setExperience] = useState<string | null>(null);
+  const [keywordsScore, setKeywordsScore] = useState<number | null>(null);
+  const [formattingScore, setFormattingScore] = useState<number | null>(null);
+  const [educationScore, setEducationScore] = useState<number | null>(null);
+  const [experienceScore, setExperienceScore] = useState<number | null>(null);
+  const [sectionSuggestions, setSectionSuggestions] = useState<{ [key: string]: string }>({});
 
   const onDrop = useCallback((acceptedFiles: File[], fileRejections: any[]) => {
     if (fileRejections.length > 0) {
@@ -282,7 +289,7 @@ const DropzoneUploader = () => {
               {
                 text: `You are an expert in Applicant Tracking Systems (ATS) and resume optimization.
 
-Your task is to analyze the following resume *strictly* for ATS compatibility and return your response in **exactly** the Markdown structure provided below. Use **emojis** to enhance readability. DO NOT add anything outside the structure.
+Your task is to analyze the following resume *strictly* for ATS compatibility and return your response in **exactly** the Markdown structure provided below. Use **emojis** to enhance readability. DO NOT add anything outside the structure. pick the summary from the provided resume and check for any grammaticaly mistakes, and also provide suggestions on how I can improve my summary according to my expertise.
 
 Return your response in this format:
 
@@ -292,9 +299,11 @@ Return your response in this format:
 
 **Overall Assessment:** *[2–4 sentence summary of the resume's ATS compatibility]*
 
+**Summary:** *[summary suggestions and highlight if there is any mistake]*
+
 ---
 
-## 🗝️ Keywords Suggestions
+## 🗝️ Keywords Suggestions (Score: [out of 100])
 
 - ✅ **[Keyword Suggestion 1]**
 - ✅ **[Keyword Suggestion 2]**
@@ -302,21 +311,21 @@ Return your response in this format:
 
 ---
 
-## 🖋️ Formatting Suggestions
+## 🖋️ Formatting Suggestions (Score: [out of 100])
 
 - ✅ **[Formatting Suggestion 1]**
 - ✅ **[Formatting Suggestion 2]**
 
 ---
-
-## 🎓 Education Suggestions
+ 
+## 🎓 Education Suggestions (Score: [out of 100])
 
 - ✅ **[Education Suggestion 1]**
 - ✅ **[Education Suggestion 2]**
 
 ---
 
-## 💼 Experience Suggestions
+## 💼 Experience Suggestions (Score: [out of 100])
 
 - ✅ **[Experience Suggestion 1]**
 - ✅ **[Experience Suggestion 2]**
@@ -332,6 +341,8 @@ Return your response in this format:
 - Parsing readability
 
 🚫 *DO NOT evaluate job performance or design.*
+
+
 
 ---
 
@@ -382,17 +393,49 @@ ${pdfText}`,
         : "";
       setSuggestions(cleanedText.trim());
       if (text) {
-        const keywordsMatch = text.match(/## 🗝️ Keywords Suggestions([\s\S]*?)---/);
-        const formattingMatch = text.match(/## 🖋️ Formatting Suggestions([\s\S]*?)---/);
-        const educationMatch = text.match(/## 🎓 Education Suggestions([\s\S]*?)---/);
-        const experienceMatch = text.match(/## 💼 Experience Suggestions([\s\S]*?)---/);
-      
+        const keywordsMatch = text.match(
+          /## 🗝️ Keywords Suggestions([\s\S]*?)---/
+        );
+        const formattingMatch = text.match(
+          /## 🖋️ Formatting Suggestions([\s\S]*?)---/
+        );
+        const educationMatch = text.match(
+          /## 🎓 Education Suggestions([\s\S]*?)---/
+        );
+        const experienceMatch = text.match(
+          /## 💼 Experience Suggestions([\s\S]*?)---/
+        );
+
         if (keywordsMatch) setKeywords(keywordsMatch[1].trim());
         if (formattingMatch) setFormatting(formattingMatch[1].trim());
         if (educationMatch) setEducation(educationMatch[1].trim());
         if (experienceMatch) setExperience(experienceMatch[1].trim());
+
+        const keywordsScoreMatch = text?.match(
+          /## 🗝️ Keywords Suggestions.*Score: (\d+)/
+        );
+        if (keywordsScoreMatch) setKeywordsScore(Number(keywordsScoreMatch[1]));
+
+        const formattingScoreMatch = text?.match(
+          /## 🖋️ Formatting Suggestions.*Score: (\d+)/
+        );
+        if (formattingScoreMatch)
+          setFormattingScore(Number(formattingScoreMatch[1]));
+
+        const educationScoreMatch = text?.match(
+          /## 🎓 Education Suggestions.*Score: (\d+)/
+        );
+        if (educationScoreMatch)
+          setEducationScore(Number(educationScoreMatch[1]));
+
+        const experienceScoreMatch = text?.match(
+          /## 💼 Experience Suggestions.*Score: (\d+)/
+        );
+        if (experienceScoreMatch)
+          setExperienceScore(Number(experienceScoreMatch[1]));
+
+        
       }
-      
     } catch (err) {
       setError("Something went wrong while analyzing.");
       console.error(err);
@@ -400,6 +443,16 @@ ${pdfText}`,
       setLoading(false);
     }
   };
+
+
+  
+  // Sample function to get AI's suggestion for a specific section
+  const getAISectionSuggestion = (sectionText: string, sectionName: string) => {
+    // You'd call AI's API here and get the updated version of the section
+    // Example prompt to AI: "Please analyze this [section] and provide suggestions for improvement."
+    return `Updated ${sectionName}: [Updated section text here based on AI's analysis]`;
+  };
+  
 
   const extractTextFromPDF = async (file: File): Promise<string> => {
     const pdfjsLib = await import("pdfjs-dist/build/pdf");
@@ -468,7 +521,7 @@ ${pdfText}`,
     ),
 
     strong: ({ node, ...props }: { node: any; [key: string]: any }) => (
-      <strong className="text-black text-lg font-[400]" {...props} />
+      <strong className="text-myMidblue text-lg font-[400]" {...props} />
     ),
 
     ul: ({ node, ...props }: { node: any; [key: string]: any }) => (
@@ -492,11 +545,11 @@ ${pdfText}`,
     },
 
     p: ({ node, ...props }: { node: any; [key: string]: any }) => (
-      <p className="text-gray-800 mb-2" {...props} />
+      <p className="text-gray-800 hidden  mb-2" {...props} />
     ),
   };
 
-  console.log("h1", markdownComponents.h1);
+  // console.log("h1", markdownComponents.h1);
 
   return (
     <div className="flex flex-col items-center gap-2 mt-8">
@@ -546,9 +599,9 @@ ${pdfText}`,
           {score !== null && overall && (
             <div className="mb-6 flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
               <div className="sm:w-1/2 w-full flex flex-col items-center">
-              <h4 className="text-xl font-bold text-myDarkBlue mb-2">
-                Overall ATS Score
-              </h4>
+                <h4 className="text-xl font-bold text-myDarkBlue mb-2">
+                  Overall ATS Score
+                </h4>
                 <ATSCircleChart score={score} />
               </div>
               <div className="sm:w-1/2 w-full">
@@ -559,42 +612,49 @@ ${pdfText}`,
               </div>
             </div>
           )}
-<div className="h-[1px] w-full bg-myMidblue mb-5"></div>
+          <div className="h-[1px] w-full bg-myMidblue mb-5"></div>
+
+          {/* Suggestion */}
+          {suggestions && (
+            <div className="mb-8">
+            <h4 className="text-2xl font-bold text-myDarkBlue mb-4">AI Suggested Updates</h4>
+            <p className="text-lg text-myDarkGray">{suggestions}</p>
+          </div>
+          )}
           {/* Keywords Section */}
           {keywords && (
             <div className="mb-6">
               <div className="flex justify-between items-center mb-2">
-              <h4 className="text-xl font-bold text-myDarkBlue mb-2">
-               Keywords
-              </h4>
-              <div className="relative w-12 h-12">
-        <svg className="transform -rotate-90" viewBox="0 0 36 36">
-          <path
-            className="text-gray-200"
-            strokeWidth="4"
-            stroke="currentColor"
-            fill="none"
-            d="M18 2.0845
+                <h4 className="text-xl font-bold text-myDarkBlue mb-2">
+                  Keywords
+                </h4>
+                <div className="relative w-12 h-12">
+                  <svg className="transform -rotate-90" viewBox="0 0 36 36">
+                    <path
+                      className="text-gray-200"
+                      strokeWidth="4"
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"
-          />
-          <path
-            className="text-myDarkBlue"
-            strokeWidth="4"
-            strokeDasharray={`${score}, 100`}
-            stroke="currentColor"
-            fill="none"
-            d="M18 2.0845
+                    />
+                    <path
+                      className="text-myDarkBlue"
+                      strokeWidth="4"
+                      strokeDasharray={`${keywordsScore}, 100`}
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"
-          />
-        </svg>
-        <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-myDarkBlue">
-          {score}%
-        </span>
-    </div>
-    </div>
-
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-myDarkBlue">
+                    {keywordsScore}/100
+                  </span>
+                </div>
+              </div>
 
               <ReactMarkdown
                 components={markdownComponents as any}
@@ -604,42 +664,42 @@ ${pdfText}`,
               </ReactMarkdown>
             </div>
           )}
-<div className="h-[1px] w-full bg-myMidblue mb-5"></div>
+          <div className="h-[1px] w-full bg-myMidblue mb-5"></div>
 
           {/* Formatting Section */}
           {formatting && (
             <div className="mb-6">
-                        <div className="flex justify-between items-center mb-2">
-              <h4 className="text-xl font-bold text-myDarkBlue mb-2">
-               Formating
-              </h4>
-              <div className="relative w-12 h-12">
-        <svg className="transform -rotate-90" viewBox="0 0 36 36">
-          <path
-            className="text-gray-200"
-            strokeWidth="4"
-            stroke="currentColor"
-            fill="none"
-            d="M18 2.0845
+              <div className="flex justify-between items-center mb-2">
+                <h4 className="text-xl font-bold text-myDarkBlue mb-2">
+                  Formating
+                </h4>
+                <div className="relative w-12 h-12">
+                  <svg className="transform -rotate-90" viewBox="0 0 36 36">
+                    <path
+                      className="text-gray-200"
+                      strokeWidth="4"
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"
-          />
-          <path
-            className="text-myDarkBlue"
-            strokeWidth="4"
-            strokeDasharray={`${score}, 100`}
-            stroke="currentColor"
-            fill="none"
-            d="M18 2.0845
+                    />
+                    <path
+                      className="text-myDarkBlue"
+                      strokeWidth="4"
+                      strokeDasharray={`${formattingScore}, 100`}
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"
-          />
-        </svg>
-        <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-myDarkBlue">
-          {score}%
-        </span>
-    </div>
-    </div>
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-myDarkBlue">
+                    {formattingScore}/100
+                  </span>
+                </div>
+              </div>
               <ReactMarkdown
                 components={markdownComponents as any}
                 rehypePlugins={[rehypeRaw]}
@@ -648,42 +708,42 @@ ${pdfText}`,
               </ReactMarkdown>
             </div>
           )}
-<div className="h-[1px] w-full bg-myMidblue mb-5"></div>
+          <div className="h-[1px] w-full bg-myMidblue mb-5"></div>
 
           {/* Education Section */}
           {education && (
             <div className="mb-6">
-                         <div className="flex justify-between items-center mb-2">
-              <h4 className="text-xl font-bold text-myDarkBlue mb-2">
-               Education
-              </h4>
-              <div className="relative w-12 h-12">
-        <svg className="transform -rotate-90" viewBox="0 0 36 36">
-          <path
-            className="text-gray-200"
-            strokeWidth="4"
-            stroke="currentColor"
-            fill="none"
-            d="M18 2.0845
+              <div className="flex justify-between items-center mb-2">
+                <h4 className="text-xl font-bold text-myDarkBlue mb-2">
+                  Education
+                </h4>
+                <div className="relative w-12 h-12">
+                  <svg className="transform -rotate-90" viewBox="0 0 36 36">
+                    <path
+                      className="text-gray-200"
+                      strokeWidth="4"
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"
-          />
-          <path
-            className="text-myDarkBlue"
-            strokeWidth="4"
-            strokeDasharray={`${score}, 100`}
-            stroke="currentColor"
-            fill="none"
-            d="M18 2.0845
+                    />
+                    <path
+                      className="text-myDarkBlue"
+                      strokeWidth="4"
+                      strokeDasharray={`${educationScore}, 100`}
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"
-          />
-        </svg>
-        <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-myDarkBlue">
-          {score}%
-        </span>
-    </div>
-    </div>
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-myDarkBlue">
+                    {educationScore}/100
+                  </span>
+                </div>
+              </div>
               <ReactMarkdown
                 components={markdownComponents as any}
                 rehypePlugins={[rehypeRaw]}
@@ -692,42 +752,42 @@ ${pdfText}`,
               </ReactMarkdown>
             </div>
           )}
-<div className="h-[1px] w-full bg-myMidblue mb-5"></div>
+          <div className="h-[1px] w-full bg-myMidblue mb-5"></div>
 
           {/* Experience Section */}
           {experience && (
             <div className="mb-6">
-                         <div className="flex justify-between items-center mb-2">
-              <h4 className="text-xl font-bold text-myDarkBlue mb-2">
-               Experience
-              </h4>
-              <div className="relative w-12 h-12">
-        <svg className="transform -rotate-90" viewBox="0 0 36 36">
-          <path
-            className="text-gray-200"
-            strokeWidth="4"
-            stroke="currentColor"
-            fill="none"
-            d="M18 2.0845
+              <div className="flex justify-between items-center mb-2">
+                <h4 className="text-xl font-bold text-myDarkBlue mb-2">
+                  Experience
+                </h4>
+                <div className="relative w-12 h-12">
+                  <svg className="transform -rotate-90" viewBox="0 0 36 36">
+                    <path
+                      className="text-gray-200"
+                      strokeWidth="4"
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"
-          />
-          <path
-            className="text-myDarkBlue"
-            strokeWidth="4"
-            strokeDasharray={`${score}, 100`}
-            stroke="currentColor"
-            fill="none"
-            d="M18 2.0845
+                    />
+                    <path
+                      className="text-myDarkBlue"
+                      strokeWidth="4"
+                      strokeDasharray={`${experienceScore}, 100`}
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"
-          />
-        </svg>
-        <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-myDarkBlue">
-          {score}%
-        </span>
-    </div>
-    </div>
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-myDarkBlue">
+                    {experienceScore}/100
+                  </span>
+                </div>
+              </div>
               <ReactMarkdown
                 components={markdownComponents as any}
                 rehypePlugins={[rehypeRaw]}
