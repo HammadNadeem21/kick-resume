@@ -246,7 +246,10 @@ const DropzoneUploader = () => {
   const [formattingScore, setFormattingScore] = useState<number | null>(null);
   const [educationScore, setEducationScore] = useState<number | null>(null);
   const [experienceScore, setExperienceScore] = useState<number | null>(null);
-  const [actualSummary, setactualSummary] = useState<{ [key: string]: string }>({});
+  const [actualSummary, setActualSummary] = useState<string | null>(null);
+  const [summaryMistakes, setSummaryMistakes] = useState<string | null>(null);
+  const [improvedSummary, setImprovedSummary] = useState<string | null>(null)
+
 
   const onDrop = useCallback((acceptedFiles: File[], fileRejections: any[]) => {
     if (fileRejections.length > 0) {
@@ -300,12 +303,13 @@ Return your response in this format:
 
 **ATS Score:** **[Score out of 100]**
 
-**Overall Assessment:** *[2–4 sentence summary of the resume's ATS compatibility]*
+**Overall Assessment:** [2–4 sentence summary of the resume's ATS compatibility]*
 
-**Actua Summary:** *[give me actual summary of resume]*
+**Actual Summary:** *[2–4 sentence summary of the resume's content]*
 
-**Summary Mistakes:** *[highlight if there is any mistake]*
+**Summary Mistakes:** *[Grammatical mistakes found in the summary]*
 
+**Improved Summary Suggestions:** *[Refined version of the summary with suggestions]*
 
 
 highlight if there is any mistake
@@ -394,11 +398,32 @@ ${pdfText}`,
         setOverall(overallMatch[1].trim());
       }
 
+
+      const actualSummaryMatch = text?.match(/\*\*Actual Summary:\*\*\s*([\s\S]*?)\n\*\*/i);
+const summaryMistakesMatch = text?.match(/\*\*Summary Mistakes:\*\*\s*([\s\S]*?)\n\*\*/i);
+const improvedSummaryMatch = text?.match(/\*\*Improved Summary Suggestions:\*\*\s*([\s\S]*?)(?=\n##|---|\*\*)/i);
+
+
+if (actualSummaryMatch && actualSummaryMatch[1]) {
+  setActualSummary(actualSummaryMatch[1].trim());
+}
+if (summaryMistakesMatch && summaryMistakesMatch[1]) {
+  setSummaryMistakes(summaryMistakesMatch[1].trim());
+}
+if (improvedSummaryMatch && improvedSummaryMatch[1]) {
+  setImprovedSummary(improvedSummaryMatch[1].trim());
+}
+
+
+
       const cleanedText = text
         ? text
             .replace(/(\*\*ATS Score:\*\*.*)/i, "")
             .replace(/(\*\*Overall Assessment:\*\*\s*(.*))/i, "")
-        : "";
+            .replace(/(\*\*Actual Summary:\*\*\s*(.*))/i, "")
+            .replace(/(\*\*Summary Mistakes:\*\*\s*(.*))/i, "")
+            .replace(/(\*\*Improved Summary Suggestions:\*\*\s*(.*))/i, "")
+      : "";
       setSuggestions(cleanedText.trim());
       if (text) {
         const keywordsMatch = text.match(
@@ -442,6 +467,7 @@ ${pdfText}`,
         if (experienceScoreMatch)
           setExperienceScore(Number(experienceScoreMatch[1]));
 
+      console.log("actual summary", improvedSummary);
         
       }
     } catch (err) {
@@ -451,16 +477,6 @@ ${pdfText}`,
       setLoading(false);
     }
   };
-
-
-  
-  // Sample function to get AI's suggestion for a specific section
-  const getAISectionSuggestion = (sectionText: string, sectionName: string) => {
-    // You'd call AI's API here and get the updated version of the section
-    // Example prompt to AI: "Please analyze this [section] and provide suggestions for improvement."
-    return `Updated ${sectionName}: [Updated section text here based on AI's analysis]`;
-  };
-  
 
   const extractTextFromPDF = async (file: File): Promise<string> => {
     const pdfjsLib = await import("pdfjs-dist/build/pdf");
@@ -513,6 +529,9 @@ ${pdfText}`,
         icon = "🎓 ";
       }
 
+
+      
+
       return (
         <h2 className={`text-xl font-semibold mt-4 mb-2 ${style}`} {...props}>
           {icon}
@@ -523,7 +542,7 @@ ${pdfText}`,
 
     h3: ({ node, ...props }: { node: any; [key: string]: any }) => (
       <h3
-        className="text-xl font-medium text-myDarkblue mt-4 mb-2"
+        className="text-2xl font-medium text-myDarkblue mt-4 mb-2"
         {...props}
       />
     ),
@@ -622,13 +641,33 @@ ${pdfText}`,
           )}
           <div className="h-[1px] w-full bg-myMidblue mb-5"></div>
 
+          <h4 className="text-2xl font-bold text-myDarkBlue mb-4">AI Suggested Updates</h4>
+
           {/* Suggestion */}
-          {/* {suggestions && (
+          {actualSummary && (
+  <div className="mb-8">
+    <h4 className="text-xl font-bold text-myDarkBlue mb-4">Actual Summary</h4>
+    <div>{actualSummary}</div>
+  </div>
+)}
+
+          {/* summary mistakes  */}
+          {summaryMistakes && (
             <div className="mb-8">
-            <h4 className="text-2xl font-bold text-myDarkBlue mb-4">AI Suggested Updates</h4>
-            <p className="text-lg text-myDarkGray">{suggestions}</p>
+            <h4 className="text-xl font-bold text-myDarkBlue mb-4">Mistakes:</h4>
+            <div>{summaryMistakes}</div>
           </div>
-          )} */}
+          )}
+
+
+{/* improved summary */}
+{improvedSummary && (
+            <div className="mb-8">
+            <h4 className="text-xl font-bold text-myDarkBlue mb-4">Improvements:</h4>
+            <div>{improvedSummary}</div>
+          </div>
+          )}
+
           {/* Keywords Section */}
           {keywords && (
             <div className="mb-6">
