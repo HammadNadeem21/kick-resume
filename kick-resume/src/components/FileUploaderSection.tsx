@@ -1,5 +1,6 @@
 import React from "react";
 import DropzoneUploader from "./FileUploader";
+import AiResumeAnalyzeReort from "./AiResumeAnalyzeReort";
 
 const FileUploaderSection = () => {
   return (
@@ -16,6 +17,7 @@ const FileUploaderSection = () => {
       </div>
 
       <DropzoneUploader />
+      <AiResumeAnalyzeReort/>
     </div>
   );
 };
