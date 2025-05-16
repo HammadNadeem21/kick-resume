@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import "./globals.css";
 
 import { SessionProvider } from "next-auth/react";
+import { ResumeProvider } from "@/context/ReaumeContext";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,7 +13,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <SessionProvider>
           <Navbar/>
+          <ResumeProvider>
+
           {children}
+          </ResumeProvider>
+
           <Footer/>
           </SessionProvider> {/* ✅ Wrap your app */}
       </body>

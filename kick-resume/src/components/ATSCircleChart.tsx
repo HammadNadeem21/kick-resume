@@ -53,7 +53,7 @@ const ATSCircleChart = ({ score }: { score: number }) => {
 
   return (
     <motion.div
-      className="relative w-[200px] h-[200px] mx-auto hover:scale-105 transition-transform"
+      className="relative w-[200px] h-[200px] hover:scale-105 transition-transform"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}

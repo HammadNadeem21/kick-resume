@@ -1,6 +1,8 @@
 import Image from "next/image";
 import React from "react";
 import DropzoneUploader from "./FileUploader";
+import AiResumeAnalyzeReort from "./AiResumeAnalyzeReort";
+import { ResumeProvider } from "@/context/ReaumeContext";
 
 const Hero = () => {
   return (
@@ -30,7 +32,11 @@ const Hero = () => {
         />
       </div>
 
-      {/* <div> report</div> */}
+      <div className="lg:col-span-2 col-span-1">
+        
+        <AiResumeAnalyzeReort/>
+        
+      </div>
 
       <div className="lg:col-span-2 col-span-1 text-center mt-[100px] px-2">
         <h1 className="text-myWhite">
