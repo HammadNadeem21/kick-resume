@@ -26,7 +26,7 @@ const AiResumeAnalyzeReort = () => {
     console.log("Component received context:", { actualSummary, improvedSummary });
   }, [actualSummary, improvedSummary]);
 
-  if (!actualSummary) return <div>Loading...</div>; // Prevent rendering if null
+  // if (!actualSummary) return <div>Loading...</div>; // Prevent rendering if null
 
 
   const markdownComponents = {
