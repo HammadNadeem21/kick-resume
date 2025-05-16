@@ -112,9 +112,9 @@ const AiResumeAnalyzeReort = () => {
 
           {/* ATS Score Chart and Summary */}
           {score !== null && overall && (
-            <div className="mb-6 flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
+            <div className="mb-6 flex flex-col sm:flex-row items-center sm:items-start justify-between px-6">
               <div className="sm:w-1/2 w-full flex flex-col">
-                <h4 className="text-xl font-bold text-myDarkBlue mb-2">
+                <h4 className="text-xl font-bold text-myDarkBlue mb-1">
                   Overall ATS Score
                 </h4>
                 <ATSCircleChart score={score} />

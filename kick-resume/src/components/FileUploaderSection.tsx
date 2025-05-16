@@ -17,7 +17,7 @@ const FileUploaderSection = () => {
       </div>
 
       <DropzoneUploader />
-      <AiResumeAnalyzeReort/>
+      {/* <AiResumeAnalyzeReort/> */}
     </div>
   );
 };

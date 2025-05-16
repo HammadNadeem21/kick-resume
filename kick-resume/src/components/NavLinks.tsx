@@ -263,7 +263,7 @@ export function NavigationMenuDemo() {
         {/* Pricing */}
         <NavigationMenuItem>
           <Link href="/docs" legacyBehavior passHref>
-            <NavigationMenuLink className={`${navigationMenuTriggerStyle()} text-[18px]`}>
+            <NavigationMenuLink className={`${navigationMenuTriggerStyle()} text-[19px]`}>
               Pricing
             </NavigationMenuLink>
           </Link>
