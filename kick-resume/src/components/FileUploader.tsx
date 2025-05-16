@@ -211,8 +211,6 @@
 
 // export default DropzoneUploader;
 
-
-
 "use client";
 
 import ReactMarkdown from "react-markdown";
@@ -248,8 +246,8 @@ const DropzoneUploader = () => {
   const [experienceScore, setExperienceScore] = useState<number | null>(null);
   const [actualSummary, setActualSummary] = useState<string | null>(null);
   const [summaryMistakes, setSummaryMistakes] = useState<string | null>(null);
-  const [improvedSummary, setImprovedSummary] = useState<string | null>(null)
-
+  const [improvedSummary, setImprovedSummary] = useState<string | null>(null);
+  const [coverLetter, setCoverLetter] = useState<string | null>(null);
 
   const onDrop = useCallback((acceptedFiles: File[], fileRejections: any[]) => {
     if (fileRejections.length > 0) {
@@ -311,6 +309,8 @@ Return your response in this format:
 
 **Improved Summary Suggestions:** *[Refined version of the summary with suggestions]*
 
+**Cover Letter:** *(Provide a professionally written cover letter in proper Markdown format. Break it into clear paragraphs with line breaks. Add spacing for readability.)*
+
 
 highlight if there is any mistake
 ---
@@ -355,8 +355,8 @@ highlight if there is any mistake
 🚫 *DO NOT evaluate job performance or design.*
 
 
-
 ---
+
 
 Resume to analyze:
 
@@ -398,23 +398,32 @@ ${pdfText}`,
         setOverall(overallMatch[1].trim());
       }
 
+      const actualSummaryMatch = text?.match(
+        /\*\*Actual Summary:\*\*\s*([\s\S]*?)\n\*\*/i
+      );
+      const summaryMistakesMatch = text?.match(
+        /\*\*Summary Mistakes:\*\*\s*([\s\S]*?)\n\*\*/i
+      );
+      const improvedSummaryMatch = text?.match(
+        /\*\*Improved Summary Suggestions:\*\*\s*([\s\S]*?)(?=\n##|---|\*\*)/i
+      );
 
-      const actualSummaryMatch = text?.match(/\*\*Actual Summary:\*\*\s*([\s\S]*?)\n\*\*/i);
-const summaryMistakesMatch = text?.match(/\*\*Summary Mistakes:\*\*\s*([\s\S]*?)\n\*\*/i);
-const improvedSummaryMatch = text?.match(/\*\*Improved Summary Suggestions:\*\*\s*([\s\S]*?)(?=\n##|---|\*\*)/i);
+      const coverLetterMatch = text?.match(
+        /\*\*Cover Letter:\*\*\s*([\s\S]*?)(?=\n##|---|\*\*)/i
+      );
 
-
-if (actualSummaryMatch && actualSummaryMatch[1]) {
-  setActualSummary(actualSummaryMatch[1].trim());
-}
-if (summaryMistakesMatch && summaryMistakesMatch[1]) {
-  setSummaryMistakes(summaryMistakesMatch[1].trim());
-}
-if (improvedSummaryMatch && improvedSummaryMatch[1]) {
-  setImprovedSummary(improvedSummaryMatch[1].trim());
-}
-
-
+      if (actualSummaryMatch && actualSummaryMatch[1]) {
+        setActualSummary(actualSummaryMatch[1].trim());
+      }
+      if (summaryMistakesMatch && summaryMistakesMatch[1]) {
+        setSummaryMistakes(summaryMistakesMatch[1].trim());
+      }
+      if (improvedSummaryMatch && improvedSummaryMatch[1]) {
+        setImprovedSummary(improvedSummaryMatch[1].trim());
+      }
+      if (coverLetterMatch && coverLetterMatch[1]) {
+        setCoverLetter(coverLetterMatch[1].replace(/[\r\u200b]/g, '').trim());
+      }
 
       const cleanedText = text
         ? text
@@ -423,7 +432,8 @@ if (improvedSummaryMatch && improvedSummaryMatch[1]) {
             .replace(/(\*\*Actual Summary:\*\*\s*(.*))/i, "")
             .replace(/(\*\*Summary Mistakes:\*\*\s*(.*))/i, "")
             .replace(/(\*\*Improved Summary Suggestions:\*\*\s*(.*))/i, "")
-      : "";
+            .replace(/(\*\*Generated Cover Letter:\*\*\s*(.*))/i, "")
+        : "";
       setSuggestions(cleanedText.trim());
       if (text) {
         const keywordsMatch = text.match(
@@ -467,8 +477,7 @@ if (improvedSummaryMatch && improvedSummaryMatch[1]) {
         if (experienceScoreMatch)
           setExperienceScore(Number(experienceScoreMatch[1]));
 
-      console.log("actual summary", improvedSummary);
-        
+        console.log("actual summary", coverLetter);
       }
     } catch (err) {
       setError("Something went wrong while analyzing.");
@@ -528,9 +537,6 @@ if (improvedSummaryMatch && improvedSummaryMatch[1]) {
         style = "text-blue-600 border-l-4 border-blue-400 pl-3";
         icon = "🎓 ";
       }
-
-
-      
 
       return (
         <h2 className={`text-xl font-semibold mt-4 mb-2 ${style}`} {...props}>
@@ -616,7 +622,8 @@ if (improvedSummaryMatch && improvedSummaryMatch[1]) {
       </button>
 
       {/* ATS Score Circle and Text */}
-      {suggestions && (
+      <div>
+        {suggestions && (
         <div className="mt-6 p-6 bg-white border rounded-xl shadow-md w-full">
           <h3 className="text-3xl font-bold mb-4 text-primaryColor text-center">
             Resume Analysis
@@ -641,31 +648,38 @@ if (improvedSummaryMatch && improvedSummaryMatch[1]) {
           )}
           <div className="h-[1px] w-full bg-myMidblue mb-5"></div>
 
-          <h4 className="text-2xl font-bold text-myDarkBlue mb-4">AI Suggested Updates</h4>
+          <h4 className="text-2xl font-bold text-myDarkBlue mb-4">
+            AI Suggested Updates
+          </h4>
 
           {/* Suggestion */}
           {actualSummary && (
-  <div className="mb-8">
-    <h4 className="text-xl font-bold text-myDarkBlue mb-4">Actual Summary</h4>
-    <div>{actualSummary}</div>
-  </div>
-)}
+            <div className="mb-8">
+              <h4 className="text-xl font-bold text-myDarkBlue mb-4">
+                Actual Summary
+              </h4>
+              <div>{actualSummary}</div>
+            </div>
+          )}
 
           {/* summary mistakes  */}
           {summaryMistakes && (
             <div className="mb-8">
-            <h4 className="text-xl font-bold text-myDarkBlue mb-4">Mistakes:</h4>
-            <div>{summaryMistakes}</div>
-          </div>
+              <h4 className="text-xl font-bold text-myDarkBlue mb-4">
+                Mistakes:
+              </h4>
+              <div>{summaryMistakes}</div>
+            </div>
           )}
 
-
-{/* improved summary */}
-{improvedSummary && (
+          {/* improved summary */}
+          {improvedSummary && (
             <div className="mb-8">
-            <h4 className="text-xl font-bold text-myDarkBlue mb-4">Improvements:</h4>
-            <div>{improvedSummary}</div>
-          </div>
+              <h4 className="text-xl font-bold text-myDarkBlue mb-4">
+                Improvements:
+              </h4>
+              <div>{improvedSummary}</div>
+            </div>
           )}
 
           {/* Keywords Section */}
@@ -704,13 +718,12 @@ if (improvedSummaryMatch && improvedSummaryMatch[1]) {
               </div>
 
               <AccordionSection title="">
-
-              <ReactMarkdown
-                components={markdownComponents as any}
-                rehypePlugins={[rehypeRaw]}
-              >
-                {keywords}
-              </ReactMarkdown>
+                <ReactMarkdown
+                  components={markdownComponents as any}
+                  rehypePlugins={[rehypeRaw]}
+                >
+                  {keywords}
+                </ReactMarkdown>
               </AccordionSection>
             </div>
           )}
@@ -752,12 +765,12 @@ if (improvedSummaryMatch && improvedSummaryMatch[1]) {
               </div>
 
               <AccordionSection title="">
-              <ReactMarkdown
-                components={markdownComponents as any}
-                rehypePlugins={[rehypeRaw]}
-              >
-                {formatting}
-              </ReactMarkdown>
+                <ReactMarkdown
+                  components={markdownComponents as any}
+                  rehypePlugins={[rehypeRaw]}
+                >
+                  {formatting}
+                </ReactMarkdown>
               </AccordionSection>
             </div>
           )}
@@ -797,13 +810,13 @@ if (improvedSummaryMatch && improvedSummaryMatch[1]) {
                   </span>
                 </div>
               </div>
-<AccordionSection title="">
-              <ReactMarkdown
-                components={markdownComponents as any}
-                rehypePlugins={[rehypeRaw]}
-              >
-                {education}
-              </ReactMarkdown>
+              <AccordionSection title="">
+                <ReactMarkdown
+                  components={markdownComponents as any}
+                  rehypePlugins={[rehypeRaw]}
+                >
+                  {education}
+                </ReactMarkdown>
               </AccordionSection>
             </div>
           )}
@@ -845,17 +858,29 @@ if (improvedSummaryMatch && improvedSummaryMatch[1]) {
               </div>
 
               <AccordionSection title="">
-              <ReactMarkdown
-                components={markdownComponents as any}
-                rehypePlugins={[rehypeRaw]}
-              >
-                {experience}
-              </ReactMarkdown>
+                <ReactMarkdown
+                  components={markdownComponents as any}
+                  rehypePlugins={[rehypeRaw]}
+                >
+                  {experience}
+                </ReactMarkdown>
               </AccordionSection>
             </div>
           )}
         </div>
       )}
+    </div>
+
+    <div>{
+      coverLetter && (
+        <div className="mt-6 p-6 bg-white border rounded-xl shadow-md w-full">
+          <h3 className="font-bold text-lg mb-2">Cover Letter:</h3>
+          <pre className="whitespace-pre-wrap bg-gray-50 p-4 rounded-xl text-gray-800 border border-gray-200 leading-relaxed font-sans text-base shadow-sm">{coverLetter}</pre>
+          
+        </div>
+      )
+      }</div>
+    
     </div>
   );
 };
