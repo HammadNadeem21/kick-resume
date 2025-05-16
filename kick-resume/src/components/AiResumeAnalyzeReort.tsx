@@ -356,7 +356,7 @@ const AiResumeAnalyzeReort = () => {
       coverLetter && suggestions && (
         <div className="mt-6 p-6 bg-white border rounded-xl shadow-md w-full">
           <h3 className="text-2xl font-bold text-primaryColor mb-4">Cover Letter</h3>
-          <pre className="whitespace-pre-wrap bg-myLightestBlue p-4 rounded-xl text-gray-800 border border-gray-200 leading-relaxed font-sans text-base shadow-sm">{coverLetter}</pre>
+          <pre className="whitespace-pre-wrap bg-myLightestBlue p-4 rounded-xl text-gray-800 border border-gray-200 leading-relaxed font-sans sm:text-base text-sm shadow-sm">{coverLetter}</pre>
           
         </div>
       )
