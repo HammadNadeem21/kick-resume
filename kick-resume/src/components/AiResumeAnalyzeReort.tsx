@@ -10,7 +10,7 @@ import ReactMarkdown from "react-markdown";
 
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { ContentState, convertFromRaw, EditorState } from "draft-js";
+import { ContentState, EditorState } from "draft-js";
 import { useState } from "react";
 // import { useReactToPrint } from "react-to-print";
 
