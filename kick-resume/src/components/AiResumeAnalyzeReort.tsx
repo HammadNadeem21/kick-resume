@@ -48,10 +48,10 @@ const AiResumeAnalyzeReort = () => {
     setEditorState(newState);
   };
 
-  const handlePrint = useReactToPrint({
-    content: () => editorRef.current, // Ensure correct reference
-    documentTitle: "Resume",
-  });
+  // const handlePrint = useReactToPrint({
+  //   content: () => editorRef.current, // Ensure correct reference
+  //   documentTitle: "Resume",
+  // });
   // if (!actualSummary) return <div>Loading...</div>; // Prevent rendering if null
 
   
@@ -398,7 +398,7 @@ const AiResumeAnalyzeReort = () => {
       }}
       />
         </div>
-        <button onClick={handlePrint} className="bg-green-500 text-white p-2 mt-4">
+        <button  className="bg-green-500 text-white p-2 mt-4">
         Download as PDF
       </button>
       </div>
