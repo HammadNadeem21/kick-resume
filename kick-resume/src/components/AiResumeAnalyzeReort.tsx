@@ -1,14 +1,21 @@
 "use client";
 
 import { useResumeContext } from "../context/ReaumeContext"; 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import ATSCircleChart from "./ATSCircleChart";
 import AccordionSection from "./AccordianSection";
 import rehypeRaw from "rehype-raw";
 import ReactMarkdown from "react-markdown";
 // import rehypeRaw from "rehype-raw";
 
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { ContentState, convertFromRaw, EditorState } from "draft-js";
+import { useState } from "react";
+import { useReactToPrint } from "react-to-print";
+
 const AiResumeAnalyzeReort = () => {
+
   const { actualSummary, summaryMistakes, improvedSummary, coverLetter, suggestions,
     score,
     overall,
@@ -25,7 +32,24 @@ const AiResumeAnalyzeReort = () => {
   useEffect(() => {
     console.log("Component received context:", { actualSummary, improvedSummary });
   }, [actualSummary, improvedSummary]);
+  const editorRef = useRef(null);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
+  useEffect(() => {
+    if (coverLetter) {
+      const contentState = ContentState.createFromText(coverLetter);
+      setEditorState(EditorState.createWithContent(contentState));
+    }
+  }, [coverLetter]);
+
+  const handleEditorChange = (newState:any) => {
+    setEditorState(newState);
+  };
+
+  const handlePrint = useReactToPrint({
+    content: () => editorRef.current, // Ensure correct reference
+    documentTitle: "Resume",
+  });
   // if (!actualSummary) return <div>Loading...</div>; // Prevent rendering if null
 
 
@@ -352,15 +376,34 @@ const AiResumeAnalyzeReort = () => {
       )}
     </div>
 
-    <div>{
+    <div className="mt-6 rounded-xl">{
       coverLetter && suggestions && (
-        <div className="mt-6 p-6 bg-white border rounded-xl shadow-md w-full">
-          <h3 className="text-2xl font-bold text-primaryColor mb-4">Cover Letter</h3>
-          <pre className="whitespace-pre-wrap bg-myLightestBlue p-4 rounded-xl text-gray-800 border border-gray-200 leading-relaxed font-sans sm:text-base text-sm shadow-sm">{coverLetter}</pre>
-          
+        <div>
+        <div ref={editorRef}>
+              <Editor
+      editorState={editorState}
+      onEditorStateChange={handleEditorChange} 
+      toolbarClassName="flex sticky top-0 px-2 bg-white z-1000 justify-between"
+      wrapperClassName="flex flex-col mx-auto"
+      editorClassName="bg-myLightBlue rounded-lg shadow-sm p-4"
+      toolbar={{
+        options: ["inline", "fontSize", "list", "link", "emoji"],
+        inline: { options: ["bold", "italic", "underline"] },
+        fontSize: { className: "custom-font-size-dropdown" }, // Enable font size dropdown
+      }}
+      />
         </div>
+        <button onClick={handlePrint} className="bg-green-500 text-white p-2 mt-4">
+        Download as PDF
+      </button>
+      </div>
       )
-      }</div>
+    
+      
+      }
+      
+      </div>
+      
     </div>
   );
 };
