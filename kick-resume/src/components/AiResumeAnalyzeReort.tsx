@@ -13,7 +13,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { ContentState, convertFromRaw, EditorState } from "draft-js";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
-
+import { MdFileDownload } from "react-icons/md";
 const AiResumeAnalyzeReort = () => {
   const {
     actualSummary,
@@ -408,9 +408,10 @@ const AiResumeAnalyzeReort = () => {
             </div>
             <button
               onClick={downloadPDF}
-              className="px-5 py-3 mt-5 hover:bg-myMidblue/30 rounded-xl text-myMidblue font-bold text-xl border border-myMidblue transition duration-300 ease-in-out"
+              className="px-5 py-3 mt-5 hover:bg-myMidblue/30 rounded-xl text-myMidblue font-bold text-xl border border-myMidblue transition duration-300 ease-in-out flex items-center gap-2"
             >
-              Download as PDF
+              <MdFileDownload/>
+               Download as PDF
             </button>
           </div>
         )}
