@@ -2,7 +2,7 @@
 // import worker from 'pdfjs-dist/build/pdf.worker.entry';
 
 // (pdfjsLib as any).GlobalWorkerOptions.workerSrc = worker;
-
+"use client"
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfWorker from 'pdfjs-dist/build/pdf.worker.min';
 
