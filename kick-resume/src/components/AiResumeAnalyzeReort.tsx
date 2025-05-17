@@ -29,9 +29,11 @@ const AiResumeAnalyzeReort = () => {
     experienceScore
    } = useResumeContext();
 
-  useEffect(() => {
-    console.log("Component received context:", { actualSummary, improvedSummary });
-  }, [actualSummary, improvedSummary]);
+  // useEffect(() => {
+  //   console.log("Component received context:", { actualSummary, improvedSummary });
+  // }, [actualSummary, improvedSummary]);
+
+
   const editorRef = useRef(null);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
@@ -51,6 +53,9 @@ const AiResumeAnalyzeReort = () => {
     documentTitle: "Resume",
   });
   // if (!actualSummary) return <div>Loading...</div>; // Prevent rendering if null
+
+  
+
 
 
   const markdownComponents = {
