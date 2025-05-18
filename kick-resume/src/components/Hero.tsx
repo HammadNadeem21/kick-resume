@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React from "react";
 import DropzoneUploader from "./FileUploader";
-// import AiResumeAnalyzeReort from "./AiResumeAnalyzeReort";
 import dynamic from "next/dynamic";
 const AiResumeAnalyzeReort = dynamic(() => import('@/components/AiResumeAnalyzeReort'), {
   ssr: false,

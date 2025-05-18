@@ -63,8 +63,6 @@ const AiResumeAnalyzeReort = () => {
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-    
-
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
     pdf.save("cover_letter.pdf");
   };
@@ -395,7 +393,7 @@ const AiResumeAnalyzeReort = () => {
         {coverLetter && suggestions && (
           <div>
             <div
-              ref={editorRef}
+             ref={editorRef}
               className="bg-white p-4 rounded-xl shadow mt-8 text-xl"
             >
               <Editor
@@ -405,13 +403,14 @@ const AiResumeAnalyzeReort = () => {
                 wrapperClassName="wrapperClassName"
                 editorClassName="editorClassName"
               />
+              
             </div>
             <button
               onClick={downloadPDF}
               className="px-5 py-3 mt-5 hover:bg-myMidblue/30 rounded-xl text-myMidblue font-bold text-xl border border-myMidblue transition duration-300 ease-in-out flex items-center gap-2"
             >
-              <MdFileDownload/>
-               Download as PDF
+              <MdFileDownload />
+              Download as PDF
             </button>
           </div>
         )}
