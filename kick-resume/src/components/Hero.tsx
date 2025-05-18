@@ -1,9 +1,11 @@
 import Image from "next/image";
 import React from "react";
 import DropzoneUploader from "./FileUploader";
-import AiResumeAnalyzeReort from "./AiResumeAnalyzeReort";
-import { ResumeProvider } from "@/context/ReaumeContext";
-
+// import AiResumeAnalyzeReort from "./AiResumeAnalyzeReort";
+import dynamic from "next/dynamic";
+const AiResumeAnalyzeReort = dynamic(() => import('@/components/AiResumeAnalyzeReort'), {
+  ssr: false,
+});
 const Hero = () => {
   return (
     <div className="grid lg:grid-cols-2 grid-cols-1 bg-primaryColor py-10">
