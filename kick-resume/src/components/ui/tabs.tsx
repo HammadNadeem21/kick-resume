@@ -29,7 +29,7 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "inline-flex items-center justify-center whitespace-nowrap rounded-md px-1 py-1 sm:text-sm text-[10px] font-bold ring-offset-background shadow-md shadow-primaryColor transition-all  hover:bg-primaryColor focus:bg-primaryColor active:bg-primaryColor  text-primaryColor focus:text-myLightBlue hover:text-myLightBlue ",
+      "inline-flex items-center justify-center whitespace-nowrap rounded-md px-1 py-1 sm:text-sm text-[10px] font-bold ring-offset-background shadow-md shadow-primaryColor transition-all  hover:bg-primaryColor focus:bg-primaryColor active:bg-primaryColor  text-primaryColor focus:text-myLightBlue hover:text-myLightBlue",
       className
     )}
     {...props}
@@ -44,7 +44,7 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      "mt-5 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ",
+      "mt-5 ring-offset-background focus-visible:outline-none",
       className
     )}
     {...props}
