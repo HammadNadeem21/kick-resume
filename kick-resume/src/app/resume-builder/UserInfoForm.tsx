@@ -14,6 +14,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
+import { useResumeDataContext } from "@/context/ResumeBuilderData";
+import { resume } from "@/lib/data";
+import { set } from "mongoose";
 
 interface Project {
   name: string;
@@ -22,17 +25,19 @@ interface Project {
   live: string;
 }
 
-interface persnolInfo {
+interface resumeForm {
   fullName: string;
   email: string;
   phone: number;
   address: string;
   languages: string[];
+  summary:string;
   education: string[];
   skills: string[];
   certifications: string[];
   experience: string[];
   projects: Project[];
+  linkdinUrl: string;
 }
 
 export function TabsDemo() {
@@ -106,10 +111,20 @@ export function TabsDemo() {
   };
   // Form handling
 
-  const { handleSubmit, register } = useForm<persnolInfo>();
-  const submit = (data: persnolInfo) => {
-    console.log("Data", data);
+  const {
+    handleSubmit,
+    register,
+    getValues,
+    formState: { errors },
+  } = useForm<resumeForm>();
+  const { resumeData,setResumeData } = useResumeDataContext();
+
+  const submit = (data: resumeForm) => {
+    // console.log("Data", data);
+    setResumeData(data)
+    console.log("Resume Data", resumeData);
   };
+
 
   const [activeTab, setActiveTab] = useState("Personal Details");
   return (
@@ -148,31 +163,52 @@ export function TabsDemo() {
             <div className="text-myMidblue">
               <Label>Full Name</Label>
               <Input
-                {...register("fullName")}
+                {...register("fullName", {
+                  required: "Full Name is required",
+                })}
                 type="text"
                 placeholder="Full Name"
                 className="bg-transparent focus:outline-none focus:bg-transparent"
               />
+              {errors.fullName && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.fullName.message}
+                </p>
+              )}
             </div>
 
             <div className="text-myMidblue">
               <Label>Email</Label>
               <Input
-                {...register("email")}
+                {...register("email", {
+                  required: "Email is required",
+                })}
                 type="email"
                 placeholder="Email"
                 className="bg-transparent focus:outline-none"
               />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
             <div className="text-myMidblue">
               <Label>Phone</Label>
               <Input
-                {...register("phone")}
+                {...register("phone", {
+                  required: "Phone Number is required",
+                })}
                 type="number"
                 placeholder="Phone"
                 className="appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none bg-transparent focus:outline-none"
               />
+              {errors.phone && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.phone.message}
+                </p>
+              )}
             </div>
 
             <div className="text-myMidblue flex flex-col">
@@ -210,10 +246,18 @@ export function TabsDemo() {
               ))}
             </div>
 
+            <div className="text-myMidblue flex flex-col">
+              <Label>Summary</Label>
+              <textarea
+                {...register("summary")}
+                className="bg-transparent border border-myMidblue rounded-lg mt-1 focus:outline-none px-2 py-1"
+              ></textarea>
+            </div>
+
             <div className="flex justify-end items-center">
               <Button
                 type="button"
-                onClick={() => setActiveTab("Skills & Education")}
+                onClick={handleSubmit(() => setActiveTab("Skills & Education"))}
                 className="text-primaryColor  w-[30%] bg-myMidblue hover:bg-myMidblue/80 transition duration-300 ease-in-out"
               >
                 Next
@@ -370,9 +414,8 @@ export function TabsDemo() {
                     className="w-full bg-transparent border border-myMidblue rounded-lg px-3 py-2 focus:outline-none"
                   />
 
-                  <input
+                  <textarea
                     {...register(`projects.${idx}.description`)}
-                    type="text"
                     value={project.description}
                     onChange={(e) =>
                       handleProjectChange(idx, "description", e.target.value)
@@ -414,6 +457,16 @@ export function TabsDemo() {
                   )}
                 </div>
               ))}
+            </div>
+
+            <div className="text-myMidblue">
+              <Label>Linkdin Url</Label>
+              <Input
+                {...register("linkdinUrl")}
+                type="url"
+                className="bg-transparent focus:outline-none focus:bg-transparent"
+                required
+              />
             </div>
 
             <div className="flex justify-between items-center">

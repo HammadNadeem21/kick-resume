@@ -25,7 +25,7 @@ export function NavigationMenuDemo() {
           {/* Features */}
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Features</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="active:text-myDarkBlue">Features</NavigationMenuTrigger>
           <NavigationMenuContent className="bg-primaryColor">
             <ul className="flex w-[400px] gap-5 py-5 px-2 md:w-[500px] md:grid-rows-2 lg:w-[750px]">
               <div className="flex flex-col gap-6 ">

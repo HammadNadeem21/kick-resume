@@ -6,6 +6,7 @@ import "./globals.css";
 
 import { SessionProvider } from "next-auth/react";
 import { ResumeProvider } from "@/context/ReaumeContext";
+import { ResumeDataProvider } from "@/context/ResumeBuilderData";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,8 +15,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SessionProvider>
           <Navbar/>
           <ResumeProvider>
+            <ResumeDataProvider>
 
           {children}
+          </ResumeDataProvider>
           </ResumeProvider>
 
           <Footer/>

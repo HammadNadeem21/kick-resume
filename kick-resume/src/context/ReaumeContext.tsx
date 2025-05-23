@@ -51,6 +51,7 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
   const [summaryMistakes, setSummaryMistakes] = useState<string | null>(null);
   const [improvedSummary, setImprovedSummary] = useState<string | null>(null);
   const [coverLetter, setCoverLetter] = useState<string | null>(null);
+  const [resumeData, setResumeData] = useState(null);
 
   useEffect(() => {
     console.log("Context Updated:", {
