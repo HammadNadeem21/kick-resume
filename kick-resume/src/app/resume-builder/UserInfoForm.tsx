@@ -11,7 +11,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
+import { useState} from "react";
+import { useRouter } from 'next/navigation';
+
 import { FaPlus } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import { useResumeDataContext } from "@/context/ResumeBuilderData";
@@ -49,6 +51,7 @@ export function TabsDemo() {
   const [projects, setProjects] = useState([
     { name: "", description: "", github: "", live: "" },
   ]);
+const router = useRouter();
 
   const addLanguage = () => {
     setLanguages([...languages, ""]);
@@ -123,6 +126,7 @@ export function TabsDemo() {
     // console.log("Data", data);
     setResumeData(data)
     console.log("Resume Data", resumeData);
+    router.push("/select-template");
   };
 
 
@@ -362,6 +366,7 @@ export function TabsDemo() {
               >
                 Next
               </Button>
+
             </div>
           </Card>
         </TabsContent>
