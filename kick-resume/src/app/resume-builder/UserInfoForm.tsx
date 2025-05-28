@@ -27,6 +27,12 @@ interface Project {
   live: string;
 }
 
+interface Education {
+  education:string;
+  startingYear:string;
+  endingYear:string
+}
+
 interface resumeForm {
   fullName: string;
   email: string;
@@ -41,6 +47,8 @@ interface resumeForm {
   experience: string[];
   projects: Project[];
   linkdinUrl: string;
+  customSectionHeading: string;
+  customSubSections: string[];
 }
 
 export function TabsDemo() {
@@ -52,8 +60,12 @@ export function TabsDemo() {
   const [projects, setProjects] = useState([
     { name: "", description: "", github: "", live: "" },
   ]);
+  const [customSections, setcustomSections] = useState([""]);
+
 const router = useRouter();
 
+
+// Add Language
   const addLanguage = () => {
     setLanguages([...languages, ""]);
   };
@@ -113,6 +125,19 @@ const router = useRouter();
     updated[index][field] = value;
     setProjects(updated);
   };
+
+
+  // Add Custom Sections
+    const addcustomSections = () => {
+    setcustomSections([...customSections, ""]);
+  };
+
+  const handlecustomSectionsChange = (index: number, value: string) => {
+    const newcustomSections = [...customSections];
+    newcustomSections[index] = value;
+    setcustomSections(newcustomSections);
+  };
+
   // Form handling
 
   const {
@@ -265,15 +290,15 @@ const router = useRouter();
               <Label>Position:</Label>
               <Input
                 {...register("position", {
-                  required: "Full Name is required",
+                  required: "Position is required",
                 })}
                 type="text"
                 placeholder="Position"
                 className="bg-transparent focus:outline-none focus:bg-transparent"
               />
-              {errors.fullName && (
+              {errors.position && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.fullName.message}
+                  {errors.position.message}
                 </p>
               )}
             </div>
@@ -305,6 +330,11 @@ const router = useRouter();
                     onChange={(e) => handleEducationChange(idx, e.target.value)}
                     className="bg-transparent border border-myMidblue rounded-lg px-3 py-2 flex-grow focus:outline-none"
                   />
+
+
+                
+          
+                  
                   {idx === education.length - 1 && (
                     <button
                       type="button"
@@ -316,6 +346,8 @@ const router = useRouter();
                   )}
                 </div>
               ))}
+
+
             </div>
 
             {/* Skills */}
@@ -493,6 +525,47 @@ const router = useRouter();
                 required
               />
             </div>
+
+
+
+{/* Custom Section */}
+            <div className="text-myMidblue">
+              <Label>Custom Section</Label>
+              <Input
+                {...register("customSectionHeading")}
+                type="text"
+                placeholder="heading"
+                className="bg-transparent focus:outline-none focus:bg-transparent"
+              />
+
+{customSections.map((lang, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center mb-2 space-x-2 mt-1"
+                >
+                  <input
+                    {...register(`customSubSections.${idx}`)}
+                    type="text"
+                    value={lang}
+                    onChange={(e) => handlecustomSectionsChange(idx, e.target.value)}
+                    className="bg-transparent border border-myMidblue rounded-lg px-3 py-2 flex-grow focus:outline-none"
+                  />
+                  {idx === customSections.length - 1 && (
+                    <button
+                      type="button"
+                      onClick={addcustomSections}
+                      className="text-primaryColor rounded px-3 py-3 font-bold  cursor-pointer bg-myMidblue hover:bg-myMidblue/80 transition duration-300 ease-in-out"
+                    >
+                      <FaPlus />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+
+
+
 
             <div className="flex justify-between items-center">
               <Button

@@ -17,7 +17,7 @@ export default function TemplateOne() {
   const { resumeData } = useResumeDataContext();
 
 
-  console.log(resumeData?.projects);
+  console.log(resumeData);
   
 
 
@@ -120,7 +120,7 @@ export default function TemplateOne() {
         </div>
 
 
-<div className="flex flex-col">
+<div className="flex flex-col border-b border-b-gray-400">
         {/* Experience */}
         <div className="px-5 py-3 border-b border-b-gray-400">
           <h1 className="text-xl font-bold text-gray-700">Work Experience</h1>
@@ -135,7 +135,7 @@ export default function TemplateOne() {
         </div>
 
         {/* Projects */}
-         <div className="px-5 py-3 border-b border-b-gray-400">
+         <div className="px-5 py-3">
           <h1 className="text-xl font-bold text-gray-700">Projects</h1>
 
           <ul className=" px-5 mt-3 text-gray-700">
