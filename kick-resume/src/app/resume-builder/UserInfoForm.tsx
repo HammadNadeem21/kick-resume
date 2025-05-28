@@ -34,6 +34,7 @@ interface resumeForm {
   address: string;
   languages: string[];
   summary:string;
+  position:string;
   education: string[];
   skills: string[];
   certifications: string[];
@@ -256,6 +257,25 @@ const router = useRouter();
                 {...register("summary")}
                 className="bg-transparent border border-myMidblue rounded-lg mt-1 focus:outline-none px-2 py-1"
               ></textarea>
+            </div>
+
+
+{/* Position */}
+            <div className="text-myMidblue">
+              <Label>Position:</Label>
+              <Input
+                {...register("position", {
+                  required: "Full Name is required",
+                })}
+                type="text"
+                placeholder="Position"
+                className="bg-transparent focus:outline-none focus:bg-transparent"
+              />
+              {errors.fullName && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.fullName.message}
+                </p>
+              )}
             </div>
 
             <div className="flex justify-end items-center">

@@ -9,7 +9,7 @@ export default function TemplateOne() {
   if (!resumeData) return <p>No resume data found. Please fill the form first.</p>;
 
   return (
-    <div>
+    <div className='bg-myWhite rounded-xl px-5 py-5'>
         <h1 className='text-5xl mb-2'>Template One</h1>
       <h1 className="text-3xl font-bold mb-2">{resumeData.fullName}</h1>
       <p>Email: {resumeData.email}</p>

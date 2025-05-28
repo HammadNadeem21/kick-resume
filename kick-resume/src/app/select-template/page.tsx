@@ -4,6 +4,7 @@ import { useState } from 'react';
 import TemplateOne from '@/components/templates/TemplateOne';
 import TemplateTwo from '@/components/templates/TemplateTwo';
 import { useResumeDataContext } from '@/context/ResumeBuilderData';
+import Image from 'next/image';
 
 export default function SelectTemplatePage() {
   const { resumeData } = useResumeDataContext();
@@ -18,14 +19,14 @@ export default function SelectTemplatePage() {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Select Your Resume Template</h1>
+    <div className="px-[60px] py-[60px] mx-auto bg-myLightBlue">
+      <h1 className="text-3xl font-bold mb-6 text-primaryColor">Select Your Resume Template</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr,auto] gap-6 mb-10">
         <div
           onClick={() => setSelectedTemplate(1)}
-          className={`cursor-pointer border p-4 rounded-lg hover:border-blue-500 ${
-            selectedTemplate === 1 ? 'border-blue-600 shadow-md' : ''
+          className={`cursor-pointer border rounded-xl hover:border-primaryColor ${
+            selectedTemplate === 1 ? 'border-primaryColor shadow-md' : ''
           }`}
         >
           <TemplateOne />
@@ -33,16 +34,18 @@ export default function SelectTemplatePage() {
 
         <div
           onClick={() => setSelectedTemplate(2)}
-          className={`cursor-pointer border p-4 rounded-lg hover:border-blue-500 ${
-            selectedTemplate === 2 ? 'border-blue-600 shadow-md' : ''
+          className={`cursor-pointer border rounded-lg hover:border-primaryColor ${
+            selectedTemplate === 2 ? 'border-primaryColor shadow-md' : ''
           }`}
         >
-          <TemplateTwo />
+          <Image src='/templates/template1.png' alt='template-1' height={100} width={100} 
+          className='h-[200px] w-[150px] rounded-lg'
+          />
         </div>
       </div>
 
-      <h2 className="text-2xl font-semibold mb-4">Preview Selected Template</h2>
-      <div className="border p-6 rounded-lg shadow min-h-[200px] bg-white">
+      <h2 className="text-2xl font-semibold mb-4 text-primaryColor">Preview Selected Template</h2>
+      <div className="border border-primaryColor p-6 rounded-lg shadow min-h-[200px">
         {renderSelectedTemplate()}
       </div>
 

@@ -15,6 +15,7 @@ interface Project {
     address: string;
     languages: string[];
     summary:string;
+    position:string;
     education: string[];
     skills: string[];
     certifications: string[];
