@@ -245,7 +245,6 @@ const AiResumeAnalyzeReort = () => {
                 </AccordionSection>
               </div>
             )}
-            {/* <div className="h-[1px] w-full bg-myMidblue mb-5"></div> */}
 
             {/* Formatting Section */}
             {formatting && (
