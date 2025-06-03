@@ -18,6 +18,7 @@ export default function TemplateOne() {
       <h2 className="font-semibold mt-4 mb-1">Summary</h2>
       <p>{resumeData.summary}</p>
       {/* Baaki fields bhi dikhana ho to yahan add karo */}
+      
     </div>
   );
 }
