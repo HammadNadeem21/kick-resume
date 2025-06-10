@@ -31,174 +31,32 @@ import { HoverButton } from "./HoverButton";
 const Footer = () => {
   return (
     <div className="grid sm:grid-cols-2 grid-cols-1  gap-3 bg-primaryColor pt-16 md:px-[100px] px-10">
-      {/* left-side */}
-      <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 ">
-        <div className=" flex flex-col gap-2">
-          <div className="flex items-center gap-3">
-            <FiFileText size={20} className="text-myMidblue" />
-            <h1 className="text-sm text-myMidblue">Product</h1>
-          </div>
 
-          {product.map((item) => (
-            <Link
-              href="/"
-              key={item.title}
-              className="text-sm text-myWhite hover:underline duration-300"
-            >
-              {item.title}
+      {/* <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1"> */}
+
+        <div className="lg:col-span-4 md:col-span-3 sm:col-span-2 flex items-center justify-between px-10">
+        <Link href='/'>
+            <h1 className="text-sm text-myMidblue hover:underline">About</h1>
+            
             </Link>
-          ))}
 
-          <div className="flex items-center gap-3 mt-5">
-            <FiFileText size={20} className="text-myMidblue" />
-            <h1 className="text-sm text-myMidblue">Product</h1>
-          </div>
-
-          {mobile.map((item) => (
-            <Link
-              href="/"
-              key={item.title}
-              className="text-sm text-myWhite hover:underline duration-300"
-            >
-              {item.title}
+             <Link href='/'>
+            <h1 className="text-sm text-myMidblue hover:underline">Contact us</h1>
+            
             </Link>
-          ))}
-        </div>
 
-        <div className=" flex flex-col gap-2">
-          <div className="flex items-center gap-3">
-            <IoEye size={20} className="text-myMidblue" />
-            <h1 className="text-sm text-myMidblue">Resources</h1>
-          </div>
-
-          {Resources.map((item) => (
-            <Link
-              href="/"
-              key={item.title}
-              className="text-sm text-myWhite hover:underline duration-300"
-            >
-              {item.title}
+             <Link href='/'>
+            <h1 className="text-sm text-myMidblue hover:underline">Features</h1>
+            
             </Link>
-          ))}
 
-          <div className="flex items-center gap-3 mt-5">
-            <LuLayoutTemplate size={20} className="text-myMidblue" />
-            <h1 className="text-sm text-myMidblue">Design Templates</h1>
-          </div>
-
-          {designTemplates.map((item) => (
-            <Link
-              href="/"
-              key={item.title}
-              className="text-sm text-myWhite hover:underline duration-300"
-            >
-              {item.title}
+             <Link href='/'>
+            <h1 className="text-sm text-myMidblue hover:underline">Contact</h1>
+            
             </Link>
-          ))}
-        </div>
+            {/* </div> */}
       </div>
 
-      {/* right-side */}
-      <div className="grid lg:grid-cols-2 grid-cols-1 grid-rows-3 gap-5 ">
-        <div className=" flex flex-col gap-2 row-span-2">
-          <div className="flex items-center gap-3">
-            <FaBookOpen size={20} className="text-myMidblue" />
-            <h1 className="text-sm text-myMidblue">Articles & Reports</h1>
-          </div>
-
-          {articles.map((item) => (
-            <Link
-              href="/"
-              key={item.title}
-              className="text-sm text-myWhite hover:underline duration-300"
-            >
-              {item.title}
-            </Link>
-          ))}
-        </div>
-
-        <div className=" flex flex-col gap-2">
-          <div className="flex items-center gap-3">
-            <Image
-              src="/kickresume-icon.svg"
-              alt="icon"
-              height={20}
-              width={20}
-            />
-            <h1 className="text-sm text-myMidblue">Company</h1>
-          </div>
-
-          {company.map((item) => (
-            <Link
-              href="/"
-              key={item.title}
-              className="text-sm text-myWhite hover:underline duration-300"
-            >
-              {item.title}
-            </Link>
-          ))}
-        </div>
-
-        <div className=" mt-[100px] row-span-2 flex flex-col gap-5 py-10">
-          <div>
-            <Image
-              src="/google.svg"
-              alt="image"
-              height={100}
-              width={200}
-              className="h-8 w-[100px]"
-            />
-            <div className="flex gap-2 mt-4">
-              <FaStar size={25} className="text-yellow-400" />
-              <FaStar size={25} className="text-yellow-400" />
-              <FaStar size={25} className="text-yellow-400" />
-              <FaStar size={25} className="text-yellow-400" />
-              <FaStarHalfAlt size={25} className="text-yellow-400" />
-            </div>
-            <div className="h-[1px] w-full bg-myMidblue mt-5"></div>
-          </div>
-
-          <div>
-            <Image
-              src="/logo-app-store.svg"
-              alt="image"
-              height={100}
-              width={200}
-              className="h-8 w-[100px]"
-            />
-            <div className="flex gap-2 mt-4">
-              <FaStar size={25} className="text-yellow-400" />
-              <FaStar size={25} className="text-yellow-400" />
-              <FaStar size={25} className="text-yellow-400" />
-              <FaStar size={25} className="text-yellow-400" />
-              <FaStarHalfAlt size={25} className="text-yellow-400" />
-            </div>
-            <div className="h-[1px] w-full bg-myMidblue mt-5"></div>
-          </div>
-
-          <div className="flex gap-1 items-center">
-            <MdStar size={40} className=" text-green-400" />
-            <h1 className="text-xl text-myWhite font-extrabold">Trustpilot</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap gap-3 justify-between items-center">
-          <Image
-            src="/cprw.svg"
-            alt="image"
-            height={10}
-            width={90}
-            className="xl:h-16 xl:w-24 lg:h-10 lg:w-16 sm:h-16 sm:w-24 h-[70px] w-[100px] "
-          />
-          <Image
-            src="/parwcc.svg"
-            alt="image"
-            height={80}
-            width={170}
-            className="xl:h-24 xl:w-[150px] lg:h-16 lg:w-[120px] sm:h-24 sm:w-[150px] h-[80px] w-[180px]"
-          />
-        </div>
-      </div>
 
 {/* Buttom */}
       <div className="sm:col-span-2 col-span-1">
