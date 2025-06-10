@@ -1,14 +1,84 @@
+// 'use client';
+
+// import { useState } from 'react';
+// import TemplateOne from '@/components/templates/TemplateOne';
+// import TemplateTwo from '@/components/templates/TemplateTwo';
+// import { useResumeDataContext } from '@/context/ResumeBuilderData';
+// import Image from 'next/image';
+
+// export default function SelectTemplatePage() {
+//   const { resumeData } = useResumeDataContext();
+//   const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
+
+//   const renderSelectedTemplate = () => {
+//     if (!resumeData) return <p className="text-red-600">No resume data found. Please fill the form first.</p>;
+
+//     if (selectedTemplate === 1) return <TemplateOne />;
+//     if (selectedTemplate === 2) return <TemplateTwo />;
+//     return <p>Please select a template above.</p>;
+//   };
+
+//   return (
+//     <div className="px-[60px] py-[60px] mx-auto bg-myLightBlue">
+//       <h1 className="text-3xl font-bold mb-6 text-primaryColor">Select Your Resume Template</h1>
+
+//       <div className="grid grid-cols-1 md:grid-cols-[1fr,auto] gap-6 mb-10">
+//         <div
+//           onClick={() => setSelectedTemplate(1)}
+//           className={`cursor-pointer border rounded-xl hover:border-primaryColor ${
+//             selectedTemplate === 1 ? 'border-primaryColor shadow-md' : ''
+//           }`}
+//         >
+//           <TemplateOne />
+//         </div>
+
+//         <div
+//           onClick={() => setSelectedTemplate(2)}
+//           className={`cursor-pointer border rounded-lg hover:border-primaryColor ${
+//             selectedTemplate === 2 ? 'border-primaryColor shadow-md' : ''
+//           }`}
+//         >
+//           <Image src='/templates/template1.png' alt='template-1' height={100} width={100} 
+//           className='h-[200px] w-[150px] rounded-lg'
+//           />
+//         </div>
+//       </div>
+
+//       <h2 className="text-2xl font-semibold mb-4 text-primaryColor">Preview Selected Template</h2>
+//       <div className="border border-primaryColor p-6 rounded-lg shadow min-h-[200px">
+//         {renderSelectedTemplate()}
+//       </div>
+
+//       {selectedTemplate && (
+//         <div className="mt-6">
+//           <button
+//             className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+//             onClick={() => alert(`Template ${selectedTemplate} selected!`)}
+//           >
+//             Download PDF
+//           </button>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+
+
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import TemplateOne from '@/components/templates/TemplateOne';
 import TemplateTwo from '@/components/templates/TemplateTwo';
 import { useResumeDataContext } from '@/context/ResumeBuilderData';
 import Image from 'next/image';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 export default function SelectTemplatePage() {
   const { resumeData } = useResumeDataContext();
   const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
+  const resumeRef = useRef<HTMLDivElement>(null);
 
   const renderSelectedTemplate = () => {
     if (!resumeData) return <p className="text-red-600">No resume data found. Please fill the form first.</p>;
@@ -16,6 +86,21 @@ export default function SelectTemplatePage() {
     if (selectedTemplate === 1) return <TemplateOne />;
     if (selectedTemplate === 2) return <TemplateTwo />;
     return <p>Please select a template above.</p>;
+  };
+
+  const handleDownloadPDF = async () => {
+    const element = resumeRef.current;
+    if (!element) return;
+
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL('image/png');
+
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save('resume.pdf');
   };
 
   return (
@@ -38,27 +123,32 @@ export default function SelectTemplatePage() {
             selectedTemplate === 2 ? 'border-primaryColor shadow-md' : ''
           }`}
         >
-          <Image src='/templates/template1.png' alt='template-1' height={100} width={100} 
-          className='h-[200px] w-[150px] rounded-lg'
+          <Image
+            src="/templates/template1.png"
+            alt="template-1"
+            height={100}
+            width={100}
+            className="h-[200px] w-[150px] rounded-lg"
           />
         </div>
       </div>
 
       <h2 className="text-2xl font-semibold mb-4 text-primaryColor">Preview Selected Template</h2>
-      <div className="border border-primaryColor p-6 rounded-lg shadow min-h-[200px">
+      <div ref={resumeRef} className="border border-primaryColor p-6 rounded-lg shadow min-h-[200px] bg-white text-black">
         {renderSelectedTemplate()}
       </div>
 
       {selectedTemplate && (
-        <div className="mt-6">
+        <div className="mt-6 flex gap-4">
           <button
             className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            onClick={() => alert(`Template ${selectedTemplate} selected!`)}
+            onClick={handleDownloadPDF}
           >
-            Use This Template
+            Download as PDF
           </button>
         </div>
       )}
     </div>
   );
 }
+
