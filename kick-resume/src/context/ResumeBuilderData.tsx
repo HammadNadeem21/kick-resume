@@ -8,6 +8,18 @@ interface Project {
     live: string;
   }
   
+  interface Education {
+    degree: string;
+    startYear: string;
+    endYear: string;
+  }
+  
+  interface Experience {
+    title: string;
+    startDate: string;
+    endDate: string;
+  }
+  
   interface resumeForm {
     fullName: string;
     email: string;
@@ -16,10 +28,10 @@ interface Project {
     languages: string[];
     summary:string;
     position:string;
-    education: string[];
+    education: Education[];
     skills: string[];
     certifications: string[];
-    experience: string[];
+    experience: Experience[];
     projects: Project[];
   }
 

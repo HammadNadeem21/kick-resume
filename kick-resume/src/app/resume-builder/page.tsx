@@ -1,10 +1,10 @@
 import React from 'react'
-import { TabsDemo } from './UserInfoForm'
+import { UserInfoForm } from '@/components/resume-builder/UserInfoForm'
 
 const page = () => {
   return (
     <div className='bg-primaryColor pt-20 pb-20 flex justify-center'>
-    <TabsDemo/>
+    <UserInfoForm/>
     </div>
   )
 }

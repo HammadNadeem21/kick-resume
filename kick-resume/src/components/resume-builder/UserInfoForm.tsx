@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState} from "react";
+import { useState } from "react";
 import { useRouter } from 'next/navigation';
 
 import { FaPlus } from "react-icons/fa6";
@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { useResumeDataContext } from "@/context/ResumeBuilderData";
 import { resume } from "@/lib/data";
 import { set } from "mongoose";
+import moment from "moment";
 
 interface Project {
   name: string;
@@ -28,9 +29,15 @@ interface Project {
 }
 
 interface Education {
-  education:string;
-  startingYear:string;
-  endingYear:string
+  degree: string;
+  startYear: string;
+  endYear: string;
+}
+
+interface Experience {
+  title: string;
+  startDate: string;
+  endDate: string;
 }
 
 interface resumeForm {
@@ -39,33 +46,37 @@ interface resumeForm {
   phone: number;
   address: string;
   languages: string[];
-  summary:string;
-  position:string;
-  education: string[];
+  summary: string;
+  position: string;
+  education: Education[];
   skills: string[];
   certifications: string[];
-  experience: string[];
+  experience: Experience[];
   projects: Project[];
   linkdinUrl: string;
   customSectionHeading: string;
   customSubSections: string[];
 }
 
-export function TabsDemo() {
+export function UserInfoForm() {
   const [languages, setLanguages] = useState([""]);
-  const [education, setEducation] = useState([""]);
+  const [education, setEducation] = useState<Education[]>([
+    { degree: "", startYear: "", endYear: "" },
+  ]);
   const [skills, setSkills] = useState([""]);
   const [certifications, setCertifications] = useState([""]);
-  const [experience, setExperience] = useState([""]);
+  const [experience, setExperience] = useState<Experience[]>([
+    { title: "", startDate: "", endDate: "" },
+  ]);
   const [projects, setProjects] = useState([
     { name: "", description: "", github: "", live: "" },
   ]);
   const [customSections, setcustomSections] = useState([""]);
 
-const router = useRouter();
+  const router = useRouter();
 
 
-// Add Language
+  // Add Language
   const addLanguage = () => {
     setLanguages([...languages, ""]);
   };
@@ -77,10 +88,10 @@ const router = useRouter();
   };
 
   // Education
-  const addEducation = () => setEducation([...education, ""]);
-  const handleEducationChange = (index: number, value: string) => {
+  const addEducation = () => setEducation([...education, { degree: "", startYear: "", endYear: "" }]);
+  const handleEducationChange = (index: number, field: keyof Education, value: string) => {
     const updated = [...education];
-    updated[index] = value;
+    updated[index][field] = value;
     setEducation(updated);
   };
 
@@ -101,10 +112,10 @@ const router = useRouter();
   };
 
   // Experience
-  const addExperience = () => setExperience([...experience, ""]);
-  const handleExperienceChange = (index: number, value: string) => {
+  const addExperience = () => setExperience([...experience, { title: "", startDate: "", endDate: "" }]);
+  const handleExperienceChange = (index: number, field: keyof Experience, value: string) => {
     const updated = [...experience];
-    updated[index] = value;
+    updated[index][field] = value;
     setExperience(updated);
   };
 
@@ -128,7 +139,7 @@ const router = useRouter();
 
 
   // Add Custom Sections
-    const addcustomSections = () => {
+  const addcustomSections = () => {
     setcustomSections([...customSections, ""]);
   };
 
@@ -143,15 +154,18 @@ const router = useRouter();
   const {
     handleSubmit,
     register,
-    getValues,
     formState: { errors },
   } = useForm<resumeForm>();
-  const { resumeData,setResumeData } = useResumeDataContext();
+  const { resumeData, setResumeData } = useResumeDataContext();
 
   const submit = (data: resumeForm) => {
-    // console.log("Data", data);
-    setResumeData(data)
-    console.log("Resume Data", resumeData);
+    console.log("Data", data);
+    setResumeData({
+      ...data,
+      experience: data.experience, // keep as Experience[]
+      education: data.education,   // keep as Education[]
+    });
+    // console.log("Resume Data", resumeData);
     router.push("/select-template");
   };
 
@@ -249,6 +263,7 @@ const router = useRouter();
               ></textarea>
             </div>
 
+            {/* Language */}
             <div className="text-myMidblue">
               <Label>Language</Label>
               {languages.map((lang, idx) => (
@@ -276,6 +291,7 @@ const router = useRouter();
               ))}
             </div>
 
+            {/* Summary */}
             <div className="text-myMidblue flex flex-col">
               <Label>Summary</Label>
               <textarea
@@ -285,7 +301,7 @@ const router = useRouter();
             </div>
 
 
-{/* Position */}
+            {/* Position */}
             <div className="text-myMidblue">
               <Label>Position:</Label>
               <Input
@@ -321,33 +337,57 @@ const router = useRouter();
             {/* Education */}
             <div className="text-myMidblue">
               <Label>Education</Label>
-              {education.map((lang, idx) => (
-                <div key={idx} className="flex items-center mb-2 space-x-2">
+              {education.map((edu, idx) => (
+                <div key={idx} className="flex flex-col mb-4 border border-myMidblue p-4 rounded-lg space-y-2">
                   <input
-                    {...register(`education.${idx}`)}
+                    {...register(`education.${idx}.degree`)}
                     type="text"
-                    value={lang}
-                    onChange={(e) => handleEducationChange(idx, e.target.value)}
+                    value={edu.degree}
+                    onChange={(e) => handleEducationChange(idx, "degree", e.target.value)}
+                    placeholder="Degree or Education Title"
                     className="bg-transparent border border-myMidblue rounded-lg px-3 py-2 flex-grow focus:outline-none"
                   />
-
-
-                
-          
-                  
+                  <div className="flex space-x-2">
+                    <input
+                      {...register(`education.${idx}.startYear`)}
+                      type="number"
+                      min="1900"
+                      max="2100"
+                      value={edu.startYear}
+                      onChange={(e) => handleEducationChange(idx, "startYear", e.target.value)}
+                      className="bg-transparent border border-myMidblue rounded-lg px-3 py-2 flex-grow focus:outline-none
+                      [&::-webkit-inner-spin-button]:appearance-none 
+             [&::-webkit-outer-spin-button]:appearance-none 
+             [appearance:textfield]
+                      "
+                      placeholder="Start Year"
+                    />
+                    <input
+                      {...register(`education.${idx}.endYear`)}
+                      type="number"
+                      min="1900"
+                      max="2100"
+                      value={edu.endYear}
+                      onChange={(e) => handleEducationChange(idx, "endYear", e.target.value)}
+                      className="bg-transparent border border-myMidblue rounded-lg px-3 py-2 flex-grow focus:outline-none
+                      [&::-webkit-inner-spin-button]:appearance-none 
+             [&::-webkit-outer-spin-button]:appearance-none 
+             [appearance:textfield]
+                      "
+                      placeholder="End Year"
+                    />
+                  </div>
                   {idx === education.length - 1 && (
                     <button
                       type="button"
                       onClick={addEducation}
-                      className="text-primaryColor rounded px-3 py-3 font-bold  cursor-pointer bg-myMidblue hover:bg-myMidblue/80 transition duration-300 ease-in-out"
+                      className="text-primaryColor rounded px-3 py-3 font-bold cursor-pointer bg-myMidblue hover:bg-myMidblue/80 transition duration-300 ease-in-out"
                     >
                       <FaPlus />
                     </button>
                   )}
                 </div>
               ))}
-
-
             </div>
 
             {/* Skills */}
@@ -428,22 +468,42 @@ const router = useRouter();
             {/* Experience */}
             <div className="text-myMidblue">
               <Label>Experience</Label>
-              {experience.map((lang, idx) => (
-                <div key={idx} className="flex items-center mb-2 space-x-2">
+              {experience.map((exp, idx) => (
+                <div key={idx} className="flex flex-col mb-4 border border-myMidblue p-4 rounded-lg space-y-2">
                   <input
-                    {...register(`experience.${idx}`)}
+                    {...register(`experience.${idx}.title`)}
                     type="text"
-                    value={lang}
-                    onChange={(e) =>
-                      handleExperienceChange(idx, e.target.value)
-                    }
+                    value={exp.title}
+                    onChange={(e) => handleExperienceChange(idx, "title", e.target.value)}
+                    placeholder="Experience Title"
                     className="bg-transparent border border-myMidblue rounded-lg px-3 py-2 flex-grow focus:outline-none"
                   />
+                  <div className="flex space-x-2">
+                    <input
+                      {...register(`experience.${idx}.startDate`)}
+                      type="date"
+                      value={exp.startDate}
+                      onChange={(e) => handleExperienceChange(idx, "startDate", e.target.value)}
+                      className="bg-transparent border border-myMidblue rounded-lg px-3 py-2 flex-grow focus:outline-none
+                       [&::-webkit-calendar-picker-indicator]:filter-[invert(34%)_sepia(16%)_saturate(600%)_hue-rotate(160deg)]
+    [&::-webkit-calendar-picker-indicator]:cursor-pointer
+                      "
+                      placeholder="Start Date"
+                    />
+                    <input
+                      {...register(`experience.${idx}.endDate`)}
+                      type="date"
+                      value={exp.endDate}
+                      onChange={(e) => handleExperienceChange(idx, "endDate", e.target.value)}
+                      className="bg-transparent border border-myMidblue rounded-lg px-3 py-2 flex-grow focus:outline-none"
+                      placeholder="End Date"
+                    />
+                  </div>
                   {idx === experience.length - 1 && (
                     <button
                       type="button"
                       onClick={addExperience}
-                      className="text-primaryColor rounded px-3 py-3 font-bold  cursor-pointer bg-myMidblue hover:bg-myMidblue/80 transition duration-300 ease-in-out"
+                      className="text-primaryColor rounded px-3 py-3 font-bold cursor-pointer bg-myMidblue hover:bg-myMidblue/80 transition duration-300 ease-in-out"
                     >
                       <FaPlus />
                     </button>
@@ -528,7 +588,7 @@ const router = useRouter();
 
 
 
-{/* Custom Section */}
+            {/* Custom Section */}
             <div className="text-myMidblue">
               <Label>Custom Section</Label>
               <Input
@@ -538,7 +598,7 @@ const router = useRouter();
                 className="bg-transparent focus:outline-none focus:bg-transparent"
               />
 
-{customSections.map((lang, idx) => (
+              {customSections.map((lang, idx) => (
                 <div
                   key={idx}
                   className="flex items-center mb-2 space-x-2 mt-1"

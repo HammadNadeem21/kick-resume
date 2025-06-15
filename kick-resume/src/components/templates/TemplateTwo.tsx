@@ -17,7 +17,7 @@ export default function TemplateOne() {
   const { resumeData } = useResumeDataContext();
 
 
-  console.log(resumeData);
+  console.log("education", resumeData?.experience[0]);
   
 
 
@@ -80,13 +80,18 @@ export default function TemplateOne() {
           {/* Education */}
           <div className="px-5 py-3 border-r border-b border-r-gray-400 border-b-gray-400">
             <h1 className="text-xl font-bold text-gray-700">Education</h1>
-            <ul className="list-disc px-5 mt-3 text-gray-700">
+            <div className=" px-5 mt-3 text-gray-700">
               {
-                resumeData.education.map((item: string, i: number) => (
-                  <li key={i}>{item}</li>
+                resumeData.education.map((item: any, i: number) => (
+                  <div key={i} className="flex items-center justify-between">
+                    <ul className="list-disc">
+                    <li>{item.degree}</li>
+                    </ul>
+                    <p className="text-gray-500">({item.startYear} - {item.endYear})</p>
+                     </div>
                 ))
               }
-            </ul>
+            </div>
           </div>
 
 
@@ -125,13 +130,19 @@ export default function TemplateOne() {
         <div className="px-5 py-3 border-b border-b-gray-400">
           <h1 className="text-xl font-bold text-gray-700">Work Experience</h1>
 
-          <ul className=" px-5 mt-3 text-gray-700">
+          <div className=" px-5 mt-3 text-gray-700">
               {
-                resumeData.experience.map((item: string, i: number) => (
-                  <li key={i}>{item}</li>
+                resumeData.experience.map((item: any, i: number) => (
+                  <div key={i} className="flex items-center justify-between">
+                    <ul className="list-disc">
+                      <li>{item.title}</li>
+                    </ul>
+                   
+                    <p>({item.startDate} - {item.endDate})</p>
+                  </div>
                 ))
               }
-            </ul>
+            </div>
         </div>
 
         {/* Projects */}

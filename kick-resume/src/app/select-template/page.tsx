@@ -74,6 +74,7 @@ import { useResumeDataContext } from '@/context/ResumeBuilderData';
 import Image from 'next/image';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { scale } from 'framer-motion';
 
 export default function SelectTemplatePage() {
   const { resumeData } = useResumeDataContext();
@@ -92,12 +93,27 @@ export default function SelectTemplatePage() {
     const element = resumeRef.current;
     if (!element) return;
 
-    const canvas = await html2canvas(element);
+    const canvas = await html2canvas(element, {
+      scale: 2, // Increase scale for better quality
+      backgroundColor: null, // Transparent background
+      useCORS: true, // Enable CORS for images
+      logging: true, // Enable logging for debugging
+    });
     const imgData = canvas.toDataURL('image/png');
 
-    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'px',
+      format: 'a4',
+      putOnlyUsedFonts: true,
+      floatPrecision: 16, // Adjust for better quality
+    });
+
+    const imageProperties = pdf.getImageProperties(imgData);
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    const pdfHeight = (imageProperties.height * pdf.internal.pageSize.getWidth()) / imageProperties.width;
+
+    // const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
     pdf.save('resume.pdf');
@@ -134,7 +150,7 @@ export default function SelectTemplatePage() {
       </div>
 
       <h2 className="text-2xl font-semibold mb-4 text-primaryColor">Preview Selected Template</h2>
-      <div ref={resumeRef} className="border border-primaryColor p-6 rounded-lg shadow min-h-[200px] bg-white text-black">
+      <div ref={resumeRef} className=" p-6 rounded-lg shadow min-h-[200px] bg-white text-black">
         {renderSelectedTemplate()}
       </div>
 
