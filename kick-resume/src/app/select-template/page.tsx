@@ -74,7 +74,6 @@ import { useResumeDataContext } from '@/context/ResumeBuilderData';
 import Image from 'next/image';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { scale } from 'framer-motion';
 
 export default function SelectTemplatePage() {
   const { resumeData } = useResumeDataContext();
