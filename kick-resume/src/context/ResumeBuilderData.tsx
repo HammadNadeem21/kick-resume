@@ -33,6 +33,7 @@ interface Project {
     certifications: string[];
     experience: Experience[];
     projects: Project[];
+    linkdinUrl: string;
   }
 
 interface ResumeContextType {

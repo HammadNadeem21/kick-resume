@@ -74,6 +74,7 @@ import { useResumeDataContext } from '@/context/ResumeBuilderData';
 import Image from 'next/image';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import TemplateThree from '@/components/templates/TemplateThree';
 
 export default function SelectTemplatePage() {
   const { resumeData } = useResumeDataContext();
@@ -85,6 +86,7 @@ export default function SelectTemplatePage() {
 
     if (selectedTemplate === 1) return <TemplateOne />;
     if (selectedTemplate === 2) return <TemplateTwo />;
+    if (selectedTemplate === 3) return <p>Template Three is not availabale</p>
     return <p>Please select a template above.</p>;
   };
 
@@ -115,27 +117,18 @@ export default function SelectTemplatePage() {
     // const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save('resume.pdf');
+    pdf.save(`${resumeData?.fullName}_resume.pdf`);
   };
 
   return (
     <div className="px-[60px] py-[60px] mx-auto bg-myLightBlue">
       <h1 className="text-3xl font-bold mb-6 text-primaryColor">Select Your Resume Template</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-[1fr,auto] gap-6 mb-10">
+      <div className="flex flex-wrap gap-6 mb-10">
         <div
           onClick={() => setSelectedTemplate(1)}
-          className={`cursor-pointer border rounded-xl hover:border-primaryColor ${
+          className={`cursor-pointer border hover:border-primaryColor ${
             selectedTemplate === 1 ? 'border-primaryColor shadow-md' : ''
-          }`}
-        >
-          <TemplateOne />
-        </div>
-
-        <div
-          onClick={() => setSelectedTemplate(2)}
-          className={`cursor-pointer border rounded-lg hover:border-primaryColor ${
-            selectedTemplate === 2 ? 'border-primaryColor shadow-md' : ''
           }`}
         >
           <Image
@@ -143,13 +136,43 @@ export default function SelectTemplatePage() {
             alt="template-1"
             height={100}
             width={100}
-            className="h-[200px] w-[150px] rounded-lg"
+            className="h-[200px] w-[150px]"
+          />
+        </div>
+
+        <div
+          onClick={() => setSelectedTemplate(2)}
+          className={`cursor-pointer border hover:border-primaryColor ${
+            selectedTemplate === 2 ? 'border-primaryColor shadow-md' : ''
+          }`}
+        >
+          <Image
+            src="/templates/template2.png"
+            alt="template-2"
+            height={100}
+            width={100}
+            className="h-[200px] w-[150px]"
+          />
+        </div>
+
+        <div
+          onClick={() => setSelectedTemplate(3)}
+          className={`cursor-pointer border hover:border-primaryColor ${
+            selectedTemplate === 3 ? 'border-primaryColor shadow-md' : ''
+          }`}
+        >
+          <Image
+            src="/templates/template3.png"
+            alt="template-3"
+            height={100}
+            width={100}
+            className="h-[200px] w-[150px]"
           />
         </div>
       </div>
 
       <h2 className="text-2xl font-semibold mb-4 text-primaryColor">Preview Selected Template</h2>
-      <div ref={resumeRef} className=" p-6 rounded-lg shadow min-h-[200px] bg-white text-black">
+      <div ref={resumeRef} className="w-[794px] h-[1123px] rounded-lg shadow min-h-[200px] bg-white text-black">
         {renderSelectedTemplate()}
       </div>
 
