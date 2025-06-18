@@ -391,18 +391,26 @@ const AiResumeAnalyzeReort = () => {
             <h3 className="text-3xl font-bold mb-4 text-myMidblue text-center">
               AI Suggested Cover Letter
             </h3>
-            <div
-             ref={editorRef}
-              className="bg-white p-4 rounded-xl shadow mt-8 text-xl"
-            >
-              <Editor
-                editorState={editorState}
-                onEditorStateChange={handleEditorChange}
-                toolbarClassName="toolbarClassName"
-                wrapperClassName="wrapperClassName"
-                editorClassName="editorClassName"
-              />
-              
+            {/* Separate div for the editable cover letter */}
+            <div className="bg-white p-4 rounded-xl shadow mt-8 text-xl">
+              <div
+                ref={editorRef}
+                className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200"
+              >
+                <Editor
+                  editorState={editorState}
+                  onEditorStateChange={handleEditorChange}
+                  toolbarClassName="toolbarClassName"
+                  wrapperClassName="wrapperClassName"
+                  editorClassName="editorClassName"
+                  toolbar={{
+                    options: ['inline'],
+                    inline: {
+                      options: [],
+                    },
+                  }}
+                />
+              </div>
             </div>
             <button
               onClick={downloadPDF}
