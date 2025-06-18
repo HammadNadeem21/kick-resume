@@ -10,9 +10,9 @@ import ReactMarkdown from "react-markdown";
 
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { ContentState, convertFromRaw, EditorState } from "draft-js";
-import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
+import { ContentState, convertFromRaw, EditorState, convertToRaw } from "draft-js";
+import { pdf } from "@react-pdf/renderer";
+import CoverLetterPDF from "./pdf/CoverLetterPDF";
 import { MdFileDownload } from "react-icons/md";
 const AiResumeAnalyzeReort = () => {
   const {
@@ -48,23 +48,19 @@ const AiResumeAnalyzeReort = () => {
   };
 
   const downloadPDF = async () => {
-    if (!editorRef.current) return;
+    const contentState = editorState.getCurrentContent();
+    const plainText = contentState.getPlainText();
+    if (!plainText.trim()) return;
+    const blob = await pdf(<CoverLetterPDF coverLetter={plainText} />).toBlob();
+    const url = URL.createObjectURL(blob);
 
-    const canvas = await html2canvas(editorRef.current, {
-      backgroundColor: "#ffffff",
-      scale: 3,
-      useCORS: true,
-    });
-
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-
-    const imgProps = pdf.getImageProperties(imgData);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save("cover_letter.pdf");
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "cover_letter.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const markdownComponents = {
@@ -388,9 +384,13 @@ const AiResumeAnalyzeReort = () => {
         )}
       </div>
 
+
       <div className="mt-6 rounded-xl">
         {coverLetter && suggestions && (
           <div>
+            <h3 className="text-3xl font-bold mb-4 text-myMidblue text-center">
+              AI Suggested Cover Letter
+            </h3>
             <div
              ref={editorRef}
               className="bg-white p-4 rounded-xl shadow mt-8 text-xl"
