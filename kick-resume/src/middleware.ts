@@ -41,5 +41,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/resume-builder/:path*'],
+  matcher: ['/resume-builder/:path*', '/select-template/:path*'],
 }
