@@ -15,6 +15,8 @@ import { FaLinkedin } from "react-icons/fa";
 import { useResumeDataContext } from "@/context/ResumeBuilderData";
 import Link from "next/link";
 
+
+
 import { Poppins } from "next/font/google";
 const poppins700 = Poppins({
   subsets: ["latin"],
@@ -41,7 +43,6 @@ export default function TemplateOne() {
     return <p>No resume data found. Please fill the form first.</p>;
 
   return (
-
     <div className="bg-myWhite w-[794px] h-[1123px] grid grid-cols-[35%,65%] text-gray-700">
       {/* left-side */}
       <div className="bg-[#193042] py-2 px-3">
@@ -126,40 +127,41 @@ export default function TemplateOne() {
       {/* Right-side */}
       <div className="py-3 px-5">
         <h1
-          className={`text-xl mb-2 text-left mt-5 ${poppins600.className} text-[#193042]`}
+          className={`text-xl font-bold mb-2 text-left mt-5 ${poppins600.className} text-[#193042]`}
         >
           {resumeData.position}
         </h1>
         {/* Contact */}
-        <div className="flex flex-col gap-4 items-start mb-2">
-          <div className="flex items-center justify-between w-full">
+        {/* <div className="flex flex-col gap-4 mb-2">
+          <div className="flex flex-col item-start w-full">
+            
+          </div>
+        </div> */}
             {/* phone */}
-            <div className="flex text-[15px] text-[#193042] items-center justify-center gap-1">
-              <FaPhoneAlt />
+            <div className="flex text-[15px] text-[#193042] items-center gap-1">
+              {/* <FaPhoneAlt /> */}
               <h2 className={` ${poppins400.className}`}>{resumeData.phone}</h2>
             </div>
-
             {/* email */}
-            <div className="flex text-[15px] text-[#193042] items-center justify-center gap-1">
-              <MdEmail />
+            <div className="flex text-[15px] text-[#193042] items-center  gap-1">
+              {/* <MdEmail /> */}
               <h2 className={` ${poppins400.className}`}>{resumeData.email}</h2>
             </div>
 
-            {/* linkdin account */}
-            <div className="flex text-[15px] text-[#193042] items-center justify-center gap-1">
-              <FaLinkedin />
-              <Link
-                href={resumeData.linkdinUrl}
-                className={` ${poppins400.className}`}
-              >
-                Linkdin
-              </Link>
-            </div>
-          </div>
-        </div>
+        {/* linkdin account */}
+
+        {/* <div className="flex text-[15px] text-[#193042] items-center  gap-1">
+          <FaLinkedin />
+          <Link
+            href={resumeData.linkdinUrl}
+            className={` ${poppins400.className}`}
+          >
+            Linkdin
+          </Link>
+        </div> */}
 
         <div className="flex items-center mb-2 gap-1 text-[#193042] text-[15px]">
-          <IoLocationSharp />
+          {/* <IoLocationSharp /> */}
           <h2 className={` ${poppins400.className}`}>{resumeData.address}</h2>
         </div>
 
@@ -208,47 +210,46 @@ export default function TemplateOne() {
           </div>
         </div>
 
-{/* Divider */}
+        {/* Divider */}
         <div className="h-[1px] w-full bg-[#193042] mt-5"></div>
 
         {/* Projects */}
         <div>
-           <h1
+          <h1
             className={`text-xl mb-2 text-left mt-5 ${poppins600.className} text-[#193042]`}
           >
             Projects
           </h1>
-                      <ul className=" px-5 mt-3 text-[#193042] list-disc">
-              {resumeData.projects.map((item: any, i: number) => (
-                <li className="mt-5 mb-5" key={i}>
-                  <h1 className="text-lg font-semibold">{item.name}</h1>
-                  <p>{item.description}</p>
-                  <div className="flex items-center gap-[100px] mt-3">
-
-                    <Link
-                      href={item.github}
-                      className="hover:underline hover:underline-offset-2 flex items-center gap-2"
-                    >
-                      <div className="flex items-center justify-center gap-1">
+          <ul className=" px-5 mt-3 text-[#193042] list-disc">
+            {resumeData.projects.map((item: any, i: number) => (
+              <li className="mt-5 mb-5" key={i}>
+                <h1 className="text-lg font-medium">{item.name}</h1>
+                <p>{item.description}</p>
+                <div className="flex items-center gap-[100px] mt-3">
+                  <Link
+                    href={item.github}
+                    className="hover:underline hover:underline-offset-2 flex items-center gap-2"
+                  >
+                    <div className="flex items-center justify-center gap-1">
                       <IoIosLink />
                       <h1>GitHub</h1>
-                      </div>
-                    </Link>
+                    </div>
+                  </Link>
 
-                    <Link
-                      href={item.live}
-                      className="hover:underline hover:underline-offset-2 flex items-center gap-2"
-                    >
-                      <div className="flex items-center justify-center gap-1">
-
-                      <h1 className="flex items-center gap-1"><IoIosLink /> live demo</h1>
-                      </div>
-                    </Link>
-
-                  </div>
-                </li>
-              ))}
-            </ul>
+                  <Link
+                    href={item.live}
+                    className="hover:underline hover:underline-offset-2 flex items-center gap-2"
+                  >
+                    <div className="flex items-center justify-center gap-1">
+                      <h1 className="flex items-center gap-1">
+                        <IoIosLink /> live demo
+                      </h1>
+                    </div>
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

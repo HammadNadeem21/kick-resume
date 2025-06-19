@@ -404,9 +404,10 @@ const AiResumeAnalyzeReort = () => {
                   wrapperClassName="wrapperClassName"
                   editorClassName="editorClassName"
                   toolbar={{
-                    options: ['inline'],
+                    options: ['inline', 'list', 'textAlign', 'link', 'history', 'emoji', 'image', 'remove', 'colorPicker'],
                     inline: {
-                      options: [],
+                      options: ['italic', 'underline', 'strikethrough', 'monospace', 'superscript', 'subscript'],
+                      bold: false,
                     },
                   }}
                 />

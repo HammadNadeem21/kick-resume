@@ -5,9 +5,10 @@ import TemplateOne from "@/components/templates/TemplateOne";
 import TemplateTwo from "@/components/templates/TemplateTwo";
 import { useResumeDataContext } from "@/context/ResumeBuilderData";
 import Image from "next/image";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import TemplateThree from "@/components/templates/TemplateThree";
+import { pdf } from '@react-pdf/renderer';
+import Template1PDF from '@/components/pdf/Template1PDF';
+import Template2PDF from '@/components/pdf/Template2PDF';
 
 export default function SelectTemplatePage() {
   const { resumeData } = useResumeDataContext();
@@ -29,35 +30,29 @@ export default function SelectTemplatePage() {
   };
 
   const handleDownloadPDF = async () => {
-    const element = resumeRef.current;
-    if (!element) return;
+    if (!resumeData) return;
 
-    const canvas = await html2canvas(element, {
-      scale: 2, // Increase scale for better quality
-      backgroundColor: null, // Transparent background
-      useCORS: true, // Enable CORS for images
-      logging: true, // Enable logging for debugging
-    });
-    const imgData = canvas.toDataURL("image/png");
+    let blob: Blob | null = null;
 
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "px",
-      format: "a4",
-      putOnlyUsedFonts: true,
-      floatPrecision: 16, // Adjust for better quality
-    });
+    if (selectedTemplate === 1) {
+      blob = await pdf(<Template1PDF data={resumeData} />).toBlob();
+    } else if (selectedTemplate === 2) {
+      blob = await pdf(<Template2PDF data={resumeData} />).toBlob();
+    } else {
+      alert('PDF download is only available for Template 1 and Template 2 using the new PDF engine.');
+      return;
+    }
 
-    const imageProperties = pdf.getImageProperties(imgData);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight =
-      (imageProperties.height * pdf.internal.pageSize.getWidth()) /
-      imageProperties.width;
-
-    // const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save(`${resumeData?.fullName}_resume.pdf`);
+    if (blob) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${resumeData?.fullName || 'resume'}_resume.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
   };
 
   return (
