@@ -105,30 +105,30 @@ highlight if there is any mistake
 
 ## 🗝️ Keywords Suggestions (Score: [out of 100])
 
-- ✅ **[Keyword Suggestion 1]**
-- ✅ **[Keyword Suggestion 2]**
-- ✅ **[Keyword Suggestion 3]**
+-  **[Keyword Suggestion 1]**
+-  **[Keyword Suggestion 2]**
+-  **[Keyword Suggestion 3]**
 
 ---
 
 ## 🖋️ Formatting Suggestions (Score: [out of 100])
 
-- ✅ **[Formatting Suggestion 1]**
-- ✅ **[Formatting Suggestion 2]**
+-  **[Formatting Suggestion 1]**
+-  **[Formatting Suggestion 2]**
 
 ---
  
 ## 🎓 Education Suggestions (Score: [out of 100])
 
-- ✅ **[Education Suggestion 1]**
-- ✅ **[Education Suggestion 2]**
+-  **[Education Suggestion 1]**
+-  **[Education Suggestion 2]**
 
 ---
 
 ## 💼 Experience Suggestions (Score: [out of 100])
 
-- ✅ **[Experience Suggestion 1]**
-- ✅ **[Experience Suggestion 2]**
+-  **[Experience Suggestion 1]**
+-  **[Experience Suggestion 2]**
 
 ---
 
