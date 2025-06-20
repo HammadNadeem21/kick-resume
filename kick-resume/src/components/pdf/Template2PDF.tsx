@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
   projectLink: {
     fontSize: 11,
-    color: '#1d4ed8',
+    color: '#666',
     textDecoration: 'underline',
     marginRight: 15,
   },

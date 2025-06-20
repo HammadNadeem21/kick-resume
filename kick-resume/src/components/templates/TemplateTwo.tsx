@@ -1,14 +1,7 @@
 // Example TemplateOne.tsx
 "use client";
 
-// Phone icon
-import { FaPhoneAlt } from "react-icons/fa";
-// Email icon
-import { MdEmail } from "react-icons/md";
-// Location icon
-import { IoLocationSharp } from "react-icons/io5";
-// Link icon
-import { IoIosLink } from "react-icons/io";
+
 
 import { useResumeDataContext } from "@/context/ResumeBuilderData";
 import Link from "next/link";
@@ -22,15 +15,15 @@ export default function TemplateOne() {
     return <p>No resume data found. Please fill the form first.</p>;
 
   return (
-    <div className="bg-myWhite w-[794px] h-[1123px] rounded-xl px-5 py-5 text-gray-700">
+    <div className="bg-myWhite md:px-5 px-2 py-5 text-gray-700">
       {/* Divider */}
       <div className="h-[1px] w-full bg-gray-400"></div>
 
-      <h1 className="text-5xl mb-2 font-semibold text-center mt-5">
+      <h1 className="lg:text-5xl md:text-4xl sm:text-3xl text-2xl mb-2 font-semibold text-center mt-5">
         {resumeData.fullName}
       </h1>
 
-      <h1 className="text-xl text-center mb-8">{resumeData.position}</h1>
+      <h1 className="md:text-xl text-lg text-center mb-8">{resumeData.position}</h1>
 
       {/* Contact Details */}
 
@@ -39,41 +32,41 @@ export default function TemplateOne() {
 
       <div className="grid grid-cols-[35%,65%]">
         {/* Contact Details */}
-        <div className="px-3 py-3 border-r border-b border-r-gray-400 border-b-gray-400">
-          <h1 className="text-xl font-bold text-gray-700">Contact</h1>
+        <div className="md:px-3 px-0 py-3 border-r border-b border-r-gray-400 border-b-gray-400">
+          <h1 className="md:text-xl text-sm font-bold text-gray-700">Contact</h1>
 
-          <div className="mt-5 flex flex-col gap-3 text-[15px]">
+          <div className="mt-5 flex flex-col gap-3 md:text-[15px] text-xs text-wrap">
             {/* phone */}
             <div className="flex gap-2 items-center">
-              <FaPhoneAlt size={15} />
+          
               <p>{resumeData.phone}</p>
             </div>
 
             {/* email */}
-            <div className="flex gap-2 items-center">
-              <MdEmail size={15} />
+            <div className="flex gap-2 items-center text-[10px]">
+        
               <p>{resumeData.email}</p>
             </div>
 
             {/* Address */}
             <div className="flex gap-2 items-center">
-              <IoLocationSharp size={15} />
+            
               <p>{resumeData.address}</p>
             </div>
           </div>
         </div>
 
         {/* Summary */}
-        <div className="px-5 py-3 border-b border-b-gray-400">
-          <h1 className="text-xl font-bold text-gray-700">Profile Summary</h1>
-          <p className="mt-3 text-gray-700">{resumeData.summary}</p>
+        <div className="md:px-5 px-2 py-3 border-b border-b-gray-400">
+          <h1 className="md:text-xl text-sm font-bold text-gray-700">Profile Summary</h1>
+          <p className="mt-3 text-gray-700  md:text-[15px] text-xs">{resumeData.summary}</p>
         </div>
 
         <div className="flex flex-col">
           {/* Education */}
-          <div className="px-3 py-3 border-r border-b border-r-gray-400 border-b-gray-400 text-[15px]">
-            <h1 className="text-xl font-bold text-gray-700">Education</h1>
-            <div className=" px-3 mt-3 text-gray-700">
+          <div className="md:px-3 px-0 py-3 border-r border-b border-r-gray-400 border-b-gray-400 text-[15px]">
+            <h1 className="md:text-xl text-sm font-bold text-gray-700">Education</h1>
+            <div className="md:px-3 px-0 ml-3 mt-3 text-gray-700  md:text-[15px] text-[10px]">
               {resumeData.education.map((item: any, i: number) => (
                 <div
                   key={i}
@@ -82,7 +75,7 @@ export default function TemplateOne() {
                   <ul className="list-disc ">
                     <li>{item.degree}</li>
                   </ul>
-                  <p className="text-gray-500 text-sm text-right">
+                  <p className="text-gray-500 md:text-sm text-[8px] text-right">
                     ({item.startYear} - {item.endYear})
                   </p>
                 </div>
@@ -91,11 +84,11 @@ export default function TemplateOne() {
           </div>
 
           {/* Skills */}
-          <div className="px-3 py-3 border-r border-b border-r-gray-400 border-b-gray-400">
-            <h1 className="text-xl font-bold text-gray-700">Skills</h1>
-            <ul className="list-disc px-5 mt-3 text-gray-700">
+          <div className="md:px-3 px-0 py-3 border-r border-b border-r-gray-400 border-b-gray-400">
+            <h1 className="md:text-xl text-sm font-bold text-gray-700">Skills</h1>
+            <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
               {resumeData.skills.map((item: string, i: number) => (
-                <li className="text-[15px]" key={i}>
+                <li className="md:text-[15px] text-xs" key={i}>
                   {item}
                 </li>
               ))}
@@ -104,21 +97,21 @@ export default function TemplateOne() {
 
           {/* Language */}
 
-          <div className="px-3 py-3 border-r border-b border-r-gray-400 border-b-gray-400">
-            <h1 className="text-xl font-bold text-gray-700">Languages</h1>
-            <ul className="list-disc px-5 mt-3 text-gray-700">
+          <div className="md:px-3 px-0 py-3 border-r border-b border-r-gray-400 border-b-gray-400">
+            <h1 className="md:text-xl text-sm font-bold text-gray-700">Languages</h1>
+            <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
               {resumeData.languages.map((item: string, i: number) => (
-                <li className="text-[15px]" key={i}>{item}</li>
+                <li className="md:text-[15px] text-xs" key={i}>{item}</li>
               ))}
             </ul>
           </div>
 
           {/* Certification */}
-          <div className="px-3 py-3 border-r border-b border-r-gray-400 border-b-gray-400">
-            <h1 className="text-xl font-bold text-gray-700">Certifications</h1>
-            <ul className="list-disc px-5 mt-3 text-gray-700">
+          <div className="md:px-3 px-0 py-3 border-r border-b border-r-gray-400 border-b-gray-400">
+            <h1 className="md:text-xl text-xs font-bold text-gray-700">Certifications</h1>
+            <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
               {resumeData.certifications.map((item: string, i: number) => (
-                <li className="text-[15px]" key={i}>{item}</li>
+                <li className="md:text-[15px] text-xs" key={i}>{item}</li>
               ))}
             </ul>
           </div>
@@ -126,17 +119,17 @@ export default function TemplateOne() {
 
         <div className="flex flex-col border-b border-b-gray-400">
           {/* Experience */}
-          <div className="px-5 py-3 border-b border-b-gray-400">
-            <h1 className="text-xl font-bold text-gray-700">Work Experience</h1>
+          <div className="md:px-5 px-2 py-3 border-b border-b-gray-400">
+            <h1 className="md:text-xl text-sm font-bold text-gray-700">Work Experience</h1>
 
-            <div className=" px-5 mt-3 text-gray-700">
+            <div className=" md:px-5 px-0 ml-5 mt-3 text-gray-700">
               {resumeData.experience.map((item: any, i: number) => (
                 <div key={i} className="flex items-center justify-between">
-                  <ul className="list-disc">
+                  <ul className="list-disc md:text-sm text-xs font-semibold">
                     <li>{item.title}</li>
                   </ul>
 
-                  <p>
+                  <p className="md:text-xs text-[8px]">
                     ({item.startDate} - {item.endDate})
                   </p>
                 </div>
@@ -145,24 +138,24 @@ export default function TemplateOne() {
           </div>
 
           {/* Projects */}
-          <div className="px-5 py-3">
-            <h1 className="text-xl font-bold text-gray-700">Projects</h1>
+          <div className="md:px-5 px-2 py-3">
+            <h1 className="md:text-xl text-sm font-bold text-gray-700">Projects</h1>
 
-            <ul className=" px-5 mt-3 text-gray-700">
+            <ul className="md:px-5 px-0 ml-4 mt-3 md:text-sm text-xs text-gray-700 list-disc">
               {resumeData.projects.map((item: any, i: number) => (
-                <div className="mt-5 mb-5" key={i}>
-                  <h1 className="text-lg font-semibold">{item.name}</h1>
-                  <p>{item.description}</p>
+                <li className="mt-5 mb-5" key={i}>
+                  <h1 className="md:text-lg text-sm font-semibold">{item.name}</h1>
+                  <p className="md:text-sm text-xs">{item.description}</p>
                   <div className="flex items-center gap-[100px] mt-3">
                     
                     <Link
                       href={item.github}
-                      className="hover:underline hover:underline-offset-2 flex items-center gap-2"
+                      className="hover:underline hover:underline-offset-2 flex items-center gap-2 md:text-sm text-xs"
                     >
-                      <div className="flex items-center justify-center gap-1">
-                      <IoIosLink />
+                      
+                     
                       <h1>GitHub</h1> 
-                      </div>
+                     
                     </Link>
                     
 
@@ -173,12 +166,12 @@ export default function TemplateOne() {
                     >
                       <div className="flex items-center justify-center gap-1">
                       
-                      <h1 className="flex items-center gap-1"><IoIosLink /> live demo</h1>
+                      <h1 className="flex items-center gap-1">live demo</h1>
                       </div>
                     </Link>
                     
                   </div>
-                </div>
+                </li>
               ))}
             </ul>
           </div>

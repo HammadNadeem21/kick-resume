@@ -1,5 +1,5 @@
 "use client";
-
+import { LuDownload } from "react-icons/lu";
 import { useRef, useState } from "react";
 import TemplateOne from "@/components/templates/TemplateOne";
 import TemplateTwo from "@/components/templates/TemplateTwo";
@@ -9,6 +9,7 @@ import TemplateThree from "@/components/templates/TemplateThree";
 import { pdf } from '@react-pdf/renderer';
 import Template1PDF from '@/components/pdf/Template1PDF';
 import Template2PDF from '@/components/pdf/Template2PDF';
+import Template3PDF from '@/components/pdf/Template3PDF';
 
 export default function SelectTemplatePage() {
   const { resumeData } = useResumeDataContext();
@@ -38,8 +39,10 @@ export default function SelectTemplatePage() {
       blob = await pdf(<Template1PDF data={resumeData} />).toBlob();
     } else if (selectedTemplate === 2) {
       blob = await pdf(<Template2PDF data={resumeData} />).toBlob();
+    } else if (selectedTemplate === 3) {
+      blob = await pdf(<Template3PDF data={resumeData} />).toBlob();
     } else {
-      alert('PDF download is only available for Template 1 and Template 2 using the new PDF engine.');
+      alert('PDF download is only available for Template 1, 2, and 3 using the new PDF engine.');
       return;
     }
 
@@ -56,8 +59,8 @@ export default function SelectTemplatePage() {
   };
 
   return (
-    <div className="px-[60px] py-[60px] mx-auto bg-myLightBlue">
-      <h1 className="text-3xl font-bold mb-6 text-primaryColor">
+    <div className="px-[30px] py-[60px] mx-auto bg-myDarkBlue text-white min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-myWhite">
         Select Your Resume Template
       </h1>
 
@@ -79,8 +82,8 @@ export default function SelectTemplatePage() {
 
         <div
           onClick={() => setSelectedTemplate(2)}
-          className={`cursor-pointer border hover:border-primaryColor ${
-            selectedTemplate === 2 ? "border-primaryColor shadow-md" : ""
+          className={`cursor-pointer border hover:border-myLightBlue ${
+            selectedTemplate === 2 ? "border-myLightBlue shadow-md" : ""
           }`}
         >
           <Image
@@ -108,26 +111,30 @@ export default function SelectTemplatePage() {
         </div>
       </div>
 
-      <h2 className="text-2xl font-semibold mb-4 text-primaryColor">
+      <h2 className="text-2xl font-semibold mb-4 text-myWhite">
         Preview Selected Template
       </h2>
+
+      <div className="lg:w-[794px] sm:w-[580px] min-w-[300px]   min-h-[200px] mx-auto">
       <div
         ref={resumeRef}
-        className="w-[794px] h-[1123px] rounded-lg shadow min-h-[200px] bg-white text-black"
+        className="shadow"
       >
         {renderSelectedTemplate()}
       </div>
-
       {selectedTemplate && (
         <div className="mt-6 flex gap-4">
           <button
-            className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="px-6 py-2 bg-myLightBlue text-primaryColor rounded hover:bg-myMidblue flex items-center gap-1 md:text-sm text-xs"
             onClick={handleDownloadPDF}
           >
-            Download as PDF
+           <LuDownload/> Download as PDF
           </button>
         </div>
       )}
+      </div>
+
+      
     </div>
   );
 }

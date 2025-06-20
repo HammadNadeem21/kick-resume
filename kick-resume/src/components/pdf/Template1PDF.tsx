@@ -1,4 +1,4 @@
-import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
+import { Page, Text, View, Document, StyleSheet, Link } from "@react-pdf/renderer";
 
 
 const styles = StyleSheet.create({
@@ -83,16 +83,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 12,
   },
+    projectLink: {
+    fontSize: 11,
+    color: '#666',
+    textDecoration: 'underline',
+    marginRight: 15,
+  },
+  projectLinksContainer: {
+    flexDirection: 'row',
+    marginTop: 5,
+  },
 });
 
 function getBulletChar(color: string = "white") {
-  // Try bullet, fallback to dash if not rendered
-  // You can also try '\u2022' or '\u25CF' or '*'
-  // If you want to guarantee a visible bullet, use '-'
-  // If you want to try the bullet, use '\u2022'
-  // If you want to use asterisk, use '*'
-  // You can also try '\u25AA' (small square)
-  // Here, we use dash for maximum compatibility
+
   return "•";
 }
 
@@ -185,6 +189,14 @@ export default function Template1PDF({ data }: { data: any }) {
                 </View>
                 <Text>{item.description}</Text>
                 {/* <Text>GitHub: {item.github}</Text> */}
+                                 <View style={styles.projectLinksContainer}>
+                                    <Link style={styles.projectLink} src={item.github}>
+                                      GitHub
+                                    </Link>
+                                    <Link style={styles.projectLink} src={item.live}>
+                                      Live Demo
+                                    </Link>
+                                  </View>
                 {/* <Text>Live: {item.live}</Text> */}
               </View>
             ))}
