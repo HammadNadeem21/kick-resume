@@ -23,6 +23,7 @@ import {
 import { pdf } from "@react-pdf/renderer";
 import CoverLetterPDF from "./pdf/CoverLetterPDF";
 import { MdFileDownload } from "react-icons/md";
+import SectionScoreChart from "./sectionScoreChart";
 const AiResumeAnalyzeReort = () => {
   const {
     actualSummary,
@@ -200,7 +201,7 @@ const AiResumeAnalyzeReort = () => {
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-8">
               {/* Keywords Section */}
               <div className="bg-primaryColor p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-primaryColor">
                 {keywords && (
@@ -210,7 +211,7 @@ const AiResumeAnalyzeReort = () => {
                         <FaKey className="inline mr-2" />
                         Keywords
                       </h4>
-                      <div className="relative w-[70px] h-[70px]">
+                      {/* <div className="relative w-[100px] h-[100px]">
                         <svg
                           className="transform -rotate-90"
                           viewBox="0 0 36 36"
@@ -228,9 +229,9 @@ const AiResumeAnalyzeReort = () => {
                             className={
                               keywordsScore !== null &&
                               keywordsScore !== undefined
-                                ? keywordsScore < 50
+                                ? keywordsScore <= 50
                                   ? "text-red-500"
-                                  : keywordsScore < 80
+                                  : keywordsScore < 70
                                   ? "text-yellow-500"
                                   : "text-green-500"
                                 : "text-gray-400"
@@ -247,7 +248,9 @@ const AiResumeAnalyzeReort = () => {
                         <span className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-myMidblue">
                           {keywordsScore}/100
                         </span>
-                      </div>
+                      </div> */}
+                        <SectionScoreChart score={keywordsScore}/>
+
                     </div>
 
                     <div>
@@ -297,9 +300,9 @@ const AiResumeAnalyzeReort = () => {
                             className={
                               formattingScore !== null &&
                               formattingScore !== undefined
-                                ? formattingScore < 50
+                                ? formattingScore <= 50
                                   ? "text-red-500"
-                                  : formattingScore < 80
+                                  : formattingScore < 70
                                   ? "text-yellow-500"
                                   : "text-green-500"
                                 : "text-gray-400"
@@ -366,11 +369,11 @@ const AiResumeAnalyzeReort = () => {
                           />
                           <path
                             className={
-                              keywordsScore !== null &&
-                              keywordsScore !== undefined
-                                ? keywordsScore < 50
+                              educationScore !== null &&
+                              educationScore !== undefined
+                                ? educationScore <= 50
                                   ? "text-red-500"
-                                  : keywordsScore < 80
+                                  : educationScore < 70
                                   ? "text-yellow-500"
                                   : "text-green-500"
                                 : "text-gray-400"
@@ -437,11 +440,11 @@ const AiResumeAnalyzeReort = () => {
                           />
                           <path
                             className={
-                              keywordsScore !== null &&
-                              keywordsScore !== undefined
-                                ? keywordsScore < 50
+                              experienceScore !== null &&
+                              experienceScore !== undefined
+                                ? experienceScore <= 50
                                   ? "text-red-500"
-                                  : keywordsScore < 80
+                                  : experienceScore < 70
                                   ? "text-yellow-500"
                                   : "text-green-500"
                                 : "text-gray-400"

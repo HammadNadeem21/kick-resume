@@ -1,0 +1,52 @@
+
+'use client';
+import React from 'react';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { motion } from 'framer-motion';
+
+const COLORS = ['#22c55e', '#E5E7EB']; // Blue = score, Gray = remaining
+
+const SectionScoreChart = ({ score }: { score: number | null }) => {
+  // Ensure score is a valid number between 0 and 100
+  const safeScore = typeof score === 'number' && !isNaN(score) && score >= 0 && score <= 100 ? score : 0;
+  const data = [
+    { name: 'Score', value: safeScore },
+    { name: 'Remaining', value: 100 - safeScore },
+  ];
+
+  return (
+    <motion.div
+      className="relative w-[100px] h-[100px] hover:scale-105 transition-transform"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <ResponsiveContainer width="80%" height="80%">
+        <PieChart>
+          <Pie
+            data={data}
+            cx="50%"
+            cy="50%"
+            innerRadius="60%"
+            outerRadius="80%"
+            dataKey="value"
+            startAngle={90}
+            endAngle={-270}
+            stroke="none"
+            isAnimationActive
+          >
+            {data.map((_, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index]} />
+            ))}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="text-xl font-bold text-white">{safeScore} / 100</span>
+        <span className="text-xs text-white font-bold">ATS Score</span>
+      </div>
+    </motion.div>
+  );
+};
+
+export default SectionScoreChart;
