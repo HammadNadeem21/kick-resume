@@ -23,7 +23,7 @@ import {
 import { pdf } from "@react-pdf/renderer";
 import CoverLetterPDF from "./pdf/CoverLetterPDF";
 import { MdFileDownload } from "react-icons/md";
-import SectionScoreChart from "./sectionScoreChart";
+import SectionScoreChart from "./SectionScoreChart";
 const AiResumeAnalyzeReort = () => {
   const {
     actualSummary,
