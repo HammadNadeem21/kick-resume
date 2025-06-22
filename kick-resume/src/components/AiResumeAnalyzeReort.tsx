@@ -282,7 +282,7 @@ const AiResumeAnalyzeReort = () => {
                         <IoIosInformationCircle className="inline mr-2" />
                         Formating
                       </h4>
-                      <div className="relative w-[70px] h-[70px]">
+                      {/* <div className="relative w-[70px] h-[70px]">
                         <svg
                           className="transform -rotate-90"
                           viewBox="0 0 36 36"
@@ -319,7 +319,9 @@ const AiResumeAnalyzeReort = () => {
                         <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-myMidblue">
                           {formattingScore}/100
                         </span>
-                      </div>
+                      </div> */}
+
+                      <SectionScoreChart score={formattingScore}/>
                     </div>
 
                     <div className="">
@@ -353,7 +355,7 @@ const AiResumeAnalyzeReort = () => {
                         <IoSchoolSharp className="inline mr-2" />
                         Education
                       </h4>
-                      <div className="relative w-[70px] h-[70px]">
+                      {/* <div className="relative w-[70px] h-[70px]">
                         <svg
                           className="transform -rotate-90"
                           viewBox="0 0 36 36"
@@ -390,7 +392,9 @@ const AiResumeAnalyzeReort = () => {
                         <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-myMidblue">
                           {educationScore}/100
                         </span>
-                      </div>
+                      </div> */}
+
+                      <SectionScoreChart score={educationScore}/>
                     </div>
 
                     <div className="">
@@ -424,7 +428,7 @@ const AiResumeAnalyzeReort = () => {
                         <GrUserExpert className="inline mr-2" />
                         Experience
                       </h4>
-                      <div className="relative w-[70px] h-[70px]">
+                      {/* <div className="relative w-[70px] h-[70px]">
                         <svg
                           className="transform -rotate-90"
                           viewBox="0 0 36 36"
@@ -461,7 +465,8 @@ const AiResumeAnalyzeReort = () => {
                         <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-myMidblue">
                           {experienceScore}/100
                         </span>
-                      </div>
+                      </div> */}
+                      <SectionScoreChart score={experienceScore}/>
                     </div>
 
                     <div className="">
@@ -488,14 +493,14 @@ const AiResumeAnalyzeReort = () => {
         )}
       </div>
 
-      <div className="mt-6 rounded-xl">
+      <div className="mt-6 rounded-xl w-[80%] mx-auto">
         {coverLetter && suggestions && (
           <div>
             <h3 className="text-3xl font-bold mb-4 text-myMidblue text-center">
               AI Suggested Cover Letter
             </h3>
             {/* Separate div for the editable cover letter */}
-            <div className="bg-myMidblue p-4 rounded-xl shadow mt-8 text-xl">
+            <div className="bg-myMidblue p-4 rounded-xl shadow mt-8 text-sm">
               <div
                 ref={editorRef}
                 className="mb-6 p-4 bg-myDarkBlue rounded-lg text-myLightBlue"

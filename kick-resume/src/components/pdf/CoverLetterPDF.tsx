@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
   content: {
     marginTop: 10,
-    lineHeight: 1.5,
+    lineHeight: 1,
   },
 });
 
