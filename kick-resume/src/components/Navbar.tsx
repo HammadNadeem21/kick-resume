@@ -6,11 +6,58 @@ import Image from "next/image";
 import MobileNav from "./MobileNav";
 import { signIn, signOut, useSession } from "next-auth/react";
 
+import { useState } from 'react';
+// import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { SignUp } from "./SignUp";
+import { LogIn } from "lucide-react";
+import { Login } from "./LogIn";
+
 const Navbar = () => {
+
+  // const [mode, setMode] = useState<'login' | 'signup' | null>(null);
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [error, setError] = useState('');
+  // const router = useRouter();
+
+  //   const handleSignUpSubmit = async () => {
+  //   setError('');
+  //   const res = await fetch('/api/signup', {
+  //     method: 'POST',
+  //     body: JSON.stringify({ email, password }),
+  //     headers: { 'Content-Type': 'application/json' },
+  //   });
+
+  //   if (res.status === 201) {
+  //     alert('Account created! Please login.');
+  //     setMode(null);
+  //   } else {
+  //     const data = await res.json();
+  //     setError(data.error);
+  //   }
+  // };
+
+  // const handleLoginSubmit = async () => {
+  //   setError('');
+  //   const result = await signIn('credentials', {
+  //     redirect: false,
+  //     email,
+  //     password,
+  //   });
+
+  //   if (result?.error) {
+  //     setError(result.error);
+  //   } else {
+  //     router.push('/dashboard'); // change as needed
+  //   }
+  // };
+
+
   const {data: session} = useSession();
 
   const handleSignUp = () => {
-    signIn()
+    signIn()  
   }
 
   return (
@@ -82,6 +129,23 @@ const Navbar = () => {
               </button>
             </>
           )}
+
+{/* <Link href="/login">
+<button className=" py-1 px-4 focus:outline-none  rounded-lg text-base mt-4 md:mt-0 text-myWhite border border-myWhite hover:bg-myWhite hover:text-primaryColor transition-all duration-300">
+              Log In
+            </button></Link>
+            <Link href="/signup">
+<button
+            
+            className="py-1 px-2 focus:outline-none  rounded-lg text-base mt-4 md:mt-0 text-myWhite hover:bg-myMidblue/30">
+              SignUp
+            </button>
+            </Link> */}
+{/* <SignUp/>
+
+<Login/> */}
+
+
           </div>
 
 

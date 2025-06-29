@@ -12,7 +12,7 @@ export const features: {
 }[] = [
   {
     title: "Resume Builder",
-    href: "/resume-builder",
+    href: "/select-template",
     description: "Create Your Resume yet.",
     icon: (
       <Image
