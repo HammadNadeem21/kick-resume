@@ -278,7 +278,7 @@ console.log("Preview URL:", previewUrl);
 </div>
 
 
-<LinkdinInfo/>
+{/* <LinkdinInfo/> */}
 
 
       <div className="flex flex-wrap gap-6 mb-10">
