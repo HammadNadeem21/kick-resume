@@ -53,11 +53,13 @@ export async function POST(request: NextRequest) {
   try {
     const { prompt } = await request.json();
     console.log("Prompt received:", prompt);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
    const result = await model.generateContent(`
-  Extract the following fields in valid JSON format.
- Based on the prompt, generate a short and professional **first-person** summary (as if written by the user themselves).
+ Extract the following fields in valid JSON format. If the "skills" are not directly mentioned, infer them from the role, responsibilities, or any experience provided in the prompt.
 
+ For each "experience" item, provide a clear, concise description (1–2 lines) that summarizes the user's responsibilities and impact.
+
+Also, based on the entire prompt, generate a short and professional 80-word **first-person** summary (as if written by the user themselves).
   {
     "name": "",
     "role": "",

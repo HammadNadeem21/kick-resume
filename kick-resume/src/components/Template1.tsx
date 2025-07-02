@@ -201,11 +201,12 @@ export default function Template1({data}: {data: Data}) {
             {data.experience.map((item: any, i: number) => (
               <div
                 key={i}
-                className={`flex items-center justify-between text-[#193042]`}
+                className={`flex flex-col justify-between text-[#193042]`}
               >
                 <ul className="list-disc md:text-[15px] text-xs">
-                  <li>{item.title}</li>
+                  <li className=" font-bold">{item.title}</li>
                 </ul>
+                <p>{item.description}</p>
 
                 {/* <div className="flex items-center gap-2 md:text-xs text-[8px]">
                   <span>{`(${item.startDate}`}</span>
