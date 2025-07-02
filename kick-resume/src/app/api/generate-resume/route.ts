@@ -55,11 +55,18 @@ export async function POST(request: NextRequest) {
     console.log("Prompt received:", prompt);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
    const result = await model.generateContent(`
- Extract the following fields in valid JSON format. If the "skills" are not directly mentioned, infer them from the role, responsibilities, or any experience provided in the prompt.
+ You are a resume extraction AI. Read the prompt below and extract the following fields in **valid JSON format**.
 
- For each "experience" item, provide a clear, concise description (1–2 lines) that summarizes the user's responsibilities and impact.
+### Instructions:
 
-Also, based on the entire prompt, generate a short and professional 80-word **first-person** summary (as if written by the user themselves).
+- If "skills" are not explicitly provided by the user, intelligently infer them based on the **user's role, responsibilities, and projects**.
+- Extract only **relevant technologies and tools** — avoid vague or generic terms like "Web Development", "Communication", or "Programming".
+- Do not include job titles as skills.
+- Use clean and specific skills like "React.js", "Node.js", "PostgreSQL", "MongoDB", etc.
+- Experience descriptions should be 1–2 lines, clear and action-driven.
+- Write a short, **first-person summary (under 80 words)** that sounds natural and professional.
+
+Return data in this strict JSON format:
   {
     "name": "",
     "role": "",
