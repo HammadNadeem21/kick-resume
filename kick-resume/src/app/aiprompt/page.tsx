@@ -325,10 +325,10 @@ const AiPromptPage = () => {
             <div key={index} className={`w-[170px] h-[170px] rounded-full ${bg} flex items-center justify-center overflow-hidden`}>
               <Image
                 src={processedUrl}
-                width={130}
-                height={130}
+                width={150}
+                height={150}
                 alt={`Processed Image ${index}`}
-                className="object-contain"
+                className="object-cover"
               />
             </div>
           ))}
