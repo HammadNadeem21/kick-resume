@@ -20,127 +20,135 @@ const templateData = [
 
 const AiPromptPage = () => {
 
-    const [userPrompt, setUserPrompt] = useState<string>('');
-    const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
-    const [parsedData, setParsedData] = useState<any>(null);
-    const [imageFile, setImageFile] = useState<File | null>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [userPrompt, setUserPrompt] = useState<string>('');
+  const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
+  const [parsedData, setParsedData] = useState<any>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [processedUrl, setProcessedUrl] = useState<string | null>(null);
+  const [inputData, setInputData] = useState('')
 
-    const handleGenerate = async () => {
-        if(!userPrompt || !selectedTemplate) {
-            alert('Please write a prompt and select a template!');
-            return;
-        }
-
-        try{
-            const res = await fetch('/api/generate-resume', {
-                method:'POST',
-                headers: { 'Content-Type':'application/json'},
-                body: JSON.stringify({prompt:userPrompt})
-            })
-            if (!res.ok) {
-  const err = await res.json();
-  console.error("API Error:", err); // show actual error
-  alert(err.error || "Something went wrong");
-  return;
-}
-
-            const data = await res.json();
-            setParsedData(data)
-            setShowTemplate(true);
-        }
-        catch(error){
-console.log("Error", error);
-
-        }
+  const handleGenerate = async () => {
+    if (!userPrompt || !selectedTemplate) {
+      alert('Please write a prompt and select a template!');
+      return;
     }
 
+    try {
+      const res = await fetch('/api/generate-resume', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: userPrompt })
+      })
+      if (!res.ok) {
+        const err = await res.json();
+        console.error("API Error:", err); // show actual error
+        alert(err.error || "Something went wrong");
+        return;
+      }
 
-
-
-
-
-const onDrop = async (acceptedFiles: File[]) => {
-  const file = acceptedFiles[0];
-  if (file) {
-    setImageFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
-  }
-};
-
-
-const { getRootProps, getInputProps, isDragActive } = useDropzone({
-  onDrop,
-  accept: { 'image/*': [] },
-  multiple: false,
-});
-
-
-
-// const handleGenerate = async () => {
-//   if (!userPrompt || !selectedTemplate ) {
-//     alert("Please write a prompt, select a template, and upload a picture!");
-//     return;
-//   }
-
-//   try {
-//     const formData = new FormData();
-//     formData.append("prompt", userPrompt);
-//     // formData.append("image", imageFile); // 🆕
-
-//     const res = await fetch("/api/generate-resume", {
-//       method: "POST",
-//       body: formData,
-//     });
-
-//     if (!res.ok) {
-//       const err = await res.json();
-//       console.error("API Error:", err);
-//       alert(err.error || "Something went wrong");
-//       return;
-//     }
-
-//     const data = await res.json();
-//     setParsedData(data);
-//     setShowTemplate(true);
-//   } catch (error) {
-//     console.log("Error", error);
-//   }
-// };
-
-
-
-
-   useEffect(() => {
-  if (parsedData) {
-    console.log("Parsed Data:", parsedData);
-  }
-}, [parsedData]);
-
-    
-
-    const getTemplateId = (image: number) => {
-        setSelectedTemplate(image);
+      const data = await res.json();
+      setParsedData(data)
+      setShowTemplate(true);
     }
+    catch (error) {
+      console.log("Error", error);
+
+    }
+  }
 
 
 
-    const renderSelectedTemplate = () => {
 
-    if (selectedTemplate === 1) return <Template1 data={parsedData} />;
+
+
+  const onDrop = async (acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setImageFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: { 'image/*': [] },
+    multiple: false,
+  });
+
+
+  const handleSummaryClick = (data: string) => {
+    setInputData(data)
+    // console.log('SummaryClick', data)
+  }
+
+
+
+  // const handleGenerate = async () => {
+  //   if (!userPrompt || !selectedTemplate ) {
+  //     alert("Please write a prompt, select a template, and upload a picture!");
+  //     return;
+  //   }
+
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("prompt", userPrompt);
+  //     // formData.append("image", imageFile); // 🆕
+
+  //     const res = await fetch("/api/generate-resume", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     if (!res.ok) {
+  //       const err = await res.json();
+  //       console.error("API Error:", err);
+  //       alert(err.error || "Something went wrong");
+  //       return;
+  //     }
+
+  //     const data = await res.json();
+  //     setParsedData(data);
+  //     setShowTemplate(true);
+  //   } catch (error) {
+  //     console.log("Error", error);
+  //   }
+  // };
+
+
+
+
+  useEffect(() => {
+    if (parsedData) {
+      console.log("Parsed Data:", parsedData);
+    }
+  }, [parsedData]);
+
+
+
+  const getTemplateId = (image: number) => {
+    setSelectedTemplate(image);
+  }
+
+
+
+  const renderSelectedTemplate = () => {
+
+    if (selectedTemplate === 1) return <Template1 data={parsedData} handleSummaryClick={handleSummaryClick} />;
     if (selectedTemplate === 2) return <TemplateTwo />;
     if (selectedTemplate === 3) return <TemplateThree />;
     return <p>Please select a template above.</p>;
   };
 
   const [showTemplate, setShowTemplate] = useState(false);
-useEffect(() => {
-  setShowTemplate(false); // Reset jab prompt ya template change ho
-}, [userPrompt, selectedTemplate]);
+  useEffect(() => {
+    setShowTemplate(false); // Reset jab prompt ya template change ho
+  }, [userPrompt, selectedTemplate]);
 
 
 
-console.log("Preview URL:", previewUrl);
+  console.log("Preview URL:", previewUrl);
 
   return (
     <div className="px-[30px] py-[60px] mx-auto bg-myDarkBlue text-white min-h-screen">
@@ -156,36 +164,36 @@ console.log("Preview URL:", previewUrl);
         className="w-full h-40 p-4 text-black rounded-md mb-6"
       />
 
-{/* Image Preview + Dropzone Uploader */}
-<div className="flex flex-col items-center mb-6">
-  <div className="w-[200px] h-[200px] rounded-full border-2 border-white overflow-hidden mb-3">
-    {previewUrl ? (
-      <Image
-        width={158}
-        height={158}
-        src={previewUrl}
-        alt="Preview"
-        className="w-full h-full object-cover"
-      />
-    ) : (
-      <div className="w-full h-full bg-gray-300 flex items-center justify-center text-sm text-gray-600">
-        No Image
+      {/* Image Preview + Dropzone Uploader */}
+      <div className="flex flex-col items-center mb-6">
+        <div className="w-[200px] h-[200px] rounded-full border-2 border-white overflow-hidden mb-3">
+          {previewUrl ? (
+            <Image
+              width={158}
+              height={158}
+              src={previewUrl}
+              alt="Preview"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-300 flex items-center justify-center text-sm text-gray-600">
+              No Image
+            </div>
+          )}
+        </div>
+
+        {/* Dropzone uploader */}
+        <div {...getRootProps()} className="text-center cursor-pointer border border-dashed border-gray-400 rounded-md p-2 hover:bg-white/10 transition-all">
+          <input {...getInputProps()} />
+          <p className="text-sm text-gray-300">
+            {isDragActive ? 'Drop the image here...' : 'Click or drag an image to upload'}
+          </p>
+        </div>
       </div>
-    )}
-  </div>
-
-  {/* Dropzone uploader */}
-  <div {...getRootProps()} className="text-center cursor-pointer border border-dashed border-gray-400 rounded-md p-2 hover:bg-white/10 transition-all">
-    <input {...getInputProps()} />
-    <p className="text-sm text-gray-300">
-      {isDragActive ? 'Drop the image here...' : 'Click or drag an image to upload'}
-    </p>
-  </div>
-</div>
 
 
 
-<Button
+      {/* <Button
   className="bg-blue-600 hover:bg-blue-700 mt-4 mb-4"
   onClick={async () => {
     if (!imageFile) return alert("Please upload an image!");
@@ -207,7 +215,31 @@ console.log("Preview URL:", previewUrl);
   }}
 >
   Remove BG
-</Button>
+</Button> */}
+      <Button
+        className="bg-blue-600 hover:bg-blue-700 mt-4 mb-4"
+        onClick={async () => {
+          if (!imageFile) return alert("Please upload an image!");
+
+          const fd = new FormData();
+          fd.append("image", imageFile);
+
+          const res = await fetch("/api/process-image", {
+            method: "POST",
+            body: fd,
+          });
+
+          const json = await res.json();
+
+          if (json.url) {
+            setProcessedUrl(json.url); // set processed image (no bg + colored bg)
+          } else {
+            alert("Failed to process image");
+          }
+        }}
+      >
+        Remove BG
+      </Button>
 
 
 
@@ -215,7 +247,7 @@ console.log("Preview URL:", previewUrl);
 
 
 
-<div className='flex items-center justify-center gap-5 flex-wrap mt-5 mb-5'>
+      {/* <div className='flex items-center justify-center gap-5 flex-wrap mt-5 mb-5'>
 {previewUrl && (
   <div className="w-[200px] h-[200px] rounded-full bg-blue-500 flex items-center justify-center overflow-hidden">
     <Image
@@ -275,20 +307,44 @@ console.log("Preview URL:", previewUrl);
     />
   </div>
 )}
-</div>
+</div> */}
 
+      {processedUrl && (
+        <div className='flex items-center justify-start gap-5 flex-wrap mt-5 mb-5'>
+          {/* Original Image */}
+          {/* <div className="w-[170px] h-[170px] rounded-full flex items-center justify-center">
+       <Image
+          src={previewUrl? previewUrl : processedUrl}
+          width={130}
+          height={130}
+          alt={`Original`}
+          className=" rounded-full border-2 border-white"
+        />
+    </div> */}
+          {['bg-blue-500', 'bg-white', 'bg-green-500', 'bg-gray-500', 'bg-yellow-500'].map((bg, index) => (
+            <div key={index} className={`w-[170px] h-[170px] rounded-full ${bg} flex items-center justify-center overflow-hidden`}>
+              <Image
+                src={processedUrl}
+                width={130}
+                height={130}
+                alt={`Processed Image ${index}`}
+                className="object-contain"
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
-{/* <LinkdinInfo/> */}
+      {/* <LinkdinInfo/> */}
 
 
       <div className="flex flex-wrap gap-6 mb-10">
         {templateData.map((template) => (
           <div key={template.id}
-      
-          onClick={() => getTemplateId(template.id)}
-          className={`cursor-pointer border-4 rounded-md transition-all duration-300 ${
-              selectedTemplate === template.id ? 'border-primaryColor' : 'border-transparent'
-            } hover:border-primaryColor`}
+
+            onClick={() => getTemplateId(template.id)}
+            className={`cursor-pointer border-4 rounded-md transition-all duration-300 ${selectedTemplate === template.id ? 'border-primaryColor' : 'border-transparent'
+              } hover:border-primaryColor`}
           >
             <Image src={template.image} alt={template.name} height={150} width={150} />
           </div>
@@ -297,15 +353,25 @@ console.log("Preview URL:", previewUrl);
 
 
 
-        <Button
-         variant='secondary' 
-         className='bg-myMidblue hover:bg-myMidblue/60'
-         onClick={handleGenerate}
-         >Create</Button>
+      <Button
+        variant='secondary'
+        className='bg-myMidblue hover:bg-myMidblue/60'
+        onClick={handleGenerate}
+      >Create</Button>
 
-         {showTemplate &&  parsedData && showTemplate && (
-          <div className='mt-5 w-[70%] mx-auto'>{renderSelectedTemplate()}</div>
-         )}
+
+      <div className="grid grid-cols-[66%,34%]">
+        <div>
+          {showTemplate && parsedData && showTemplate && (
+            <div className='mt-5 w-[100%]  '>{renderSelectedTemplate()}</div>
+          )}
+        </div>
+
+        {/* <p className="bg-blue-500">
+
+          <textarea value={inputData || ""} onChange={(e) => setInputData(e.target.value)} className='w-full h-[150px] text-black' />
+        </p> */}
+      </div>
 
     </div>
   )

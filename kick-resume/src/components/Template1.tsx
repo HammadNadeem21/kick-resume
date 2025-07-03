@@ -27,37 +27,37 @@ import Link from "next/link";
 
 
 interface Data {
-    name: string;
-    role: string;
-    phone: string;
-    email: string;
-    address: string;
-    summary: string;
-    education:  {
+  name: string;
+  role: string;
+  phone: string;
+  email: string;
+  address: string;
+  summary: string;
+  education: {
     degree: string;
     startDate?: string;
     endDate?: string;
   }[];
-    skills: string[];
-    languages: string[];
-    certifications: string[];
-    experience: {
+  skills: string[];
+  languages: string[];
+  certifications: string[];
+  experience: {
     title: string;
     description?: string;
     startDate?: string;
     endDate?: string;
   }[];
-    projects: { name: string; description: string; github?: string; live?: string }[];
+  projects: { name: string; description: string; github?: string; live?: string }[];
 }
 
 
-export default function Template1({data}: {data: Data}) {
-//   const { resumeData } = useResumeDataContext();
+export default function Template1({ data, handleSummaryClick }: { data: Data, handleSummaryClick: (data: string) => void }) {
+  //   const { resumeData } = useResumeDataContext();
 
-//   console.log("education", resumeData?.experience[0]);
+  //   console.log("education", resumeData?.experience[0]);
 
-//   if (!resumeData)
-//     return <p>No resume data found. Please fill the form first.</p>;
+  //   if (!resumeData)
+  //     return <p>No resume data found. Please fill the form first.</p>;
 
 
   return (
@@ -155,16 +155,16 @@ export default function Template1({data}: {data: Data}) {
             
           </div>
         </div> */}
-            {/* phone */}
-            <div className="flex md:text-[15px] text-xs text-[#193042] items-center gap-1">
+        {/* phone */}
+        <div className="flex md:text-[15px] text-xs text-[#193042] items-center gap-1">
 
-              <h2 className="">{data.phone}</h2>
-            </div>
-            {/* email */}
-            <div className="flex md:text-[15px] text-xs text-[#193042] mt-1 mb-1">
+          <h2 className="">{data.phone}</h2>
+        </div>
+        {/* email */}
+        <div className="flex md:text-[15px] text-xs text-[#193042] mt-1 mb-1">
 
-              <h2 className="">{data.email}</h2>
-            </div>
+          <h2 className="">{data.email}</h2>
+        </div>
 
         <div className="flex items-center mb-2 gap-1 text-[#193042] md:text-[15px] text-xs">
 
@@ -175,7 +175,7 @@ export default function Template1({data}: {data: Data}) {
         <div className="h-[1px] w-full bg-[#193042] mt-2"></div>
 
         {/* Summary */}
-        <div>
+        <div onClick={() => handleSummaryClick(data.summary)}>
           <h1
             className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-[#193042]`}
           >
@@ -237,10 +237,10 @@ export default function Template1({data}: {data: Data}) {
                     href="#"
                     className="hover:underline hover:underline-offset-2 flex items-center gap-2"
                   >
-                    
-                   
-                      <h1>GitHub</h1>
-                    
+
+
+                    <h1>GitHub</h1>
+
                   </Link>
 
                   <Link
@@ -249,7 +249,7 @@ export default function Template1({data}: {data: Data}) {
                   >
                     <div className="flex items-center justify-center gap-1">
                       <h1 className="flex items-center gap-1">
-                         live demo
+                        live demo
                       </h1>
                     </div>
                   </Link>
