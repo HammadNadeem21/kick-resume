@@ -312,23 +312,23 @@ const AiPromptPage = () => {
       {processedUrl && (
         <div className='flex items-center justify-start gap-5 flex-wrap mt-5 mb-5'>
           {/* Original Image */}
-          {/* <div className="w-[170px] h-[170px] rounded-full flex items-center justify-center">
-       <Image
-          src={previewUrl? previewUrl : processedUrl}
-          width={130}
-          height={130}
-          alt={`Original`}
-          className=" rounded-full border-2 border-white"
-        />
-    </div> */}
+          <div className="w-[170px] h-[170px] rounded-full flex items-center justify-center overflow-hidden border border-white">
+            <Image
+              src={previewUrl ? previewUrl : processedUrl}
+              width={170}
+              height={170}
+              alt={`Original`}
+              className="object-contain"
+            />
+          </div>
           {['bg-blue-500', 'bg-white', 'bg-green-500', 'bg-gray-500', 'bg-yellow-500'].map((bg, index) => (
             <div key={index} className={`w-[170px] h-[170px] rounded-full ${bg} flex items-center justify-center overflow-hidden`}>
               <Image
                 src={processedUrl}
-                width={150}
-                height={150}
+                width={160}
+                height={160}
                 alt={`Processed Image ${index}`}
-                className="object-cover"
+                className="object-fill mt-4"
               />
             </div>
           ))}
