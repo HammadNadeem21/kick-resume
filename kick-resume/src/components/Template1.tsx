@@ -8,24 +8,6 @@ import Link from "next/link";
 
 
 
-// import { Poppins } from "next/font/google";
-// const poppins700 = Poppins({
-//   subsets: ["latin"],
-//   weight: ["700"],
-//   display: "swap",
-// });
-// const poppins600 = Poppins({
-//   subsets: ["latin"],
-//   weight: ["600"],
-//   display: "swap",
-// });
-// const poppins400 = Poppins({
-//   subsets: ["latin"],
-//   weight: ["400"],
-//   display: "swap",
-// });
-
-
 interface Data {
   name: string;
   role: string;
@@ -51,7 +33,12 @@ interface Data {
 }
 
 
-export default function Template1({ data, handleSummaryClick }: { data: Data, handleSummaryClick: (data: string) => void }) {
+export default function Template1({ data, handleStringFeildClick, handleArrayFieldClick }: {
+  data: Data,
+  handleStringFeildClick: (fieldName: string, value: string) => void,
+  handleArrayFieldClick: (fieldName: string, data: string[]) => void
+
+}) {
   //   const { resumeData } = useResumeDataContext();
 
   //   console.log("education", resumeData?.experience[0]);
@@ -66,6 +53,7 @@ export default function Template1({ data, handleSummaryClick }: { data: Data, ha
       <div className="bg-[#193042] py-2 md:px-3 px-1">
         <h1
           className={`md:text-2xl text-lg mb-5 font-semibold text-center mt-5 text-white`}
+          onClick={() => handleStringFeildClick("name", data.name)}
         >
           {data.name}
         </h1>
@@ -89,73 +77,93 @@ export default function Template1({ data, handleSummaryClick }: { data: Data, ha
         </div>
 
         {/* Divider */}
-        <div className="h-[1px] w-full bg-[#385b77] mt-5"></div>
+        {data.skills.length > 0 && (
+          <div className="h-[1px] w-full bg-[#385b77] mt-5"></div>
+
+        )}
 
         {/* Skills */}
-        <div className="mt-8 mb-8">
-          <h1
-            className={`md:text-xl text-sm mb-2 text-left mt-5 text-white`}
+        {data.skills.length > 0 && (
+          <div className="mt-8 mb-8 cursor-pointer"
+            onClick={() => handleArrayFieldClick("skills", data.skills)}
           >
-            Skills
-          </h1>
+            <h1
+              className={`md:text-xl text-sm mb-2 text-left mt-5 text-white`}
+            >
+              Skills
+            </h1>
 
-          <ul className="list-disc text-white md:text-sm text-xs px-5 flex flex-col gap-3">
-            {data.skills.map((item: any, i: number) => (
-              <li key={i}>{item}</li>
-            ))}
-          </ul>
-        </div>
+            <ul className="list-disc text-white md:text-sm text-xs px-5 flex flex-col gap-3">
+              {data.skills.map((item: any, i: number) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Divider */}
-        <div className="h-[1px] w-full bg-[#385b77] mt-5"></div>
+        {data.languages.length > 0 && (
+          <div className="h-[1px] w-full bg-[#385b77] mt-5"></div>
+        )}
+
+
+
 
         {/* languages */}
-        <div className="mt-8 mb-8">
-          <h1
-            className={`md:text-xl text-sm mb-2 text-left mt-5 text-white`}
+        {data.languages.length > 0 && (
+          <div className="mt-8 mb-8 cursor-pointer"
+            onClick={() => handleArrayFieldClick("languages", data.languages)}
           >
-            Languages
-          </h1>
+            <h1
+              className={`md:text-xl text-sm mb-2 text-left mt-5 text-white`}
+            >
+              Languages
+            </h1>
 
-          <ul className="list-disc text-white md:text-sm text-xs px-5 flex flex-col gap-3">
-            {data.languages.map((item: any, i: number) => (
-              <li key={i}>{item}</li>
-            ))}
-          </ul>
-        </div>
+            <ul className="list-disc text-white md:text-sm text-xs px-5 flex flex-col gap-3">
+              {data.languages.map((item: any, i: number) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
 
         {/* Divider */}
-        <div className="h-[1px] w-full bg-[#385b77] mt-5"></div>
+        {data.certifications.length > 0 && (
+          <div className="h-[1px] w-full bg-[#385b77] mt-5"></div>
+
+        )}
 
         {/* Certifications */}
-        <div className="mt-8 mb-8">
-          <h1
-            className={`md:text-xl text-sm mb-2 text-left mt-5 text-white`}
+        {data.certifications.length > 0 && (
+          <div className="mt-8 mb-8 cursor-pointer"
+            onClick={() => handleArrayFieldClick("certifications", data.certifications)}
           >
-            Certifications
-          </h1>
+            <h1
+              className={`md:text-xl text-sm mb-2 text-left mt-5 text-white`}
+            >
+              Certifications
+            </h1>
 
-          <ul className="list-disc text-white md:text-sm text-xs  px-5 flex flex-col gap-3">
-            {data.certifications.map((item: any, i: number) => (
-              <li key={i}>{item}</li>
-            ))}
-          </ul>
-        </div>
+            <ul className="list-disc text-white md:text-sm text-xs  px-5 flex flex-col gap-3">
+              {data.certifications.map((item: any, i: number) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
       </div>
       {/* Right-side */}
       <div className="py-3 md:px-5 px-2">
         <h1
           className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-[#193042]`}
+          onClick={() => handleStringFeildClick('role', data.role)}
         >
           {data.role}
         </h1>
-        {/* Contact */}
-        {/* <div className="flex flex-col gap-4 mb-2">
-          <div className="flex flex-col item-start w-full">
-            
-          </div>
-        </div> */}
-        {/* phone */}
+
         <div className="flex md:text-[15px] text-xs text-[#193042] items-center gap-1">
 
           <h2 className="">{data.phone}</h2>
@@ -175,7 +183,7 @@ export default function Template1({ data, handleSummaryClick }: { data: Data, ha
         <div className="h-[1px] w-full bg-[#193042] mt-2"></div>
 
         {/* Summary */}
-        <div onClick={() => handleSummaryClick(data.summary)}>
+        <div onClick={() => handleStringFeildClick('summary', data.summary)} className="cursor-pointer">
           <h1
             className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-[#193042]`}
           >
@@ -190,7 +198,9 @@ export default function Template1({ data, handleSummaryClick }: { data: Data, ha
         <div className="h-[1px] w-full bg-[#193042] mt-3"></div>
 
         {/* Experience */}
-        <div>
+        <div
+
+        >
           <h1
             className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-[#193042]`}
           >

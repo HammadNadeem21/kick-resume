@@ -2,13 +2,11 @@
 
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-// import TemplateOne from '@/components/templates/TemplateOne';
+import React, { useEffect, useState } from 'react';
 import TemplateTwo from '@/components/templates/TemplateTwo';
 import TemplateThree from '@/components/templates/TemplateThree';
 import Template1 from '@/components/Template1';
 import { useDropzone } from 'react-dropzone';
-import LinkdinInfo from '@/components/LinkdinInfo';
 
 
 
@@ -26,7 +24,17 @@ const AiPromptPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [processedUrl, setProcessedUrl] = useState<string | null>(null);
-  const [inputData, setInputData] = useState('')
+  // const [inputData, setInputData] = useState<string | string[]>()
+  const [showEditor, setShowEditor] = useState(false)
+  // const [editMode, setEditMode] = useState<'summary' | 'skills' | null>(null)
+  const [editType, setEditType] = useState<"string" | "array">("string");
+  const [editField, setEditField] = useState<"skills" | "languages" | "certifications" | null>(null);
+  const [inputData, setInputData] = useState<string | string[]>([]);
+  const [newItem, setNewItem] = useState("");
+  const [currentStringField, setCurrentStringField] = useState<string | null>(null);
+  const [currentArrayField, setCurrentArrayField] = useState<string | null>(null);
+
+
 
   const handleGenerate = async () => {
     if (!userPrompt || !selectedTemplate) {
@@ -77,11 +85,96 @@ const AiPromptPage = () => {
     multiple: false,
   });
 
+  // const handleSummaryClick = (data: string | string[]) => {
+  //   setInputData(data);
+  //   setEditType("string");
+  //   setShowEditor(true);
+  // };
 
-  const handleSummaryClick = (data: string) => {
-    setInputData(data)
-    // console.log('SummaryClick', data)
-  }
+  const handleStringFieldClick = (fieldName: string, value: string) => {
+    setInputData(value);
+    setEditType("string");
+    setShowEditor(true);
+    setCurrentStringField(fieldName);
+  };
+
+  const handleStringFieldChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    setInputData(newValue);
+
+    setParsedData((prev: any) => ({
+      ...prev,
+      [currentStringField as string]: newValue
+    }));
+  };
+
+  const handleArrayFieldClick = (fieldName: string, arrayData: string[]) => {
+    setInputData(arrayData);
+    setEditType("array");
+    setShowEditor(true);
+    setCurrentArrayField(fieldName);
+  };
+  const handleRemoveItem = (index: number) => {
+    const updated = [...(inputData as string[])];
+    updated.splice(index, 1);
+    setInputData(updated);
+
+    setParsedData((prev: any) => ({
+      ...prev,
+      [currentArrayField as string]: updated,
+    }));
+  };
+
+  const handleAddItem = () => {
+    if (newItem.trim() === "") return;
+    const updated = [...(inputData as string[]), newItem.trim()];
+    setInputData(updated);
+    setNewItem("");
+
+    setParsedData((prev: any) => ({
+      ...prev,
+      [currentArrayField as string]: updated,
+    }));
+  };
+
+
+
+  const handleSkillsClick = (skills: string[]) => {
+    setInputData(skills);
+    setEditType("array");
+    setShowEditor(true);
+  };
+
+  const handleLanguagesClick = (languages: string[]) => {
+    setInputData(languages);
+    setEditType("array");
+    setEditField("languages");
+    setShowEditor(true);
+  };
+
+  // const handleRemoveItem = (index: number) => {
+  //   const updated = [...(inputData as string[])];
+  //   updated.splice(index, 1);
+  //   setInputData(updated);
+
+  //   setParsedData((prev: any) => ({
+  //     ...prev,
+  //     [editField!]: updated,
+  //   }));
+  // };
+
+  // const handleAddItem = () => {
+  //   if (newItem.trim() === "") return;
+  //   const updated = [...(inputData as string[]), newItem.trim()];
+  //   setInputData(updated);
+  //   setNewItem("");
+
+  //   setParsedData((prev: any) => ({
+  //     ...prev,
+  //     [editField!]: updated,
+  //   }));
+  // };
+
 
 
 
@@ -135,7 +228,11 @@ const AiPromptPage = () => {
 
   const renderSelectedTemplate = () => {
 
-    if (selectedTemplate === 1) return <Template1 data={parsedData} handleSummaryClick={handleSummaryClick} />;
+    if (selectedTemplate === 1) return <Template1 data={parsedData}
+      handleStringFeildClick={handleStringFieldClick}
+      handleArrayFieldClick={handleArrayFieldClick}
+
+    />;
     if (selectedTemplate === 2) return <TemplateTwo />;
     if (selectedTemplate === 3) return <TemplateThree />;
     return <p>Please select a template above.</p>;
@@ -146,6 +243,50 @@ const AiPromptPage = () => {
     setShowTemplate(false); // Reset jab prompt ya template change ho
   }, [userPrompt, selectedTemplate]);
 
+
+
+  // Summary Edit
+  // const handleSummaryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+
+  //   const newSummary = e.target.value;
+  //   setInputData(newSummary);
+
+  //   setParsedData((prev: any) => ({
+  //     ...prev,
+  //     summary: newSummary
+  //   }))
+
+  // }
+
+
+  // const handleEditorSave = () => {
+  //   if (editMode === 'summary') {
+  //     setParsedData((prev: any) => ({
+  //       ...prev,
+  //       summary: inputData,
+  //     }));
+  //   } else if (editMode === 'skills') {
+  //     const updatedSkills = typeof inputData === 'string'
+  //       ? inputData.split(',').map(item => item.trim())
+  //       : [];
+  //     setParsedData((prev: any) => ({
+  //       ...prev,
+  //       skills: updatedSkills,
+  //     }));
+  //   }
+
+  //   setShowEditor(false);
+  //   setEditMode(null);
+  // };
+
+
+
+  // List Change
+  const handleListChange = (data: string[]) => {
+    const newList = data
+    setInputData(newList)
+
+  }
 
 
   console.log("Preview URL:", previewUrl);
@@ -193,29 +334,6 @@ const AiPromptPage = () => {
 
 
 
-      {/* <Button
-  className="bg-blue-600 hover:bg-blue-700 mt-4 mb-4"
-  onClick={async () => {
-    if (!imageFile) return alert("Please upload an image!");
-
-    const fd = new FormData();
-    fd.append("image", imageFile);
-
-    const res = await fetch("/api/process-image", {
-      method: "POST",
-      body: fd,
-    });
-
-    const json = await res.json();
-    if (json.url) {
-      setPreviewUrl(json.url);
-    } else {
-      alert("Failed to process image");
-    }
-  }}
->
-  Remove BG
-</Button> */}
       <Button
         className="bg-blue-600 hover:bg-blue-700 mt-4 mb-4"
         onClick={async () => {
@@ -247,68 +365,6 @@ const AiPromptPage = () => {
 
 
 
-      {/* <div className='flex items-center justify-center gap-5 flex-wrap mt-5 mb-5'>
-{previewUrl && (
-  <div className="w-[200px] h-[200px] rounded-full bg-blue-500 flex items-center justify-center overflow-hidden">
-    <Image
-      src={previewUrl}
-      width={158}
-      height={158}
-      alt="Preview"
-      className="object-contain"
-    />
-  </div>
-)}
-
-{previewUrl && (
-  <div className="w-[200px] h-[200px] rounded-full bg-white flex items-center justify-center overflow-hidden">
-    <Image
-      src={previewUrl}
-      width={158}
-      height={158}
-      alt="Preview"
-      className="object-contain"
-    />
-  </div>
-)}
-
-{previewUrl && (
-  <div className="w-[200px] h-[200px] rounded-full bg-green-500 flex items-center justify-center overflow-hidden">
-    <Image
-      src={previewUrl}
-      width={158}
-      height={158}
-      alt="Preview"
-      className="object-contain"
-    />
-  </div>
-)}
-
-{previewUrl && (
-  <div className="w-[200px] h-[200px] rounded-full bg-gray-500 flex items-center justify-center overflow-hidden">
-    <Image
-      src={previewUrl}
-      width={158}
-      height={158}
-      alt="Preview"
-      className="object-contain"
-    />
-  </div>
-)}
-
-{previewUrl && (
-  <div className="w-[200px] h-[200px] rounded-full bg-yellow-500 flex items-center justify-center overflow-hidden">
-    <Image
-      src={previewUrl}
-      width={158}
-      height={158}
-      alt="Preview"
-      className="object-contain"
-    />
-  </div>
-)}
-</div> */}
-
       {processedUrl && (
         <div className='flex items-center justify-start gap-5 flex-wrap mt-5 mb-5'>
           {/* Original Image */}
@@ -335,7 +391,6 @@ const AiPromptPage = () => {
         </div>
       )}
 
-      {/* <LinkdinInfo/> */}
 
 
       <div className="flex flex-wrap gap-6 mb-10">
@@ -367,10 +422,135 @@ const AiPromptPage = () => {
           )}
         </div>
 
-        {/* <p className="bg-blue-500">
+        {/* {
+          showEditor && (
+            <p className="bg-blue-500 h-[17%] mt-5">
 
-          <textarea value={inputData || ""} onChange={(e) => setInputData(e.target.value)} className='w-full h-[150px] text-black' />
-        </p> */}
+              <textarea value={inputData || ""}
+                onChange={handleSummaryChange} className='w-full h-[150px] text-black p-5' />
+              <Button variant={'outline'}
+                onClick={() => setShowEditor(false)}
+              >Save</Button>
+            </p>
+          )
+        } */}
+
+
+        {/* {showEditor && (
+          <div className="fixed inset-0 flex items-center justify-center bg-primaryColor bg-opacity-70 z-50">
+            <div className="bg-myMidblue p-6 rounded-md w-[400px]">
+              <h2 className="text-lg font-bold mb-4 text-black">Edit Summary</h2>
+              <textarea
+                value={inputData}
+                onChange={handleSummaryChange}
+                className="w-full h-32 resize-none border border-primaryColor rounded-md p-2 text-black bg-transparent"
+              />
+              <div className="flex justify-end mt-4">
+                <button
+                  className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                  onClick={() => setShowEditor(false)}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        )} */}
+
+
+
+
+
+        {/* Slide-in Side Drawer Editor */}
+        {/* <div className={`fixed top-0 right-0 h-full w-[400px] bg-myWhite shadow-lg z-50 transition-transform duration-500 ease-in-out transform ${showEditor ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div className="p-6">
+            <h2 className="text-lg font-bold mb-4 text-black">
+              {editMode === 'summary' ? 'Edit Summary' : 'Edit Skills'}
+            </h2>
+            <textarea
+              value={inputData}
+              onChange={handleSummaryChange}
+              className="w-full h-32 resize-none border border-primaryColor rounded-md p-2 text-black bg-transparent"
+            />
+            <div className="flex justify-end mt-4">
+              <button
+                className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                onClick={handleEditorSave}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div> */}
+
+
+        {showEditor && (
+          <div className={`fixed top-0 right-0 h-full w-[400px] bg-myWhite shadow-lg z-50 transition-transform duration-500 ease-in-out transform ${showEditor ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className="p-6">
+              <h2 className="text-lg font-bold mb-4 text-black">
+                {/* {editType === "summary" ? "Edit Summary" : "Edit Skills"} */}
+                Editor
+              </h2>
+
+              {/* Summary Textarea */}
+              {editType === "string" && (
+                <>
+                  <textarea
+                    value={inputData as string}
+                    onChange={handleStringFieldChange}
+                    className="w-full h-[100px] resize-none border border-primaryColor rounded-md p-2 text-black bg-transparent"
+                  />
+                </>
+              )}
+
+              {/* Skills Badge UI */}
+              {editType === "array" && (
+                <>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {(inputData as string[]).map((item, i) => (
+                      <span key={i} className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full flex items-center">
+                        {item}
+                        <button
+                          onClick={() => handleRemoveItem(i)}
+                          className="ml-2 text-gray-500 font-bold"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={newItem}
+                      onChange={(e) => setNewItem(e.target.value)}
+                      placeholder="Add new"
+                      className="flex-1 p-2 border border-primaryColor rounded text-black"
+                    />
+                    <Button
+                      onClick={handleAddItem}
+                      className="bg-myDarkBlue text-white hover:bg-myDarkBlue"
+                    >
+                      Add
+                    </Button>
+                  </div>
+                </>
+              )}
+
+              <div className="flex justify-end mt-4">
+                <button
+                  className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                  onClick={() => setShowEditor(false)}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+
       </div>
 
     </div>
