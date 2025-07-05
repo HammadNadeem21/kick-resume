@@ -27,7 +27,7 @@ const AiPromptPage = () => {
   // const [inputData, setInputData] = useState<string | string[]>()
   const [showEditor, setShowEditor] = useState(false)
   // const [editMode, setEditMode] = useState<'summary' | 'skills' | null>(null)
-  const [editType, setEditType] = useState<"string" | "array">("string");
+  const [editType, setEditType] = useState<"string" | "array" | "experience" | "projects" | "education">("string");
   const [editField, setEditField] = useState<"skills" | "languages" | "certifications" | null>(null);
   const [inputData, setInputData] = useState<string | string[]>([]);
   const [newItem, setNewItem] = useState("");
@@ -152,18 +152,27 @@ const AiPromptPage = () => {
   const handleExperienceFieldClick = (fieldName: string, arrayData: any[]) => {
     setExperienceData(arrayData);
     setCurrentExperienceField(fieldName);
+    // setCurrentProjectField(null);       // 🧼 Reset
+    // setCurrentEducationField(null);
+    setEditType("experience")
     setShowEditor(true);
   };
   // for project field
   const handleProjectFieldClick = (fieldName: string, arrayData: any[]) => {
     setProjectData(arrayData);
     setCurrentProjectField(fieldName);
+    // setCurrentExperienceField(null);    // 🧼 Reset
+    // setCurrentEducationField(null);
+    setEditType("projects")
     setShowEditor(true);
   };
   // Education field
   const handleEducationFieldClick = (fieldName: string, arrayData: any[]) => {
     setEducationData(arrayData);
     setCurrentEducationField(fieldName);
+    // setCurrentExperienceField(null);    // 🧼 Reset
+    // setCurrentProjectField(null);
+    setEditType("education")
     setShowEditor(true);
   };
 
@@ -571,7 +580,7 @@ const AiPromptPage = () => {
               )}
 
               {/* Experience */}
-              {showEditor && (
+              {editType === "experience" && (
                 <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
                   <h2 className="text-lg font-bold mb-4 text-black">Edit Experience</h2>
 
@@ -670,7 +679,7 @@ const AiPromptPage = () => {
 
 
               {/* Project */}
-              {showEditor && (
+              {editType === "projects" && (
                 <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
                   <h2 className="text-lg font-bold mb-4 text-black">Edit Projects</h2>
 
@@ -768,7 +777,7 @@ const AiPromptPage = () => {
               )}
 
               {/* Education */}
-              {showEditor && (
+              {editType === "education" && (
                 <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
                   <h2 className="text-lg font-bold mb-4 text-black">Edit Education</h2>
 
@@ -847,6 +856,9 @@ const AiPromptPage = () => {
                           ...prev,
                           [currentEducationField as string]: educationData,
                         }));
+                        // setCurrentEducationField(null);
+                        // setCurrentProjectField(null);
+                        // setCurrentExperienceField(null)
                         setShowEditor(false);
                       }}
                     >
@@ -864,6 +876,7 @@ const AiPromptPage = () => {
                   className="bg-myDarkBlue text-white px-4 py-2 rounded"
                   onClick={() => setShowEditor(false)}
                 >
+
                   Save
                 </button>
               </div>

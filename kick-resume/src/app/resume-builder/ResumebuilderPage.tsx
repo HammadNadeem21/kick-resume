@@ -15,9 +15,9 @@ const ResumeBuilderPage = () => {
   const searchParams = useSearchParams()
   const templateId = searchParams.get('template')
   console.log('Selected Template ID:', templateId);
-  
 
-   let SelectedTemplateComponent = null
+
+  let SelectedTemplateComponent = null
 
   if (templateId === '1') {
     SelectedTemplateComponent = <TemplateOne />
@@ -29,17 +29,17 @@ const ResumeBuilderPage = () => {
 
   return (
     <div className="p-6 bg-primaryColor">
-      <h1 className="text-2xl font-bold mb-4">Resume Builder</h1>
+      <h1 className="text-2xl text-myWhite font-bold mb-4">Resume Builder</h1>
 
       <div className="grid grid-cols-[40%,60%] gap-3">
-<UserInfoForm />
+        <UserInfoForm />
 
-{SelectedTemplateComponent || (
-        <p className="text-gray-500">Please select a template first.</p>
-      )}
+        {SelectedTemplateComponent || (
+          <p className="text-gray-500">Please select a template first.</p>
+        )}
       </div>
 
-      
+
     </div>
   )
 }
