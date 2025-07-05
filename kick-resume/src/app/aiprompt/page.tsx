@@ -34,6 +34,18 @@ const AiPromptPage = () => {
   const [currentStringField, setCurrentStringField] = useState<string | null>(null);
   const [currentArrayField, setCurrentArrayField] = useState<string | null>(null);
 
+  // for experience field
+  const [experienceData, setExperienceData] = useState<any[]>([]);
+  const [currentExperienceField, setCurrentExperienceField] = useState<string | null>(null);
+
+  // Project field
+  const [projectData, setProjectData] = useState<any[]>([]);
+  const [currentProjectField, setCurrentProjectField] = useState<string | null>(null);
+
+  // Education field
+  const [educationData, setEducationData] = useState<any[]>([]);
+  const [currentEducationField, setCurrentEducationField] = useState<string | null>(null);
+
 
 
   const handleGenerate = async () => {
@@ -136,7 +148,24 @@ const AiPromptPage = () => {
       [currentArrayField as string]: updated,
     }));
   };
-
+  // for experience feild
+  const handleExperienceFieldClick = (fieldName: string, arrayData: any[]) => {
+    setExperienceData(arrayData);
+    setCurrentExperienceField(fieldName);
+    setShowEditor(true);
+  };
+  // for project field
+  const handleProjectFieldClick = (fieldName: string, arrayData: any[]) => {
+    setProjectData(arrayData);
+    setCurrentProjectField(fieldName);
+    setShowEditor(true);
+  };
+  // Education field
+  const handleEducationFieldClick = (fieldName: string, arrayData: any[]) => {
+    setEducationData(arrayData);
+    setCurrentEducationField(fieldName);
+    setShowEditor(true);
+  };
 
 
   const handleSkillsClick = (skills: string[]) => {
@@ -231,6 +260,9 @@ const AiPromptPage = () => {
     if (selectedTemplate === 1) return <Template1 data={parsedData}
       handleStringFeildClick={handleStringFieldClick}
       handleArrayFieldClick={handleArrayFieldClick}
+      handleExperienceFieldClick={handleExperienceFieldClick}
+      handleProjectFieldClick={handleProjectFieldClick}
+      handleEducationFieldClick={handleEducationFieldClick}
 
     />;
     if (selectedTemplate === 2) return <TemplateTwo />;
@@ -537,6 +569,295 @@ const AiPromptPage = () => {
                   </div>
                 </>
               )}
+
+              {/* Experience */}
+              {showEditor && (
+                <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
+                  <h2 className="text-lg font-bold mb-4 text-black">Edit Experience</h2>
+
+                  {experienceData.map((exp, index) => (
+                    <div key={index} className="mb-6 border p-3 rounded-md bg-gray-100">
+                      <input
+                        type="text"
+                        value={exp.title}
+                        onChange={(e) => {
+                          const updated = [...experienceData];
+                          updated[index].title = e.target.value;
+                          setExperienceData(updated);
+                        }}
+                        placeholder="Title"
+                        className="w-full p-2 mb-2 border text-black"
+                      />
+                      <textarea
+                        value={exp.description}
+                        onChange={(e) => {
+                          const updated = [...experienceData];
+                          updated[index].description = e.target.value;
+                          setExperienceData(updated);
+                        }}
+                        placeholder="Description"
+                        className="w-full p-2 mb-2 border text-black"
+                      />
+                      <div className="grid grid-cols-2 gap-2 mb-2">
+                        <input
+                          type="text"
+                          value={exp.startDate}
+                          onChange={(e) => {
+                            const updated = [...experienceData];
+                            updated[index].startDate = e.target.value;
+                            setExperienceData(updated);
+                          }}
+                          placeholder="Start Date"
+                          className=" p-2 border text-black"
+                        />
+                        <input
+                          type="text"
+                          value={exp.endDate}
+                          onChange={(e) => {
+                            const updated = [...experienceData];
+                            updated[index].endDate = e.target.value;
+                            setExperienceData(updated);
+                          }}
+                          placeholder="End Date"
+                          className="p-2 border text-black"
+                        />
+                      </div>
+                      <Button
+                        onClick={() => {
+                          const updated = [...experienceData];
+                          updated.splice(index, 1);
+                          setExperienceData(updated);
+                        }}
+                        className="bg-red-600 text-white"
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  ))}
+
+                  {/* Add new experience */}
+                  <Button
+                    onClick={() => {
+                      const updated = [...experienceData, {
+                        title: "",
+                        description: "",
+                        startDate: "",
+                        endDate: ""
+                      }];
+                      setExperienceData(updated);
+                    }}
+                    className="bg-green-600 text-white mt-4"
+                  >
+                    + Add Experience
+                  </Button>
+
+                  <div className="flex justify-end mt-4">
+                    <button
+                      className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                      onClick={() => {
+                        setParsedData((prev: any) => ({
+                          ...prev,
+                          [currentExperienceField as string]: experienceData,
+                        }));
+                        setShowEditor(false);
+                      }}
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              )}
+
+
+              {/* Project */}
+              {showEditor && (
+                <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
+                  <h2 className="text-lg font-bold mb-4 text-black">Edit Projects</h2>
+
+                  {projectData.map((proj, index) => (
+                    <div key={index} className="mb-6 border p-3 rounded-md bg-gray-100">
+                      <input
+                        type="text"
+                        value={proj.name}
+                        onChange={(e) => {
+                          const updated = [...projectData];
+                          updated[index].name = e.target.value;
+                          setProjectData(updated);
+                        }}
+                        placeholder="Project Name"
+                        className="w-full p-2 mb-2 border text-black"
+                      />
+                      <textarea
+                        value={proj.description}
+                        onChange={(e) => {
+                          const updated = [...projectData];
+                          updated[index].description = e.target.value;
+                          setProjectData(updated);
+                        }}
+                        placeholder="Description"
+                        className="w-full p-2 mb-2 border text-black"
+                      />
+                      <input
+                        type="text"
+                        value={proj.github}
+                        onChange={(e) => {
+                          const updated = [...projectData];
+                          updated[index].github = e.target.value;
+                          setProjectData(updated);
+                        }}
+                        placeholder="GitHub Link"
+                        className="w-full p-2 mb-2 border text-black"
+                      />
+                      <input
+                        type="text"
+                        value={proj.live}
+                        onChange={(e) => {
+                          const updated = [...projectData];
+                          updated[index].live = e.target.value;
+                          setProjectData(updated);
+                        }}
+                        placeholder="Live Link"
+                        className="w-full p-2 mb-2 border text-black"
+                      />
+                      <Button
+                        onClick={() => {
+                          const updated = [...projectData];
+                          updated.splice(index, 1);
+                          setProjectData(updated);
+                        }}
+                        className="bg-red-600 text-white"
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  ))}
+
+                  <Button
+                    onClick={() => {
+                      const updated = [
+                        ...projectData,
+                        {
+                          name: "",
+                          description: "",
+                          github: "",
+                          live: ""
+                        },
+                      ];
+                      setProjectData(updated);
+                    }}
+                    className="bg-green-600 text-white mt-4"
+                  >
+                    + Add Project
+                  </Button>
+
+                  <div className="flex justify-end mt-4">
+                    <button
+                      className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                      onClick={() => {
+                        setParsedData((prev: any) => ({
+                          ...prev,
+                          [currentProjectField as string]: projectData,
+                        }));
+                        setShowEditor(false);
+                      }}
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Education */}
+              {showEditor && (
+                <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
+                  <h2 className="text-lg font-bold mb-4 text-black">Edit Education</h2>
+
+                  {educationData.map((edu, index) => (
+                    <div key={index} className="mb-6 border p-3 rounded-md bg-gray-100">
+                      <input
+                        type="text"
+                        value={edu.degree}
+                        onChange={(e) => {
+                          const updated = [...educationData];
+                          updated[index].degree = e.target.value;
+                          setEducationData(updated);
+                        }}
+                        placeholder="Degree"
+                        className="w-full p-2 mb-2 border text-black"
+                      />
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={edu.startDate}
+                          onChange={(e) => {
+                            const updated = [...educationData];
+                            updated[index].startDate = e.target.value;
+                            setEducationData(updated);
+                          }}
+                          placeholder="Start Date"
+                          className="flex-1 p-2 mb-2 border text-black"
+                        />
+                        <input
+                          type="text"
+                          value={edu.endDate}
+                          onChange={(e) => {
+                            const updated = [...educationData];
+                            updated[index].endDate = e.target.value;
+                            setEducationData(updated);
+                          }}
+                          placeholder="End Date"
+                          className="flex-1 p-2 mb-2 border text-black"
+                        />
+                      </div>
+                      <Button
+                        onClick={() => {
+                          const updated = [...educationData];
+                          updated.splice(index, 1);
+                          setEducationData(updated);
+                        }}
+                        className="bg-red-600 text-white"
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  ))}
+
+                  <Button
+                    onClick={() => {
+                      const updated = [
+                        ...educationData,
+                        {
+                          degree: "",
+                          startDate: "",
+                          endDate: "",
+                        },
+                      ];
+                      setEducationData(updated);
+                    }}
+                    className="bg-green-600 text-white mt-4"
+                  >
+                    + Add Education
+                  </Button>
+
+                  <div className="flex justify-end mt-4">
+                    <button
+                      className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                      onClick={() => {
+                        setParsedData((prev: any) => ({
+                          ...prev,
+                          [currentEducationField as string]: educationData,
+                        }));
+                        setShowEditor(false);
+                      }}
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              )}
+
+
+
 
               <div className="flex justify-end mt-4">
                 <button

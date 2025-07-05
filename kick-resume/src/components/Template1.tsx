@@ -33,10 +33,13 @@ interface Data {
 }
 
 
-export default function Template1({ data, handleStringFeildClick, handleArrayFieldClick }: {
+export default function Template1({ data, handleStringFeildClick, handleArrayFieldClick, handleExperienceFieldClick, handleProjectFieldClick, handleEducationFieldClick }: {
   data: Data,
   handleStringFeildClick: (fieldName: string, value: string) => void,
-  handleArrayFieldClick: (fieldName: string, data: string[]) => void
+  handleArrayFieldClick: (fieldName: string, data: string[]) => void,
+  handleExperienceFieldClick: (fieldName: string, data: any[]) => void,
+  handleProjectFieldClick: (fieldName: string, data: any[]) => void,
+  handleEducationFieldClick: (fieldName: string, data: any[]) => void
 
 }) {
   //   const { resumeData } = useResumeDataContext();
@@ -59,22 +62,30 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
         </h1>
 
         {/* Divider */}
-        <div className="h-[1px] w-full bg-[#385b77] mt-2"></div>
+        {data.education.length > 0 && (
+          <div className="h-[1px] w-full bg-[#385b77] mt-2"></div>
+
+        )}
 
         {/* Education */}
-        <div className="mt-8 mb-8">
-          <h1
-            className={`md:text-xl text-sm mb-2 text-left mt-5 text-white`}
+        {data.education.length > 0 && (
+          <div className="mt-8 mb-8 cursor-pointer"
+            onClick={() => handleEducationFieldClick("education", data.education)}
           >
-            Education
-          </h1>
+            <h1
+              className={`md:text-xl text-sm mb-2 text-left mt-5 text-white`}
+            >
+              Education
+            </h1>
 
-          <ul className="list-disc text-white md:text-sm text-xs px-5 flex flex-col gap-3">
-            {data.education.map((item: any, i: number) => (
-              <li key={i}>{item.degree}</li>
-            ))}
-          </ul>
-        </div>
+            <ul className="list-disc text-white md:text-sm text-xs px-5 flex flex-col gap-3">
+              {data.education.map((item: any, i: number) => (
+                <li key={i}>{item.degree}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
 
         {/* Divider */}
         {data.skills.length > 0 && (
@@ -195,79 +206,95 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
         </div>
 
         {/* Divider */}
-        <div className="h-[1px] w-full bg-[#193042] mt-3"></div>
+        {data.experience.length > 0 && (
+          <div className="h-[1px] w-full bg-[#193042] mt-3"></div>
+
+        )}
 
         {/* Experience */}
-        <div
-
-        >
-          <h1
-            className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-[#193042]`}
+        {data.experience.length > 0 && (
+          <div
+            onClick={() => handleExperienceFieldClick("experience", data.experience)}
+            className="cursor-pointer"
           >
-            Experience
-          </h1>
+            <h1
+              className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-[#193042]`}
+            >
+              Experience
+            </h1>
 
-          <div className=" px-5 mt-3 text-gray-700">
-            {data.experience.map((item: any, i: number) => (
-              <div
-                key={i}
-                className={`flex flex-col justify-between text-[#193042]`}
-              >
-                <ul className="list-disc md:text-[15px] text-xs">
-                  <li className=" font-bold">{item.title}</li>
-                </ul>
-                <p>{item.description}</p>
+            <div className=" px-5 mt-3 text-gray-700">
+              {data.experience.map((item: any, i: number) => (
+                <div
+                  key={i}
+                  className={`flex flex-col justify-between text-[#193042]`}
+                >
+                  <ul className="list-disc md:text-[15px] text-xs">
+                    <li className=" font-bold mt-3">{item.title}</li>
+                  </ul>
+                  <p>{item.description}</p>
 
-                {/* <div className="flex items-center gap-2 md:text-xs text-[8px]">
+                  {/* <div className="flex items-center gap-2 md:text-xs text-[8px]">
                   <span>{`(${item.startDate}`}</span>
                   <span>{`${item.endDate})`}</span>
                 </div> */}
-              </div>
-            ))}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
+
 
         {/* Divider */}
-        <div className="h-[1px] w-full bg-[#193042] mt-5"></div>
+        {data.projects.length > 0 && (
+          <div className="h-[1px] w-full bg-[#193042] mt-5"></div>
+
+        )}
 
         {/* Projects */}
-        <div>
-          <h1
-            className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-[#193042]`}
+        {data.projects.length > 0 && (
+          <div
+            onClick={() => handleProjectFieldClick("projects", data.projects)}
+            className="cursor-pointer"
           >
-            Projects
-          </h1>
-          <ul className=" px-5 mt-3 text-[#193042] list-disc">
-            {data.projects.map((item: any, i: number) => (
-              <li className="mt-5 mb-5" key={i}>
-                <h1 className="md:text-lg text-xs md:font-medium font-bold">{item.name}</h1>
-                <p className="md:text-sm text-xs">{item.description}</p>
-                <div className="flex items-center gap-[100px] mt-3 md:text-sm text-xs">
-                  <Link
-                    href="#"
-                    className="hover:underline hover:underline-offset-2 flex items-center gap-2"
-                  >
+            <h1
+              className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-[#193042]`}
+            >
+              Projects
+            </h1>
+            <ul className=" px-5 mt-3 text-[#193042] list-disc">
+              {data.projects.map((item: any, i: number) => (
+                <li className="mt-5 mb-5" key={i}>
+                  <h1 className="md:text-lg text-xs md:font-medium font-bold">{item.name}</h1>
+                  <p className="md:text-sm text-xs">{item.description}</p>
+                  <div className="flex items-center gap-[100px] mt-3 md:text-sm text-xs">
+                    <Link
+                      href="#"
+                      className="hover:underline hover:underline-offset-2 flex items-center gap-2"
+                    >
 
 
-                    <h1>GitHub</h1>
+                      <h1>GitHub</h1>
 
-                  </Link>
+                    </Link>
 
-                  <Link
-                    href="#"
-                    className="hover:underline hover:underline-offset-2 flex items-center gap-2"
-                  >
-                    <div className="flex items-center justify-center gap-1">
-                      <h1 className="flex items-center gap-1">
-                        live demo
-                      </h1>
-                    </div>
-                  </Link>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+                    <Link
+                      href="#"
+                      className="hover:underline hover:underline-offset-2 flex items-center gap-2"
+                    >
+                      <div className="flex items-center justify-center gap-1">
+                        <h1 className="flex items-center gap-1">
+                          live demo
+                        </h1>
+                      </div>
+                    </Link>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
       </div>
     </div>
   );
