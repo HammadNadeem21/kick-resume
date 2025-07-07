@@ -106,7 +106,7 @@ export default function Template1PDF({ data }: { data: any }) {
       <Page size="A4" style={styles.page}>
         {/* Left Side */}
         <View style={styles.left}>
-          <Text style={styles.name}>{data.fullName}</Text>
+          <Text style={styles.name}>{data.name}</Text>
           <View style={styles.divider} />
           <View style={styles.section}>
             <Text style={styles.heading}>Education</Text>

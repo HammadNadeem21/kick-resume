@@ -7,6 +7,8 @@ import TemplateTwo from '@/components/templates/TemplateTwo';
 import TemplateThree from '@/components/templates/TemplateThree';
 import Template1 from '@/components/Template1';
 import { useDropzone } from 'react-dropzone';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import Template1PDF from '@/components/pdf/Template1PDF';
 
 
 
@@ -458,8 +460,19 @@ const AiPromptPage = () => {
 
       <div className="grid grid-cols-[66%,34%]">
         <div>
-          {showTemplate && parsedData && showTemplate && (
-            <div className='mt-5 w-[100%]  '>{renderSelectedTemplate()}</div>
+          {showTemplate && parsedData && (
+            <div>
+              <div className='mt-5 w-[100%]'>{renderSelectedTemplate()}</div>
+              <div className="flex justify-end mt-4">
+                <PDFDownloadLink
+                  document={<Template1PDF data={parsedData} />}
+                  fileName="resume.pdf"
+                  className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
+                >
+                  {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+                </PDFDownloadLink>
+              </div>
+            </div>
           )}
         </div>
 
@@ -885,6 +898,10 @@ const AiPromptPage = () => {
         )}
 
 
+{/* Download Button */}
+
+
+
       </div>
 
     </div>
@@ -892,3 +909,4 @@ const AiPromptPage = () => {
 }
 
 export default AiPromptPage
+

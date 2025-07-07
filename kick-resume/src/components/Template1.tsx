@@ -58,7 +58,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
           className={`md:text-2xl text-lg mb-5 font-semibold text-center mt-5 text-white`}
           onClick={() => handleStringFeildClick("name", data.name)}
         >
-          {data.name}
+          {data.name || ""}
         </h1>
 
         {/* Divider */}
