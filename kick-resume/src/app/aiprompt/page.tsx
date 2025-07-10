@@ -94,6 +94,15 @@ const AiPromptPage = () => {
 
       const data = await res.json();
 
+      // Ensure certifications is always an array of strings
+      if (data.certifications && Array.isArray(data.certifications)) {
+        data.certifications = data.certifications.map((item: any) =>
+          typeof item === "string"
+            ? item
+            : [item.name, item.authority, item.date].filter(Boolean).join(" - ")
+        );
+      }
+
       // ✅ Add both user and AI messages to chat
       setPromptHistory((prev) => [
         ...prev,
@@ -367,6 +376,16 @@ const AiPromptPage = () => {
               }
 
               const data = await res.json();
+
+              // Ensure certifications is always an array of strings
+              if (data.certifications && Array.isArray(data.certifications)) {
+                data.certifications = data.certifications.map((item: any) =>
+                  typeof item === "string"
+                    ? item
+                    : [item.name, item.authority, item.date].filter(Boolean).join(" - ")
+                );
+              }
+
               setShowTemplate(true);
               setUserPrompt(""); // Clear input
 
