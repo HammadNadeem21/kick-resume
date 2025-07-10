@@ -278,15 +278,15 @@ const AiPromptPage = () => {
       handlePhoneClickFeild={handlePhoneClickFeild}
       handleEmailFieldClick={handleEmailClickFeild}
     />;
-    // if (selectedTemplate === 3) return <Template3 data={parsedData}
-    //   handleStringFeildClick={handleStringFieldClick}
-    //   handleArrayFieldClick={handleArrayFieldClick}
-    //   handleExperienceFieldClick={handleExperienceFieldClick}
-    //   handleProjectFieldClick={handleProjectFieldClick}
-    //   handleEducationFieldClick={handleEducationFieldClick}
-    //   handlePhoneClickFeild={handlePhoneClickFeild}
-    //   handleEmailFieldClick={handleEmailClickFeild}
-    // />;
+    if (selectedTemplate === 3) return <Template3 data={parsedData}
+      handleStringFeildClick={handleStringFieldClick}
+      handleArrayFieldClick={handleArrayFieldClick}
+      handleExperienceFieldClick={handleExperienceFieldClick}
+      handleProjectFieldClick={handleProjectFieldClick}
+      handleEducationFieldClick={handleEducationFieldClick}
+      handlePhoneClickFeild={handlePhoneClickFeild}
+      handleEmailFieldClick={handleEmailClickFeild}
+    />;
     return <p>Please select a template above.</p>;
   };
 

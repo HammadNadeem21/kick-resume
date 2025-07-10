@@ -111,7 +111,7 @@ const Template3 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                                         <h1 className='md:text-xs text-[10px] font-semibold'>{item.title}</h1>
                                     </ul>
 
-                                    <p className="md:text-xs text-[8px]">
+                                    <p className="md:text-sm text-xs font-medium">
                                         {item.description}
                                     </p>
                                     <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">

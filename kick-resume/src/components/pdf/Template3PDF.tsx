@@ -85,8 +85,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     marginBottom: 3,
-    fontSize: 11,
+    fontSize: 10,
     color: '#000',
+
   },
   bullet: {
     marginRight: 6,
@@ -160,13 +161,16 @@ export default function Template3PDF({ data }: { data: any }) {
 
           <View style={styles.contactRow}>
             <View style={styles.contactItem}>
+              <Text style={{ fontWeight: "bold", color: "#6b7280" }}>Email: </Text>
               <Text>{data.email}</Text>
             </View>
             <View style={styles.contactItem}>
+              <Text style={{ fontWeight: "bold", color: "#6b7280" }}>Phone: </Text>
               <Text>{data.phone}</Text>
             </View>
           </View>
           <View style={styles.contactItem}>
+            <Text style={{ fontWeight: "bold", color: "#6b7280" }}>Address: </Text>
             <Text>{data.address}</Text>
           </View>
         </View>
@@ -187,14 +191,19 @@ export default function Template3PDF({ data }: { data: any }) {
             <Text style={styles.sectionTitle}>Experience</Text>
             <View style={styles.list}>
               {data.experience?.map((item: any, i: number) => (
-                <View key={i} style={styles.experienceItem}>
-                  <View style={styles.listItem}>
-                    <Text style={styles.bullet}>•</Text>
-                    <Text style={styles.experienceTitle}>{item.title}</Text>
+                <View key={i} style={{ display: "flex", flexDirection: "column", marginTop: 10 }}>
+                  <View style={styles.experienceItem}>
+
+
+                    <View style={styles.listItem}>
+                      <Text style={styles.bullet}>•</Text>
+                      <Text style={styles.experienceTitle}>{item.title}</Text>
+                    </View>
+                    <Text style={styles.experienceDate}>
+                      ({item.startDate} - {item.endDate})
+                    </Text>
                   </View>
-                  <Text style={styles.experienceDate}>
-                    ({item.startDate} - {item.endDate})
-                  </Text>
+                  <Text style={{ fontSize: 10, lineHeight: 1 }}>{item.description}</Text>
                 </View>
               ))}
             </View>
@@ -231,9 +240,9 @@ export default function Template3PDF({ data }: { data: any }) {
                     <Text style={styles.bullet}>•</Text>
                     <Text style={styles.educationDegree}>{item.degree}</Text>
                   </View>
-                  <Text style={styles.educationYear}>
+                  {/* <Text style={styles.educationYear}>
                     ({item.startYear} - {item.endYear})
-                  </Text>
+                  </Text> */}
                 </View>
               ))}
             </View>
