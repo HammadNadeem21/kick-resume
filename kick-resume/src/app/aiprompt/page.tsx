@@ -9,13 +9,18 @@ import Template1 from '@/components/Template1';
 import { useDropzone } from 'react-dropzone';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import Template1PDF from '@/components/pdf/Template1PDF';
+import Template2PDF from '@/components/pdf/Template2PDF';
+import Template3PDF from '@/components/pdf/Template3PDF';
 
+import { IoSend } from "react-icons/io5";
+import Template2 from '@/components/Template2';
+import Template3 from '@/components/Template3';
 
 
 const templateData = [
   { image: '/templates/template1.png', name: 'Template 1', id: 1 },
-  // { image: '/templates/template2.png', name: 'Template 2', id: 2 },
-  // { image: '/templates/template3.png', name: 'Template 3', id: 3 },
+  { image: '/templates/template2.png', name: 'Template 2', id: 2 },
+  { image: '/templates/template3.png', name: 'Template 3', id: 3 },
 ]
 
 const AiPromptPage = () => {
@@ -29,12 +34,22 @@ const AiPromptPage = () => {
   // const [inputData, setInputData] = useState<string | string[]>()
   const [showEditor, setShowEditor] = useState(false)
   // const [editMode, setEditMode] = useState<'summary' | 'skills' | null>(null)
-  const [editType, setEditType] = useState<"string" | "array" | "experience" | "projects" | "education">("string");
+  const [editType, setEditType] = useState<"string" | "array" | "experience" | "projects" | "education" | "phone" | "email">("string");
   const [editField, setEditField] = useState<"skills" | "languages" | "certifications" | null>(null);
-  const [inputData, setInputData] = useState<string | string[]>([]);
+  const [inputData, setInputData] = useState<string | string[] | number>([]);
   const [newItem, setNewItem] = useState("");
   const [currentStringField, setCurrentStringField] = useState<string | null>(null);
   const [currentArrayField, setCurrentArrayField] = useState<string | null>(null);
+
+
+  // for phone number
+  const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
+  const [selectedField, setSelectedField] = useState<string | null>(null);
+
+  // for email
+  const [selectedEmail, setSelectedEmail] = useState<string | null>(null);
+  const [emailField, setEmailField] = useState<string | null>(null);
+
 
   // for experience field
   const [experienceData, setExperienceData] = useState<any[]>([]);
@@ -48,6 +63,11 @@ const AiPromptPage = () => {
   const [educationData, setEducationData] = useState<any[]>([]);
   const [currentEducationField, setCurrentEducationField] = useState<string | null>(null);
 
+  // For multiple prompt
+  const [promptHistory, setPromptHistory] = useState<
+    { type: "user" | "ai"; message: string }[]
+  >([])
+
 
 
   const handleGenerate = async () => {
@@ -60,28 +80,34 @@ const AiPromptPage = () => {
       const res = await fetch('/api/generate-resume', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: userPrompt })
-      })
+        body: JSON.stringify({
+          prompt: userPrompt,
+          existingResume: parsedData || {} // ✅ ye zaroor hona chahiye
+        })
+      });
+
       if (!res.ok) {
         const err = await res.json();
-        console.error("API Error:", err); // show actual error
         alert(err.error || "Something went wrong");
         return;
       }
 
       const data = await res.json();
-      setParsedData(data)
+
+      // ✅ Add both user and AI messages to chat
+      setPromptHistory((prev) => [
+        ...prev,
+        { type: "user", message: userPrompt },
+        { type: "ai", message: "✅ Resume created successfully!" },
+      ]);
+
+      setParsedData(data);
       setShowTemplate(true);
-    }
-    catch (error) {
+      setUserPrompt(""); // Clear field
+    } catch (error) {
       console.log("Error", error);
-
     }
-  }
-
-
-
-
+  };
 
 
   const onDrop = async (acceptedFiles: File[]) => {
@@ -99,11 +125,6 @@ const AiPromptPage = () => {
     multiple: false,
   });
 
-  // const handleSummaryClick = (data: string | string[]) => {
-  //   setInputData(data);
-  //   setEditType("string");
-  //   setShowEditor(true);
-  // };
 
   const handleStringFieldClick = (fieldName: string, value: string) => {
     setInputData(value);
@@ -192,65 +213,19 @@ const AiPromptPage = () => {
     setShowEditor(true);
   };
 
-  // const handleRemoveItem = (index: number) => {
-  //   const updated = [...(inputData as string[])];
-  //   updated.splice(index, 1);
-  //   setInputData(updated);
+  const handlePhoneClickFeild = (fieldName: string, data: number) => {
+    setSelectedField(fieldName);
+    setSelectedNumber(data);
+    setEditType("phone")
+    setShowEditor(true); // show modal
+  };
 
-  //   setParsedData((prev: any) => ({
-  //     ...prev,
-  //     [editField!]: updated,
-  //   }));
-  // };
-
-  // const handleAddItem = () => {
-  //   if (newItem.trim() === "") return;
-  //   const updated = [...(inputData as string[]), newItem.trim()];
-  //   setInputData(updated);
-  //   setNewItem("");
-
-  //   setParsedData((prev: any) => ({
-  //     ...prev,
-  //     [editField!]: updated,
-  //   }));
-  // };
-
-
-
-
-  // const handleGenerate = async () => {
-  //   if (!userPrompt || !selectedTemplate ) {
-  //     alert("Please write a prompt, select a template, and upload a picture!");
-  //     return;
-  //   }
-
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("prompt", userPrompt);
-  //     // formData.append("image", imageFile); // 🆕
-
-  //     const res = await fetch("/api/generate-resume", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     if (!res.ok) {
-  //       const err = await res.json();
-  //       console.error("API Error:", err);
-  //       alert(err.error || "Something went wrong");
-  //       return;
-  //     }
-
-  //     const data = await res.json();
-  //     setParsedData(data);
-  //     setShowTemplate(true);
-  //   } catch (error) {
-  //     console.log("Error", error);
-  //   }
-  // };
-
-
-
+  const handleEmailClickFeild = (fieldName: string, data: string) => {
+    setEmailField(fieldName);
+    setSelectedEmail(data);
+    setEditType("email")
+    setShowEditor(true); // show modal
+  };
 
   useEffect(() => {
     if (parsedData) {
@@ -266,6 +241,13 @@ const AiPromptPage = () => {
 
 
 
+  const scrollToBottom = () => {
+    const container = document.querySelector('.chat-container'); // add class below
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  };
+
   const renderSelectedTemplate = () => {
 
     if (selectedTemplate === 1) return <Template1 data={parsedData}
@@ -274,53 +256,39 @@ const AiPromptPage = () => {
       handleExperienceFieldClick={handleExperienceFieldClick}
       handleProjectFieldClick={handleProjectFieldClick}
       handleEducationFieldClick={handleEducationFieldClick}
+      handlePhoneClickFeild={handlePhoneClickFeild}
+      handleEmailFieldClick={handleEmailClickFeild}
 
     />;
-    if (selectedTemplate === 2) return <TemplateTwo />;
-    if (selectedTemplate === 3) return <TemplateThree />;
+    if (selectedTemplate === 2) return <Template2 data={parsedData}
+      handleStringFeildClick={handleStringFieldClick}
+      handleArrayFieldClick={handleArrayFieldClick}
+      handleExperienceFieldClick={handleExperienceFieldClick}
+      handleProjectFieldClick={handleProjectFieldClick}
+      handleEducationFieldClick={handleEducationFieldClick}
+      handlePhoneClickFeild={handlePhoneClickFeild}
+      handleEmailFieldClick={handleEmailClickFeild}
+    />;
+    // if (selectedTemplate === 3) return <Template3 data={parsedData}
+    //   handleStringFeildClick={handleStringFieldClick}
+    //   handleArrayFieldClick={handleArrayFieldClick}
+    //   handleExperienceFieldClick={handleExperienceFieldClick}
+    //   handleProjectFieldClick={handleProjectFieldClick}
+    //   handleEducationFieldClick={handleEducationFieldClick}
+    //   handlePhoneClickFeild={handlePhoneClickFeild}
+    //   handleEmailFieldClick={handleEmailClickFeild}
+    // />;
     return <p>Please select a template above.</p>;
   };
 
   const [showTemplate, setShowTemplate] = useState(false);
   useEffect(() => {
     setShowTemplate(false); // Reset jab prompt ya template change ho
-  }, [userPrompt, selectedTemplate]);
+  }, []);
 
-
-
-  // Summary Edit
-  // const handleSummaryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-
-  //   const newSummary = e.target.value;
-  //   setInputData(newSummary);
-
-  //   setParsedData((prev: any) => ({
-  //     ...prev,
-  //     summary: newSummary
-  //   }))
-
-  // }
-
-
-  // const handleEditorSave = () => {
-  //   if (editMode === 'summary') {
-  //     setParsedData((prev: any) => ({
-  //       ...prev,
-  //       summary: inputData,
-  //     }));
-  //   } else if (editMode === 'skills') {
-  //     const updatedSkills = typeof inputData === 'string'
-  //       ? inputData.split(',').map(item => item.trim())
-  //       : [];
-  //     setParsedData((prev: any) => ({
-  //       ...prev,
-  //       skills: updatedSkills,
-  //     }));
-  //   }
-
-  //   setShowEditor(false);
-  //   setEditMode(null);
-  // };
+  useEffect(() => {
+    scrollToBottom();
+  }, [promptHistory]);
 
 
 
@@ -333,20 +301,89 @@ const AiPromptPage = () => {
 
 
   console.log("Preview URL:", previewUrl);
+  // console.log("phone", parsedData.phone);
+
 
   return (
     <div className="px-[30px] py-[60px] mx-auto bg-myDarkBlue text-white min-h-screen">
 
-      <h1 className="text-3xl font-bold mb-6 text-myWhite">
-        Build Your AI-Powered Resume in Seconds
-      </h1>
 
-      <textarea
-        value={userPrompt}
-        onChange={(e) => setUserPrompt(e.target.value)}
-        placeholder="Type your prompt here..."
-        className="w-full h-40 p-4 text-black rounded-md mb-6"
-      />
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-4 text-myWhite">
+          Build Your Resume Chat-Wise
+        </h1>
+
+        {/* Chat Box */}
+        <div className="bg-gray-800 rounded-lg mx-auto w-[60%] p-4 h-[300px] overflow-y-auto chat-container">
+          {promptHistory.map((entry, index) => (
+            <div
+              key={index}
+              className={`px-4 py-2 rounded-lg mb-2 max-w-[80%] ${entry.type === "user"
+                ? "bg-blue-600 text-white ml-auto"
+                : "bg-green-600 text-white mr-auto"
+                }`}
+            >
+              {entry.message}
+            </div>
+          ))}
+        </div>
+
+        {/* Input Field */}
+        <div className="flex items-center gap-2 w-[60%] mx-auto border-2 border-primaryColor px-4 py-2">
+          <textarea
+            value={userPrompt}
+            onChange={(e) => setUserPrompt(e.target.value)}
+            placeholder="Type your prompt..."
+            className="flex-1 p-3  text-black rounded-md resize-none focus:outline-none bg-transparent"
+            rows={2}
+          />
+          <Button
+            className="bg-green-600 hover:bg-green-700 "
+            onClick={async () => {
+              if (!userPrompt || !selectedTemplate) {
+                alert("Please enter a prompt and select a template!");
+                return;
+              }
+
+              // 1. User message
+              setPromptHistory((prev) => [
+                ...prev,
+                { type: "user", message: userPrompt },
+              ]);
+
+              const res = await fetch("/api/generate-resume", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  prompt: userPrompt,
+                  existingResume: parsedData || {},
+                }),
+              });
+
+              if (!res.ok) {
+                const err = await res.json();
+                alert(err.error || "Something went wrong");
+                return;
+              }
+
+              const data = await res.json();
+              setShowTemplate(true);
+              setUserPrompt(""); // Clear input
+
+              // 2. AI response message
+              setPromptHistory((prev) => [
+                ...prev,
+                { type: "ai", message: "✅ Resume updated successfully!" },
+              ]);
+              setParsedData(data);
+
+            }}
+          >
+            Send <IoSend />
+          </Button>
+        </div>
+      </div>
+
 
       {/* Image Preview + Dropzone Uploader */}
       <div className="flex flex-col items-center mb-6">
@@ -402,12 +439,6 @@ const AiPromptPage = () => {
         Remove BG
       </Button>
 
-
-
-
-
-
-
       {processedUrl && (
         <div className='flex items-center justify-start gap-5 flex-wrap mt-5 mb-5'>
           {/* Original Image */}
@@ -434,8 +465,6 @@ const AiPromptPage = () => {
         </div>
       )}
 
-
-
       <div className="flex flex-wrap gap-6 mb-10">
         {templateData.map((template) => (
           <div key={template.id}
@@ -448,7 +477,6 @@ const AiPromptPage = () => {
           </div>
         ))}
       </div>
-
 
 
       <Button
@@ -464,78 +492,37 @@ const AiPromptPage = () => {
             <div>
               <div className='mt-5 w-[100%]'>{renderSelectedTemplate()}</div>
               <div className="flex justify-end mt-4">
-                <PDFDownloadLink
-                  document={<Template1PDF data={parsedData} />}
-                  fileName="resume.pdf"
-                  className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
-                >
-                  {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-                </PDFDownloadLink>
+                {selectedTemplate === 1 && (
+                  <PDFDownloadLink
+                    document={<Template1PDF data={parsedData} />}
+                    fileName="resume.pdf"
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
+                  >
+                    {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+                  </PDFDownloadLink>
+                )}
+                {selectedTemplate === 2 && (
+                  <PDFDownloadLink
+                    document={<Template2PDF data={parsedData} />}
+                    fileName="resume.pdf"
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
+                  >
+                    {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+                  </PDFDownloadLink>
+                )}
+                {selectedTemplate === 3 && (
+                  <PDFDownloadLink
+                    document={<Template3PDF data={parsedData} />}
+                    fileName="resume.pdf"
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
+                  >
+                    {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+                  </PDFDownloadLink>
+                )}
               </div>
             </div>
           )}
         </div>
-
-        {/* {
-          showEditor && (
-            <p className="bg-blue-500 h-[17%] mt-5">
-
-              <textarea value={inputData || ""}
-                onChange={handleSummaryChange} className='w-full h-[150px] text-black p-5' />
-              <Button variant={'outline'}
-                onClick={() => setShowEditor(false)}
-              >Save</Button>
-            </p>
-          )
-        } */}
-
-
-        {/* {showEditor && (
-          <div className="fixed inset-0 flex items-center justify-center bg-primaryColor bg-opacity-70 z-50">
-            <div className="bg-myMidblue p-6 rounded-md w-[400px]">
-              <h2 className="text-lg font-bold mb-4 text-black">Edit Summary</h2>
-              <textarea
-                value={inputData}
-                onChange={handleSummaryChange}
-                className="w-full h-32 resize-none border border-primaryColor rounded-md p-2 text-black bg-transparent"
-              />
-              <div className="flex justify-end mt-4">
-                <button
-                  className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                  onClick={() => setShowEditor(false)}
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        )} */}
-
-
-
-
-
-        {/* Slide-in Side Drawer Editor */}
-        {/* <div className={`fixed top-0 right-0 h-full w-[400px] bg-myWhite shadow-lg z-50 transition-transform duration-500 ease-in-out transform ${showEditor ? 'translate-x-0' : 'translate-x-full'}`}>
-          <div className="p-6">
-            <h2 className="text-lg font-bold mb-4 text-black">
-              {editMode === 'summary' ? 'Edit Summary' : 'Edit Skills'}
-            </h2>
-            <textarea
-              value={inputData}
-              onChange={handleSummaryChange}
-              className="w-full h-32 resize-none border border-primaryColor rounded-md p-2 text-black bg-transparent"
-            />
-            <div className="flex justify-end mt-4">
-              <button
-                className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                onClick={handleEditorSave}
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div> */}
 
 
         {showEditor && (
@@ -634,7 +621,7 @@ const AiPromptPage = () => {
                         />
                         <input
                           type="text"
-                          value={exp.endDate}
+                          value={exp.endDate === "Currently working" ? "" : exp.endDate}
                           onChange={(e) => {
                             const updated = [...experienceData];
                             updated[index].endDate = e.target.value;
@@ -642,8 +629,29 @@ const AiPromptPage = () => {
                           }}
                           placeholder="End Date"
                           className="p-2 border text-black"
+                          disabled={exp.endDate === "Currently working"}
                         />
+                        {/* current employer */}
+                        <div className='flex items-center gap-2'>
+                          <label htmlFor={`currentEmployer-${index}`} className='text-black'>Current Employer</label>
+                          <input
+                            type="checkbox"
+                            id={`currentEmployer-${index}`}
+                            checked={exp.endDate === "Currently working"}
+                            onChange={(e) => {
+                              const updated = [...experienceData];
+                              if (e.target.checked) {
+                                updated[index].endDate = "Currently working";
+                              } else {
+                                updated[index].endDate = "";
+                              }
+                              setExperienceData(updated);
+                            }}
+                          />
+                        </div>
                       </div>
+
+
                       <Button
                         onClick={() => {
                           const updated = [...experienceData];
@@ -875,7 +883,85 @@ const AiPromptPage = () => {
                         setShowEditor(false);
                       }}
                     >
-                      Save
+                      Save & Close
+                    </button>
+                  </div>
+                </div>
+              )}
+              {/* Phone Number Editor */}
+              {/* Phone Number Editor */}
+              {editType === "email" && (
+                <div className="p-6">
+                  <h2 className="text-lg font-bold mb-4 text-black">Edit Email</h2>
+
+                  <input
+                    type="email"
+                    className="w-full border border-gray-300 px-3 py-2 rounded mb-4 text-black"
+                    value={selectedEmail ?? ""}
+                    onChange={(e) => setSelectedEmail(e.target.value)}
+                    placeholder="Enter your Email"
+                  />
+
+                  <div className="flex justify-end gap-2">
+                    {/* <button
+                      className="px-4 py-2 bg-gray-300 rounded text-black"
+                      onClick={() => setShowEditor(false)}
+                    >
+                      Cancel
+                    </button> */}
+                    <button
+                      className="px-4 py-2 bg-blue-600 text-white rounded"
+                      onClick={() => {
+                        if (emailField && selectedEmail !== null) {
+                          setParsedData((prev: any) => ({
+                            ...prev,
+                            [emailField]: selectedEmail,
+                          }));
+                        }
+                        setShowEditor(false);
+                      }}
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+              )}
+
+
+
+              {/* Phone Editor */}
+              {editType === "phone" && (
+                <div className="p-6">
+                  <h2 className="text-lg font-bold mb-4 text-black">Edit Phone Number</h2>
+
+                  <input
+                    type="email"
+                    className="w-full border border-gray-300 px-3 py-2 rounded mb-4 text-black"
+                    value={selectedNumber ?? ""}
+                    onChange={(e) => setSelectedNumber(Number(e.target.value))}
+                    placeholder="Enter your Email"
+                  />
+
+                  <div className="flex justify-end gap-2">
+                    {/* <button
+                      className="px-4 py-2 bg-gray-300 rounded text-black"
+                      onClick={() => setShowEditor(false)}
+                    >
+                      Cancel
+                    </button> */}
+                    <button
+                      className="px-4 py-2 bg-blue-600 text-white rounded"
+                      onClick={() => {
+                        if (selectedField && selectedNumber !== null) {
+                          setParsedData((prev: any) => ({
+                            ...prev,
+                            [selectedField]: selectedNumber,
+                          }));
+                        }
+                        setShowEditor(false);
+                      }}
+                    >
+                      Add
                     </button>
                   </div>
                 </div>
@@ -890,7 +976,7 @@ const AiPromptPage = () => {
                   onClick={() => setShowEditor(false)}
                 >
 
-                  Save
+                  Close
                 </button>
               </div>
             </div>
@@ -898,7 +984,7 @@ const AiPromptPage = () => {
         )}
 
 
-{/* Download Button */}
+        {/* Download Button */}
 
 
 

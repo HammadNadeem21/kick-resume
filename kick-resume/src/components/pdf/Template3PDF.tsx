@@ -155,8 +155,8 @@ export default function Template3PDF({ data }: { data: any }) {
       <Page size="A4" style={styles.page}>
         {/* Header Section */}
         <View style={styles.headerContainer}>
-          <Text style={styles.fullName}>{data.fullName}</Text>
-          <Text style={styles.position}>{data.position}</Text>
+          <Text style={styles.fullName}>{data.name}</Text>
+          <Text style={styles.position}>{data.role}</Text>
 
           <View style={styles.contactRow}>
             <View style={styles.contactItem}>
@@ -209,10 +209,10 @@ export default function Template3PDF({ data }: { data: any }) {
                   <Text style={styles.projectDescription}>{item.description}</Text>
                   <View style={styles.projectLinkContainer}>
                     <Link style={styles.projectLink} src={item.github}>
-                       GitHub
+                      GitHub
                     </Link>
                     <Link style={styles.projectLink} src={item.live}>
-                       Live Demo
+                      Live Demo
                     </Link>
                   </View>
                 </View>

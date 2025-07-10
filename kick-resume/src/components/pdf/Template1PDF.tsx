@@ -40,10 +40,22 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: 4,
     marginLeft: 0,
-    marginTop: 0,
+    marginTop: 2,
+    fontSize: 10,
+  },
+  ExperienceItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 4,
+    marginLeft: 0,
+    marginTop: 2,
+    fontSize: 12,
+    fontWeight: "bold",
+
+
   },
   bullet: {
-    fontSize: 14,
+    fontSize: 10,
     color: 'white',
     marginRight: 6,
     marginTop: 0,
@@ -83,7 +95,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 12,
   },
-    projectLink: {
+  projectLink: {
     fontSize: 11,
     color: '#666',
     textDecoration: 'underline',
@@ -150,31 +162,46 @@ export default function Template1PDF({ data }: { data: any }) {
         </View>
         {/* Right Side */}
         <View style={styles.right}>
-          <Text style={styles.position}>{data.position}</Text>
+          <Text style={styles.position}>{data.role}</Text>
           <View style={styles.section}>
             <Text style={styles.heading}>Contact</Text>
+            {/* {data.phone && (
+              <Text style={styles.contact}>Phone: {data.phone}</Text>
+            )} */}
             <Text style={styles.contact}>Phone: {data.phone}</Text>
+            {/* {data.email && (
+              <Text style={styles.contact}>Email: {data.email}</Text>
+
+            )} */}
             <Text style={styles.contact}>Email: {data.email}</Text>
-            <Text style={styles.contact}>LinkedIn: {data.linkdinUrl}</Text>
+            {/* <Text style={styles.contact}>LinkedIn: {data.linkdinUrl}</Text> */}
+            {/* {data.address && (
+              <Text style={styles.contact}>Address: {data.address}</Text>
+
+            )} */}
             <Text style={styles.contact}>Address: {data.address}</Text>
           </View>
           <View style={styles.divider} />
           <View style={styles.section}>
             <Text style={styles.heading}>Summary</Text>
-            <Text>{data.summary}</Text>
+            <Text style={{ lineHeight: 1 }}>{data.summary}</Text>
           </View>
           <View style={styles.divider} />
           <View style={styles.section}>
             <Text style={styles.heading}>Experience</Text>
             {data.experience?.map((item: any, i: number) => (
-              <View key={i} style={styles.listItem}>
-                <Text style={styles.bulletRight}>{getBulletChar("#193042")}</Text>
-                <Text>
-                  {item.title} 
-                </Text>
+              <View key={i} style={{ marginBottom: 8, flexDirection: "column" }}>
+                <View style={styles.ExperienceItem}>
+                  <Text style={styles.bulletRight}>{getBulletChar("#193042")}</Text>
+                  <Text>
+                    {item.title}
+                  </Text>
+                </View>
+
+                <Text style={{ lineHeight: 1 }}>{item.description}</Text>
                 <Text style={{ marginLeft: 8, fontStyle: "italic" }}>
                   ({item.startDate} - {item.endDate})
-                 </Text>     
+                </Text>
               </View>
             ))}
           </View>
@@ -187,16 +214,16 @@ export default function Template1PDF({ data }: { data: any }) {
                   <Text style={styles.bulletRight}>{getBulletChar("#193042")}</Text>
                   <Text style={styles.projectTitle}>{item.name}</Text>
                 </View>
-                <Text>{item.description}</Text>
+                <Text style={{ lineHeight: 1 }}>{item.description}</Text>
                 {/* <Text>GitHub: {item.github}</Text> */}
-                                 <View style={styles.projectLinksContainer}>
-                                    <Link style={styles.projectLink} src={item.github}>
-                                      GitHub
-                                    </Link>
-                                    <Link style={styles.projectLink} src={item.live}>
-                                      Live Demo
-                                    </Link>
-                                  </View>
+                <View style={styles.projectLinksContainer}>
+                  <Link style={styles.projectLink} src={item.github}>
+                    GitHub
+                  </Link>
+                  <Link style={styles.projectLink} src={item.live}>
+                    Live Demo
+                  </Link>
+                </View>
                 {/* <Text>Live: {item.live}</Text> */}
               </View>
             ))}

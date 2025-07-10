@@ -11,20 +11,21 @@ import Link from "next/link";
 interface Data {
   name: string;
   role: string;
-  phone: string;
+  phone: number;
   email: string;
   address: string;
   summary: string;
   education: {
     degree: string;
-    startDate?: string;
-    endDate?: string;
+    // startDate?: string;
+    // endDate?: string;
   }[];
   skills: string[];
   languages: string[];
   certifications: string[];
   experience: {
     title: string;
+    companyName: string;
     description?: string;
     startDate?: string;
     endDate?: string;
@@ -33,13 +34,15 @@ interface Data {
 }
 
 
-export default function Template1({ data, handleStringFeildClick, handleArrayFieldClick, handleExperienceFieldClick, handleProjectFieldClick, handleEducationFieldClick }: {
+export default function Template1({ data, handleStringFeildClick, handleArrayFieldClick, handleExperienceFieldClick, handleProjectFieldClick, handleEducationFieldClick, handlePhoneClickFeild, handleEmailFieldClick }: {
   data: Data,
   handleStringFeildClick: (fieldName: string, value: string) => void,
   handleArrayFieldClick: (fieldName: string, data: string[]) => void,
   handleExperienceFieldClick: (fieldName: string, data: any[]) => void,
   handleProjectFieldClick: (fieldName: string, data: any[]) => void,
-  handleEducationFieldClick: (fieldName: string, data: any[]) => void
+  handleEducationFieldClick: (fieldName: string, data: any[]) => void,
+  handlePhoneClickFeild: (feildName: string, data: number) => void,
+  handleEmailFieldClick: (fieldName: string, data: string) => void
 
 }) {
   //   const { resumeData } = useResumeDataContext();
@@ -167,7 +170,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
 
       </div>
       {/* Right-side */}
-      <div className="py-3 md:px-5 px-2">
+      <div className="py-3 md:px-5 px-2 flex flex-col gap-2">
         <h1
           className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-[#193042]`}
           onClick={() => handleStringFeildClick('role', data.role)}
@@ -175,20 +178,31 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
           {data.role}
         </h1>
 
-        <div className="flex md:text-[15px] text-xs text-[#193042] items-center gap-1">
 
-          <h2 className="">{data.phone}</h2>
+        <div className="flex md:text-[14px] text-[10px] text-[#193042] items-center gap-1 cursor-pointer"
+          onClick={() => handlePhoneClickFeild("phone", data.phone)}
+        >
+          <h1 className="font-bold">Phone: </h1>
+          <h2 className="">{`+${data.phone}`}</h2>
         </div>
-        {/* email */}
-        <div className="flex md:text-[15px] text-xs text-[#193042] mt-1 mb-1">
 
+        {/* email */}
+        <div className="flex gap-1 md:text-[14px] text-[10px] text-[#193042] mt-1 mb-1 cursor-pointer"
+          onClick={() => handleEmailFieldClick("email", data.email)}
+        >
+          <h1 className="font-bold">Email: </h1>
           <h2 className="">{data.email}</h2>
         </div>
 
-        <div className="flex items-center mb-2 gap-1 text-[#193042] md:text-[15px] text-xs">
 
+        {/* Address */}
+        <div className="flex items-center mb-2 gap-1 text-[#193042] md:text-[14px] text-[10px] cursor-pointer"
+          onClick={() => handleStringFeildClick("address", data.address)}
+        >
+          <h1 className="font-bold">Address: </h1>
           <h2 className="">{data.address}</h2>
         </div>
+
 
         {/* Divider */}
         <div className="h-[1px] w-full bg-[#193042] mt-2"></div>
@@ -229,15 +243,16 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
                   key={i}
                   className={`flex flex-col justify-between text-[#193042]`}
                 >
-                  <ul className="list-disc md:text-[15px] text-xs">
-                    <li className=" font-bold mt-3">{item.title}</li>
+                  <ul className="mt-3 list-disc  md:text-[15px] text-xs flex gap-5">
+                    <li className=" font-bold">{item.companyName}</li>
+                    <h1 className="font-bold md:text-xs text-[10px]">{item.title}</h1>
                   </ul>
                   <p>{item.description}</p>
 
-                  {/* <div className="flex items-center gap-2 md:text-xs text-[8px]">
-                  <span>{`(${item.startDate}`}</span>
-                  <span>{`${item.endDate})`}</span>
-                </div> */}
+                  <div className="flex items-center gap-2 md:text-xs text-[7px]">
+                    <span>{`(${item.startDate}`}</span>
+                    <span>{item.endDate === "Currently working" ? "Currently working" : item.endDate}{")"}</span>
+                  </div>
                 </div>
               ))}
             </div>

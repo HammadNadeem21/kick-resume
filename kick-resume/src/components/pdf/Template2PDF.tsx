@@ -143,8 +143,8 @@ export default function Template2PDF({ data }: { data: any }) {
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.headerDivider} />
-        <Text style={styles.fullName}>{data.fullName}</Text>
-        <Text style={styles.position}>{data.position}</Text>
+        <Text style={styles.fullName}>{data.name}</Text>
+        <Text style={styles.position}>{data.role}</Text>
         <View style={styles.headerDivider} />
 
         <View style={styles.gridContainer}>
@@ -153,16 +153,17 @@ export default function Template2PDF({ data }: { data: any }) {
             <Text style={styles.sectionTitle}>Contact</Text>
             <View style={{ marginBottom: 15 }}>
               <View style={styles.contactItem}>
+
                 {/* <Text>📞</Text> */}
-                <Text style={styles.contactText}>{data.phone}</Text>
+                <Text style={styles.contactText}>Phone: {data.phone}</Text>
               </View>
               <View style={styles.contactItem}>
                 {/* <Text>📧</Text> */}
-                <Text style={styles.contactText}>{data.email}</Text>
+                <Text style={styles.contactText}>Email: {data.email}</Text>
               </View>
               <View style={styles.contactItem}>
                 {/* <Text>📍</Text> */}
-                <Text style={styles.contactText}>{data.address}</Text>
+                <Text style={styles.contactText}>Address: {data.address}</Text>
               </View>
             </View>
 

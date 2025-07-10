@@ -37,8 +37,6 @@
 //   }
 // }
 
-
-
 // app/api/generate-resume/route.ts
 
 console.log("GEMINI_API_KEY present:", !!process.env.GEMINI_API_KEY);
@@ -51,10 +49,10 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function POST(request: NextRequest) {
   try {
-    const { prompt } = await request.json();
+    const { prompt, existingResume } = await request.json();
     console.log("Prompt received:", prompt);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-   const result = await model.generateContent(`
+    const result = await model.generateContent(`
  You are a resume extraction AI. Read the prompt below and extract the following fields in **valid JSON format**.
 
 ### Instructions:
@@ -63,18 +61,33 @@ export async function POST(request: NextRequest) {
 - Extract only **relevant technologies and tools** — avoid vague or generic terms like "Web Development", "Communication", or "Programming".
 - Do not include job titles as skills.
 - Use clean and specific skills like "React.js", "Node.js", "PostgreSQL", "MongoDB", etc.
-- Experience descriptions should be 1–2 lines, clear and action-driven.
+- Experience descriptions should be 20 to 25 words, clear and action-driven.
 - Write a short, **first-person summary (under 80 words)** that sounds natural and professional.
+- Carefully **merge** new information into the existing resume. **Preserve all previous data**, unless the new prompt explicitly updates a specific field.
+
+
+- Each **experience** must contain:
+  - **title** (with company if provided)
+  - **description** (1–2 lines using action verbs like "Built", "Managed", "Developed", etc.)
+  - **startDate** and **endDate** in format "YYYY-MM". If dates are missing, estimate based on context.
+  
+
+- Do **not** remove or overwrite existing values unless the new prompt clearly updates them.
+- Keep the structure consistent.
 
 Return data in this strict JSON format:
   {
     "name": "",
     "role": "",
+    "email": "",
+    "phone": "",
+    "address": "",
     "summary": "",
     "skills": [],
     "experience": [
       {
         "title": "",
+        "companyName": "",
         "description": "",
         "startDate": "",
         "endDate": ""
@@ -96,11 +109,12 @@ Return data in this strict JSON format:
       }
     ]
   }
+### Existing Resume Data:
+${JSON.stringify(existingResume)}
 
-  Prompt: ${prompt}
-`);
-
-
+### New User Prompt:
+${prompt}
+    `);
 
     const response = await result.response;
     const text = await response.text();
@@ -111,7 +125,7 @@ Return data in this strict JSON format:
       const jsonData = JSON.parse(match[0]);
       return NextResponse.json(jsonData);
     } else {
-      throw new Error('No valid JSON found in response');
+      throw new Error("No valid JSON found in response");
     }
   } catch (error) {
     console.error("Error in generate-resume API:", error);
