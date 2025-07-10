@@ -284,7 +284,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
                   <p className="md:text-sm text-xs">{item.description}</p>
                   <div className="flex items-center gap-[100px] mt-3 md:text-sm text-xs">
                     <Link
-                      href="#"
+                      href="/aiprompt"
                       className="hover:underline hover:underline-offset-2 flex items-center gap-2"
                     >
 
@@ -294,7 +294,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
                     </Link>
 
                     <Link
-                      href="#"
+                      href="/aiprompt"
                       className="hover:underline hover:underline-offset-2 flex items-center gap-2"
                     >
                       <div className="flex items-center justify-center gap-1">

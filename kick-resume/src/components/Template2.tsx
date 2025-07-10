@@ -247,9 +247,9 @@ const Template2 = ({
                     </ul>
 
                     <div className="flex items-center gap-2 md:text-xs text-[7px]">
-                    <span>{`(${item.startDate}`}</span>
-                    <span>{`${item.endDate})`}</span>
-                  </div>
+                      <span>{`(${item.startDate}`}</span>
+                      <span>{`${item.endDate})`}</span>
+                    </div>
                   </div>
                   <p>{item.description}</p>
                 </div>
@@ -271,7 +271,7 @@ const Template2 = ({
                   <div className="flex items-center gap-[100px] mt-3">
 
                     <Link
-                      href={"#"}
+                      href={"/aiprompt"}
                       className="hover:underline hover:underline-offset-2 flex items-center gap-2 md:text-sm text-xs"
                     >
 
@@ -283,7 +283,7 @@ const Template2 = ({
 
 
                     <Link
-                      href={'#'}
+                      href={'/aiprompt'}
                       className="hover:underline hover:underline-offset-2 flex items-center gap-2"
                     >
                       <div className="flex items-center justify-center gap-1">
