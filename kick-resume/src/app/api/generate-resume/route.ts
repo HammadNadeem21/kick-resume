@@ -62,13 +62,14 @@ export async function POST(request: NextRequest) {
 - Do not include job titles as skills.
 - Use clean and specific skills like "React.js", "Node.js", "PostgreSQL", "MongoDB", etc.
 - Experience descriptions should be 20 to 25 words, clear and action-driven.
+- Project descriptions should be 15 to 20 words, clear and action-driven.
 - Write a short, **first-person summary (under 80 words)** that sounds natural and professional.
 - Carefully **merge** new information into the existing resume. **Preserve all previous data**, unless the new prompt explicitly updates a specific field.
 
 
 - Each **experience** must contain:
   - **title** (with company if provided)
-  - **description** (1–2 lines using action verbs like "Built", "Managed", "Developed", etc.)
+  - **description** (20 to 25 words using action verbs like "Built", "Managed", "Developed", etc.)
   - **startDate** and **endDate** in format "YYYY-MM". If dates are missing, estimate based on context.
   
 

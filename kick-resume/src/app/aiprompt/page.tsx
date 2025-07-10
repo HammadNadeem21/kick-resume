@@ -15,12 +15,14 @@ import Template3PDF from '@/components/pdf/Template3PDF';
 import { IoSend } from "react-icons/io5";
 import Template2 from '@/components/Template2';
 import Template3 from '@/components/Template3';
+import Template4 from '@/components/Template4';
 
 
 const templateData = [
   { image: '/templates/template1.png', name: 'Template 1', id: 1 },
   { image: '/templates/template2.png', name: 'Template 2', id: 2 },
   { image: '/templates/template3.png', name: 'Template 3', id: 3 },
+  { image: '/templates/template3.png', name: 'Template 4', id: 4 },
 ]
 
 const AiPromptPage = () => {
@@ -287,6 +289,15 @@ const AiPromptPage = () => {
       handlePhoneClickFeild={handlePhoneClickFeild}
       handleEmailFieldClick={handleEmailClickFeild}
     />;
+    if (selectedTemplate === 4) return <Template4 data={parsedData}
+      handleStringFeildClick={handleStringFieldClick}
+      handleArrayFieldClick={handleArrayFieldClick}
+      handleExperienceFieldClick={handleExperienceFieldClick}
+      handleProjectFieldClick={handleProjectFieldClick}
+      handleEducationFieldClick={handleEducationFieldClick}
+      handlePhoneClickFeild={handlePhoneClickFeild}
+      handleEmailFieldClick={handleEmailClickFeild}
+    />;
     return <p>Please select a template above.</p>;
   };
 
@@ -530,6 +541,15 @@ const AiPromptPage = () => {
                   </PDFDownloadLink>
                 )}
                 {selectedTemplate === 3 && (
+                  <PDFDownloadLink
+                    document={<Template3PDF data={parsedData} />}
+                    fileName="resume.pdf"
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
+                  >
+                    {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+                  </PDFDownloadLink>
+                )}
+                {selectedTemplate === 4 && (
                   <PDFDownloadLink
                     document={<Template3PDF data={parsedData} />}
                     fileName="resume.pdf"
