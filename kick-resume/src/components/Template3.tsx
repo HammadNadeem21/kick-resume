@@ -39,7 +39,7 @@ const Template3 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
     handleEmailFieldClick: (fieldName: string, data: string) => void
 }) => {
     return (
-        <div className="bg-myWhite px-7 py-7">
+        <div className="bg-myWhite px-7 py-7 md:w-[70%] w-[100%]">
             <div className="flex flex-col gap-3 md:w-[70%] w-[100%]">
                 <h1 className="lg:text-4xl md:text-3xl text-2xl font-bold text-black cursor-pointer"
                     onClick={() => handleStringFeildClick("name", data.name)}

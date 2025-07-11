@@ -28,8 +28,26 @@ interface Data {
     projects: { name: string; description: string; github?: string; live?: string }[];
 }
 
+interface Color  {
+r : number;
+g : number;
+b : number
+}
 
-const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handleExperienceFieldClick, handleProjectFieldClick, handleEducationFieldClick, handlePhoneClickFeild, handleEmailFieldClick }: {
+const Template4 = ({
+    data,
+    handleStringFeildClick,
+    handleArrayFieldClick,
+    handleExperienceFieldClick,
+    handleProjectFieldClick,
+    handleEducationFieldClick,
+    handlePhoneClickFeild,
+    handleEmailFieldClick,
+    imageUrl,
+    imageBgColor,
+    selectedTheme, // Add selectedTheme prop here
+    color
+}: {
     data: Data,
     handleStringFeildClick: (fieldName: string, value: string) => void,
     handleArrayFieldClick: (fieldName: string, data: string[]) => void,
@@ -37,18 +55,22 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
     handleProjectFieldClick: (fieldName: string, data: any[]) => void,
     handleEducationFieldClick: (fieldName: string, data: any[]) => void,
     handlePhoneClickFeild: (feildName: string, data: number) => void,
-    handleEmailFieldClick: (fieldName: string, data: string) => void
+    handleEmailFieldClick: (fieldName: string, data: string) => void,
+    imageUrl?: string,
+    imageBgColor?: string,
+    selectedTheme?: any // Add selectedTheme prop type here
+    color : Color
 }) => {
     return (
-        <div className="bg-myWhite ">
+        <div className="bg-myWhite md:w-[70%] w-[100%] ">
 
-            <div className="grid grid-cols-[70%,30%] gap-3 w-[100%] bg-[#f96b07] px-5 py-5">
+            <div className="grid grid-cols-[70%,30%] gap-3 w-[100%] px-5 py-5" style={{ backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}>
                 <div className="">
                     <div className=''>
-                        <h1 className="lg:text-4xl md:text-3xl text-2xl font-bold text-[#fcb583] cursor-pointer"
+                        <h1 className="lg:text-4xl md:text-3xl text-2xl font-bold cursor-pointer text-white" 
                             onClick={() => handleStringFeildClick("name", data.name)}
                         >{data.name}</h1>
-                        <h2 className="cursor-pointer md:text-2xl text-xl md:font-bold font-semibold text-[#fcb583]"
+                        <h2 className="cursor-pointer md:text-2xl text-xl md:font-bold font-semibold text-white"
                             onClick={() => handleStringFeildClick("role", data.role)}
                         >
                             {data.role}
@@ -56,22 +78,22 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                     </div>
 
                     <div className='w-[70%]'>
-                        <div className="flex justify-between text-[#fcb583] md:text-sm text-xs mt-3">
-                            <div className="flex gap-2 items-center cursor-pointer"
+                        <div className="flex justify-between" >
+                            <div className="flex gap-2 items-center cursor-pointer text-white"
                                 onClick={() => handleEmailFieldClick("email", data.email)}
                             >
                                 <h1 className='font-bold'>Email: </h1>
                                 <p>{data.email}</p>
                             </div>
 
-                            <div className="flex gap-2 items-center cursor-pointer"
+                            <div className="flex gap-2 items-center cursor-pointer text-white"
                                 onClick={() => handlePhoneClickFeild('phone', data.phone)}
                             >
                                 <h1 className='font-bold'>Phone: </h1>
                                 <p>{`+${data.phone}`}</p>
                             </div>
                         </div>
-                        <div className="flex gap-2 items-center text-[#fcb583] md:text-sm text-xs cursor-pointer mt-1"
+                        <div className="flex gap-2 items-center md:text-sm text-xs cursor-pointer mt-1" style={{ color: selectedTheme?.headerText }}
                             onClick={() => handleStringFeildClick('address', data.address)}
                         >
                             <h1 className='font-bold'>Address: </h1>
@@ -80,8 +102,8 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                     </div>
                 </div>
 
-                <div className="flex justify-end">
-                    <Image src='/dummy.jpg' alt='dummy' height={100} width={100} className='h-[130px] w-[90px] mr-5' />
+                <div className={`flex justify-end items-center h-[150px] w-[150px] mt-4 rounded-full overflow-hidden ${imageBgColor || 'bg-gray-300'}`}>
+                    <Image src={imageUrl ?? '/dummy.jpg'} alt='User' height={100} width={100} className='w-full h-full object-cover' />
                 </div>
 
             </div>
@@ -96,8 +118,10 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                     <div className='cursor-pointer'
                         onClick={() => handleExperienceFieldClick('experience', data.experience)}
                     >
-                        <div className="md:px-2 px-1 py-[2px] border-b-2 border-[#f96b07]">
-                            <h1 className="md:text-xl text-lg font-bold text-[#f96b07]">Experience</h1>
+                        <div className="md:px-2 px-1 py-[2px] border-b-2" style={{ borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}>
+                            <h1 className="md:text-xl text-lg font-bold"
+                            style={{color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}
+                            >Experience</h1>
                         </div>
 
                         <div className=" md:px-5 px-0 ml-3 mt-3 text-black">
@@ -105,7 +129,9 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                                 <div key={i} className="flex flex-col mt-3">
                                     <div className="flex flex-col gap-[2px]">
                                         <ul className="list-disc md:text-sm text-xs flex items-center gap-5">
-                                            <li className='font-bold text-[#f5b35d]'>{item.title}</li>
+                                            <li className='font-bold'
+                                            style={{color:`rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`}}
+                                            >{item.title}</li>
                                         </ul>
                                         <h1 className='md:text-xs text-[10px] font-bold text-gray-500'>{item.companyName}</h1>
 
@@ -161,14 +187,22 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                     <div className='cursor-pointer mt-4'
                         onClick={() => handleProjectFieldClick('projects', data.projects)}
                     >
-                        <div className="md:px-2 px-1 py-[2px] border-b-2 border-[#f96b07]">
-                            <h1 className="md:text-xl text-lg font-bold text-[#f96b07]">Projects</h1>
+                        <div className="md:px-2 px-1 py-[2px] border-b-2 "
+                        style={{ borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}
+                        >
+                            <h1 className="md:text-xl text-lg font-bold"
+                            style={{color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}
+                            >Projects</h1>
                         </div>
 
-                        <ul className="md:px-5 px-0 ml-3 mt-2 text-[#f5b35d] list-disc md:text-lg text-sm font-semibold">
+                        <ul className="md:px-5 px-0 ml-3 mt-2 list-disc md:text-lg text-sm font-semibold">
                             {data.projects.map((item: any, i: number) => (
-                                <li className="mt-5 mb-5" key={i}>
-                                    <h1 className=" md:text-sm text-xs font-bold text-[#f5b35d]">{item.name}</h1>
+                                <li className="mt-5 mb-5" key={i}
+                                style={{color:`rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`}}
+                                >
+                                    <h1 className=" md:text-sm text-xs font-bold"
+                                    style={{color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}
+                                    >{item.name}</h1>
                                     <p className="md:text-xs text-[10px] font-medium text-gray-800">{item.description}</p>
                                     <div className="flex items-center md:gap-[100px] gap-[70px] mt-1 text-gray-800 md:text-sm text-xs">
                                         <Link
@@ -186,9 +220,7 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                                             className="hover:underline hover:underline-offset-2 flex items-center gap-2"
                                         >
 
-                                            <h1 className="flex items-center gap-1">
-                                                live demo
-                                            </h1>
+                                            <h1 className="flex items-center gap-1">live demo</h1>
 
                                         </Link>
                                     </div>
@@ -206,8 +238,12 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                     <div className='cursor-pointer'
                         onClick={() => handleStringFeildClick('summary', data.summary)}
                     >
-                        <div className=" mt-[1px] px-1 border-b-2 border-[#f96b07]">
-                            <h1 className="md:text-xl text-lg font-bold text-[#f96b07]">Summary</h1>
+                        <div className=" mt-[1px] px-1 border-b-2"
+                        style={{ borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}
+                        >
+                            <h1 className="md:text-xl text-lg font-bold"
+                            style={{color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}
+                            >Summary</h1>
                         </div>
                         {/* <div className="md:px-4 px-0 ml-5 mt-3 text-black flex flex-col gap-3">
                             {data.education.map((item: any, i: number) => (
@@ -233,8 +269,12 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                     <div className='cursor-pointer mt-4'
                         onClick={() => handleEducationFieldClick('education', data.education)}
                     >
-                        <div className=" mt-[1px] px-1 border-b-2 border-[#f96b07]">
-                            <h1 className="md:text-xl text-lg font-bold text-[#f96b07]">Education</h1>
+                        <div className=" mt-[1px] px-1 border-b-2"
+                        style={{ borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}
+                        >
+                            <h1 className="md:text-xl text-lg font-bold"
+                            style={{color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}
+                            >Education</h1>
                         </div>
                         <div className="md:px-4 px-0 ml-5 mt-3 flex flex-col gap-1">
                             {data.education.map((item: any, i: number) => (
@@ -242,7 +282,7 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                                     key={i}
                                     className=" items-center justify-between text-gray-800"
                                 >
-                                    <ul className="list-disc md:text-sm text-xs">
+                                    <ul className="list-disc md:text-sm text-xs text-gray-800">
                                         <li>{item.degree}</li>
                                     </ul>
                                     {/* <p className="text-gray-500 md:text-sm text-[9px] text-right">
@@ -281,9 +321,12 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                     <div className="mt-4 cursor-pointer"
                         onClick={() => handleArrayFieldClick('languages', data.languages)}
                     >
-                        <div className="mt-[1px] px-1 border-b-2 border-[#f96b07]">
+                        <div className="mt-[1px] px-1 border-b-2"
+                        style={{ borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}
+                        >
                             <h1
-                                className={`md:text-xl text-lg font-bold text-[#f96b07]`}
+                                className={`md:text-xl text-lg font-bold`}
+                                style={{color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}
                             >
                                 Languages
                             </h1>
@@ -295,7 +338,7 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                                     key={i}
                                     className=" items-center justify-between text-gray-800"
                                 >
-                                    <ul className="list-disc md:text-sm text-xs">
+                                    <ul className="list-disc md:text-sm text-xs text-gray-800">
                                         <li>{item}</li>
                                     </ul>
                                     {/* <p className="text-gray-500 md:text-sm text-[9px] text-right">
@@ -328,9 +371,12 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                     <div className="mt-4 cursor-pointer"
                         onClick={() => handleArrayFieldClick('certifications', data.certifications)}
                     >
-                        <div className="mt-[1px] px-1 border-b-2 border-[#f96b07]">
+                        <div className="mt-[1px] px-1 border-b-2"
+                        style={{ borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}
+                        >
                             <h1
-                                className={`md:text-xl text-lg font-bold text-[#f96b07]`}
+                                className={`md:text-xl text-lg font-bold `}
+                                style={{color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}
                             >
                                 Certifications
                             </h1>
@@ -342,8 +388,8 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                                     key={i}
                                     className=" items-center justify-between text-gray-800"
                                 >
-                                    <ul className="list-disc md:text-sm text-xs">
-                                        <li>{item}</li>
+                                    <ul className="list-disc md:text-sm text-xs text-gray-800">
+                                        <li >{item}</li>
                                     </ul>
                                     {/* <p className="text-gray-500 md:text-sm text-[9px] text-right">
                                         ({item.startYear} - {item.endYear})
@@ -359,13 +405,19 @@ const Template4 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                         onClick={() => handleArrayFieldClick('skills', data.skills)}
                     >
 
-                        <div className="md:px-2 px-1 py-[2px] border-b-2 border-[#f96b07]">
-                            <h1 className="md:text-xl text-lg font-bold text-[#f96b07]">Tech Stack</h1>
+                        <div className="md:px-2 px-1 py-[2px] border-b-2"
+                        style={{ borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}
+                        >
+                            <h1 className="md:text-xl text-lg font-bold "
+                            style={{color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}
+                            >Tech Stack</h1>
                         </div>
 
                         <div className="mt-3 flex gap-2 flex-wrap">
                             {data.skills.map((item: string, index: number) => (
-                                <div className="bg-[#f5b35d] rounded-xl px-2 py-1" key={index}>
+                                <div className=" rounded-full px-2 py-1" key={index}
+                                style={{backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`}}
+                                >
                                     <h1 className='md:text-sm text-xs'>{item}</h1>
                                 </div>
                             ))}

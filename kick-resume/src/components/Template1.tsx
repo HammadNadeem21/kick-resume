@@ -54,7 +54,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
 
 
   return (
-    <div className="bg-myWhite grid grid-cols-[35%,65%] text-gray-700">
+    <div className="bg-myWhite grid grid-cols-[35%,65%] text-gray-700 md:w-[70%] w-[100%]">
       {/* left-side */}
       <div className="bg-[#193042] py-2 md:px-3 px-1">
         <h1
