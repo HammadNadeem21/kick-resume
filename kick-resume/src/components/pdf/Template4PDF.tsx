@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-    
+
   },
   sectionGrid: {
     flexDirection: 'row',
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
 
 
 
-export default function Template4PDF({ data, imageUrl, imageBgColor,  color }: { data: any, imageUrl: string, imageBgColor?: string, color: any}) {
+export default function Template4PDF({ data, imageUrl, imageBgColor, color }: { data: any, imageUrl: string, imageBgColor?: string, color: any }) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -172,7 +172,7 @@ export default function Template4PDF({ data, imageUrl, imageBgColor,  color }: {
           <View style={styles.headerLeft}>
             <Text style={{ ...styles.name }}>{data.name}</Text>
             <Text style={{ ...styles.role }}>{data.role}</Text>
-            <View style={{ ...styles.contactRow}}>
+            <View style={{ ...styles.contactRow }}>
               <View style={styles.contactItem}>
                 <Text>Email: </Text>
                 <Text>{data.email}</Text>
@@ -184,15 +184,16 @@ export default function Template4PDF({ data, imageUrl, imageBgColor,  color }: {
             </View>
             {/* <Text style={{ ...styles.address}}>{data.address}</Text> */}
             <View style={styles.contactItem}>
-                <Text style={styles.address}>Address: </Text>
-                <Text style={styles.address}>{data.address}</Text>
-              </View>
+              <Text style={styles.address}>Address: </Text>
+              <Text style={styles.address}>{data.address}</Text>
+            </View>
           </View>
           <View style={{ ...styles.headerRight, backgroundColor: imageBgColor || styles.headerRight.backgroundColor }}>
             {imageUrl ? (
+              // eslint-disable-next-line jsx-a11y/alt-text
               <Image
                 src={imageUrl}
-                style={{ width: 150, height: 150, borderRadius: 75, objectFit: 'cover' }}
+                style={{ width: 150, height: 150, borderRadius: 75, objectFit: "cover" }}
               />
             ) : (
               <View style={{ width: 100, height: 100, borderRadius: 50, backgroundColor: '#eee' }} />
@@ -261,7 +262,7 @@ export default function Template4PDF({ data, imageUrl, imageBgColor,  color }: {
             </View>
 
             {/* Languages */}
-            <Text style={{ ...styles.sectionTitle, color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`, borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}>Languages</Text>
+            <Text style={{ ...styles.sectionTitle, color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`, borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}>Languages</Text>
             <View style={styles.list}>
               {data.languages?.map((item: string, i: number) => (
                 <View key={i} style={styles.listItem}>
@@ -286,7 +287,7 @@ export default function Template4PDF({ data, imageUrl, imageBgColor,  color }: {
             <Text style={{ ...styles.sectionTitle, color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`, borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}>Tech Stack</Text>
             <View style={styles.techStack}>
               {data.skills?.map((item: string, i: number) => (
-                <Text key={i} style={{ ...styles.techItem, backgroundColor:`rgba(${color.r}, ${color.g}, ${color.b}, 0.6)` }}>{item}</Text>
+                <Text key={i} style={{ ...styles.techItem, backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.6)` }}>{item}</Text>
               ))}
             </View>
           </View>

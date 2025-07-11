@@ -17,7 +17,6 @@ import Template2 from '@/components/Template2';
 import Template3 from '@/components/Template3';
 import Template4 from '@/components/Template4';
 import Template4PDF from '@/components/pdf/Template4PDF';
-import ColorPicker from '@/components/ColorPicker';
 
 import { RgbColorPicker } from "react-colorful";
 
@@ -108,7 +107,7 @@ const AiPromptPage = () => {
 
   // for color picker
   const [showColorPicker, setShowColorPicker] = useState(false)
-  const [color, setColor] = useState({ r: 200, g: 150, b: 35});
+  const [color, setColor] = useState({ r: 200, g: 150, b: 35 });
 
   // for phone number
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
@@ -403,131 +402,131 @@ const AiPromptPage = () => {
           Build Your Resume Chat-Wise
         </h1>
 
-{/* Select Template */}
+        {/* Select Template */}
         <div className="flex flex-wrap justify-center gap-6 mb-10">
-        {templateData.map((template) => (
-          <div
-            key={template.id}
-            onClick={() => getTemplateId(template.id)}
-            className={`relative cursor-pointer rounded-md transition-all duration-300 `}
-          >
-            <div className='h-[280px] w-[200px]'>
-            <Image src={template.image} alt={template.name} height={150} width={150} className='h-full w-full'/>
-            </div>
-            {selectedTemplate === template.id && (
-              <div
-                className="absolute inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center pointer-events-none"
-                style={{ zIndex: 10 }}
-              >
-                <div className="border border-white text-white rounded-full px-1 py-1 z-20">                
-                  <TiTick size={50}/>
+          {templateData.map((template) => (
+            <div
+              key={template.id}
+              onClick={() => getTemplateId(template.id)}
+              className={`relative cursor-pointer rounded-md transition-all duration-300 `}
+            >
+              <div className='h-[280px] w-[200px]'>
+                <Image src={template.image} alt={template.name} height={150} width={150} className='h-full w-full' />
+              </div>
+              {selectedTemplate === template.id && (
+                <div
+                  className="absolute inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center pointer-events-none"
+                  style={{ zIndex: 10 }}
+                >
+                  <div className="border border-white text-white rounded-full px-1 py-1 z-20">
+                    <TiTick size={50} />
                   </div>
- 
+
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Upload Image */}
+        {selectedTemplate === 4 && (
+          <div>
+            <div className="flex flex-col items-center mb-6">
+              <div className="w-[200px] h-[200px] rounded-full border-2 border-white overflow-hidden mb-3">
+                {previewUrl ? (
+                  <Image
+                    width={158}
+                    height={158}
+                    src={previewUrl}
+                    alt="Preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-300 flex items-center justify-center text-sm text-gray-600">
+                    No Image
+                  </div>
+                )}
+              </div>
+
+              {/* Dropzone uploader */}
+              <div {...getRootProps()} className="text-center cursor-pointer border border-dashed border-gray-400 rounded-md p-2 hover:bg-white/10 transition-all">
+                <input {...getInputProps()} />
+                <p className="text-sm text-gray-300">
+                  {isDragActive ? 'Drop the image here...' : 'Click or drag an image to upload'}
+                </p>
+              </div>
+            </div>
+
+
+
+            <Button
+              className="bg-blue-600 hover:bg-blue-700 mt-4 mb-4"
+              onClick={async () => {
+                if (!imageFile) return alert("Please upload an image!");
+
+                const fd = new FormData();
+                fd.append("image", imageFile);
+
+                const res = await fetch("/api/process-image", {
+                  method: "POST",
+                  body: fd,
+                });
+
+                const json = await res.json();
+
+                if (json.url) {
+                  setProcessedUrl(json.url); // set processed image (no bg + colored bg)
+                } else {
+                  alert("Failed to process image");
+                }
+              }}
+            >
+              Remove BG
+            </Button>
+
+            {processedUrl && (
+              <div className='flex items-center justify-start gap-5 flex-wrap mt-5 mb-5'>
+                {/* Original Image */}
+                <div
+                  onClick={() => {
+                    setSelectedProcessedImage(previewUrl);
+                    setSelectedImageBgColor(undefined); // Reset background color on click
+                  }}
+                  className={`w-[170px] h-[170px] rounded-full flex items-center justify-center overflow-hidden cursor-pointer border-4 transition-all duration-300 ${selectedProcessedImage === previewUrl && !selectedImageBgColor ? 'border-primaryColor' : 'border-none'}`}
+                >
+                  <Image
+                    src={previewUrl ?? '/dummy.jpg'}
+                    width={170}
+                    height={170}
+                    alt="Original"
+                    className="object-contain"
+                  />
+                </div>
+                {/* Processed Images (with colored backgrounds) */}
+                {['bg-blue-500', 'bg-white', 'bg-green-500', 'bg-gray-500', 'bg-yellow-500'].map((bg, index) => (
+                  <div
+                    key={index}
+                    onClick={() => {
+                      setSelectedProcessedImage(processedUrl);
+                      setSelectedImageBgColor(bg); // Set background color on click
+                    }}
+                    className={`w-[170px] h-[170px] rounded-full ${bg} flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${selectedProcessedImage === processedUrl && selectedImageBgColor === bg ? 'ring-4 ring-primaryColor' : ''}`}
+                  >
+                    <Image
+                      src={processedUrl}
+                      width={160}
+                      height={160}
+                      alt={`Processed Image ${index}`}
+                      className="object-fill mt-4"
+                    />
+                  </div>
+                ))}
+
               </div>
             )}
           </div>
-        ))}
-      </div>
+        )}
 
-      {/* Upload Image */}
-      {selectedTemplate === 4 && (
-        <div>
-          <div className="flex flex-col items-center mb-6">
-        <div className="w-[200px] h-[200px] rounded-full border-2 border-white overflow-hidden mb-3">
-          {previewUrl ? (
-            <Image
-              width={158}
-              height={158}
-              src={previewUrl}
-              alt="Preview"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full bg-gray-300 flex items-center justify-center text-sm text-gray-600">
-              No Image
-            </div>
-          )}
-        </div>
-
-        {/* Dropzone uploader */}
-        <div {...getRootProps()} className="text-center cursor-pointer border border-dashed border-gray-400 rounded-md p-2 hover:bg-white/10 transition-all">
-          <input {...getInputProps()} />
-          <p className="text-sm text-gray-300">
-            {isDragActive ? 'Drop the image here...' : 'Click or drag an image to upload'}
-          </p>
-        </div>
-      </div>
-
-
-
-      <Button
-        className="bg-blue-600 hover:bg-blue-700 mt-4 mb-4"
-        onClick={async () => {
-          if (!imageFile) return alert("Please upload an image!");
-
-          const fd = new FormData();
-          fd.append("image", imageFile);
-
-          const res = await fetch("/api/process-image", {
-            method: "POST",
-            body: fd,
-          });
-
-          const json = await res.json();
-
-          if (json.url) {
-            setProcessedUrl(json.url); // set processed image (no bg + colored bg)
-          } else {
-            alert("Failed to process image");
-          }
-        }}
-      >
-        Remove BG
-      </Button>
-
-      {processedUrl && (
-        <div className='flex items-center justify-start gap-5 flex-wrap mt-5 mb-5'>
-          {/* Original Image */}
-          <div
-            onClick={() => {
-              setSelectedProcessedImage(previewUrl);
-              setSelectedImageBgColor(undefined); // Reset background color on click
-            }}
-            className={`w-[170px] h-[170px] rounded-full flex items-center justify-center overflow-hidden cursor-pointer border-4 transition-all duration-300 ${selectedProcessedImage === previewUrl && !selectedImageBgColor ? 'border-primaryColor' : 'border-none'}`}
-          >
-            <Image
-              src={previewUrl ?? '/dummy.jpg'}
-              width={170}
-              height={170}
-              alt="Original"
-              className="object-contain"
-            />
-          </div>
-          {/* Processed Images (with colored backgrounds) */}
-          {['bg-blue-500', 'bg-white', 'bg-green-500', 'bg-gray-500', 'bg-yellow-500'].map((bg, index) => (
-            <div
-              key={index}
-              onClick={() => {
-                setSelectedProcessedImage(processedUrl);
-                setSelectedImageBgColor(bg); // Set background color on click
-              }}
-              className={`w-[170px] h-[170px] rounded-full ${bg} flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${selectedProcessedImage === processedUrl && selectedImageBgColor === bg ? 'ring-4 ring-primaryColor' : ''}`}
-            >
-              <Image
-                src={processedUrl}
-                width={160}
-                height={160}
-                alt={`Processed Image ${index}`}
-                className="object-fill mt-4"
-              />
-            </div>
-          ))}
-
-        </div>
-      )}
-        </div>
-      )}
-      
 
         {/* Chat Box */}
         <div className="bg-gray-800 rounded-lg mx-auto w-[60%] p-4 h-[300px] overflow-y-auto chat-container">
@@ -617,51 +616,51 @@ const AiPromptPage = () => {
 
 
 
-<div className="flex items-center gap-10">
-      {/* <Button
+      <div className="flex items-center gap-10">
+        {/* <Button
         variant='secondary'
         className='bg-myMidblue hover:bg-myMidblue/60'
         onClick={handleGenerate}
       >Create</Button> */}
 
-      {/* Theme Selection Section */}
-      {selectedTemplate === 4 && (
-        // <div className="mb-8 mt-5">
-        //   <h2 className="text-xl font-bold mb-3 text-myWhite">Choose Theme</h2>
-        //   <div className="flex gap-4">
-        //     {themes.map((theme, index) => (
-        //       <div
-        //         key={index}
-        //         className={`flex items-center gap-2 cursor-pointer p-2 rounded-md border-2 transition-all duration-300
-        //           ${selectedTheme.name === theme.name ? 'border-primaryColor' : 'border-gray-700'}
-        //         `}
-        //         onClick={() => setSelectedTheme(theme)}
-        //       >
-        //         <span
-        //           className="w-6 h-6 rounded-full inline-block"
-        //           style={{ backgroundColor: theme.headerBg }}
-        //         ></span>
-        //         <span className="text-sm text-myWhite">{theme.name}</span>
-        //       </div>
-        //     ))}
-        //   </div>
-        // </div>
-        <Button
-          variant={"outline"}
-          onClick={() => setShowColorPicker(prev => !prev)}
-        >
-          Choose Color
-        </Button>
-      )}
+        {/* Theme Selection Section */}
+        {selectedTemplate === 4 && (
+          // <div className="mb-8 mt-5">
+          //   <h2 className="text-xl font-bold mb-3 text-myWhite">Choose Theme</h2>
+          //   <div className="flex gap-4">
+          //     {themes.map((theme, index) => (
+          //       <div
+          //         key={index}
+          //         className={`flex items-center gap-2 cursor-pointer p-2 rounded-md border-2 transition-all duration-300
+          //           ${selectedTheme.name === theme.name ? 'border-primaryColor' : 'border-gray-700'}
+          //         `}
+          //         onClick={() => setSelectedTheme(theme)}
+          //       >
+          //         <span
+          //           className="w-6 h-6 rounded-full inline-block"
+          //           style={{ backgroundColor: theme.headerBg }}
+          //         ></span>
+          //         <span className="text-sm text-myWhite">{theme.name}</span>
+          //       </div>
+          //     ))}
+          //   </div>
+          // </div>
+          <Button
+            variant={"outline"}
+            onClick={() => setShowColorPicker(prev => !prev)}
+          >
+            Choose Color
+          </Button>
+        )}
       </div>
-      
-{showColorPicker && (<div className="mt-10">
-{/* <ColorPicker/> */}
-<RgbColorPicker color={color} onChange={setColor} />
-{/* <div className="value">{JSON.stringify(color)}</div> */}
 
-</div>
-)}
+      {showColorPicker && (<div className="mt-10">
+        {/* <ColorPicker/> */}
+        <RgbColorPicker color={color} onChange={setColor} />
+        {/* <div className="value">{JSON.stringify(color)}</div> */}
+
+      </div>
+      )}
 
       <div className="grid grid-cols-1">
         <div>
