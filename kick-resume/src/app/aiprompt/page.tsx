@@ -30,6 +30,52 @@ const templateData = [
   { image: '/templates/template4.png', name: 'Template 4', id: 4 },
 ]
 
+const dummyData = {
+  name: "John Doe",
+  role: "Software Engineer",
+  phone: 1234567890,
+  email: "john.doe@example.com",
+  address: "123 Main St, Anytown, USA",
+  summary: "Highly motivated software engineer with 5+ years of experience in developing and deploying scalable web applications. Proficient in front-end and back-end technologies, with a strong focus on clean code and user experience.",
+  education: [
+    { degree: "Master of Science in Computer Science", startDate: "Sept 2020", endDate: "May 2022" },
+    { degree: "Bachelor of Science in Software Engineering", startDate: "Sept 2016", endDate: "May 2020" }
+  ],
+  skills: ["JavaScript", "React", "Node.js", "MongoDB", "TypeScript", "Tailwind CSS"],
+  languages: ["English", "Spanish"],
+  certifications: ["AWS Certified Developer", "Google Cloud Professional Architect"],
+  experience: [
+    {
+      title: "Senior Frontend Developer",
+      companyName: "Tech Solutions Inc.",
+      description: "Led the development of a new customer-facing portal using React and Redux, resulting in a 20% increase in user engagement. Implemented responsive UI designs and optimized application performance.",
+      startDate: "Jan 2022",
+      endDate: "Currently working"
+    },
+    {
+      title: "Junior Software Engineer",
+      companyName: "Innovate Corp.",
+      description: "Contributed to the development of a microservices-based architecture. Developed RESTful APIs using Node.js and Express, and managed MongoDB databases.",
+      startDate: "June 2020",
+      endDate: "Dec 2021"
+    }
+  ],
+  projects: [
+    {
+      name: "E-commerce Platform",
+      description: "Developed a full-stack e-commerce platform with user authentication, product catalog, and payment integration. Utilized Stripe API for secure transactions.",
+      github: "https://github.com/john-doe/ecommerce",
+      live: "https://ecommerce.example.com"
+    },
+    {
+      name: "Portfolio Website",
+      description: "Designed and developed a personal portfolio website to showcase projects and skills. Implemented modern UI/UX principles and ensured mobile responsiveness.",
+      github: "https://github.com/john-doe/portfolio",
+      live: "https://portfolio.example.com"
+    }
+  ],
+};
+
 const themes = [
   {
     name: 'Orange Theme',
@@ -107,7 +153,8 @@ const AiPromptPage = () => {
 
   // for color picker
   const [showColorPicker, setShowColorPicker] = useState(false)
-  const [color, setColor] = useState({ r: 200, g: 150, b: 35 });
+  const [color1, setColor1] = useState({ r: 40, g: 56, b: 74 }); // Default for Template 1
+  const [color4, setColor4] = useState({ r: 200, g: 150, b: 35});  // Default for Template 4
 
   // for phone number
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
@@ -313,7 +360,10 @@ const AiPromptPage = () => {
 
   const getTemplateId = (image: number) => {
     setSelectedTemplate(image);
-  }
+    setParsedData(dummyData);       // dummy data show karo
+    setShowTemplate(true);          // template ko show karo
+    // setPromptHistory([]);           // optional: clear chat
+  };
 
 
 
@@ -326,7 +376,7 @@ const AiPromptPage = () => {
 
   const renderSelectedTemplate = () => {
 
-    if (selectedTemplate === 1) return <Template1 data={parsedData}
+    if (selectedTemplate === 1) return <Template1 data={parsedData || dummyData}
       handleStringFeildClick={handleStringFieldClick}
       handleArrayFieldClick={handleArrayFieldClick}
       handleExperienceFieldClick={handleExperienceFieldClick}
@@ -334,7 +384,7 @@ const AiPromptPage = () => {
       handleEducationFieldClick={handleEducationFieldClick}
       handlePhoneClickFeild={handlePhoneClickFeild}
       handleEmailFieldClick={handleEmailClickFeild}
-
+    color={color1}
     />;
     if (selectedTemplate === 2) return <Template2 data={parsedData}
       handleStringFeildClick={handleStringFieldClick}
@@ -365,7 +415,7 @@ const AiPromptPage = () => {
       imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'}
       imageBgColor={selectedImageBgColor}
       selectedTheme={selectedTheme}
-      color={color}
+      color={color4}
     />;
     return <p>Please select a template above.</p>;
   };
@@ -624,7 +674,7 @@ const AiPromptPage = () => {
       >Create</Button> */}
 
         {/* Theme Selection Section */}
-        {selectedTemplate === 4 && (
+        {(selectedTemplate === 4 || selectedTemplate === 1) && (
           // <div className="mb-8 mt-5">
           //   <h2 className="text-xl font-bold mb-3 text-myWhite">Choose Theme</h2>
           //   <div className="flex gap-4">
@@ -656,7 +706,7 @@ const AiPromptPage = () => {
 
       {showColorPicker && (<div className="mt-10">
         {/* <ColorPicker/> */}
-        <RgbColorPicker color={color} onChange={setColor} />
+        <RgbColorPicker color={selectedTemplate === 1 ? color1 : color4} onChange={selectedTemplate === 1 ? setColor1 : setColor4} />
         {/* <div className="value">{JSON.stringify(color)}</div> */}
 
       </div>
@@ -670,7 +720,7 @@ const AiPromptPage = () => {
               <div className="flex justify-end mt-4">
                 {selectedTemplate === 1 && (
                   <PDFDownloadLink
-                    document={<Template1PDF data={parsedData} />}
+                    document={<Template1PDF data={parsedData} color={color1}/>}
                     fileName="resume.pdf"
                     className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
                   >
@@ -697,7 +747,7 @@ const AiPromptPage = () => {
                 )}
                 {selectedTemplate === 4 && (
                   <PDFDownloadLink
-                    document={<Template4PDF data={parsedData} imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'} imageBgColor={selectedImageBgColor ? tailwindColorMap[selectedImageBgColor] : undefined} color={color} />}
+                    document={<Template4PDF data={parsedData} imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'} imageBgColor={selectedImageBgColor ? tailwindColorMap[selectedImageBgColor] : undefined} color={color4} />}
                     fileName="resume.pdf"
                     className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
                   >

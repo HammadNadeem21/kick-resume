@@ -34,7 +34,14 @@ interface Data {
 }
 
 
-export default function Template1({ data, handleStringFeildClick, handleArrayFieldClick, handleExperienceFieldClick, handleProjectFieldClick, handleEducationFieldClick, handlePhoneClickFeild, handleEmailFieldClick }: {
+interface Color  {
+  r : number;
+  g : number;
+  b : number
+  }
+
+
+export default function Template1({ data, handleStringFeildClick, handleArrayFieldClick, handleExperienceFieldClick, handleProjectFieldClick, handleEducationFieldClick, handlePhoneClickFeild, handleEmailFieldClick, color }: {
   data: Data,
   handleStringFeildClick: (fieldName: string, value: string) => void,
   handleArrayFieldClick: (fieldName: string, data: string[]) => void,
@@ -42,7 +49,8 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
   handleProjectFieldClick: (fieldName: string, data: any[]) => void,
   handleEducationFieldClick: (fieldName: string, data: any[]) => void,
   handlePhoneClickFeild: (feildName: string, data: number) => void,
-  handleEmailFieldClick: (fieldName: string, data: string) => void
+  handleEmailFieldClick: (fieldName: string, data: string) => void,
+  color:Color
 
 }) {
   //   const { resumeData } = useResumeDataContext();
@@ -56,17 +64,17 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
   return (
     <div className="bg-myWhite grid grid-cols-[35%,65%] text-gray-700 md:w-[70%] w-[100%]">
       {/* left-side */}
-      <div className="bg-[#193042] py-2 md:px-3 px-1">
+      <div className=" py-2 md:px-3 px-1" style={{backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}>
         <h1
           className={`md:text-2xl text-lg mb-5 font-semibold text-center mt-5 text-white`}
           onClick={() => handleStringFeildClick("name", data.name)}
         >
-          {data.name || ""}
+          {data.name}
         </h1>
 
         {/* Divider */}
         {data.education.length > 0 && (
-          <div className="h-[1px] w-full bg-[#385b77] mt-2"></div>
+          <div className="h-[1px] w-full mt-2 bg-white"></div>
 
         )}
 
@@ -92,7 +100,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
 
         {/* Divider */}
         {data.skills.length > 0 && (
-          <div className="h-[1px] w-full bg-[#385b77] mt-5"></div>
+          <div className="h-[1px] w-full bg-white mt-5"></div>
 
         )}
 
@@ -117,7 +125,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
 
         {/* Divider */}
         {data.languages.length > 0 && (
-          <div className="h-[1px] w-full bg-[#385b77] mt-5"></div>
+          <div className="h-[1px] w-full bg-white mt-5"></div>
         )}
 
 
@@ -145,7 +153,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
 
         {/* Divider */}
         {data.certifications.length > 0 && (
-          <div className="h-[1px] w-full bg-[#385b77] mt-5"></div>
+          <div className="h-[1px] w-full bg-white mt-5"></div>
 
         )}
 
@@ -172,14 +180,14 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
       {/* Right-side */}
       <div className="py-3 md:px-5 px-2 flex flex-col gap-2">
         <h1
-          className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-[#193042]`}
+          className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-gray-700`}
           onClick={() => handleStringFeildClick('role', data.role)}
         >
           {data.role}
         </h1>
 
 
-        <div className="flex md:text-[14px] text-[10px] text-[#193042] items-center gap-1 cursor-pointer"
+        <div className="flex md:text-[14px] text-[10px] text-gray-700 items-center gap-1 cursor-pointer"
           onClick={() => handlePhoneClickFeild("phone", data.phone)}
         >
           <h1 className="font-bold">Phone: </h1>
@@ -187,7 +195,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
         </div>
 
         {/* email */}
-        <div className="flex gap-1 md:text-[14px] text-[10px] text-[#193042] mt-1 mb-1 cursor-pointer"
+        <div className="flex gap-1 md:text-[14px] text-[10px] text-gray-700 mt-1 mb-1 cursor-pointer"
           onClick={() => handleEmailFieldClick("email", data.email)}
         >
           <h1 className="font-bold">Email: </h1>
@@ -196,7 +204,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
 
 
         {/* Address */}
-        <div className="flex items-center mb-2 gap-1 text-[#193042] md:text-[14px] text-[10px] cursor-pointer"
+        <div className="flex items-center mb-2 gap-1 text-gray-700 md:text-[14px] text-[10px] cursor-pointer"
           onClick={() => handleStringFeildClick("address", data.address)}
         >
           <h1 className="font-bold">Address: </h1>
@@ -205,23 +213,23 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
 
 
         {/* Divider */}
-        <div className="h-[1px] w-full bg-[#193042] mt-2"></div>
+        <div className="h-[1px] w-full bg-gray-700 mt-2"></div>
 
         {/* Summary */}
         <div onClick={() => handleStringFeildClick('summary', data.summary)} className="cursor-pointer">
           <h1
-            className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-[#193042]`}
+            className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-gray-700`}
           >
             Summary
           </h1>
-          <p className="text-[#193042] md:text-[15px] text-xs leading-6">
+          <p className="text-gray-700 md:text-[15px] text-xs leading-6">
             {data.summary}
           </p>
         </div>
 
         {/* Divider */}
         {data.experience.length > 0 && (
-          <div className="h-[1px] w-full bg-[#193042] mt-3"></div>
+          <div className="h-[1px] w-full bg-gray-700 mt-3"></div>
 
         )}
 
@@ -232,7 +240,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
             className="cursor-pointer"
           >
             <h1
-              className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-[#193042]`}
+              className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-gray-700`}
             >
               Experience
             </h1>
@@ -241,7 +249,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
               {data.experience.map((item: any, i: number) => (
                 <div
                   key={i}
-                  className={`flex flex-col justify-between text-[#193042]`}
+                  className={`flex flex-col justify-between`}
                 >
                   <ul className="mt-3 list-disc  md:text-[15px] text-xs flex gap-5">
                     <li className=" font-bold">{item.companyName}</li>
@@ -262,7 +270,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
 
         {/* Divider */}
         {data.projects.length > 0 && (
-          <div className="h-[1px] w-full bg-[#193042] mt-5"></div>
+          <div className="h-[1px] w-full bg-gray-700 mt-5"></div>
 
         )}
 
@@ -273,11 +281,11 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
             className="cursor-pointer"
           >
             <h1
-              className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-[#193042]`}
+              className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-gray-700`}
             >
               Projects
             </h1>
-            <ul className=" px-5 mt-3 text-[#193042] list-disc">
+            <ul className=" px-5 mt-3 text-gray-700 list-disc">
               {data.projects.map((item: any, i: number) => (
                 <li className="mt-5 mb-5" key={i}>
                   <h1 className="md:text-lg text-xs md:font-medium font-bold">{item.name}</h1>

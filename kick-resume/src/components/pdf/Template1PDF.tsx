@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   },
   left: {
     width: "35%",
-    backgroundColor: "#193042",
+    // backgroundColor: "#193042",
     color: "white",
     padding: 16,
     minHeight: "100%",
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     borderBottomWidth: 1,
-    borderBottomColor: "#385b77",
+    borderBottomColor: "#fff",
     marginVertical: 8,
   },
   listItem: {
@@ -85,11 +85,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 8,
-    color: "#193042",
+    color: "#374151",
   },
   contact: {
     fontSize: 10,
     marginBottom: 2,
+    color: "#374151"
   },
   projectTitle: {
     fontWeight: "bold",
@@ -112,12 +113,12 @@ function getBulletChar(color: string = "white") {
   return "•";
 }
 
-export default function Template1PDF({ data }: { data: any }) {
+export default function Template1PDF({ data, color }: { data: any, color:any }) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Left Side */}
-        <View style={styles.left}>
+        <View style={{...styles.left, backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}>
           <Text style={styles.name}>{data.name}</Text>
           <View style={styles.divider} />
           <View style={styles.section}>
