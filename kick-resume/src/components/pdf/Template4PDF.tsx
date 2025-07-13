@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   sectionGrid: {
     flexDirection: 'row',
     padding: 24,
-    gap: 24,
+    gap: 2,
   },
   leftCol: {
     width: '60%',
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   summary: {
-    fontSize: 12,
+    fontSize: 10,
     color: '#222',
     marginBottom: 10,
     marginTop: 4,

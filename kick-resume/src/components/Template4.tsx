@@ -201,7 +201,7 @@ const Template4 = ({
                                 style={{color:`rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`}}
                                 >
                                     <h1 className=" md:text-sm text-xs font-bold"
-                                    style={{color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}
+                                    style={{color:`rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`}}
                                     >{item.name}</h1>
                                     <p className="md:text-xs text-[10px] font-medium text-gray-800">{item.description}</p>
                                     <div className="flex items-center md:gap-[100px] gap-[70px] mt-1 text-gray-800 md:text-sm text-xs">
