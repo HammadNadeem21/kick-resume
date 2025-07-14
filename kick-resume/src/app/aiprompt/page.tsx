@@ -360,8 +360,8 @@ const AiPromptPage = () => {
 
   const getTemplateId = (image: number) => {
     setSelectedTemplate(image);
-    setParsedData(dummyData);       // dummy data show karo
-    setShowTemplate(true);          // template ko show karo
+    // setParsedData(dummyData);       // dummy data show karo
+    // setShowTemplate(true);          // template ko show karo
     // setPromptHistory([]);           // optional: clear chat
   };
 
@@ -376,7 +376,7 @@ const AiPromptPage = () => {
 
   const renderSelectedTemplate = () => {
 
-    if (selectedTemplate === 1) return <Template1 data={parsedData || dummyData}
+    if (selectedTemplate === 1) return <Template1 data={parsedData}
       handleStringFeildClick={handleStringFieldClick}
       handleArrayFieldClick={handleArrayFieldClick}
       handleExperienceFieldClick={handleExperienceFieldClick}
