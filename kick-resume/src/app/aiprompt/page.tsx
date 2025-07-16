@@ -21,6 +21,8 @@ import Template4PDF from '@/components/pdf/Template4PDF';
 import { RgbColorPicker } from "react-colorful";
 
 import { TiTick } from "react-icons/ti";
+import Template5 from '@/components/Template5';
+import Template5PDF from '@/components/pdf/Template5PDF';
 
 
 const templateData = [
@@ -28,6 +30,7 @@ const templateData = [
   { image: '/templates/template2.png', name: 'Template 2', id: 2 },
   { image: '/templates/template3.png', name: 'Template 3', id: 3 },
   { image: '/templates/template4.png', name: 'Template 4', id: 4 },
+  { image: '/templates/template4.png', name: 'Template 5', id: 5 },
 ]
 
 const dummyData = {
@@ -76,47 +79,6 @@ const dummyData = {
   ],
 };
 
-const themes = [
-  {
-    name: 'Orange Theme',
-    headerBg: '#f96b07',
-    headerText: '#FFFFFF',
-    headerAccent: '#fcb583',
-    sectionTitle: '#f96b07',
-    sectionBorder: '#f96b07',
-    bullet: '#f5b35d',
-    expTitle: '#f5b35d',
-    projTitle: '#f5b35d',
-    techStackBg: '#f5b35d',
-    bodyText: '#222222',
-  },
-  {
-    name: 'Blue Theme',
-    headerBg: '#3B82F6',
-    headerText: '#FFFFFF',
-    headerAccent: '#93C5FD',
-    sectionTitle: '#3B82F6',
-    sectionBorder: '#3B82F6',
-    bullet: '#60A5FA',
-    expTitle: '#60A5FA',
-    projTitle: '#60A5FA',
-    techStackBg: '#60A5FA',
-    bodyText: '#222222',
-  },
-  {
-    name: 'Green Theme',
-    headerBg: '#16A34A',
-    headerText: '#FFFFFF',
-    headerAccent: '#86EFAC',
-    sectionTitle: '#16A34A',
-    sectionBorder: '#16A34A',
-    bullet: '#4ADE80',
-    expTitle: '#4ADE80',
-    projTitle: '#4ADE80',
-    techStackBg: '#4ADE80',
-    bodyText: '#222222',
-  },
-];
 
 const AiPromptPage = () => {
 
@@ -141,7 +103,7 @@ const AiPromptPage = () => {
   // selected background color state
   const [selectedImageBgColor, setSelectedImageBgColor] = useState<string | undefined>(undefined);
   // selected theme state
-  const [selectedTheme, setSelectedTheme] = useState(themes[0]); // Default to the first theme
+
 
   const tailwindColorMap: { [key: string]: string } = {
     'bg-blue-500': '#3B82F6',
@@ -414,8 +376,18 @@ const AiPromptPage = () => {
       handleEmailFieldClick={handleEmailClickFeild}
       imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'}
       imageBgColor={selectedImageBgColor}
-      selectedTheme={selectedTheme}
+     
       color={color4}
+    />;
+    if (selectedTemplate === 5) return <Template5 data={parsedData}
+      handleStringFeildClick={handleStringFieldClick}
+      handleArrayFieldClick={handleArrayFieldClick}
+      handleExperienceFieldClick={handleExperienceFieldClick}
+      handleProjectFieldClick={handleProjectFieldClick}
+      handleEducationFieldClick={handleEducationFieldClick}
+      handlePhoneClickFeild={handlePhoneClickFeild}
+      handleEmailFieldClick={handleEmailClickFeild}
+     
     />;
     return <p>Please select a template above.</p>;
   };
@@ -748,6 +720,15 @@ const AiPromptPage = () => {
                 {selectedTemplate === 4 && (
                   <PDFDownloadLink
                     document={<Template4PDF data={parsedData} imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'} imageBgColor={selectedImageBgColor ? tailwindColorMap[selectedImageBgColor] : undefined} color={color4} />}
+                    fileName="resume.pdf"
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
+                  >
+                    {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+                  </PDFDownloadLink>
+                )}
+                {selectedTemplate === 5 && (
+                  <PDFDownloadLink
+                    document={<Template5PDF data={parsedData} />}
                     fileName="resume.pdf"
                     className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
                   >
