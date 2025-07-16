@@ -30,54 +30,54 @@ const templateData = [
   { image: '/templates/template2.png', name: 'Template 2', id: 2 },
   { image: '/templates/template3.png', name: 'Template 3', id: 3 },
   { image: '/templates/template4.png', name: 'Template 4', id: 4 },
-  { image: '/templates/template4.png', name: 'Template 5', id: 5 },
+  { image: '/templates/template5.png', name: 'Template 5', id: 5 },
 ]
 
-const dummyData = {
-  name: "John Doe",
-  role: "Software Engineer",
-  phone: 1234567890,
-  email: "john.doe@example.com",
-  address: "123 Main St, Anytown, USA",
-  summary: "Highly motivated software engineer with 5+ years of experience in developing and deploying scalable web applications. Proficient in front-end and back-end technologies, with a strong focus on clean code and user experience.",
-  education: [
-    { degree: "Master of Science in Computer Science", startDate: "Sept 2020", endDate: "May 2022" },
-    { degree: "Bachelor of Science in Software Engineering", startDate: "Sept 2016", endDate: "May 2020" }
-  ],
-  skills: ["JavaScript", "React", "Node.js", "MongoDB", "TypeScript", "Tailwind CSS"],
-  languages: ["English", "Spanish"],
-  certifications: ["AWS Certified Developer", "Google Cloud Professional Architect"],
-  experience: [
-    {
-      title: "Senior Frontend Developer",
-      companyName: "Tech Solutions Inc.",
-      description: "Led the development of a new customer-facing portal using React and Redux, resulting in a 20% increase in user engagement. Implemented responsive UI designs and optimized application performance.",
-      startDate: "Jan 2022",
-      endDate: "Currently working"
-    },
-    {
-      title: "Junior Software Engineer",
-      companyName: "Innovate Corp.",
-      description: "Contributed to the development of a microservices-based architecture. Developed RESTful APIs using Node.js and Express, and managed MongoDB databases.",
-      startDate: "June 2020",
-      endDate: "Dec 2021"
-    }
-  ],
-  projects: [
-    {
-      name: "E-commerce Platform",
-      description: "Developed a full-stack e-commerce platform with user authentication, product catalog, and payment integration. Utilized Stripe API for secure transactions.",
-      github: "https://github.com/john-doe/ecommerce",
-      live: "https://ecommerce.example.com"
-    },
-    {
-      name: "Portfolio Website",
-      description: "Designed and developed a personal portfolio website to showcase projects and skills. Implemented modern UI/UX principles and ensured mobile responsiveness.",
-      github: "https://github.com/john-doe/portfolio",
-      live: "https://portfolio.example.com"
-    }
-  ],
-};
+// const dummyData = {
+//   name: "John Doe",
+//   role: "Software Engineer",
+//   phone: 1234567890,
+//   email: "john.doe@example.com",
+//   address: "123 Main St, Anytown, USA",
+//   summary: "Highly motivated software engineer with 5+ years of experience in developing and deploying scalable web applications. Proficient in front-end and back-end technologies, with a strong focus on clean code and user experience.",
+//   education: [
+//     { degree: "Master of Science in Computer Science", startDate: "Sept 2020", endDate: "May 2022" },
+//     { degree: "Bachelor of Science in Software Engineering", startDate: "Sept 2016", endDate: "May 2020" }
+//   ],
+//   skills: ["JavaScript", "React", "Node.js", "MongoDB", "TypeScript", "Tailwind CSS"],
+//   languages: ["English", "Spanish"],
+//   certifications: ["AWS Certified Developer", "Google Cloud Professional Architect"],
+//   experience: [
+//     {
+//       title: "Senior Frontend Developer",
+//       companyName: "Tech Solutions Inc.",
+//       description: "Led the development of a new customer-facing portal using React and Redux, resulting in a 20% increase in user engagement. Implemented responsive UI designs and optimized application performance.",
+//       startDate: "Jan 2022",
+//       endDate: "Currently working"
+//     },
+//     {
+//       title: "Junior Software Engineer",
+//       companyName: "Innovate Corp.",
+//       description: "Contributed to the development of a microservices-based architecture. Developed RESTful APIs using Node.js and Express, and managed MongoDB databases.",
+//       startDate: "June 2020",
+//       endDate: "Dec 2021"
+//     }
+//   ],
+//   projects: [
+//     {
+//       name: "E-commerce Platform",
+//       description: "Developed a full-stack e-commerce platform with user authentication, product catalog, and payment integration. Utilized Stripe API for secure transactions.",
+//       github: "https://github.com/john-doe/ecommerce",
+//       live: "https://ecommerce.example.com"
+//     },
+//     {
+//       name: "Portfolio Website",
+//       description: "Designed and developed a personal portfolio website to showcase projects and skills. Implemented modern UI/UX principles and ensured mobile responsiveness.",
+//       github: "https://github.com/john-doe/portfolio",
+//       live: "https://portfolio.example.com"
+//     }
+//   ],
+// };
 
 
 const AiPromptPage = () => {
