@@ -83,7 +83,7 @@ const Template5 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
             </div>
 
             {/* Divider */}
-            <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+            <div className="h-[2px] w-full bg-gray-400 mt-3 mb-3"></div>
 
 
              
@@ -101,7 +101,7 @@ const Template5 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                     </div>
 
                     {/* Divider */}
-                    <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+                    <div className="h-[2px] w-full bg-gray-400 mt-3 mb-3"></div>
 
                     {/* Experience */}
                     <div className='cursor-pointer'
@@ -137,7 +137,7 @@ const Template5 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                     </div>
 
                     {/* Divider */}
-                    <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+                    <div className="h-[2px] w-full bg-gray-400 mt-3 mb-3"></div>
 
 
                       {/* Education */}
@@ -164,7 +164,7 @@ const Template5 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
 
 
                     {/* Divider */}
-                    <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+                    <div className="h-[2px] w-full bg-gray-400 mt-3 mb-3"></div>
 
                     {/* Skills */}
                     <div
@@ -175,11 +175,9 @@ const Template5 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                         <div
                             className="
                                 list-disc px-0 mt-3 text-black
-                                grid
-                                grid-cols-2
-                                xs:grid-cols-3
-                                sm:grid-cols-4
-                                md:grid-cols-5
+                       flex
+                       flex-wrap
+                       ml-5
                                 lg:gap-4
                                 sm:gap-2
                                 md:text-sm
@@ -198,7 +196,7 @@ const Template5 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
 
 
                         {/* Divider */}
-                        <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+                        <div className="h-[2px] w-full bg-gray-400 mt-3 mb-3"></div>
 
                 
 
@@ -212,7 +210,7 @@ const Template5 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                             Certifications
                         </h1>
 
-                        <ul className="list-disc md:px-4 px-0 ml-5 text-black grid sm:grid-cols-2 grid-cols-1 gap-2 md:text-sm text-xs">
+                        <ul className="list-disc md:px-4 px-0 ml-5 text-black grid sm:grid-cols-2 grid-cols-1 gap-2 md:text-sm text-xs mt-1">
                             {data.certifications.map((item: any, i: number) => (
                                 <li key={i}>{item}</li>
                             ))}
@@ -220,7 +218,7 @@ const Template5 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                     </div>
 
                           {/* Divider */}
-                          <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+                          <div className="h-[2px] w-full bg-gray-400 mt-3 mb-3"></div>
 
                     {/* Project */}
                     <div className='cursor-pointer'

@@ -144,6 +144,7 @@ const AiPromptPage = () => {
     { type: "user" | "ai"; message: string }[]
   >([])
 
+  const [isChatLoading, setIsChatLoading] = useState(false);
 
 
   const handleGenerate = async () => {
@@ -153,6 +154,7 @@ const AiPromptPage = () => {
     }
 
     try {
+      setIsChatLoading(true);
       const res = await fetch('/api/generate-resume', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -165,6 +167,7 @@ const AiPromptPage = () => {
       if (!res.ok) {
         const err = await res.json();
         alert(err.error || "Something went wrong");
+        setIsChatLoading(false);
         return;
       }
 
@@ -189,7 +192,9 @@ const AiPromptPage = () => {
       setParsedData(data);
       setShowTemplate(true);
       setUserPrompt(""); // Clear field
+      setIsChatLoading(false);
     } catch (error) {
+      setIsChatLoading(false);
       console.log("Error", error);
     }
   };
@@ -416,11 +421,11 @@ const AiPromptPage = () => {
 
 
   return (
-    <div className="px-[30px] py-[60px] mx-auto bg-myDarkBlue text-white min-h-screen">
+    <div className="px-[30px] py-[60px] mx-auto bg-myWhite text-primaryColor min-h-screen">
 
 
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-4 text-myWhite">
+        <h1 className="text-3xl font-bold mb-4 text-purple-500">
           Build Your Resume Chat-Wise
         </h1>
 
@@ -430,7 +435,7 @@ const AiPromptPage = () => {
             <div
               key={template.id}
               onClick={() => getTemplateId(template.id)}
-              className={`relative cursor-pointer rounded-md transition-all duration-300 `}
+              className={`relative cursor-pointer rounded-md transition-all duration-300 shadow-md shadow-purple-400`}
             >
               <div className='h-[280px] w-[200px]'>
                 <Image src={template.image} alt={template.name} height={150} width={150} className='h-full w-full' />
@@ -551,18 +556,96 @@ const AiPromptPage = () => {
 
 
         {/* Chat Box */}
-        <div className="bg-gray-800 rounded-lg mx-auto w-[60%] p-4 h-[300px] overflow-y-auto chat-container">
+        <div
+          className="bg-purple-400 rounded-ss-xl rounded-se-xl mx-auto w-[60%] p-4 h-[300px] overflow-y-auto chat-container custom-scrollbar"
+        >
           {promptHistory.map((entry, index) => (
             <div
               key={index}
-              className={`px-4 py-2 rounded-lg mb-2 max-w-[80%] ${entry.type === "user"
-                ? "bg-blue-600 text-white ml-auto"
-                : "bg-green-600 text-white mr-auto"
-                }`}
+              className={`flex items-end mb-2 max-w-[80%] ${
+                entry.type === "user"
+                  ? "flex-row-reverse ml-auto"
+                  : "flex-row mr-auto"
+              }`}
             >
-              {entry.message}
+              {/* Avatar */}
+              <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs select-none ${
+                entry.type === "user" ? "bg-purple-500 text-white ml-2" : "bg-purple-300 text-white mr-2"
+              }`}>
+                {entry.type === "user" ? "You" : "Ai"}
+              </div>
+              {/* Chat bubble */}
+              <div
+                className={`px-4 py-2 rounded-xl ${
+                  entry.type === "user"
+                    ? "bg-purple-500 text-white"
+                    : "bg-purple-300 text-white"
+                }`}
+              >
+                {entry.message}
+              </div>
             </div>
           ))}
+          {isChatLoading && (
+            <div className="flex items-center mb-2 max-w-[80%] flex-row mr-auto">
+              {/* Avatar for AI */}
+              <div className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs select-none bg-purple-300 text-white mr-2 mb-1">
+                Ai
+              </div>
+              {/* Loading bubble */}
+              <div className="flex items-center px-4 py-2 rounded-xl bg-purple-300 text-white">
+                <div className="flex gap-1 items-end">
+                  <span className="dot-bounce"></span>
+                  <span className="dot-bounce animation-delay-200"></span>
+                  <span className="dot-bounce animation-delay-400"></span>
+                </div>
+              </div>
+            </div>
+          )}
+          <style jsx>{`
+            .custom-scrollbar {
+              scrollbar-width: thin;
+              scrollbar-color: #a855f7 #f3e8ff;
+            }
+            .custom-scrollbar::-webkit-scrollbar {
+              width: 8px;
+              background: #f3e8ff;
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+              background: #a855f7;
+              border-radius: 8px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-button {
+              display: none;
+              height: 0;
+              width: 0;
+            }
+            .dot-bounce {
+              display: inline-block;
+              width: 8px;
+              height: 8px;
+              background: #fff;
+              border-radius: 50%;
+              margin: 0 2px;
+              animation: bounce 1s infinite;
+            }
+            .animation-delay-200 {
+              animation-delay: 0.2s;
+            }
+            .animation-delay-400 {
+              animation-delay: 0.4s;
+            }
+            @keyframes bounce {
+              0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.7;
+              }
+              40% {
+                transform: scale(1.2);
+                opacity: 1;
+              }
+            }
+          `}</style>
         </div>
 
         {/* Input Field */}
@@ -571,7 +654,7 @@ const AiPromptPage = () => {
             value={userPrompt}
             onChange={(e) => setUserPrompt(e.target.value)}
             placeholder="Type your prompt..."
-            className="flex-1 p-3  text-black rounded-md resize-none focus:outline-none bg-transparent"
+            className="flex-1 p-3  text-black resize-none focus:outline-none bg-transparent"
             rows={2}
           />
           <Button
@@ -581,8 +664,7 @@ const AiPromptPage = () => {
                 alert("Please enter a prompt and select a template!");
                 return;
               }
-
-              // 1. User message
+              setIsChatLoading(true);
               setPromptHistory((prev) => [
                 ...prev,
                 { type: "user", message: userPrompt },
@@ -600,6 +682,7 @@ const AiPromptPage = () => {
               if (!res.ok) {
                 const err = await res.json();
                 alert(err.error || "Something went wrong");
+                setIsChatLoading(false);
                 return;
               }
 
@@ -620,9 +703,10 @@ const AiPromptPage = () => {
               // 2. AI response message
               setPromptHistory((prev) => [
                 ...prev,
-                { type: "ai", message: "✅ Resume updated successfully!" },
+                { type: "ai", message: "Resume updated successfully!" },
               ]);
               setParsedData(data);
+              setIsChatLoading(false);
 
             }}
           >

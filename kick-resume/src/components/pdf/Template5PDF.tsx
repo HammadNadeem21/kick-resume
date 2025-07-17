@@ -10,12 +10,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
     },
     section: {
-        marginBottom: 12,
+        marginBottom: 8,
     },
     divider: {
         borderBottomWidth: 1,
         borderBottomColor: "#a1a1aa",
-        marginVertical: 12,
+        marginVertical: 6,
     },
     heading: {
         fontSize: 16,
@@ -33,6 +33,12 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 10,
         color: "#1f2937",
+        lineHeight: 1
+    },
+    summaryText: {
+        fontSize: 10,
+        color: "#1f2937",
+        lineHeight: 1.5
     },
     boldText: {
         fontWeight: "bold",
@@ -45,12 +51,18 @@ const styles = StyleSheet.create({
     },
     link: {
         fontSize: 10,
-        color: '#2563eb',
+        color: '#000',
         textDecoration: 'underline',
     },
     flexRow: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center'
+    },
+    linkRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start'
     },
     spaceBetween: {
         justifyContent: 'space-between',
@@ -66,7 +78,17 @@ const styles = StyleSheet.create({
     },
     textCenter: {
         textAlign: "center",
-    }
+    },
+    bullet: {
+        fontSize: 10,
+        marginRight: 6,
+        marginBottom: 1,
+      },
+      projectBullet: {
+        // fontSize: 10,
+        marginRight: 6,
+        marginBottom: 1,
+      }
 });
 
 
@@ -79,14 +101,14 @@ export default function Template5PDF({ data }: { data: any }) {
                     <Text style={{ fontSize: 18, fontWeight: "semibold", color: "#374151", marginBottom: 10 }}>{data.role}</Text>
                 </View>
 
-                <View style={[styles.flexRow, styles.gap10, styles.textCenter, { justifyContent: 'center', marginBottom: 10 }]}>
-                    <View style={[styles.flexRow, styles.gap2]}>
+                <View style={[styles.flexRow, styles.gap10, styles.textCenter, { justifyContent: 'center', alignItems: 'center', marginBottom: 10 }]}>
+                    <View style={[styles.flexRow, styles.gap2, {alignItems:'center'}]}>
                         <Text style={styles.boldText}>Email: </Text>
                         <Text style={styles.text}>{data.email}</Text>
                     </View>
-                    <View style={[styles.flexRow, styles.gap2]}>
+                    <View style={[styles.flexRow, styles.gap2, {alignItems:'center'}]}>
                         <Text style={styles.boldText}>Phone: </Text>
-                        <Text style={styles.text}>{`+${data.phone}`}</Text>
+                        <Text style={[styles.text]}>{`+${data.phone}`}</Text>
                     </View>
                     <View style={[styles.flexRow, styles.gap2]}>
                         <Text style={styles.boldText}>Address: </Text>
@@ -99,7 +121,7 @@ export default function Template5PDF({ data }: { data: any }) {
                 {/* Summary */}
                 <View style={styles.section}>
                     <Text style={styles.heading}>Summary</Text>
-                    <Text style={[styles.text, { marginTop: 8 }]}>
+                    <Text style={[styles.summaryText, { marginTop: 8 }]}>
                         {data.summary}
                     </Text>
                 </View>
@@ -144,10 +166,11 @@ export default function Template5PDF({ data }: { data: any }) {
                 {/* Skills */}
                 <View style={styles.section}>
                     <Text style={styles.heading}>Skills</Text>
-                    <View style={{ marginTop: 12, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                    <View style={{ marginTop: 12, flexDirection: 'row',alignItems:'center', flexWrap: 'wrap' }}>
                         {data.skills.map((item: string, i: number) => (
-                            <View key={i} style={{ width: '30%', marginBottom: 5 }}>
-                                <Text style={styles.listItem}>• {item}</Text>
+                            <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginRight: 12, marginBottom: 5 }}>
+                                <Text style={styles.bullet}>•</Text>
+                                <Text style={[styles.listItem, { marginLeft: 4 }]}>{item}</Text>
                             </View>
                         ))}
                     </View>
@@ -160,8 +183,9 @@ export default function Template5PDF({ data }: { data: any }) {
                     <Text style={styles.heading}>Certifications</Text>
                     <View style={{ marginTop: 12, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
                         {data.certifications.map((item: any, i: number) => (
-                            <View key={i} style={{ width: '48%', marginBottom: 5 }}>
-                                <Text style={styles.listItem}>• {item}</Text>
+                            <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginRight: 12, marginBottom: 5 }}>
+                                 <Text style={styles.bullet}>•</Text>
+                                <Text style={styles.listItem}>{item}</Text>
                             </View>
                         ))}
                     </View>
@@ -175,9 +199,13 @@ export default function Template5PDF({ data }: { data: any }) {
                     <View style={{ marginTop: 12 }}>
                         {data.projects.map((item: any, i: number) => (
                             <View key={i} style={{ marginBottom: 12 }}>
+                                <View style={{flexDirection: 'row', alignItems: 'center', marginRight: 12, marginBottom: 5}}>
+                                <Text style={styles.projectBullet}>•</Text>
                                 <Text style={{ fontSize: 12, fontWeight: "semibold" }}>{item.name}</Text>
+                                </View>
+                                
                                 <Text style={[styles.text, { marginTop: 4 }]}>{item.description}</Text>
-                                <View style={[styles.flexRow, styles.gap10, { marginTop: 5 }]}>
+                                <View style={[styles.linkRow, styles.gap10, { marginTop: 10 }]}>
                                     {item.github && (
                                         <Link src={item.github} style={styles.link}>GitHub</Link>
                                     )}
