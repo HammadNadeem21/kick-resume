@@ -3,8 +3,7 @@
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import TemplateTwo from '@/components/templates/TemplateTwo';
-import TemplateThree from '@/components/templates/TemplateThree';
+
 import Template1 from '@/components/Template1';
 import { useDropzone } from 'react-dropzone';
 import { PDFDownloadLink } from '@react-pdf/renderer';
@@ -23,7 +22,7 @@ import { RgbColorPicker } from "react-colorful";
 import { TiTick } from "react-icons/ti";
 import Template5 from '@/components/Template5';
 import Template5PDF from '@/components/pdf/Template5PDF';
-
+ 
 
 const templateData = [
   { image: '/templates/template1.png', name: 'Template 1', id: 1 },
