@@ -144,7 +144,9 @@ const AiPromptPage = () => {
     { type: "user" | "ai"; message: string }[]
   >([])
 
+  // for loader
   const [isChatLoading, setIsChatLoading] = useState(false);
+  const [isTemplateLoading, setIsTemplateLoading] = useState(false);
 
 
   const handleGenerate = async () => {
@@ -421,7 +423,7 @@ const AiPromptPage = () => {
 
 
   return (
-    <div className="px-[30px] py-[60px] mx-auto bg-myWhite text-primaryColor min-h-screen">
+    <div className="px-[30px] py-[60px] mx-auto min-h-screen" style={{background: 'linear-gradient(to right, #f3f4f6, #e5e7eb)'}}>
 
 
       <div className="mb-8">
@@ -557,20 +559,20 @@ const AiPromptPage = () => {
 
         {/* Chat Box */}
         <div
-          className="bg-purple-400 rounded-ss-xl rounded-se-xl mx-auto w-[60%] p-4 h-[300px] overflow-y-auto chat-container custom-scrollbar"
+          className="bg-[#a9adb5] mx-auto w-[60%] p-4 h-[300px] overflow-y-auto chat-container custom-scrollbar"
         >
           {promptHistory.map((entry, index) => (
             <div
               key={index}
-              className={`flex items-end mb-2 max-w-[80%] ${
+              className={`flex items-end mb-2 max-w-[80%]  ${
                 entry.type === "user"
                   ? "flex-row-reverse ml-auto"
                   : "flex-row mr-auto"
-              }`}
+              } animate-fade-in-up`}
             >
               {/* Avatar */}
-              <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs select-none ${
-                entry.type === "user" ? "bg-purple-500 text-white ml-2" : "bg-purple-300 text-white mr-2"
+              <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm select-none ${
+                entry.type === "user" ? "bg-myPurple600 text-white ml-2" : "bg-[#e7e6ec] text-gray-700 mr-2"
               }`}>
                 {entry.type === "user" ? "You" : "Ai"}
               </div>
@@ -578,8 +580,8 @@ const AiPromptPage = () => {
               <div
                 className={`px-4 py-2 rounded-xl ${
                   entry.type === "user"
-                    ? "bg-purple-500 text-white"
-                    : "bg-purple-300 text-white"
+                    ? "bg-myPurple600 text-white text-sm"
+                    : "bg-[#e7e6ec] text-gray-700 text-sm"
                 }`}
               >
                 {entry.message}
@@ -589,11 +591,11 @@ const AiPromptPage = () => {
           {isChatLoading && (
             <div className="flex items-center mb-2 max-w-[80%] flex-row mr-auto">
               {/* Avatar for AI */}
-              <div className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs select-none bg-purple-300 text-white mr-2 mb-1">
+              <div className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm select-none bg-[#e7e6ec] text-gray-700 mr-2 mb-2">
                 Ai
               </div>
               {/* Loading bubble */}
-              <div className="flex items-center px-4 py-2 rounded-xl bg-purple-300 text-white">
+              <div className="flex items-center mb-1 px-4 py-2 rounded-xl bg-[#e7e6ec] text-gray-700">
                 <div className="flex gap-1 items-end">
                   <span className="dot-bounce"></span>
                   <span className="dot-bounce animation-delay-200"></span>
@@ -605,26 +607,26 @@ const AiPromptPage = () => {
           <style jsx>{`
             .custom-scrollbar {
               scrollbar-width: thin;
-              scrollbar-color: #a855f7 #f3e8ff;
+              scrollbar-color: #374151 #a9adb5;
+              margin-top: 5px; /* thumb color, then track color */
             }
             .custom-scrollbar::-webkit-scrollbar {
               width: 8px;
-              background: #f3e8ff;
+              background: #c084fc; /* scrollbar track background color */
             }
             .custom-scrollbar::-webkit-scrollbar-thumb {
               background: #a855f7;
               border-radius: 8px;
             }
-            .custom-scrollbar::-webkit-scrollbar-button {
-              display: none;
-              height: 0;
-              width: 0;
-            }
+             .custom-scrollbar::-webkit-scrollbar-button {
+              display: none; 
+              
+            } 
             .dot-bounce {
               display: inline-block;
               width: 8px;
               height: 8px;
-              background: #fff;
+              background: #374151;
               border-radius: 50%;
               margin: 0 2px;
               animation: bounce 1s infinite;
@@ -649,22 +651,23 @@ const AiPromptPage = () => {
         </div>
 
         {/* Input Field */}
-        <div className="flex items-center gap-2 w-[60%] mx-auto border-2 border-primaryColor px-4 py-2">
+        <div className=" w-[60%] mx-auto border-2 border-[#a9adb5] px-4 py-2 custom-scrollbar">
           <textarea
             value={userPrompt}
             onChange={(e) => setUserPrompt(e.target.value)}
             placeholder="Type your prompt..."
-            className="flex-1 p-3  text-black resize-none focus:outline-none bg-transparent"
-            rows={2}
+            className=" p-3 w-[100%]  text-black resize-none focus:outline-none bg-transparent"
+            rows={3}
           />
-          <Button
-            className="bg-green-600 hover:bg-green-700 "
+          <button
+            className="border border-[#a9adb5]  text-gray-800 mt-2 px-4 py-2 rounded-xl flex items-center justify-center gap-1"
             onClick={async () => {
               if (!userPrompt || !selectedTemplate) {
                 alert("Please enter a prompt and select a template!");
                 return;
               }
               setIsChatLoading(true);
+              setIsTemplateLoading(true); // <-- start spinner
               setPromptHistory((prev) => [
                 ...prev,
                 { type: "user", message: userPrompt },
@@ -683,6 +686,7 @@ const AiPromptPage = () => {
                 const err = await res.json();
                 alert(err.error || "Something went wrong");
                 setIsChatLoading(false);
+                setIsTemplateLoading(false); // <-- stop spinner
                 return;
               }
 
@@ -707,11 +711,12 @@ const AiPromptPage = () => {
               ]);
               setParsedData(data);
               setIsChatLoading(false);
+              setIsTemplateLoading(false); // <-- stop spinner
 
             }}
           >
-            Send <IoSend />
-          </Button>
+          Send <IoSend />
+          </button>
         </div>
       </div>
 
@@ -731,26 +736,6 @@ const AiPromptPage = () => {
 
         {/* Theme Selection Section */}
         {(selectedTemplate === 4 || selectedTemplate === 1) && (
-          // <div className="mb-8 mt-5">
-          //   <h2 className="text-xl font-bold mb-3 text-myWhite">Choose Theme</h2>
-          //   <div className="flex gap-4">
-          //     {themes.map((theme, index) => (
-          //       <div
-          //         key={index}
-          //         className={`flex items-center gap-2 cursor-pointer p-2 rounded-md border-2 transition-all duration-300
-          //           ${selectedTheme.name === theme.name ? 'border-primaryColor' : 'border-gray-700'}
-          //         `}
-          //         onClick={() => setSelectedTheme(theme)}
-          //       >
-          //         <span
-          //           className="w-6 h-6 rounded-full inline-block"
-          //           style={{ backgroundColor: theme.headerBg }}
-          //         ></span>
-          //         <span className="text-sm text-myWhite">{theme.name}</span>
-          //       </div>
-          //     ))}
-          //   </div>
-          // </div>
           <Button
             variant={"outline"}
             onClick={() => setShowColorPicker(prev => !prev)}
@@ -768,59 +753,93 @@ const AiPromptPage = () => {
       </div>
       )}
 
+{/* Download Button */}
+      {showTemplate && parsedData && (
+        <div className="flex w-[70%] mx-auto justify-end mt-4 ">
+        {selectedTemplate === 1 && (
+          <PDFDownloadLink
+            document={<Template1PDF data={parsedData} color={color1}/>}
+            fileName="resume.pdf"
+            className="bg-myPurple600 text-white px-4 py-2 rounded "
+          >
+            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+          </PDFDownloadLink>
+        )}
+        {selectedTemplate === 2 && (
+          <PDFDownloadLink
+            document={<Template2PDF data={parsedData} />}
+            fileName="resume.pdf"
+            className="bg-myPurple600 text-white px-4 py-2 rounded "
+          >
+            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+          </PDFDownloadLink>
+        )}
+        {selectedTemplate === 3 && (
+          <PDFDownloadLink
+            document={<Template3PDF data={parsedData} />}
+            fileName="resume.pdf"
+            className="bg-myPurple600 text-white px-4 py-2 rounded "
+          >
+            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+          </PDFDownloadLink>
+        )}
+        {selectedTemplate === 4 && (
+          <PDFDownloadLink
+            document={<Template4PDF data={parsedData} imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'} imageBgColor={selectedImageBgColor ? tailwindColorMap[selectedImageBgColor] : undefined} color={color4} />}
+            fileName="resume.pdf"
+            className="bg-myPurple600 text-white px-4 py-2 rounded "
+          >
+            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+          </PDFDownloadLink>
+        )}
+        {selectedTemplate === 5 && (
+          <PDFDownloadLink
+            document={<Template5PDF data={parsedData} />}
+            fileName="resume.pdf"
+            className="bg-myPurple600 text-white px-4 py-2 rounded "
+          >
+            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+          </PDFDownloadLink>
+        )}
+      </div>
+      )}
+    
       <div className="grid grid-cols-1">
         <div>
-          {showTemplate && parsedData && (
-            <div>
-              <div className='mt-5 w-[100%]'>{renderSelectedTemplate()}</div>
-              <div className="flex justify-end mt-4">
-                {selectedTemplate === 1 && (
-                  <PDFDownloadLink
-                    document={<Template1PDF data={parsedData} color={color1}/>}
-                    fileName="resume.pdf"
-                    className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
-                  >
-                    {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-                  </PDFDownloadLink>
-                )}
-                {selectedTemplate === 2 && (
-                  <PDFDownloadLink
-                    document={<Template2PDF data={parsedData} />}
-                    fileName="resume.pdf"
-                    className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
-                  >
-                    {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-                  </PDFDownloadLink>
-                )}
-                {selectedTemplate === 3 && (
-                  <PDFDownloadLink
-                    document={<Template3PDF data={parsedData} />}
-                    fileName="resume.pdf"
-                    className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
-                  >
-                    {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-                  </PDFDownloadLink>
-                )}
-                {selectedTemplate === 4 && (
-                  <PDFDownloadLink
-                    document={<Template4PDF data={parsedData} imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'} imageBgColor={selectedImageBgColor ? tailwindColorMap[selectedImageBgColor] : undefined} color={color4} />}
-                    fileName="resume.pdf"
-                    className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
-                  >
-                    {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-                  </PDFDownloadLink>
-                )}
-                {selectedTemplate === 5 && (
-                  <PDFDownloadLink
-                    document={<Template5PDF data={parsedData} />}
-                    fileName="resume.pdf"
-                    className="bg-myDarkBlue text-white px-4 py-2 rounded outline"
-                  >
-                    {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-                  </PDFDownloadLink>
-                )}
-              </div>
+          {isTemplateLoading ? (
+            <div className="flex flex-col gap-1 justify-center items-center h-64">
+              <svg className="animate-spin" width="48" height="48" viewBox="0 0 50 50">
+                <circle
+                  className="opacity-20"
+                  cx="25"
+                  cy="25"
+                  r="20"
+                  fill="none"
+                  stroke="#6366f1"
+                  strokeWidth="8"
+                />
+                <circle
+                  className="opacity-100"
+                  cx="25"
+                  cy="25"
+                  r="20"
+                  fill="none"
+                  stroke="#9333ea"
+                  strokeWidth="8"
+                  strokeDasharray="90"
+                  strokeDashoffset="30"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <p className='text-xs text-myPurple600'>Generating Resume...</p>
             </div>
+          ) : (
+            showTemplate && parsedData && (
+              <div>
+                <div className='mt-5'>{renderSelectedTemplate()}</div>
+            
+              </div>
+            )
           )}
         </div>
 

@@ -8,16 +8,17 @@ input[type="number"]::-webkit-outer-spin-button {
   /* optional */
   border: none;
 }
-/* In your global.css or inside a module */
-textarea::-webkit-scrollbar {
-  width: 8px;
-}
 
-textarea::-webkit-scrollbar-track {
-  background: #2d3748; /* dark gray */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-
-textarea::-webkit-scrollbar-thumb {
-  background-color: #3b82f6; /* blue (your primary color) */
-  border-radius: 3px;
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }

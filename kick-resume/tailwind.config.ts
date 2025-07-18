@@ -16,6 +16,7 @@ const config: Config = {
         myMidblue: "#5191a7",
         myLightBlue: "#8bcadf",
         myLightestBlue: "#bcebfa",
+        myPurple600: "#9333ea",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

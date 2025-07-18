@@ -62,7 +62,7 @@ const Template4 = ({
     color : Color
 }) => {
     return (
-        <div className="bg-myWhite md:w-[70%] w-[100%] ">
+        <div className="bg-myWhite lg:w-[70%] w-[100%] mx-auto shadow-[0px_0px_46px_0px_rgba(0,_0,_0,_0.1)]">
 
             <div className="grid grid-cols-[70%,30%] gap-3 w-[100%] px-5 py-5" style={{ backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}>
                 <div className="">

@@ -62,7 +62,7 @@ export default function Template1({ data, handleStringFeildClick, handleArrayFie
 
 
   return (
-    <div className="bg-myWhite grid grid-cols-[35%,65%] text-gray-700 md:w-[70%] w-[100%]">
+    <div className="bg-myWhite grid grid-cols-[35%,65%] text-gray-700  lg:w-[70%] w-[100%] mx-auto shadow-[0px_0px_46px_0px_rgba(0,_0,_0,_0.1)]">
       {/* left-side */}
       <div className=" py-2 md:px-3 px-1" style={{backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}>
         <h1
