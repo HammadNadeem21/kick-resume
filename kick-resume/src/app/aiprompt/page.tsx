@@ -22,7 +22,15 @@ import { RgbColorPicker } from "react-colorful";
 import { TiTick } from "react-icons/ti";
 import Template5 from '@/components/Template5';
 import Template5PDF from '@/components/pdf/Template5PDF';
- 
+
+import { Roboto } from 'next/font/google'
+import Template6 from '@/components/Template6';
+import Template6PDF from '@/components/pdf/Template6PDF';
+const robot700 = Roboto({
+  subsets: ["latin"],
+  weight: ["700"],
+  display: "swap",
+});
 
 const templateData = [
   { image: '/templates/template1.png', name: 'Template 1', id: 1 },
@@ -30,6 +38,7 @@ const templateData = [
   { image: '/templates/template3.png', name: 'Template 3', id: 3 },
   { image: '/templates/template4.png', name: 'Template 4', id: 4 },
   { image: '/templates/template5.png', name: 'Template 5', id: 5 },
+  { image: '/templates/template6.png', name: 'Template 6', id: 6 },
 ]
 
 // const dummyData = {
@@ -146,6 +155,7 @@ const AiPromptPage = () => {
   // for loader
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [isTemplateLoading, setIsTemplateLoading] = useState(false);
+  const [hasRenderedTemplate, setHasRenderedTemplate] = useState(false);
 
 
   const handleGenerate = async () => {
@@ -395,6 +405,16 @@ const AiPromptPage = () => {
       handleEmailFieldClick={handleEmailClickFeild}
      
     />;
+    if (selectedTemplate === 6) return <Template6 data={parsedData}
+    handleStringFeildClick={handleStringFieldClick}
+    handleArrayFieldClick={handleArrayFieldClick}
+    handleExperienceFieldClick={handleExperienceFieldClick}
+    handleProjectFieldClick={handleProjectFieldClick}
+    handleEducationFieldClick={handleEducationFieldClick}
+    handlePhoneClickFeild={handlePhoneClickFeild}
+    handleEmailFieldClick={handleEmailClickFeild}
+   
+  />;
     return <p>Please select a template above.</p>;
   };
 
@@ -426,7 +446,7 @@ const AiPromptPage = () => {
 
 
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-4 text-purple-500">
+        <h1 className={`text-3xl ${robot700.className} mb-4 text-purple-500`}>
           Build Your Resume Chat-Wise
         </h1>
 
@@ -711,6 +731,7 @@ const AiPromptPage = () => {
               setParsedData(data);
               setIsChatLoading(false);
               setIsTemplateLoading(false); // <-- stop spinner
+              if (!hasRenderedTemplate) setHasRenderedTemplate(true);
 
             }}
           >
@@ -800,12 +821,21 @@ const AiPromptPage = () => {
             {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
           </PDFDownloadLink>
         )}
+         {selectedTemplate === 6 && (
+          <PDFDownloadLink
+            document={<Template6PDF data={parsedData} />}
+            fileName="resume.pdf"
+            className="bg-myPurple600 text-white px-4 py-2 rounded "
+          >
+            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+          </PDFDownloadLink>
+        )}
       </div>
       )}
     
       <div className="grid grid-cols-1">
         <div>
-          {isTemplateLoading ? (
+          {isTemplateLoading && !hasRenderedTemplate ? (
             <div className="flex flex-col gap-1 justify-center items-center h-64">
               <svg className="animate-spin" width="48" height="48" viewBox="0 0 50 50">
                 <circle
@@ -830,7 +860,7 @@ const AiPromptPage = () => {
                   strokeLinecap="round"
                 />
               </svg>
-              <p className='text-xs text-myPurple600'>Generating Resume...</p>
+              <p className='text-sm text-myPurple600'>Generating Resume...</p>
             </div>
           ) : (
             showTemplate && parsedData && (

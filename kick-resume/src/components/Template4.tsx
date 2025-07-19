@@ -93,7 +93,7 @@ const Template4 = ({
                                 <p>{`+${data.phone}`}</p>
                             </div>
                         </div>
-                        <div className="flex gap-2 items-center md:text-sm text-xs cursor-pointer mt-1" style={{ color: selectedTheme?.headerText }}
+                        <div className="flex gap-2 items-center md:text-sm text-xs text-white cursor-pointer mt-1" style={{ color: selectedTheme?.headerText }}
                             onClick={() => handleStringFeildClick('address', data.address)}
                         >
                             <h1 className='font-bold'>Address: </h1>
