@@ -26,6 +26,8 @@ import Template5PDF from '@/components/pdf/Template5PDF';
 import { Roboto } from 'next/font/google'
 import Template6 from '@/components/Template6';
 import Template6PDF from '@/components/pdf/Template6PDF';
+import Template7 from '@/components/Template7';
+import Template7PDF from '@/components/pdf/Template7PDF';
 const robot700 = Roboto({
   subsets: ["latin"],
   weight: ["700"],
@@ -39,6 +41,8 @@ const templateData = [
   { image: '/templates/template4.png', name: 'Template 4', id: 4 },
   { image: '/templates/template5.png', name: 'Template 5', id: 5 },
   { image: '/templates/template6.png', name: 'Template 6', id: 6 },
+  { image: '/templates/template7.png', name: 'Template 7', id: 7 },
+
 ]
 
 // const dummyData = {
@@ -124,7 +128,8 @@ const AiPromptPage = () => {
   // for color picker
   const [showColorPicker, setShowColorPicker] = useState(false)
   const [color1, setColor1] = useState({ r: 40, g: 56, b: 74 }); // Default for Template 1
-  const [color4, setColor4] = useState({ r: 200, g: 150, b: 35});  // Default for Template 4
+  const [color4, setColor4] = useState({ r: 200, g: 150, b: 35});
+  const [color7, setColor7] = useState({ r: 131, g: 123, b: 106})  // Default for Template 4
 
   // for phone number
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
@@ -415,6 +420,19 @@ const AiPromptPage = () => {
     handleEmailFieldClick={handleEmailClickFeild}
    
   />;
+  if (selectedTemplate === 7) return <Template7 data={parsedData}
+  handleStringFeildClick={handleStringFieldClick}
+  handleArrayFieldClick={handleArrayFieldClick}
+  handleExperienceFieldClick={handleExperienceFieldClick}
+  handleProjectFieldClick={handleProjectFieldClick}
+  handleEducationFieldClick={handleEducationFieldClick}
+  handlePhoneClickFeild={handlePhoneClickFeild}
+  handleEmailFieldClick={handleEmailClickFeild}
+  imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'}
+  imageBgColor={selectedImageBgColor}
+ 
+  color={color7}
+/>;
     return <p>Please select a template above.</p>;
   };
 
@@ -477,7 +495,7 @@ const AiPromptPage = () => {
         </div>
 
         {/* Upload Image */}
-        {selectedTemplate === 4 && (
+        {(selectedTemplate === 4 || selectedTemplate === 7) && (
           <div>
             <div className="flex flex-col items-center mb-6">
               <div className="w-[200px] h-[200px] rounded-full border-2 border-white overflow-hidden mb-3">
@@ -755,7 +773,7 @@ const AiPromptPage = () => {
       >Create</Button> */}
 
         {/* Theme Selection Section */}
-        {(selectedTemplate === 4 || selectedTemplate === 1) && (
+        {(selectedTemplate === 4 || selectedTemplate === 1 || selectedTemplate === 7) && (
           <Button
             variant={"outline"}
             onClick={() => setShowColorPicker(prev => !prev)}
@@ -767,7 +785,26 @@ const AiPromptPage = () => {
 
       {showColorPicker && (<div className="mt-10">
         {/* <ColorPicker/> */}
-        <RgbColorPicker color={selectedTemplate === 1 ? color1 : color4} onChange={selectedTemplate === 1 ? setColor1 : setColor4} />
+        <RgbColorPicker
+          color={
+            selectedTemplate === 1
+              ? color1
+              : selectedTemplate === 4
+              ? color4
+              : selectedTemplate === 7
+              ? color7
+              : color1 // fallback
+          }
+          onChange={
+            selectedTemplate === 1
+              ? setColor1
+              : selectedTemplate === 4
+              ? setColor4
+              : selectedTemplate === 7
+              ? setColor7
+              : setColor1 // fallback
+          }
+        />
         {/* <div className="value">{JSON.stringify(color)}</div> */}
 
       </div>
@@ -830,6 +867,16 @@ const AiPromptPage = () => {
             {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
           </PDFDownloadLink>
         )}
+         {selectedTemplate === 7 && (
+          <PDFDownloadLink
+            document={<Template7PDF data={parsedData} imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'} imageBgColor={selectedImageBgColor ? tailwindColorMap[selectedImageBgColor] : undefined} color={color7} />}
+            fileName="resume.pdf"
+            className="bg-myPurple600 text-white px-4 py-2 rounded "
+          >
+            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+          </PDFDownloadLink>
+        )}
+        
       </div>
       )}
     

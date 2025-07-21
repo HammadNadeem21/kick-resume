@@ -193,7 +193,7 @@ const Template6 = ({ data, handleStringFeildClick, handleArrayFieldClick, handle
                             "
                 >
                     {data.skills.map((item: string, i: number) => (
-                        <p className="underline underline-offset-2" key={i}>
+                        <p className="underline underline-offset-[3px]" key={i}>
                             {item}
                         </p>
                     ))}

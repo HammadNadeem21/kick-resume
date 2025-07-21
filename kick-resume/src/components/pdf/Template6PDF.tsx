@@ -68,10 +68,10 @@ const styles = StyleSheet.create({
         marginBottom: 2,
     },
     underline: {
-        textDecoration: 'underline',
+        // textDecoration: 'underline',
         textDecorationStyle: 'solid',
         textDecorationColor: '#000',
-        textUnderlineOffset: 3,
+        textUnderlineOffset: 8,
     },
     projectLinks: {
         flexDirection: 'row',
@@ -202,7 +202,9 @@ export default function Template6PDF({ data }: { data: any }) {
                     <Text style={styles.heading}>Skills</Text>
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 4 }}>
                         {data.skills.map((item: string, i: number) => (
-                            <Text key={i} style={[styles.text, styles.underline]}>{item}</Text>
+                            <View style={{ borderBottomWidth: 1, borderBottomColor: 'black', borderStyle: 'solid' }}>
+                                <Text key={i} style={[styles.text, styles.underline]}>{item}</Text>
+                            </View>
                         ))}
                     </View>
                 </View>
