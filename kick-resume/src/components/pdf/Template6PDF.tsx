@@ -202,8 +202,8 @@ export default function Template6PDF({ data }: { data: any }) {
                     <Text style={styles.heading}>Skills</Text>
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 4 }}>
                         {data.skills.map((item: string, i: number) => (
-                            <View style={{ borderBottomWidth: 1, borderBottomColor: 'black', borderStyle: 'solid' }}>
-                                <Text key={i} style={[styles.text, styles.underline]}>{item}</Text>
+                            <View key={i} style={{ borderBottomWidth: 1, borderBottomColor: 'black', borderStyle: 'solid' }}>
+                                <Text  style={[styles.text, styles.underline]}>{item}</Text>
                             </View>
                         ))}
                     </View>
