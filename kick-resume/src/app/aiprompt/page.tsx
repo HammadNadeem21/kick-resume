@@ -28,6 +28,8 @@ import Template6 from '@/components/Template6';
 import Template6PDF from '@/components/pdf/Template6PDF';
 import Template7 from '@/components/Template7';
 import Template7PDF from '@/components/pdf/Template7PDF';
+import Template8 from '@/components/Template8';
+import Template8PDF from '@/components/pdf/Template8PDF';
 const robot700 = Roboto({
   subsets: ["latin"],
   weight: ["700"],
@@ -42,7 +44,7 @@ const templateData = [
   { image: '/templates/template5.png', name: 'Template 5', id: 5 },
   { image: '/templates/template6.png', name: 'Template 6', id: 6 },
   { image: '/templates/template7.png', name: 'Template 7', id: 7 },
-
+  { image: '/templates/template8.png', name: 'Template 8', id: 8 },
 ]
 
 // const dummyData = {
@@ -433,6 +435,17 @@ const AiPromptPage = () => {
  
   color={color7}
 />;
+    if (selectedTemplate === 8) return <Template8 data={parsedData}
+    handleStringFeildClick={handleStringFieldClick}
+    handleArrayFieldClick={handleArrayFieldClick}
+    handleExperienceFieldClick={handleExperienceFieldClick}
+    handleProjectFieldClick={handleProjectFieldClick}
+    handleEducationFieldClick={handleEducationFieldClick}
+    handlePhoneClickFeild={handlePhoneClickFeild}
+    handleEmailFieldClick={handleEmailClickFeild}
+   
+  />;
+
     return <p>Please select a template above.</p>;
   };
 
@@ -876,6 +889,16 @@ const AiPromptPage = () => {
             {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
           </PDFDownloadLink>
         )}
+        {selectedTemplate === 8 && (
+          <PDFDownloadLink
+            document={<Template8PDF data={parsedData} />}
+            fileName="resume.pdf"
+            className="bg-myPurple600 text-white px-4 py-2 rounded "
+          >
+            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+          </PDFDownloadLink>
+        )}
+        
         
       </div>
       )}
