@@ -30,6 +30,8 @@ import Template7 from '@/components/Template7';
 import Template7PDF from '@/components/pdf/Template7PDF';
 import Template8 from '@/components/Template8';
 import Template8PDF from '@/components/pdf/Template8PDF';
+import Template9 from '@/components/Template9';
+import Template9PDF from '@/components/pdf/Template9PDF';
 const robot700 = Roboto({
   subsets: ["latin"],
   weight: ["700"],
@@ -45,6 +47,7 @@ const templateData = [
   { image: '/templates/template6.png', name: 'Template 6', id: 6 },
   { image: '/templates/template7.png', name: 'Template 7', id: 7 },
   { image: '/templates/template8.png', name: 'Template 8', id: 8 },
+  { image: '/templates/template9.png', name: 'Template 9', id: 9 },
 ]
 
 // const dummyData = {
@@ -445,6 +448,18 @@ const AiPromptPage = () => {
     handleEmailFieldClick={handleEmailClickFeild}
    
   />;
+  if (selectedTemplate === 9) return <Template9 data={parsedData}
+  handleStringFeildClick={handleStringFieldClick}
+  handleArrayFieldClick={handleArrayFieldClick}
+  handleExperienceFieldClick={handleExperienceFieldClick}
+  handleProjectFieldClick={handleProjectFieldClick}
+  handleEducationFieldClick={handleEducationFieldClick}
+  handlePhoneClickFeild={handlePhoneClickFeild}
+  handleEmailFieldClick={handleEmailClickFeild}
+  imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'}
+  imageBgColor={selectedImageBgColor}
+
+/>;
 
     return <p>Please select a template above.</p>;
   };
@@ -892,6 +907,15 @@ const AiPromptPage = () => {
         {selectedTemplate === 8 && (
           <PDFDownloadLink
             document={<Template8PDF data={parsedData} />}
+            fileName="resume.pdf"
+            className="bg-myPurple600 text-white px-4 py-2 rounded "
+          >
+            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+          </PDFDownloadLink>
+        )}
+        {selectedTemplate === 9 && (
+          <PDFDownloadLink
+            document={<Template9PDF data={parsedData} imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'} imageBgColor={selectedImageBgColor ? tailwindColorMap[selectedImageBgColor] : undefined} />}
             fileName="resume.pdf"
             className="bg-myPurple600 text-white px-4 py-2 rounded "
           >
@@ -1357,7 +1381,7 @@ const AiPromptPage = () => {
                     className="w-full border border-gray-300 px-3 py-2 rounded mb-4 text-black"
                     value={selectedNumber ?? ""}
                     onChange={(e) => setSelectedNumber(Number(e.target.value))}
-                    placeholder="Enter your Email"
+                    placeholder="Enter your number"
                   />
 
                   <div className="flex justify-end gap-2">
