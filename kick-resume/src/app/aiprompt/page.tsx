@@ -32,6 +32,8 @@ import Template8 from '@/components/Template8';
 import Template8PDF from '@/components/pdf/Template8PDF';
 import Template9 from '@/components/Template9';
 import Template9PDF from '@/components/pdf/Template9PDF';
+import Template10 from '@/components/Template10';
+import Template10PDF from '@/components/pdf/Template10PDF';
 const robot700 = Roboto({
   subsets: ["latin"],
   weight: ["700"],
@@ -48,6 +50,7 @@ const templateData = [
   { image: '/templates/template7.png', name: 'Template 7', id: 7 },
   { image: '/templates/template8.png', name: 'Template 8', id: 8 },
   { image: '/templates/template9.png', name: 'Template 9', id: 9 },
+  { image: '/templates/template10.png', name: 'Template 10', id: 10 }
 ]
 
 // const dummyData = {
@@ -460,6 +463,16 @@ const AiPromptPage = () => {
   imageBgColor={selectedImageBgColor}
 
 />;
+    if (selectedTemplate === 10) return <Template10 data={parsedData}
+    handleStringFeildClick={handleStringFieldClick}
+    handleArrayFieldClick={handleArrayFieldClick}
+    handleExperienceFieldClick={handleExperienceFieldClick}
+    handleProjectFieldClick={handleProjectFieldClick}
+    handleEducationFieldClick={handleEducationFieldClick}
+    handlePhoneClickFeild={handlePhoneClickFeild}
+    handleEmailFieldClick={handleEmailClickFeild}
+   
+  />;
 
     return <p>Please select a template above.</p>;
   };
@@ -523,7 +536,7 @@ const AiPromptPage = () => {
         </div>
 
         {/* Upload Image */}
-        {(selectedTemplate === 4 || selectedTemplate === 7) && (
+        {(selectedTemplate === 4 || selectedTemplate === 7 || selectedTemplate === 9) && (
           <div>
             <div className="flex flex-col items-center mb-6">
               <div className="w-[200px] h-[200px] rounded-full border-2 border-white overflow-hidden mb-3">
@@ -922,6 +935,16 @@ const AiPromptPage = () => {
             {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
           </PDFDownloadLink>
         )}
+        {selectedTemplate === 10 && (
+          <PDFDownloadLink
+            document={<Template10PDF data={parsedData} />}
+            fileName="resume.pdf"
+            className="bg-myPurple600 text-white px-4 py-2 rounded"
+          >
+            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
+          </PDFDownloadLink>
+        )}
+       
         
         
       </div>

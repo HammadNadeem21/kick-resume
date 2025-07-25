@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   imageContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 130,
+    height: 130,
+    borderRadius: 75,
     overflow: 'hidden',
     marginRight: 20,
     backgroundColor: '#eee',
@@ -206,7 +206,7 @@ export default function Template9PDF({ data, imageUrl, imageBgColor }: { data: a
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
-          <View style={styles.imageContainer}>
+          <View style={{...styles.imageContainer, backgroundColor: imageBgColor || styles.imageContainer.backgroundColor}}>
             {imageUrl ? (
               <Image src={imageUrl} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             ) : (
