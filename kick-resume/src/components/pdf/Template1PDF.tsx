@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 16,
     marginBottom: 4,
-    fontWeight: "bold",
+    fontWeight: 500,
   },
   section: {
     marginBottom: 12,
@@ -113,12 +113,12 @@ function getBulletChar(color: string = "white") {
   return "•";
 }
 
-export default function Template1PDF({ data, color }: { data: any, color:any }) {
+export default function Template1PDF({ data, color }: { data: any, color: any }) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Left Side */}
-        <View style={{...styles.left, backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}>
+        <View style={{ ...styles.left, backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}>
           <Text style={styles.name}>{data.name}</Text>
           <View style={styles.divider} />
           <View style={styles.section}>
@@ -150,16 +150,22 @@ export default function Template1PDF({ data, color }: { data: any, color:any }) 
               </View>
             ))}
           </View>
-          <View style={styles.divider} />
-          <View style={styles.section}>
-            <Text style={styles.heading}>Certifications</Text>
-            {data.certifications?.map((item: any, i: number) => (
-              <View key={i} style={styles.listItem}>
-                <Text style={styles.bullet}>{getBulletChar()}</Text>
-                <Text>{item}</Text>
-              </View>
-            ))}
-          </View>
+          {data.certifications.length > 0 && (
+            <View style={styles.divider} />
+          )}
+          {data.certifications.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.heading}>Certifications</Text>
+              {data.certifications?.map((item: any, i: number) => (
+                <View key={i} style={styles.listItem}>
+                  <Text style={styles.bullet}>{getBulletChar()}</Text>
+                  <Text>{item}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+
+
         </View>
         {/* Right Side */}
         <View style={styles.right}>
@@ -187,48 +193,61 @@ export default function Template1PDF({ data, color }: { data: any, color:any }) 
             <Text style={styles.heading}>Summary</Text>
             <Text style={{ lineHeight: 1 }}>{data.summary}</Text>
           </View>
-          <View style={styles.divider} />
-          <View style={styles.section}>
-            <Text style={styles.heading}>Experience</Text>
-            {data.experience?.map((item: any, i: number) => (
-              <View key={i} style={{ marginBottom: 8, flexDirection: "column" }}>
-                <View style={styles.ExperienceItem}>
-                  <Text style={styles.bulletRight}>{getBulletChar("#193042")}</Text>
-                  <Text>
-                    {item.title}
+
+          {data.experience.length > 0 && (
+            <View style={styles.divider} />
+
+          )}
+          {data.experience.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.heading}>Experience</Text>
+              {data.experience?.map((item: any, i: number) => (
+                <View key={i} style={{ marginBottom: 8, flexDirection: "column" }}>
+                  <View style={styles.ExperienceItem}>
+                    <Text style={styles.bulletRight}>{getBulletChar("#193042")}</Text>
+                    <Text>
+                      {item.title}
+                    </Text>
+                  </View>
+
+                  <Text style={{ lineHeight: 1 }}>{item.description}</Text>
+                  <Text style={{ marginLeft: 8, fontStyle: "italic" }}>
+                    ({item.startDate} - {item.endDate})
                   </Text>
                 </View>
+              ))}
+            </View>
+          )}
 
-                <Text style={{ lineHeight: 1 }}>{item.description}</Text>
-                <Text style={{ marginLeft: 8, fontStyle: "italic" }}>
-                  ({item.startDate} - {item.endDate})
-                </Text>
-              </View>
-            ))}
-          </View>
-          <View style={styles.divider} />
-          <View style={styles.section}>
-            <Text style={styles.heading}>Projects</Text>
-            {data.projects?.map((item: any, i: number) => (
-              <View key={i} style={{ marginBottom: 8, flexDirection: "column" }}>
-                <View style={styles.listItem}>
-                  <Text style={styles.bulletRight}>{getBulletChar("#193042")}</Text>
-                  <Text style={styles.projectTitle}>{item.name}</Text>
+          {data.projects.length > 0 && (
+            <View style={styles.divider} />
+          )}
+
+          {data.projects.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.heading}>Projects</Text>
+              {data.projects?.map((item: any, i: number) => (
+                <View key={i} style={{ marginBottom: 8, flexDirection: "column" }}>
+                  <View style={styles.listItem}>
+                    <Text style={styles.bulletRight}>{getBulletChar("#193042")}</Text>
+                    <Text style={styles.projectTitle}>{item.name}</Text>
+                  </View>
+                  <Text style={{ lineHeight: 1 }}>{item.description}</Text>
+                  {/* <Text>GitHub: {item.github}</Text> */}
+                  <View style={styles.projectLinksContainer}>
+                    <Link style={styles.projectLink} src={item.github}>
+                      GitHub
+                    </Link>
+                    <Link style={styles.projectLink} src={item.live}>
+                      Live Demo
+                    </Link>
+                  </View>
+                  {/* <Text>Live: {item.live}</Text> */}
                 </View>
-                <Text style={{ lineHeight: 1 }}>{item.description}</Text>
-                {/* <Text>GitHub: {item.github}</Text> */}
-                <View style={styles.projectLinksContainer}>
-                  <Link style={styles.projectLink} src={item.github}>
-                    GitHub
-                  </Link>
-                  <Link style={styles.projectLink} src={item.live}>
-                    Live Demo
-                  </Link>
-                </View>
-                {/* <Text>Live: {item.live}</Text> */}
-              </View>
-            ))}
-          </View>
+              ))}
+            </View>
+          )}
+
         </View>
       </Page>
     </Document>
