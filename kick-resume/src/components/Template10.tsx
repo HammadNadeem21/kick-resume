@@ -30,6 +30,12 @@ interface Data {
   }[];
 }
 
+interface Color {
+  r: number;
+  g: number;
+  b: number;
+}
+
 const Template10 = ({
   data,
   handleStringFeildClick,
@@ -39,6 +45,7 @@ const Template10 = ({
   handleEducationFieldClick,
   handlePhoneClickFeild,
   handleEmailFieldClick,
+  color,
 }: {
   data: Data;
   handleStringFeildClick: (fieldName: string, value: string) => void;
@@ -48,6 +55,7 @@ const Template10 = ({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  color: Color;
 }) => {
   return (
     <div className="bg-myWhite shadow-[0px_0px_46px_0px_rgba(0,_0,_0,_0.1)] px-7 py-7 lg:w-[70%] w-[100%] mx-auto">
@@ -99,7 +107,13 @@ const Template10 = ({
         className="cursor-pointer mt-4"
         onClick={() => handleStringFeildClick("summary", data.summary)}
       >
-        <h1 className="bg-[#d9d9d9] py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold text-[#373643] uppercase">
+        <h1
+          className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
+          style={{
+            backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`, color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`
+           
+          }}
+        >
           Summary
         </h1>
 
@@ -112,9 +126,15 @@ const Template10 = ({
           className="cursor-pointer mt-4"
           onClick={() => handleArrayFieldClick("skills", data.skills)}
         >
-          <h1 className="bg-[#d9d9d9] py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold text-[#373643] uppercase">
-            technical skills
-          </h1>
+           <h1
+          className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
+          style={{
+            backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`, color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`
+           
+          }}
+        >
+          technical skills
+        </h1>
 
           <ul
             className="px-0 mt-3 text-black    ml-5
@@ -141,9 +161,18 @@ md:text-sm
             handleExperienceFieldClick("experience", data.experience)
           }
         >
-          <h1 className="bg-[#d9d9d9] py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold text-[#373643] uppercase">
-            Experience
-          </h1>
+
+<h1
+          className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
+          style={{
+            backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`, color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`
+           
+          }}
+        >
+          Experience
+        </h1>
+          
+         
 
           <div className=" md:px-5 px-0  mt-3 text-black grid grid-cols-2 gap-6">
             {data.experience.map((item: any, i: number) => (
@@ -173,9 +202,17 @@ md:text-sm
           className="cursor-pointer mt-4"
           onClick={() => handleEducationFieldClick("education", data.education)}
         >
-          <h1 className="bg-[#d9d9d9] py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold text-[#373643] uppercase">
-            education
-          </h1>
+          <h1
+          className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
+          style={{
+            backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`, color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`
+           
+          }}
+        >
+         education
+        </h1>
+          
+          
           <div className="md:px-4 px-0 ml-5 mt-3 text-black grid sm:grid-cols-2 grid-cols-1 gap-2">
             {data.education.map((item: any, i: number) => (
               <div key={i} className=" items-center justify-between ">
@@ -197,10 +234,18 @@ md:text-sm
       {/* Certifications */}
       {data.languages.length > 0 && data.certifications.length > 0 && (
         <div className=" mt-4">
-          <h1 className="bg-[#d9d9d9] py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold text-[#373643] uppercase">
-            {" "}
-            additional information
-          </h1>
+
+<h1
+          className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
+          style={{
+            backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`, color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`
+           
+          }}
+        >
+         additional information
+        </h1>
+
+         
 
           <div className="md:px-4 px-0 text-black md:text-sm text-xs mt-1 grid grid-cols-2 gap-3">
             {data.languages.length > 0 && (
@@ -244,11 +289,19 @@ md:text-sm
           className="cursor-pointer mt-4"
           onClick={() => handleProjectFieldClick("projects", data.projects)}
         >
-          <h1 className="bg-[#d9d9d9] py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold text-[#373643] uppercase">
-            {" "}
-            projects
-          </h1>
 
+
+<h1
+          className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
+          style={{
+            backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`, color:`rgba(${color.r}, ${color.g}, ${color.b}, 1)`
+           
+          }}
+        >
+         projects
+        </h1>
+
+         
           <ul className="md:px-5 px-0 ml-3 mt-3 text-black list-disc md:text-lg text-sm">
             {data.projects.map((item: any, i: number) => (
               <li className="mt-5 mb-5" key={i}>

@@ -1,37 +1,45 @@
-import { Page, Text, View, Document, StyleSheet, Link, Image } from '@react-pdf/renderer';
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Link,
+  Image,
+} from "@react-pdf/renderer";
 
-const LEFT_BG = '#e9eef6';
-const RIGHT_BG = '#7b7266';
-const DARK_TEXT = '#222';
-const WHITE = '#fff';
+const LEFT_BG = "#e9eef6";
+const RIGHT_BG = "#7b7266";
+const DARK_TEXT = "#222";
+const WHITE = "#fff";
 
 const styles = StyleSheet.create({
   page: {
     backgroundColor: LEFT_BG,
     fontSize: 12,
-    fontFamily: 'Helvetica',
+    fontFamily: "Helvetica",
     color: DARK_TEXT,
     padding: 0,
   },
   mainGrid: {
-    flexDirection: 'row',
-    width: '100%',
-    minHeight: '100%',
+    flexDirection: "row",
+    width: "100%",
+    minHeight: "100%",
   },
   leftCol: {
-    width: '65%',
+    width: "65%",
     backgroundColor: LEFT_BG,
     paddingVertical: 24,
     paddingHorizontal: 28,
     color: DARK_TEXT,
   },
   rightCol: {
-    width: '35%',
+    width: "35%",
     // backgroundColor: RIGHT_BG,
     paddingVertical: 24,
     paddingHorizontal: 16,
     color: WHITE,
-    alignItems: 'center',
+    alignItems: "center",
   },
   imageWrapper: {
     marginTop: 8,
@@ -39,49 +47,49 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-    backgroundColor: '#bdbdbd',
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+    backgroundColor: "#bdbdbd",
   },
   sectionTitleLeft: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: DARK_TEXT,
     marginTop: 18,
     marginBottom: 8,
-    textAlign: 'left',
+    textAlign: "left",
   },
   sectionTitleRight: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: WHITE,
     marginTop: 18,
     marginBottom: 8,
-    textAlign: 'left',
-    width: '100%',
+    textAlign: "left",
+    width: "100%",
   },
   dividerLeft: {
     height: 1,
-    backgroundColor: '#bdbdbd',
+    backgroundColor: "#bdbdbd",
     marginVertical: 16,
-    width: '100%',
+    width: "100%",
   },
   dividerRight: {
     height: 1,
     backgroundColor: WHITE,
     marginVertical: 16,
-    width: '100%',
+    width: "100%",
   },
   name: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: DARK_TEXT,
     marginBottom: 2,
   },
   role: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: DARK_TEXT,
     marginBottom: 12,
   },
@@ -89,12 +97,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   contactRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 2,
   },
   contactLabel: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginRight: 4,
     color: DARK_TEXT,
     fontSize: 12,
@@ -115,20 +123,20 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   expCompany: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 12,
     color: DARK_TEXT,
     marginRight: 6,
   },
   expRole: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 11,
     color: DARK_TEXT,
     marginRight: 6,
   },
   expDates: {
     fontSize: 10,
-    color: '#888',
+    color: "#888",
     marginLeft: 2,
   },
   expDesc: {
@@ -142,7 +150,7 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   projectName: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 13,
     color: DARK_TEXT,
     marginBottom: 2,
@@ -153,27 +161,27 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   projectLinks: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 32,
     marginTop: 2,
   },
   projectLink: {
     fontSize: 11,
     color: DARK_TEXT,
-    textDecoration: 'underline',
+    textDecoration: "underline",
     marginRight: 24,
   },
   list: {
     marginBottom: 10,
     paddingLeft: 12,
-    width: '100%',
+    width: "100%",
   },
   listItemRight: {
     color: WHITE,
     fontSize: 12,
     marginBottom: 4,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
   },
   bullet: {
     color: WHITE,
@@ -183,7 +191,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Template7PDF({ data, imageUrl, imageBgColor, color }: { data: any, imageUrl: string, imageBgColor?: string, color: any }) {
+export default function Template7PDF({
+  data,
+  imageUrl,
+  imageBgColor,
+  color,
+}: {
+  data: any;
+  imageUrl: string;
+  imageBgColor?: string;
+  color: any;
+}) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -197,15 +215,15 @@ export default function Template7PDF({ data, imageUrl, imageBgColor, color }: { 
             <View style={styles.contactBlock}>
               <View style={styles.contactRow}>
                 <Text style={styles.contactLabel}>Phone:</Text>
-                <Text style={styles.contactValue}>+{data.phone || ''}</Text>
+                <Text style={styles.contactValue}>+{data.phone || ""}</Text>
               </View>
               <View style={styles.contactRow}>
                 <Text style={styles.contactLabel}>Email:</Text>
-                <Text style={styles.contactValue}>{data.email || ''}</Text>
+                <Text style={styles.contactValue}>{data.email || ""}</Text>
               </View>
               <View style={styles.contactRow}>
                 <Text style={styles.contactLabel}>Address:</Text>
-                <Text style={styles.contactValue}>{data.address || ''}</Text>
+                <Text style={styles.contactValue}>{data.address || ""}</Text>
               </View>
             </View>
             <View style={styles.dividerLeft} />
@@ -217,11 +235,21 @@ export default function Template7PDF({ data, imageUrl, imageBgColor, color }: { 
             <Text style={styles.sectionTitleLeft}>Experience</Text>
             {data.experience?.map((item: any, i: number) => (
               <View key={i} style={styles.expBlock}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                  }}
+                >
                   <Text style={styles.expCompany}>{item.companyName}</Text>
                   <Text style={styles.expRole}>{item.title}</Text>
                   <Text style={styles.expDates}>
-                    ({item.startDate}  {item.endDate && item.endDate !== 'Currently working' ? ` ${item.endDate}` : item.endDate})
+                    ({item.startDate}{" "}
+                    {item.endDate && item.endDate !== "Currently working"
+                      ? ` ${item.endDate}`
+                      : item.endDate}
+                    )
                   </Text>
                 </View>
                 <Text style={styles.expDesc}>{item.description}</Text>
@@ -235,24 +263,58 @@ export default function Template7PDF({ data, imageUrl, imageBgColor, color }: { 
                 <Text style={styles.projectName}>{item.name}</Text>
                 <Text style={styles.projectDesc}>{item.description}</Text>
                 <View style={styles.projectLinks}>
-                  <Link style={styles.projectLink} src={item.github || '/aiprompt'}>GitHub</Link>
-                  <Link style={styles.projectLink} src={item.live || '/aiprompt'}>live demo</Link>
+                  <Link
+                    style={styles.projectLink}
+                    src={item.github || "/aiprompt"}
+                  >
+                    GitHub
+                  </Link>
+                  <Link
+                    style={styles.projectLink}
+                    src={item.live || "/aiprompt"}
+                  >
+                    live demo
+                  </Link>
                 </View>
               </View>
             ))}
           </View>
 
           {/* Right Column */}
-          <View style={{ ...styles.rightCol, backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}>
+          <View
+            style={{
+              ...styles.rightCol,
+              backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+            }}
+          >
             {/* Image */}
-            <View style={{...styles.imageWrapper, backgroundColor: imageBgColor || styles.imageWrapper.backgroundColor}}>
+            <View
+              style={{
+                ...styles.imageWrapper,
+                backgroundColor:
+                  imageBgColor || styles.imageWrapper.backgroundColor,
+              }}
+            >
               {imageUrl ? (
+                // eslint-disable-next-line jsx-a11y/alt-text
                 <Image
                   src={imageUrl}
-                  style={{  width: 150, height: 150, borderRadius: 75, objectFit: "cover" }}
+                  style={{
+                    width: 150,
+                    height: 150,
+                    borderRadius: 75,
+                    objectFit: "cover",
+                  }}
                 />
               ) : (
-                <View style={{ width: 120, height: 120, borderRadius: 60, backgroundColor: '#eee' }} />
+                <View
+                  style={{
+                    width: 120,
+                    height: 120,
+                    borderRadius: 60,
+                    backgroundColor: "#eee",
+                  }}
+                />
               )}
             </View>
             {/* Education */}

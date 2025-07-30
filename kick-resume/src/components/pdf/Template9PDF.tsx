@@ -1,21 +1,29 @@
-import { Page, Text, View, Document, StyleSheet, Link, Image } from '@react-pdf/renderer';
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Link,
+  Image,
+} from "@react-pdf/renderer";
 
-const PRIMARY_BLUE = '#004aad';
-const LIGHT_BLUE_BG = '#eef3f7'; // Approximate light blue from image
-const DARK_TEXT = '#222';
-const GRAY_TEXT = '#555';
+const PRIMARY_BLUE = "#004aad";
+const LIGHT_BLUE_BG = "#eef3f7"; // Approximate light blue from image
+const DARK_TEXT = "#222";
+const GRAY_TEXT = "#555";
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     fontSize: 12,
-    fontFamily: 'Helvetica',
+    fontFamily: "Helvetica",
     color: DARK_TEXT,
     padding: 30, // Global padding
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 20,
     paddingBottom: 10,
     // backgroundColor: LIGHT_BLUE_BG, // Header background color
@@ -26,28 +34,28 @@ const styles = StyleSheet.create({
     width: 130,
     height: 130,
     borderRadius: 75,
-    overflow: 'hidden',
+    overflow: "hidden",
     marginRight: 20,
-    backgroundColor: '#eee',
+    backgroundColor: "#eee",
   },
   headerContent: {
     flexGrow: 1,
   },
   name: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: PRIMARY_BLUE,
     marginBottom: 2,
   },
   role: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: PRIMARY_BLUE,
     marginBottom: 10,
   },
   contactGrid: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     borderTopWidth: 2,
     borderTopColor: PRIMARY_BLUE,
     marginTop: 5,
@@ -57,35 +65,33 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 5,
     flexGrow: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     height: 30,
-    textAlign: 'center',
-    width: 100
-    
+    textAlign: "center",
+    width: 100,
   },
   contactText: {
     fontSize: 9,
     color: DARK_TEXT,
-    textAlign: 'center'
-
+    textAlign: "center",
   },
   verticalDivider: {
     width: 2,
     backgroundColor: PRIMARY_BLUE,
   },
   sectionTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 20,
     marginBottom: 10,
   },
   sectionTitleText: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: PRIMARY_BLUE,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
     marginRight: 10,
   },
   sectionTitleDivider: {
@@ -97,15 +103,16 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: DARK_TEXT,
     lineHeight: 1.4,
-    fontStyle: 'italic',
+    fontStyle: "italic",
   },
-  list: { // Re-added for education and general lists
+  list: {
+    // Re-added for education and general lists
     marginBottom: 10,
     paddingLeft: 12, // Indent for bullets
   },
   listItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
     gap: 3,
     fontSize: 11,
     marginBottom: 4,
@@ -120,17 +127,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   expHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 2,
   },
   expTitleCompany: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
+    flexDirection: "row",
+    alignItems: "baseline",
   },
   expTitle: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 12,
     color: DARK_TEXT,
     marginRight: 5,
@@ -150,35 +157,35 @@ const styles = StyleSheet.create({
     lineHeight: 1.3,
   },
   skillsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     marginTop: 5,
   },
   skillItem: {
-    width: '33%', // 3 columns
+    width: "33%", // 3 columns
     marginBottom: 5,
   },
   certGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     marginTop: 5,
   },
   certItem: {
-    width: '100%', // 2 columns
+    width: "100%", // 2 columns
     marginBottom: 5,
   },
   projectGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
     marginTop: 5,
   },
   projectBlock: {
-    width: '48%', // Two columns with some gap
+    width: "48%", // Two columns with some gap
     marginBottom: 15,
   },
   projectName: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 12,
     color: DARK_TEXT,
     marginBottom: 2,
@@ -190,45 +197,80 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   projectLinks: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 20,
   },
   projectLink: {
     fontSize: 10,
     color: PRIMARY_BLUE,
-    textDecoration: 'underline',
+    textDecoration: "underline",
   },
 });
 
-export default function Template9PDF({ data, imageUrl, imageBgColor }: { data: any, imageUrl?: string, imageBgColor?: string }) {
+export default function Template9PDF({
+  data,
+  imageUrl,
+  imageBgColor,
+}: {
+  data: any;
+  imageUrl?: string;
+  imageBgColor?: string;
+}) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
-          <View style={{...styles.imageContainer, backgroundColor: imageBgColor || styles.imageContainer.backgroundColor}}>
+          <View
+            style={{
+              ...styles.imageContainer,
+              backgroundColor:
+                imageBgColor || styles.imageContainer.backgroundColor,
+            }}
+          >
             {imageUrl ? (
-              <Image src={imageUrl} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              // eslint-disable-next-line jsx-a11y/alt-text
+              <Image
+                src={imageUrl}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
             ) : (
-              <View style={{ width: '100%', height: '100%', backgroundColor: '#eee' }} />
+              <View
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "#eee",
+                }}
+              />
             )}
           </View>
           <View style={styles.headerContent}>
             <Text style={styles.name}>{data.name}</Text>
             <Text style={styles.role}>{data.role}</Text>
             <View style={styles.contactGrid}>
-              <View style={{ ...styles.contactItem, flexShrink: 1, flexGrow: 1, minWidth: 0 }}>
-                <Text style={{ ...styles.contactText, flexWrap: 'wrap' }}>
-                  {data.email !== "" ? data.email : 'Email'}
+              <View
+                style={{
+                  ...styles.contactItem,
+                  flexShrink: 1,
+                  flexGrow: 1,
+                  minWidth: 0,
+                }}
+              >
+                <Text style={{ ...styles.contactText, flexWrap: "wrap" }}>
+                  {data.email !== "" ? data.email : "Email"}
                 </Text>
               </View>
               <View style={styles.verticalDivider} />
               <View style={styles.contactItem}>
-                <Text style={styles.contactText}>{data.phone && data.phone !== 0 ? `+${data.phone}` : 'Phone'}</Text>
+                <Text style={styles.contactText}>
+                  {data.phone && data.phone !== 0 ? `+${data.phone}` : "Phone"}
+                </Text>
               </View>
               <View style={styles.verticalDivider} />
               <View style={styles.contactItem}>
-                <Text style={styles.contactText}>{data.address !== "" ? data.address : 'Address'}</Text>
+                <Text style={styles.contactText}>
+                  {data.address !== "" ? data.address : "Address"}
+                </Text>
               </View>
             </View>
           </View>
@@ -258,7 +300,15 @@ export default function Template9PDF({ data, imageUrl, imageBgColor }: { data: a
                   <Text style={styles.bullet}>•</Text>
                   <Text>{item.degree}</Text>
                   {item.startDate && item.endDate && (
-                    <Text style={{ fontSize: 9, color: GRAY_TEXT, marginLeft: 'auto' }}>({item.startDate} - {item.endDate})</Text>
+                    <Text
+                      style={{
+                        fontSize: 9,
+                        color: GRAY_TEXT,
+                        marginLeft: "auto",
+                      }}
+                    >
+                      ({item.startDate} - {item.endDate})
+                    </Text>
                   )}
                 </View>
               ))}
@@ -279,9 +329,13 @@ export default function Template9PDF({ data, imageUrl, imageBgColor }: { data: a
                   <View style={styles.expHeader}>
                     <View style={styles.expTitleCompany}>
                       <Text style={styles.expTitle}>{item.title}</Text>
-                      <Text style={styles.expCompany}>| {item.companyName}</Text>
+                      <Text style={styles.expCompany}>
+                        | {item.companyName}
+                      </Text>
                     </View>
-                    <Text style={styles.expDates}>({item.startDate} - {item.endDate})</Text>
+                    <Text style={styles.expDates}>
+                      ({item.startDate} - {item.endDate})
+                    </Text>
                   </View>
                   {item.description && (
                     <View style={styles.listItem}>
@@ -297,12 +351,20 @@ export default function Template9PDF({ data, imageUrl, imageBgColor }: { data: a
 
         {/* Professional Skill & Certifications */}
         {(data.skills?.length > 0 || data.certifications?.length > 0) && (
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginTop: 20,
+            }}
+          >
             {/* Professional Skill */}
             {data.skills?.length > 0 && (
-              <View style={{ width: '50%' }}>
+              <View style={{ width: "50%" }}>
                 <View style={styles.sectionTitleContainer}>
-                  <Text style={styles.sectionTitleText}>PROFESSIONAL SKILL</Text>
+                  <Text style={styles.sectionTitleText}>
+                    PROFESSIONAL SKILL
+                  </Text>
                   <View style={styles.sectionTitleDivider} />
                 </View>
                 <View style={styles.skillsGrid}>
@@ -320,7 +382,7 @@ export default function Template9PDF({ data, imageUrl, imageBgColor }: { data: a
 
             {/* Certifications */}
             {data.certifications?.length > 0 && (
-              <View style={{ width: '50%', paddingLeft: 10 }}>
+              <View style={{ width: "50%", paddingLeft: 10 }}>
                 <View style={styles.sectionTitleContainer}>
                   <Text style={styles.sectionTitleText}>CERTIFICATIONS</Text>
                   <View style={styles.sectionTitleDivider} />
@@ -358,10 +420,14 @@ export default function Template9PDF({ data, imageUrl, imageBgColor }: { data: a
                   {(item.github || item.live) && (
                     <View style={styles.projectLinks}>
                       {item.github && (
-                        <Link src={item.github} style={styles.projectLink}>GitHub</Link>
+                        <Link src={item.github} style={styles.projectLink}>
+                          GitHub
+                        </Link>
                       )}
                       {item.live && (
-                        <Link src={item.live} style={styles.projectLink}>live demo</Link>
+                        <Link src={item.live} style={styles.projectLink}>
+                          live demo
+                        </Link>
                       )}
                     </View>
                   )}
@@ -370,7 +436,6 @@ export default function Template9PDF({ data, imageUrl, imageBgColor }: { data: a
             </View>
           </>
         )}
-
       </Page>
     </Document>
   );

@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         marginVertical: 14,
     },
     headingContainer: {
-        backgroundColor: '#d9d9d9',
+        // backgroundColor: '#d9d9d9',
         paddingVertical: 2,
         paddingHorizontal: 12,
         borderRadius: 9999, // full rounded
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function Template10PDF({ data }: { data: any }) {
+export default function Template10PDF({ data, color }: { data: any, color: any }) {
     // Split education and skills into columns
     const eduColumns = splitIntoColumns(data.education || [], 2);
     const skillColumns = splitIntoColumns(data.skills || [], 3);
@@ -266,16 +266,16 @@ export default function Template10PDF({ data }: { data: any }) {
                 </View>
                 {/* Summary */}
                 <View style={styles.section}>
-                    <View style={{ ...styles.headingContainer, width: '100%' }}>
-                        <Text style={styles.headingText}>SUMMARY</Text>
+                    <View style={{ ...styles.headingContainer, width: '100%', backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)` }}>
+                        <Text style={{...styles.headingText, color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}>SUMMARY</Text>
                     </View>
                     <Text style={styles.summaryText}>{data.summary}</Text>
                 </View>
                 {/* Experience */}
                 {data.experience.length > 0 && (
                     <View style={styles.section}>
-                        <View style={{ ...styles.headingContainer, width: '100%' }}>
-                            <Text style={styles.headingText}>EXPERIENCE</Text>
+                        <View style={{ ...styles.headingContainer, width: '100%', backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)` }}>
+                            <Text style={{...styles.headingText, color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}>EXPERIENCE</Text>
                         </View>
                         <View style={{ marginTop: 4 }}>
                             {data.experience.map((item: any, i: number) => (
@@ -304,8 +304,8 @@ export default function Template10PDF({ data }: { data: any }) {
                 {/* Education - 2 columns */}
                 {data.education.length > 0 && (
                     <View style={styles.section}>
-                        <View style={{ ...styles.headingContainer, width: '100%' }}>
-                            <Text style={styles.headingText}>EDUCATION</Text>
+                        <View style={{ ...styles.headingContainer, width: '100%',  backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)` }}>
+                            <Text style={{...styles.headingText, color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}>EDUCATION</Text>
                         </View>
                         <View style={styles.eduColumns}>
                             {eduColumns.map((col, colIdx) => (
@@ -328,8 +328,8 @@ export default function Template10PDF({ data }: { data: any }) {
                 {/* Skills - 3 columns */}
                 {data.skills.length > 0 && (
                     <View style={styles.section}>
-                        <View style={{ ...styles.headingContainer, width: '100%' }}>
-                            <Text style={styles.headingText}>SKILLS</Text>
+                        <View style={{ ...styles.headingContainer, width: '100%',  backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)` }}>
+                            <Text style={{...styles.headingText, color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}>SKILLS</Text>
                         </View>
                         <View style={styles.skillsColumns}>
                             {skillColumns.map((col, colIdx) => (
@@ -349,8 +349,8 @@ export default function Template10PDF({ data }: { data: any }) {
                 {/* Additional Information: Certifications and Languages */}
                 {(data.certifications.length > 0 && data.languages.length > 0) && (
                     <View style={styles.section}>
-                        <View style={{ ...styles.headingContainer, width: '100%' }}>
-                            <Text style={styles.headingText}>ADDITIONAL INFORMATION</Text>
+                        <View style={{ ...styles.headingContainer, width: '100%', backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)` }}>
+                            <Text style={{...styles.headingText, color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}>ADDITIONAL INFORMATION</Text>
                         </View>
                         <View style={styles.certLangRow}>
                             {data.languages.length > 0 && (
@@ -384,8 +384,8 @@ export default function Template10PDF({ data }: { data: any }) {
                 {/* Projects */}
                 {data.projects.length > 0 && (
                     <View style={styles.section}>
-                        <View style={{ ...styles.headingContainer, width: '100%' }}>
-                            <Text style={styles.headingText}>PROJECTS</Text>
+                        <View style={{ ...styles.headingContainer, width: '100%', backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)` }}>
+                            <Text style={{...styles.headingText, color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`}}>PROJECTS</Text>
                         </View>
                         <View style={{ marginTop: 4 }}>
                             {data.projects.map((item: any, i: number) => (

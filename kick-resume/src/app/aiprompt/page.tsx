@@ -1,39 +1,40 @@
 "use client";
 
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
 
-import Template1 from '@/components/Template1';
-import { useDropzone } from 'react-dropzone';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import Template1PDF from '@/components/pdf/Template1PDF';
-import Template2PDF from '@/components/pdf/Template2PDF';
-import Template3PDF from '@/components/pdf/Template3PDF';
+import Template1 from "@/components/Template1";
+import { useDropzone } from "react-dropzone";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import Template1PDF from "@/components/pdf/Template1PDF";
+import Template2PDF from "@/components/pdf/Template2PDF";
+import Template3PDF from "@/components/pdf/Template3PDF";
 
 import { IoSend } from "react-icons/io5";
-import Template2 from '@/components/Template2';
-import Template3 from '@/components/Template3';
-import Template4 from '@/components/Template4';
-import Template4PDF from '@/components/pdf/Template4PDF';
+import Template2 from "@/components/Template2";
+import Template3 from "@/components/Template3";
+import Template4 from "@/components/Template4";
+import Template4PDF from "@/components/pdf/Template4PDF";
 
 import { RgbColorPicker } from "react-colorful";
 
 import { TiTick } from "react-icons/ti";
-import Template5 from '@/components/Template5';
-import Template5PDF from '@/components/pdf/Template5PDF';
+import Template5 from "@/components/Template5";
+import Template5PDF from "@/components/pdf/Template5PDF";
 
-import { Roboto } from 'next/font/google'
-import Template6 from '@/components/Template6';
-import Template6PDF from '@/components/pdf/Template6PDF';
-import Template7 from '@/components/Template7';
-import Template7PDF from '@/components/pdf/Template7PDF';
-import Template8 from '@/components/Template8';
-import Template8PDF from '@/components/pdf/Template8PDF';
-import Template9 from '@/components/Template9';
-import Template9PDF from '@/components/pdf/Template9PDF';
-import Template10 from '@/components/Template10';
-import Template10PDF from '@/components/pdf/Template10PDF';
+import { Roboto } from "next/font/google";
+import Template6 from "@/components/Template6";
+import Template6PDF from "@/components/pdf/Template6PDF";
+import Template7 from "@/components/Template7";
+import Template7PDF from "@/components/pdf/Template7PDF";
+import Template8 from "@/components/Template8";
+import Template8PDF from "@/components/pdf/Template8PDF";
+import Template9 from "@/components/Template9";
+import Template9PDF from "@/components/pdf/Template9PDF";
+import Template10 from "@/components/Template10";
+import Template10PDF from "@/components/pdf/Template10PDF";
+import { CarouselSize } from "@/components/Carousel";
 const robot700 = Roboto({
   subsets: ["latin"],
   weight: ["700"],
@@ -41,17 +42,17 @@ const robot700 = Roboto({
 });
 
 const templateData = [
-  { image: '/templates/template1.png', name: 'Template 1', id: 1 },
-  { image: '/templates/template2.png', name: 'Template 2', id: 2 },
-  { image: '/templates/template3.png', name: 'Template 3', id: 3 },
-  { image: '/templates/template4.png', name: 'Template 4', id: 4 },
-  { image: '/templates/template5.png', name: 'Template 5', id: 5 },
-  { image: '/templates/template6.png', name: 'Template 6', id: 6 },
-  { image: '/templates/template7.png', name: 'Template 7', id: 7 },
-  { image: '/templates/template8.png', name: 'Template 8', id: 8 },
-  { image: '/templates/template9.png', name: 'Template 9', id: 9 },
-  { image: '/templates/template10.png', name: 'Template 10', id: 10 }
-]
+  { image: "/templates/template1.png", name: "Template 1", id: 1 },
+  { image: "/templates/template2.png", name: "Template 2", id: 2 },
+  { image: "/templates/template3.png", name: "Template 3", id: 3 },
+  { image: "/templates/template4.png", name: "Template 4", id: 4 },
+  { image: "/templates/template5.png", name: "Template 5", id: 5 },
+  { image: "/templates/template6.png", name: "Template 6", id: 6 },
+  { image: "/templates/template7.png", name: "Template 7", id: 7 },
+  { image: "/templates/template8.png", name: "Template 8", id: 8 },
+  { image: "/templates/template9.png", name: "Template 9", id: 9 },
+  { image: "/templates/template10.png", name: "Template 10", id: 10 },
+];
 
 // const dummyData = {
 //   name: "John Doe",
@@ -99,45 +100,61 @@ const templateData = [
 //   ],
 // };
 
-
 const AiPromptPage = () => {
-
-  const [userPrompt, setUserPrompt] = useState<string>('');
+  const [userPrompt, setUserPrompt] = useState<string>("");
   const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
   const [parsedData, setParsedData] = useState<any>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [processedUrl, setProcessedUrl] = useState<string | null>(null);
   // const [inputData, setInputData] = useState<string | string[]>()
-  const [showEditor, setShowEditor] = useState(false)
+  const [showEditor, setShowEditor] = useState(false);
   // const [editMode, setEditMode] = useState<'summary' | 'skills' | null>(null)
-  const [editType, setEditType] = useState<"string" | "array" | "experience" | "projects" | "education" | "phone" | "email">("string");
-  const [editField, setEditField] = useState<"skills" | "languages" | "certifications" | null>(null);
+  const [editType, setEditType] = useState<
+    | "string"
+    | "array"
+    | "experience"
+    | "projects"
+    | "education"
+    | "phone"
+    | "email"
+  >("string");
+  const [editField, setEditField] = useState<
+    "skills" | "languages" | "certifications" | null
+  >(null);
   const [inputData, setInputData] = useState<string | string[] | number>([]);
   const [newItem, setNewItem] = useState("");
-  const [currentStringField, setCurrentStringField] = useState<string | null>(null);
-  const [currentArrayField, setCurrentArrayField] = useState<string | null>(null);
+  const [currentStringField, setCurrentStringField] = useState<string | null>(
+    null
+  );
+  const [currentArrayField, setCurrentArrayField] = useState<string | null>(
+    null
+  );
 
   // selected image state
-  const [selectedProcessedImage, setSelectedProcessedImage] = useState<string | null>(null);
+  const [selectedProcessedImage, setSelectedProcessedImage] = useState<
+    string | null
+  >(null);
   // selected background color state
-  const [selectedImageBgColor, setSelectedImageBgColor] = useState<string | undefined>(undefined);
+  const [selectedImageBgColor, setSelectedImageBgColor] = useState<
+    string | undefined
+  >(undefined);
   // selected theme state
 
-
   const tailwindColorMap: { [key: string]: string } = {
-    'bg-blue-500': '#3B82F6',
-    'bg-white': '#FFFFFF',
-    'bg-green-500': '#22C55E',
-    'bg-gray-500': '#6B7280',
-    'bg-yellow-500': '#F59E0B',
+    "bg-blue-500": "#3B82F6",
+    "bg-white": "#FFFFFF",
+    "bg-green-500": "#22C55E",
+    "bg-gray-500": "#6B7280",
+    "bg-yellow-500": "#F59E0B",
   };
 
   // for color picker
-  const [showColorPicker, setShowColorPicker] = useState(false)
+  const [showColorPicker, setShowColorPicker] = useState(false);
   const [color1, setColor1] = useState({ r: 40, g: 56, b: 74 }); // Default for Template 1
-  const [color4, setColor4] = useState({ r: 200, g: 150, b: 35});
-  const [color7, setColor7] = useState({ r: 131, g: 123, b: 106})  // Default for Template 4
+  const [color4, setColor4] = useState({ r: 200, g: 150, b: 35 });
+  const [color7, setColor7] = useState({ r: 131, g: 123, b: 106 }); // Default for Template 4
+  const [color10, setColor10] = useState({ r: 131, g: 123, b: 106 });
 
   // for phone number
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
@@ -147,45 +164,49 @@ const AiPromptPage = () => {
   const [selectedEmail, setSelectedEmail] = useState<string | null>(null);
   const [emailField, setEmailField] = useState<string | null>(null);
 
-
   // for experience field
   const [experienceData, setExperienceData] = useState<any[]>([]);
-  const [currentExperienceField, setCurrentExperienceField] = useState<string | null>(null);
+  const [currentExperienceField, setCurrentExperienceField] = useState<
+    string | null
+  >(null);
 
   // Project field
   const [projectData, setProjectData] = useState<any[]>([]);
-  const [currentProjectField, setCurrentProjectField] = useState<string | null>(null);
+  const [currentProjectField, setCurrentProjectField] = useState<string | null>(
+    null
+  );
 
   // Education field
   const [educationData, setEducationData] = useState<any[]>([]);
-  const [currentEducationField, setCurrentEducationField] = useState<string | null>(null);
+  const [currentEducationField, setCurrentEducationField] = useState<
+    string | null
+  >(null);
 
   // For multiple prompt
   const [promptHistory, setPromptHistory] = useState<
     { type: "user" | "ai"; message: string }[]
-  >([])
+  >([]);
 
   // for loader
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [isTemplateLoading, setIsTemplateLoading] = useState(false);
   const [hasRenderedTemplate, setHasRenderedTemplate] = useState(false);
 
-
   const handleGenerate = async () => {
     if (!userPrompt || !selectedTemplate) {
-      alert('Please write a prompt and select a template!');
+      alert("Please write a prompt and select a template!");
       return;
     }
 
     try {
       setIsChatLoading(true);
-      const res = await fetch('/api/generate-resume', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/generate-resume", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           prompt: userPrompt,
-          existingResume: parsedData || {} // ✅ ye zaroor hona chahiye
-        })
+          existingResume: parsedData || {}, // ✅ ye zaroor hona chahiye
+        }),
       });
 
       if (!res.ok) {
@@ -223,7 +244,6 @@ const AiPromptPage = () => {
     }
   };
 
-
   const onDrop = async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     if (file) {
@@ -232,13 +252,11 @@ const AiPromptPage = () => {
     }
   };
 
-
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { 'image/*': [] },
+    accept: { "image/*": [] },
     multiple: false,
   });
-
 
   const handleStringFieldClick = (fieldName: string, value: string) => {
     setInputData(value);
@@ -247,13 +265,15 @@ const AiPromptPage = () => {
     setCurrentStringField(fieldName);
   };
 
-  const handleStringFieldChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleStringFieldChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const newValue = e.target.value;
     setInputData(newValue);
 
     setParsedData((prev: any) => ({
       ...prev,
-      [currentStringField as string]: newValue
+      [currentStringField as string]: newValue,
     }));
   };
 
@@ -291,7 +311,7 @@ const AiPromptPage = () => {
     setCurrentExperienceField(fieldName);
     // setCurrentProjectField(null);       // 🧼 Reset
     // setCurrentEducationField(null);
-    setEditType("experience")
+    setEditType("experience");
     setShowEditor(true);
   };
   // for project field
@@ -300,7 +320,7 @@ const AiPromptPage = () => {
     setCurrentProjectField(fieldName);
     // setCurrentExperienceField(null);    // 🧼 Reset
     // setCurrentEducationField(null);
-    setEditType("projects")
+    setEditType("projects");
     setShowEditor(true);
   };
   // Education field
@@ -309,10 +329,9 @@ const AiPromptPage = () => {
     setCurrentEducationField(fieldName);
     // setCurrentExperienceField(null);    // 🧼 Reset
     // setCurrentProjectField(null);
-    setEditType("education")
+    setEditType("education");
     setShowEditor(true);
   };
-
 
   const handleSkillsClick = (skills: string[]) => {
     setInputData(skills);
@@ -330,14 +349,14 @@ const AiPromptPage = () => {
   const handlePhoneClickFeild = (fieldName: string, data: number) => {
     setSelectedField(fieldName);
     setSelectedNumber(data);
-    setEditType("phone")
+    setEditType("phone");
     setShowEditor(true); // show modal
   };
 
   const handleEmailClickFeild = (fieldName: string, data: string) => {
     setEmailField(fieldName);
     setSelectedEmail(data);
-    setEditType("email")
+    setEditType("email");
     setShowEditor(true); // show modal
   };
 
@@ -347,8 +366,6 @@ const AiPromptPage = () => {
     }
   }, [parsedData]);
 
-
-
   const getTemplateId = (image: number) => {
     setSelectedTemplate(image);
     // setParsedData(dummyData);       // dummy data show karo
@@ -356,123 +373,154 @@ const AiPromptPage = () => {
     // setPromptHistory([]);           // optional: clear chat
   };
 
-
-
   const scrollToBottom = () => {
-    const container = document.querySelector('.chat-container'); // add class below
+    const container = document.querySelector(".chat-container"); // add class below
     if (container) {
       container.scrollTop = container.scrollHeight;
     }
   };
 
   const renderSelectedTemplate = () => {
-
-    if (selectedTemplate === 1) return <Template1 data={parsedData}
-      handleStringFeildClick={handleStringFieldClick}
-      handleArrayFieldClick={handleArrayFieldClick}
-      handleExperienceFieldClick={handleExperienceFieldClick}
-      handleProjectFieldClick={handleProjectFieldClick}
-      handleEducationFieldClick={handleEducationFieldClick}
-      handlePhoneClickFeild={handlePhoneClickFeild}
-      handleEmailFieldClick={handleEmailClickFeild}
-    color={color1}
-    />;
-    if (selectedTemplate === 2) return <Template2 data={parsedData}
-      handleStringFeildClick={handleStringFieldClick}
-      handleArrayFieldClick={handleArrayFieldClick}
-      handleExperienceFieldClick={handleExperienceFieldClick}
-      handleProjectFieldClick={handleProjectFieldClick}
-      handleEducationFieldClick={handleEducationFieldClick}
-      handlePhoneClickFeild={handlePhoneClickFeild}
-      handleEmailFieldClick={handleEmailClickFeild}
-    />;
-    if (selectedTemplate === 3) return <Template3 data={parsedData}
-      handleStringFeildClick={handleStringFieldClick}
-      handleArrayFieldClick={handleArrayFieldClick}
-      handleExperienceFieldClick={handleExperienceFieldClick}
-      handleProjectFieldClick={handleProjectFieldClick}
-      handleEducationFieldClick={handleEducationFieldClick}
-      handlePhoneClickFeild={handlePhoneClickFeild}
-      handleEmailFieldClick={handleEmailClickFeild}
-    />;
-    if (selectedTemplate === 4) return <Template4 data={parsedData}
-      handleStringFeildClick={handleStringFieldClick}
-      handleArrayFieldClick={handleArrayFieldClick}
-      handleExperienceFieldClick={handleExperienceFieldClick}
-      handleProjectFieldClick={handleProjectFieldClick}
-      handleEducationFieldClick={handleEducationFieldClick}
-      handlePhoneClickFeild={handlePhoneClickFeild}
-      handleEmailFieldClick={handleEmailClickFeild}
-      imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'}
-      imageBgColor={selectedImageBgColor}
-     
-      color={color4}
-    />;
-    if (selectedTemplate === 5) return <Template5 data={parsedData}
-      handleStringFeildClick={handleStringFieldClick}
-      handleArrayFieldClick={handleArrayFieldClick}
-      handleExperienceFieldClick={handleExperienceFieldClick}
-      handleProjectFieldClick={handleProjectFieldClick}
-      handleEducationFieldClick={handleEducationFieldClick}
-      handlePhoneClickFeild={handlePhoneClickFeild}
-      handleEmailFieldClick={handleEmailClickFeild}
-     
-    />;
-    if (selectedTemplate === 6) return <Template6 data={parsedData}
-    handleStringFeildClick={handleStringFieldClick}
-    handleArrayFieldClick={handleArrayFieldClick}
-    handleExperienceFieldClick={handleExperienceFieldClick}
-    handleProjectFieldClick={handleProjectFieldClick}
-    handleEducationFieldClick={handleEducationFieldClick}
-    handlePhoneClickFeild={handlePhoneClickFeild}
-    handleEmailFieldClick={handleEmailClickFeild}
-   
-  />;
-  if (selectedTemplate === 7) return <Template7 data={parsedData}
-  handleStringFeildClick={handleStringFieldClick}
-  handleArrayFieldClick={handleArrayFieldClick}
-  handleExperienceFieldClick={handleExperienceFieldClick}
-  handleProjectFieldClick={handleProjectFieldClick}
-  handleEducationFieldClick={handleEducationFieldClick}
-  handlePhoneClickFeild={handlePhoneClickFeild}
-  handleEmailFieldClick={handleEmailClickFeild}
-  imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'}
-  imageBgColor={selectedImageBgColor}
- 
-  color={color7}
-/>;
-    if (selectedTemplate === 8) return <Template8 data={parsedData}
-    handleStringFeildClick={handleStringFieldClick}
-    handleArrayFieldClick={handleArrayFieldClick}
-    handleExperienceFieldClick={handleExperienceFieldClick}
-    handleProjectFieldClick={handleProjectFieldClick}
-    handleEducationFieldClick={handleEducationFieldClick}
-    handlePhoneClickFeild={handlePhoneClickFeild}
-    handleEmailFieldClick={handleEmailClickFeild}
-   
-  />;
-  if (selectedTemplate === 9) return <Template9 data={parsedData}
-  handleStringFeildClick={handleStringFieldClick}
-  handleArrayFieldClick={handleArrayFieldClick}
-  handleExperienceFieldClick={handleExperienceFieldClick}
-  handleProjectFieldClick={handleProjectFieldClick}
-  handleEducationFieldClick={handleEducationFieldClick}
-  handlePhoneClickFeild={handlePhoneClickFeild}
-  handleEmailFieldClick={handleEmailClickFeild}
-  imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'}
-  imageBgColor={selectedImageBgColor}
-
-/>;
-    if (selectedTemplate === 10) return <Template10 data={parsedData}
-    handleStringFeildClick={handleStringFieldClick}
-    handleArrayFieldClick={handleArrayFieldClick}
-    handleExperienceFieldClick={handleExperienceFieldClick}
-    handleProjectFieldClick={handleProjectFieldClick}
-    handleEducationFieldClick={handleEducationFieldClick}
-    handlePhoneClickFeild={handlePhoneClickFeild}
-    handleEmailFieldClick={handleEmailClickFeild}
-   
-  />;
+    if (selectedTemplate === 1)
+      return (
+        <Template1
+          data={parsedData}
+          handleStringFeildClick={handleStringFieldClick}
+          handleArrayFieldClick={handleArrayFieldClick}
+          handleExperienceFieldClick={handleExperienceFieldClick}
+          handleProjectFieldClick={handleProjectFieldClick}
+          handleEducationFieldClick={handleEducationFieldClick}
+          handlePhoneClickFeild={handlePhoneClickFeild}
+          handleEmailFieldClick={handleEmailClickFeild}
+          color={color1}
+        />
+      );
+    if (selectedTemplate === 2)
+      return (
+        <Template2
+          data={parsedData}
+          handleStringFeildClick={handleStringFieldClick}
+          handleArrayFieldClick={handleArrayFieldClick}
+          handleExperienceFieldClick={handleExperienceFieldClick}
+          handleProjectFieldClick={handleProjectFieldClick}
+          handleEducationFieldClick={handleEducationFieldClick}
+          handlePhoneClickFeild={handlePhoneClickFeild}
+          handleEmailFieldClick={handleEmailClickFeild}
+        />
+      );
+    if (selectedTemplate === 3)
+      return (
+        <Template3
+          data={parsedData}
+          handleStringFeildClick={handleStringFieldClick}
+          handleArrayFieldClick={handleArrayFieldClick}
+          handleExperienceFieldClick={handleExperienceFieldClick}
+          handleProjectFieldClick={handleProjectFieldClick}
+          handleEducationFieldClick={handleEducationFieldClick}
+          handlePhoneClickFeild={handlePhoneClickFeild}
+          handleEmailFieldClick={handleEmailClickFeild}
+        />
+      );
+    if (selectedTemplate === 4)
+      return (
+        <Template4
+          data={parsedData}
+          handleStringFeildClick={handleStringFieldClick}
+          handleArrayFieldClick={handleArrayFieldClick}
+          handleExperienceFieldClick={handleExperienceFieldClick}
+          handleProjectFieldClick={handleProjectFieldClick}
+          handleEducationFieldClick={handleEducationFieldClick}
+          handlePhoneClickFeild={handlePhoneClickFeild}
+          handleEmailFieldClick={handleEmailClickFeild}
+          imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
+          imageBgColor={selectedImageBgColor}
+          color={color4}
+        />
+      );
+    if (selectedTemplate === 5)
+      return (
+        <Template5
+          data={parsedData}
+          handleStringFeildClick={handleStringFieldClick}
+          handleArrayFieldClick={handleArrayFieldClick}
+          handleExperienceFieldClick={handleExperienceFieldClick}
+          handleProjectFieldClick={handleProjectFieldClick}
+          handleEducationFieldClick={handleEducationFieldClick}
+          handlePhoneClickFeild={handlePhoneClickFeild}
+          handleEmailFieldClick={handleEmailClickFeild}
+        />
+      );
+    if (selectedTemplate === 6)
+      return (
+        <Template6
+          data={parsedData}
+          handleStringFeildClick={handleStringFieldClick}
+          handleArrayFieldClick={handleArrayFieldClick}
+          handleExperienceFieldClick={handleExperienceFieldClick}
+          handleProjectFieldClick={handleProjectFieldClick}
+          handleEducationFieldClick={handleEducationFieldClick}
+          handlePhoneClickFeild={handlePhoneClickFeild}
+          handleEmailFieldClick={handleEmailClickFeild}
+        />
+      );
+    if (selectedTemplate === 7)
+      return (
+        <Template7
+          data={parsedData}
+          handleStringFeildClick={handleStringFieldClick}
+          handleArrayFieldClick={handleArrayFieldClick}
+          handleExperienceFieldClick={handleExperienceFieldClick}
+          handleProjectFieldClick={handleProjectFieldClick}
+          handleEducationFieldClick={handleEducationFieldClick}
+          handlePhoneClickFeild={handlePhoneClickFeild}
+          handleEmailFieldClick={handleEmailClickFeild}
+          imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
+          imageBgColor={selectedImageBgColor}
+          color={color7}
+        />
+      );
+    if (selectedTemplate === 8)
+      return (
+        <Template8
+          data={parsedData}
+          handleStringFeildClick={handleStringFieldClick}
+          handleArrayFieldClick={handleArrayFieldClick}
+          handleExperienceFieldClick={handleExperienceFieldClick}
+          handleProjectFieldClick={handleProjectFieldClick}
+          handleEducationFieldClick={handleEducationFieldClick}
+          handlePhoneClickFeild={handlePhoneClickFeild}
+          handleEmailFieldClick={handleEmailClickFeild}
+        />
+      );
+    if (selectedTemplate === 9)
+      return (
+        <Template9
+          data={parsedData}
+          handleStringFeildClick={handleStringFieldClick}
+          handleArrayFieldClick={handleArrayFieldClick}
+          handleExperienceFieldClick={handleExperienceFieldClick}
+          handleProjectFieldClick={handleProjectFieldClick}
+          handleEducationFieldClick={handleEducationFieldClick}
+          handlePhoneClickFeild={handlePhoneClickFeild}
+          handleEmailFieldClick={handleEmailClickFeild}
+          imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
+          imageBgColor={selectedImageBgColor}
+        />
+      );
+    if (selectedTemplate === 10)
+      return (
+        <Template10
+          data={parsedData}
+          handleStringFeildClick={handleStringFieldClick}
+          handleArrayFieldClick={handleArrayFieldClick}
+          handleExperienceFieldClick={handleExperienceFieldClick}
+          handleProjectFieldClick={handleProjectFieldClick}
+          handleEducationFieldClick={handleEducationFieldClick}
+          handlePhoneClickFeild={handlePhoneClickFeild}
+          handleEmailFieldClick={handleEmailClickFeild}
+          color={color10}
+        />
+      );
 
     return <p>Please select a template above.</p>;
   };
@@ -486,24 +534,20 @@ const AiPromptPage = () => {
     scrollToBottom();
   }, [promptHistory]);
 
-
-
   // List Change
   const handleListChange = (data: string[]) => {
-    const newList = data
-    setInputData(newList)
-
-  }
-
+    const newList = data;
+    setInputData(newList);
+  };
 
   console.log("Preview URL:", previewUrl);
   // console.log("phone", parsedData.phone);
 
-
   return (
-    <div className="px-[30px] py-[60px] mx-auto min-h-screen" style={{background: 'linear-gradient(to right, #f3f4f6, #e5e7eb)'}}>
-
-
+    <div
+      className="px-[30px] py-[60px] mx-auto min-h-screen"
+      style={{ background: "linear-gradient(to right, #f3f4f6, #e5e7eb)" }}
+    >
       <div className="mb-8">
         <h1 className={`text-3xl ${robot700.className} mb-4 text-purple-500`}>
           Build Your Resume Chat-Wise
@@ -511,7 +555,7 @@ const AiPromptPage = () => {
 
         {/* Select Template */}
         <div className="flex flex-wrap justify-center gap-6 mb-10">
-          {templateData.map((template) => (
+          {/* {templateData.map((template) => (
             <div
               key={template.id}
               onClick={() => getTemplateId(template.id)}
@@ -532,11 +576,19 @@ const AiPromptPage = () => {
                 </div>
               )}
             </div>
-          ))}
+          ))} */}
+
+          <CarouselSize
+            array={templateData}
+            getTemplateId={(id) => setSelectedTemplate(id)}
+            selectedTemplate={selectedTemplate}
+          />
         </div>
 
         {/* Upload Image */}
-        {(selectedTemplate === 4 || selectedTemplate === 7 || selectedTemplate === 9) && (
+        {(selectedTemplate === 4 ||
+          selectedTemplate === 7 ||
+          selectedTemplate === 9) && (
           <div>
             <div className="flex flex-col items-center mb-6">
               <div className="w-[200px] h-[200px] rounded-full border-2 border-white overflow-hidden mb-3">
@@ -556,15 +608,18 @@ const AiPromptPage = () => {
               </div>
 
               {/* Dropzone uploader */}
-              <div {...getRootProps()} className="text-center cursor-pointer border border-dashed border-gray-400 rounded-md p-2 hover:bg-white/10 transition-all">
+              <div
+                {...getRootProps()}
+                className="text-center cursor-pointer border border-dashed border-gray-400 rounded-md p-2 hover:bg-white/10 transition-all"
+              >
                 <input {...getInputProps()} />
                 <p className="text-sm text-gray-300">
-                  {isDragActive ? 'Drop the image here...' : 'Click or drag an image to upload'}
+                  {isDragActive
+                    ? "Drop the image here..."
+                    : "Click or drag an image to upload"}
                 </p>
               </div>
             </div>
-
-
 
             <Button
               className="bg-blue-600 hover:bg-blue-700 mt-4 mb-4"
@@ -592,17 +647,22 @@ const AiPromptPage = () => {
             </Button>
 
             {processedUrl && (
-              <div className='flex items-center justify-start gap-5 flex-wrap mt-5 mb-5'>
+              <div className="flex items-center justify-start gap-5 flex-wrap mt-5 mb-5">
                 {/* Original Image */}
                 <div
                   onClick={() => {
                     setSelectedProcessedImage(previewUrl);
                     setSelectedImageBgColor(undefined); // Reset background color on click
                   }}
-                  className={`w-[170px] h-[170px] rounded-full flex items-center justify-center overflow-hidden cursor-pointer border-4 transition-all duration-300 ${selectedProcessedImage === previewUrl && !selectedImageBgColor ? 'border-primaryColor' : 'border-none'}`}
+                  className={`w-[170px] h-[170px] rounded-full flex items-center justify-center overflow-hidden cursor-pointer border-4 transition-all duration-300 ${
+                    selectedProcessedImage === previewUrl &&
+                    !selectedImageBgColor
+                      ? "border-primaryColor"
+                      : "border-none"
+                  }`}
                 >
                   <Image
-                    src={previewUrl ?? '/dummy.jpg'}
+                    src={previewUrl ?? "/dummy.jpg"}
                     width={170}
                     height={170}
                     alt="Original"
@@ -610,14 +670,25 @@ const AiPromptPage = () => {
                   />
                 </div>
                 {/* Processed Images (with colored backgrounds) */}
-                {['bg-blue-500', 'bg-white', 'bg-green-500', 'bg-gray-500', 'bg-yellow-500'].map((bg, index) => (
+                {[
+                  "bg-blue-500",
+                  "bg-white",
+                  "bg-green-500",
+                  "bg-gray-500",
+                  "bg-yellow-500",
+                ].map((bg, index) => (
                   <div
                     key={index}
                     onClick={() => {
                       setSelectedProcessedImage(processedUrl);
                       setSelectedImageBgColor(bg); // Set background color on click
                     }}
-                    className={`w-[170px] h-[170px] rounded-full ${bg} flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${selectedProcessedImage === processedUrl && selectedImageBgColor === bg ? 'ring-4 ring-primaryColor' : ''}`}
+                    className={`w-[170px] h-[170px] rounded-full ${bg} flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${
+                      selectedProcessedImage === processedUrl &&
+                      selectedImageBgColor === bg
+                        ? "ring-4 ring-primaryColor"
+                        : ""
+                    }`}
                   >
                     <Image
                       src={processedUrl}
@@ -628,17 +699,13 @@ const AiPromptPage = () => {
                     />
                   </div>
                 ))}
-
               </div>
             )}
           </div>
         )}
 
-
         {/* Chat Box */}
-        <div
-          className="bg-[#a9adb5] mx-auto w-[60%] p-4 h-[300px] overflow-y-auto chat-container custom-scrollbar"
-        >
+        <div className="bg-[#a9adb5] mx-auto w-[60%] p-4 h-[300px] overflow-y-auto chat-container custom-scrollbar">
           {promptHistory.map((entry, index) => (
             <div
               key={index}
@@ -649,9 +716,13 @@ const AiPromptPage = () => {
               } animate-fade-in-up`}
             >
               {/* Avatar */}
-              <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm select-none ${
-                entry.type === "user" ? "bg-myPurple600 text-white ml-2" : "bg-[#e7e6ec] text-gray-700 mr-2"
-              }`}>
+              <div
+                className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm select-none ${
+                  entry.type === "user"
+                    ? "bg-myPurple600 text-white ml-2"
+                    : "bg-[#e7e6ec] text-gray-700 mr-2"
+                }`}
+              >
                 {entry.type === "user" ? "You" : "Ai"}
               </div>
               {/* Chat bubble */}
@@ -696,10 +767,9 @@ const AiPromptPage = () => {
               background: #a855f7;
               border-radius: 8px;
             }
-             .custom-scrollbar::-webkit-scrollbar-button {
-              display: none; 
-              
-            } 
+            .custom-scrollbar::-webkit-scrollbar-button {
+              display: none;
+            }
             .dot-bounce {
               display: inline-block;
               width: 8px;
@@ -716,7 +786,9 @@ const AiPromptPage = () => {
               animation-delay: 0.4s;
             }
             @keyframes bounce {
-              0%, 80%, 100% {
+              0%,
+              80%,
+              100% {
                 transform: scale(0.8);
                 opacity: 0.7;
               }
@@ -775,7 +847,9 @@ const AiPromptPage = () => {
                 data.certifications = data.certifications.map((item: any) =>
                   typeof item === "string"
                     ? item
-                    : [item.name, item.authority, item.date].filter(Boolean).join(" - ")
+                    : [item.name, item.authority, item.date]
+                        .filter(Boolean)
+                        .join(" - ")
                 );
               }
 
@@ -791,20 +865,14 @@ const AiPromptPage = () => {
               setIsChatLoading(false);
               setIsTemplateLoading(false); // <-- stop spinner
               if (!hasRenderedTemplate) setHasRenderedTemplate(true);
-
             }}
           >
-          Send <IoSend />
+            Send <IoSend />
           </button>
         </div>
       </div>
 
-
       {/* Image Preview + Dropzone Uploader */}
-
-
-
-
 
       <div className="flex items-center gap-10">
         {/* <Button
@@ -814,147 +882,214 @@ const AiPromptPage = () => {
       >Create</Button> */}
 
         {/* Theme Selection Section */}
-        {(selectedTemplate === 4 || selectedTemplate === 1 || selectedTemplate === 7) && (
+        {(selectedTemplate === 4 ||
+          selectedTemplate === 1 ||
+          selectedTemplate === 7 ||
+          selectedTemplate === 10) && (
           <Button
             variant={"outline"}
-            onClick={() => setShowColorPicker(prev => !prev)}
+            onClick={() => setShowColorPicker((prev) => !prev)}
           >
             Choose Color
           </Button>
         )}
       </div>
 
-      {showColorPicker && (<div className="mt-10">
-        {/* <ColorPicker/> */}
-        <RgbColorPicker
-          color={
-            selectedTemplate === 1
-              ? color1
-              : selectedTemplate === 4
-              ? color4
-              : selectedTemplate === 7
-              ? color7
-              : color1 // fallback
-          }
-          onChange={
-            selectedTemplate === 1
-              ? setColor1
-              : selectedTemplate === 4
-              ? setColor4
-              : selectedTemplate === 7
-              ? setColor7
-              : setColor1 // fallback
-          }
-        />
-        {/* <div className="value">{JSON.stringify(color)}</div> */}
-
-      </div>
+      {showColorPicker && (
+        <div className="mt-10">
+          {/* <ColorPicker/> */}
+          <RgbColorPicker
+            color={
+              selectedTemplate === 1
+                ? color1
+                : selectedTemplate === 4
+                ? color4
+                : selectedTemplate === 7
+                ? color7
+                : selectedTemplate === 10
+                ? color10
+                : color1 // fallback
+            }
+            onChange={
+              selectedTemplate === 1
+                ? setColor1
+                : selectedTemplate === 4
+                ? setColor4
+                : selectedTemplate === 7
+                ? setColor7
+                : selectedTemplate === 10
+                ? setColor10
+                : setColor1 // fallback
+            }
+          />
+          {/* <div className="value">{JSON.stringify(color)}</div> */}
+        </div>
       )}
 
-{/* Download Button */}
+      {/* Download Button */}
       {showTemplate && parsedData && (
         <div className="flex w-[70%] mx-auto justify-end mt-4 ">
-        {selectedTemplate === 1 && (
-          <PDFDownloadLink
-            document={<Template1PDF data={parsedData} color={color1}/>}
-            fileName="resume.pdf"
-            className="bg-myPurple600 text-white px-4 py-2 rounded "
-          >
-            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-          </PDFDownloadLink>
-        )}
-        {selectedTemplate === 2 && (
-          <PDFDownloadLink
-            document={<Template2PDF data={parsedData} />}
-            fileName="resume.pdf"
-            className="bg-myPurple600 text-white px-4 py-2 rounded "
-          >
-            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-          </PDFDownloadLink>
-        )}
-        {selectedTemplate === 3 && (
-          <PDFDownloadLink
-            document={<Template3PDF data={parsedData} />}
-            fileName="resume.pdf"
-            className="bg-myPurple600 text-white px-4 py-2 rounded "
-          >
-            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-          </PDFDownloadLink>
-        )}
-        {selectedTemplate === 4 && (
-          <PDFDownloadLink
-            document={<Template4PDF data={parsedData} imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'} imageBgColor={selectedImageBgColor ? tailwindColorMap[selectedImageBgColor] : undefined} color={color4} />}
-            fileName="resume.pdf"
-            className="bg-myPurple600 text-white px-4 py-2 rounded "
-          >
-            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-          </PDFDownloadLink>
-        )}
-        {selectedTemplate === 5 && (
-          <PDFDownloadLink
-            document={<Template5PDF data={parsedData} />}
-            fileName="resume.pdf"
-            className="bg-myPurple600 text-white px-4 py-2 rounded "
-          >
-            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-          </PDFDownloadLink>
-        )}
-         {selectedTemplate === 6 && (
-          <PDFDownloadLink
-            document={<Template6PDF data={parsedData} />}
-            fileName="resume.pdf"
-            className="bg-myPurple600 text-white px-4 py-2 rounded "
-          >
-            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-          </PDFDownloadLink>
-        )}
-         {selectedTemplate === 7 && (
-          <PDFDownloadLink
-            document={<Template7PDF data={parsedData} imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'} imageBgColor={selectedImageBgColor ? tailwindColorMap[selectedImageBgColor] : undefined} color={color7} />}
-            fileName="resume.pdf"
-            className="bg-myPurple600 text-white px-4 py-2 rounded "
-          >
-            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-          </PDFDownloadLink>
-        )}
-        {selectedTemplate === 8 && (
-          <PDFDownloadLink
-            document={<Template8PDF data={parsedData} />}
-            fileName="resume.pdf"
-            className="bg-myPurple600 text-white px-4 py-2 rounded "
-          >
-            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-          </PDFDownloadLink>
-        )}
-        {selectedTemplate === 9 && (
-          <PDFDownloadLink
-            document={<Template9PDF data={parsedData} imageUrl={selectedProcessedImage ?? previewUrl ?? '/dummy.jpg'} imageBgColor={selectedImageBgColor ? tailwindColorMap[selectedImageBgColor] : undefined} />}
-            fileName="resume.pdf"
-            className="bg-myPurple600 text-white px-4 py-2 rounded "
-          >
-            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-          </PDFDownloadLink>
-        )}
-        {selectedTemplate === 10 && (
-          <PDFDownloadLink
-            document={<Template10PDF data={parsedData} />}
-            fileName="resume.pdf"
-            className="bg-myPurple600 text-white px-4 py-2 rounded"
-          >
-            {({ loading }) => loading ? 'Preparing document...' : 'Download PDF'}
-          </PDFDownloadLink>
-        )}
-       
-        
-        
-      </div>
+          {selectedTemplate === 1 && (
+            <PDFDownloadLink
+              document={<Template1PDF data={parsedData} color={color1} />}
+              fileName="resume.pdf"
+              className="bg-myPurple600 text-white px-4 py-2 rounded "
+            >
+              {({ loading }) =>
+                loading ? "Preparing document..." : "Download PDF"
+              }
+            </PDFDownloadLink>
+          )}
+          {selectedTemplate === 2 && (
+            <PDFDownloadLink
+              document={<Template2PDF data={parsedData} />}
+              fileName="resume.pdf"
+              className="bg-myPurple600 text-white px-4 py-2 rounded "
+            >
+              {({ loading }) =>
+                loading ? "Preparing document..." : "Download PDF"
+              }
+            </PDFDownloadLink>
+          )}
+          {selectedTemplate === 3 && (
+            <PDFDownloadLink
+              document={<Template3PDF data={parsedData} />}
+              fileName="resume.pdf"
+              className="bg-myPurple600 text-white px-4 py-2 rounded "
+            >
+              {({ loading }) =>
+                loading ? "Preparing document..." : "Download PDF"
+              }
+            </PDFDownloadLink>
+          )}
+          {selectedTemplate === 4 && (
+            <PDFDownloadLink
+              document={
+                <Template4PDF
+                  data={parsedData}
+                  imageUrl={
+                    selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
+                  }
+                  imageBgColor={
+                    selectedImageBgColor
+                      ? tailwindColorMap[selectedImageBgColor]
+                      : undefined
+                  }
+                  color={color4}
+                />
+              }
+              fileName="resume.pdf"
+              className="bg-myPurple600 text-white px-4 py-2 rounded "
+            >
+              {({ loading }) =>
+                loading ? "Preparing document..." : "Download PDF"
+              }
+            </PDFDownloadLink>
+          )}
+          {selectedTemplate === 5 && (
+            <PDFDownloadLink
+              document={<Template5PDF data={parsedData} />}
+              fileName="resume.pdf"
+              className="bg-myPurple600 text-white px-4 py-2 rounded "
+            >
+              {({ loading }) =>
+                loading ? "Preparing document..." : "Download PDF"
+              }
+            </PDFDownloadLink>
+          )}
+          {selectedTemplate === 6 && (
+            <PDFDownloadLink
+              document={<Template6PDF data={parsedData} />}
+              fileName="resume.pdf"
+              className="bg-myPurple600 text-white px-4 py-2 rounded "
+            >
+              {({ loading }) =>
+                loading ? "Preparing document..." : "Download PDF"
+              }
+            </PDFDownloadLink>
+          )}
+          {selectedTemplate === 7 && (
+            <PDFDownloadLink
+              document={
+                <Template7PDF
+                  data={parsedData}
+                  imageUrl={
+                    selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
+                  }
+                  imageBgColor={
+                    selectedImageBgColor
+                      ? tailwindColorMap[selectedImageBgColor]
+                      : undefined
+                  }
+                  color={color7}
+                />
+              }
+              fileName="resume.pdf"
+              className="bg-myPurple600 text-white px-4 py-2 rounded "
+            >
+              {({ loading }) =>
+                loading ? "Preparing document..." : "Download PDF"
+              }
+            </PDFDownloadLink>
+          )}
+          {selectedTemplate === 8 && (
+            <PDFDownloadLink
+              document={<Template8PDF data={parsedData} />}
+              fileName="resume.pdf"
+              className="bg-myPurple600 text-white px-4 py-2 rounded "
+            >
+              {({ loading }) =>
+                loading ? "Preparing document..." : "Download PDF"
+              }
+            </PDFDownloadLink>
+          )}
+          {selectedTemplate === 9 && (
+            <PDFDownloadLink
+              document={
+                <Template9PDF
+                  data={parsedData}
+                  imageUrl={
+                    selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
+                  }
+                  imageBgColor={
+                    selectedImageBgColor
+                      ? tailwindColorMap[selectedImageBgColor]
+                      : undefined
+                  }
+                />
+              }
+              fileName="resume.pdf"
+              className="bg-myPurple600 text-white px-4 py-2 rounded "
+            >
+              {({ loading }) =>
+                loading ? "Preparing document..." : "Download PDF"
+              }
+            </PDFDownloadLink>
+          )}
+          {selectedTemplate === 10 && (
+            <PDFDownloadLink
+              document={<Template10PDF data={parsedData} color={color10} />}
+              fileName="resume.pdf"
+              className="bg-myPurple600 text-white px-4 py-2 rounded"
+            >
+              {({ loading }) =>
+                loading ? "Preparing document..." : "Download PDF"
+              }
+            </PDFDownloadLink>
+          )}
+        </div>
       )}
-    
+
       <div className="grid grid-cols-1">
         <div>
           {isTemplateLoading && !hasRenderedTemplate ? (
             <div className="flex flex-col gap-1 justify-center items-center h-64">
-              <svg className="animate-spin" width="48" height="48" viewBox="0 0 50 50">
+              <svg
+                className="animate-spin"
+                width="48"
+                height="48"
+                viewBox="0 0 50 50"
+              >
                 <circle
                   className="opacity-20"
                   cx="25"
@@ -977,21 +1112,24 @@ const AiPromptPage = () => {
                   strokeLinecap="round"
                 />
               </svg>
-              <p className='text-sm text-myPurple600'>Generating Resume...</p>
+              <p className="text-sm text-myPurple600">Generating Resume...</p>
             </div>
           ) : (
-            showTemplate && parsedData && (
+            showTemplate &&
+            parsedData && (
               <div>
-                <div className='mt-5'>{renderSelectedTemplate()}</div>
-            
+                <div className="mt-5">{renderSelectedTemplate()}</div>
               </div>
             )
           )}
         </div>
 
-
         {showEditor && (
-          <div className={`fixed top-0 right-0 h-full w-[400px] bg-myWhite shadow-lg z-50 transition-transform duration-500 ease-in-out transform ${showEditor ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div
+            className={`fixed top-0 right-0 h-full w-[400px] bg-myWhite shadow-lg z-50 transition-transform duration-500 ease-in-out transform ${
+              showEditor ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
             <div className="p-6">
               <h2 className="text-lg font-bold mb-4 text-black">
                 {/* {editType === "summary" ? "Edit Summary" : "Edit Skills"} */}
@@ -1014,7 +1152,10 @@ const AiPromptPage = () => {
                 <>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {(inputData as string[]).map((item, i) => (
-                      <span key={i} className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full flex items-center">
+                      <span
+                        key={i}
+                        className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full flex items-center"
+                      >
                         {item}
                         <button
                           onClick={() => handleRemoveItem(i)}
@@ -1047,10 +1188,15 @@ const AiPromptPage = () => {
               {/* Experience */}
               {editType === "experience" && (
                 <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                  <h2 className="text-lg font-bold mb-4 text-black">Edit Experience</h2>
+                  <h2 className="text-lg font-bold mb-4 text-black">
+                    Edit Experience
+                  </h2>
 
                   {experienceData.map((exp, index) => (
-                    <div key={index} className="mb-6 border p-3 rounded-md bg-gray-100">
+                    <div
+                      key={index}
+                      className="mb-6 border p-3 rounded-md bg-gray-100"
+                    >
                       <input
                         type="text"
                         value={exp.title}
@@ -1086,7 +1232,11 @@ const AiPromptPage = () => {
                         />
                         <input
                           type="text"
-                          value={exp.endDate === "Currently working" ? "" : exp.endDate}
+                          value={
+                            exp.endDate === "Currently working"
+                              ? ""
+                              : exp.endDate
+                          }
                           onChange={(e) => {
                             const updated = [...experienceData];
                             updated[index].endDate = e.target.value;
@@ -1097,8 +1247,13 @@ const AiPromptPage = () => {
                           disabled={exp.endDate === "Currently working"}
                         />
                         {/* current employer */}
-                        <div className='flex items-center gap-2'>
-                          <label htmlFor={`currentEmployer-${index}`} className='text-black'>Current Employer</label>
+                        <div className="flex items-center gap-2">
+                          <label
+                            htmlFor={`currentEmployer-${index}`}
+                            className="text-black"
+                          >
+                            Current Employer
+                          </label>
                           <input
                             type="checkbox"
                             id={`currentEmployer-${index}`}
@@ -1116,7 +1271,6 @@ const AiPromptPage = () => {
                         </div>
                       </div>
 
-
                       <Button
                         onClick={() => {
                           const updated = [...experienceData];
@@ -1133,12 +1287,15 @@ const AiPromptPage = () => {
                   {/* Add new experience */}
                   <Button
                     onClick={() => {
-                      const updated = [...experienceData, {
-                        title: "",
-                        description: "",
-                        startDate: "",
-                        endDate: ""
-                      }];
+                      const updated = [
+                        ...experienceData,
+                        {
+                          title: "",
+                          description: "",
+                          startDate: "",
+                          endDate: "",
+                        },
+                      ];
                       setExperienceData(updated);
                     }}
                     className="bg-green-600 text-white mt-4"
@@ -1163,14 +1320,18 @@ const AiPromptPage = () => {
                 </div>
               )}
 
-
               {/* Project */}
               {editType === "projects" && (
                 <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                  <h2 className="text-lg font-bold mb-4 text-black">Edit Projects</h2>
+                  <h2 className="text-lg font-bold mb-4 text-black">
+                    Edit Projects
+                  </h2>
 
                   {projectData.map((proj, index) => (
-                    <div key={index} className="mb-6 border p-3 rounded-md bg-gray-100">
+                    <div
+                      key={index}
+                      className="mb-6 border p-3 rounded-md bg-gray-100"
+                    >
                       <input
                         type="text"
                         value={proj.name}
@@ -1235,7 +1396,7 @@ const AiPromptPage = () => {
                           name: "",
                           description: "",
                           github: "",
-                          live: ""
+                          live: "",
                         },
                       ];
                       setProjectData(updated);
@@ -1265,10 +1426,15 @@ const AiPromptPage = () => {
               {/* Education */}
               {editType === "education" && (
                 <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                  <h2 className="text-lg font-bold mb-4 text-black">Edit Education</h2>
+                  <h2 className="text-lg font-bold mb-4 text-black">
+                    Edit Education
+                  </h2>
 
                   {educationData.map((edu, index) => (
-                    <div key={index} className="mb-6 border p-3 rounded-md bg-gray-100">
+                    <div
+                      key={index}
+                      className="mb-6 border p-3 rounded-md bg-gray-100"
+                    >
                       <input
                         type="text"
                         value={edu.degree}
@@ -1357,7 +1523,9 @@ const AiPromptPage = () => {
               {/* Phone Number Editor */}
               {editType === "email" && (
                 <div className="p-6">
-                  <h2 className="text-lg font-bold mb-4 text-black">Edit Email</h2>
+                  <h2 className="text-lg font-bold mb-4 text-black">
+                    Edit Email
+                  </h2>
 
                   <input
                     type="email"
@@ -1392,12 +1560,12 @@ const AiPromptPage = () => {
                 </div>
               )}
 
-
-
               {/* Phone Editor */}
               {editType === "phone" && (
                 <div className="p-6">
-                  <h2 className="text-lg font-bold mb-4 text-black">Edit Phone Number</h2>
+                  <h2 className="text-lg font-bold mb-4 text-black">
+                    Edit Phone Number
+                  </h2>
 
                   <input
                     type="email"
@@ -1432,15 +1600,11 @@ const AiPromptPage = () => {
                 </div>
               )}
 
-
-
-
               <div className="flex justify-end mt-4">
                 <button
                   className="bg-myDarkBlue text-white px-4 py-2 rounded"
                   onClick={() => setShowEditor(false)}
                 >
-
                   Close
                 </button>
               </div>
@@ -1448,16 +1612,10 @@ const AiPromptPage = () => {
           </div>
         )}
 
-
         {/* Download Button */}
-
-
-
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default AiPromptPage
-
+export default AiPromptPage;
