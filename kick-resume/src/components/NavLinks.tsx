@@ -16,16 +16,16 @@ import {
 } from "@/components/ui/navigation-menu";
 import { coverLetter, features, resume } from "@/lib/data";
 
-
 export function NavigationMenuDemo() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
+        {/* Features */}
 
-          {/* Features */}
-
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="active:text-myDarkBlue">Features</NavigationMenuTrigger>
+        {/* <NavigationMenuItem>
+          <NavigationMenuTrigger className="active:text-myDarkBlue">
+            Features
+          </NavigationMenuTrigger>
           <NavigationMenuContent className="bg-primaryColor">
             <ul className="flex w-[400px] gap-5 py-5 px-2 md:w-[500px] md:grid-rows-2 lg:w-[750px]">
               <div className="flex flex-col gap-6 ">
@@ -43,7 +43,9 @@ export function NavigationMenuDemo() {
                       <h2 className="text-xs text-myMidblue">
                         {component.title}
                       </h2>
-                      <p className="text-[10px] text-myWhite">{component.description}</p>
+                      <p className="text-[10px] text-myWhite">
+                        {component.description}
+                      </p>
                     </div>
                   </Link>
                 ))}
@@ -64,7 +66,9 @@ export function NavigationMenuDemo() {
                       <h2 className="text-xs text-myMidblue">
                         {component.title}
                       </h2>
-                      <p className="text-[10px] text-myWhite">{component.description}</p>
+                      <p className="text-[10px] text-myWhite">
+                        {component.description}
+                      </p>
                     </div>
                   </Link>
                 ))}
@@ -96,10 +100,10 @@ export function NavigationMenuDemo() {
               </div>
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
 
         {/* Resume */}
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <NavigationMenuTrigger>Resume</NavigationMenuTrigger>
           <NavigationMenuContent className="bg-primaryColor">
             <ul className="flex w-[400px] gap-5 py-5 px-2 md:w-[500px] md:grid-rows-2 lg:w-[750px]">
@@ -118,16 +122,17 @@ export function NavigationMenuDemo() {
                       <h2 className="text-xs text-myMidblue">
                         {component.title}
                       </h2>
-                      <p className="text-[10px] text-myWhite">{component.description}</p>
+                      <p className="text-[10px] text-myWhite">
+                        {component.description}
+                      </p>
                     </div>
                   </Link>
                 ))}
               </div>
 
-
               <div className="flex flex-col gap-4 border-l border-myMidblue border-opacity-20 px-5 text-myWhite">
                 Resume Examples
-                {resume.slice(4,10).map((component) => (
+                {resume.slice(4, 10).map((component) => (
                   <Link
                     href={component.href}
                     key={component.title}
@@ -149,7 +154,6 @@ export function NavigationMenuDemo() {
                   View all Examples
                 </Link>
               </div>
-              
 
               <div className="flex flex-col gap-2 border-l border-myMidblue border-opacity-20 px-2 text-myWhite">
                 Guides
@@ -177,13 +181,13 @@ export function NavigationMenuDemo() {
               </div>
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
 
         {/* Cover Letter */}
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <NavigationMenuTrigger>Cover Letter</NavigationMenuTrigger>
           <NavigationMenuContent className="bg-primaryColor">
-          <ul className="flex w-[400px] gap-5 py-5 px-2 md:w-[500px] md:grid-rows-2 lg:w-[750px]">
+            <ul className="flex w-[400px] gap-5 py-5 px-2 md:w-[500px] md:grid-rows-2 lg:w-[750px]">
               <div className="flex flex-col gap-6 ">
                 {coverLetter.slice(0, 3).map((component) => (
                   <Link
@@ -199,16 +203,17 @@ export function NavigationMenuDemo() {
                       <h2 className="text-xs text-myMidblue">
                         {component.title}
                       </h2>
-                      <p className="text-[10px] text-myWhite">{component.description}</p>
+                      <p className="text-[10px] text-myWhite">
+                        {component.description}
+                      </p>
                     </div>
                   </Link>
                 ))}
               </div>
 
-
               <div className="flex flex-col gap-5 border-l border-myMidblue border-opacity-20 px-5 text-myWhite">
                 Cover Letter Examples
-                {coverLetter.slice(3,9).map((component) => (
+                {coverLetter.slice(3, 9).map((component) => (
                   <Link
                     href={component.href}
                     key={component.title}
@@ -230,7 +235,6 @@ export function NavigationMenuDemo() {
                   View all Examples
                 </Link>
               </div>
-              
 
               <div className="flex flex-col gap-2 border-l border-myMidblue border-opacity-20 px-2 text-myWhite">
                 Guides
@@ -258,14 +262,34 @@ export function NavigationMenuDemo() {
               </div>
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
 
         {/* Pricing */}
         <NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
-            <NavigationMenuLink className={`${navigationMenuTriggerStyle()} text-[19px]`}>
-              Pricing
-            </NavigationMenuLink>
+          <Link
+            href="/"
+            className="text-lg text-myWhite hover:text-myMidblue font-semibold"
+          >
+            {/* <NavigationMenuLink
+              className={`${navigationMenuTriggerStyle()} text-[18px]`}
+            >
+              Ai Resume Analyzer
+            </NavigationMenuLink> */}
+            Ai Resume Analyzer
+          </Link>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Link
+            href="/ai-resume-builder"
+            className="text-lg text-myWhite hover:text-myMidblue font-semibold"
+          >
+            {/* <NavigationMenuLink
+              className={`${navigationMenuTriggerStyle()} text-[18px]`}
+            >
+              Ai Resume Builder
+            </NavigationMenuLink> */}
+            Ai Resume Builder
           </Link>
         </NavigationMenuItem>
       </NavigationMenuList>

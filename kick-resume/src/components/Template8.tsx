@@ -50,7 +50,7 @@ const Template8 = ({
   handleEmailFieldClick: (fieldName: string, data: string) => void;
 }) => {
   return (
-    <div className="bg-myWhite shadow-[0px_0px_46px_0px_rgba(0,_0,_0,_0.1)] px-7 py-7 lg:w-[70%] w-[100%] mx-auto">
+    <div className="bg-myWhite shadow-lg shadow-myMidPurple/70 px-7 py-7 lg:w-[70%] w-[100%] mx-auto">
       <div className="flex flex-col gap-2 items-start justify-center w-full">
         <div className="text-center">
           <h1

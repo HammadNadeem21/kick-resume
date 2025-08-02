@@ -71,28 +71,31 @@ export function CarouselSize({
       opts={{
         align: "start",
       }}
-      className="w-full max-w-5xl"
+      className="lg:w-[70%] md:w-[60%] sm:w-[80%] w-[50%]  max-w-5xl"
     >
       <CarouselContent>
         {array.map((template) => (
-          <CarouselItem key={template.id} className="md:basis-1/2 lg:basis-1/4">
+          <CarouselItem
+            key={template.id}
+            className="basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 mx-auto"
+          >
             <div
               onClick={() => getTemplateId(template.id)}
               className="relative cursor-pointer mb-2 rounded-md transition-all duration-300 "
             >
-              <div className="h-[300px] w-[230px] shadow-md shadow-purple-400">
+              <div className="h-[300px] w-full shadow-md shadow-purple-400">
                 <Image
                   src={template.image}
                   alt={template.name}
-                  height={250}
-                  width={250}
+                  height={500}
+                  width={500}
                   className="h-full w-full "
                 />
               </div>
 
               {selectedTemplate === template.id && (
                 <div
-                  className="absolute inset-0 h-[300px] w-[230px] bg-gray-700 bg-opacity-50 flex items-center justify-center"
+                  className="absolute inset-0 h-[300px] w-full bg-gray-700 bg-opacity-50 flex items-center justify-center"
                   style={{ zIndex: 10 }}
                 >
                   <div className="border border-white text-white rounded-full px-1 py-1 z-20">

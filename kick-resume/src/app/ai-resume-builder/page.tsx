@@ -546,10 +546,12 @@ const AiPromptPage = () => {
   return (
     <div
       className="px-[30px] py-[60px] mx-auto min-h-screen"
-      style={{ background: "linear-gradient(to right, #f3f4f6, #e5e7eb)" }}
+      // style={{ background: "linear-gradient(to right, #f3f4f6, #e5e7eb)" }}
     >
       <div className="mb-8">
-        <h1 className={`text-3xl ${robot700.className} mb-4 text-purple-500`}>
+        <h1
+          className={`text-3xl ${robot700.className} mb-4 text-purple-500 font-bold`}
+        >
           Build Your Resume Chat-Wise
         </h1>
 
@@ -621,33 +623,35 @@ const AiPromptPage = () => {
               </div>
             </div>
 
-            <Button
-              className="bg-blue-600 hover:bg-blue-700 mt-4 mb-4"
-              onClick={async () => {
-                if (!imageFile) return alert("Please upload an image!");
+            <div className=" flex items-center justify-center">
+              <Button
+                className="bg-myMidPurple hover:bg-myPurple text-white mx-auto mt-4 mb-4"
+                onClick={async () => {
+                  if (!imageFile) return alert("Please upload an image!");
 
-                const fd = new FormData();
-                fd.append("image", imageFile);
+                  const fd = new FormData();
+                  fd.append("image", imageFile);
 
-                const res = await fetch("/api/process-image", {
-                  method: "POST",
-                  body: fd,
-                });
+                  const res = await fetch("/api/process-image", {
+                    method: "POST",
+                    body: fd,
+                  });
 
-                const json = await res.json();
+                  const json = await res.json();
 
-                if (json.url) {
-                  setProcessedUrl(json.url); // set processed image (no bg + colored bg)
-                } else {
-                  alert("Failed to process image");
-                }
-              }}
-            >
-              Remove BG
-            </Button>
+                  if (json.url) {
+                    setProcessedUrl(json.url); // set processed image (no bg + colored bg)
+                  } else {
+                    alert("Failed to process image");
+                  }
+                }}
+              >
+                Remove BG
+              </Button>
+            </div>
 
             {processedUrl && (
-              <div className="flex items-center justify-start gap-5 flex-wrap mt-5 mb-5">
+              <div className="flex items-center justify-center gap-5 flex-wrap mt-5 mb-5">
                 {/* Original Image */}
                 <div
                   onClick={() => {
@@ -657,7 +661,7 @@ const AiPromptPage = () => {
                   className={`w-[170px] h-[170px] rounded-full flex items-center justify-center overflow-hidden cursor-pointer border-4 transition-all duration-300 ${
                     selectedProcessedImage === previewUrl &&
                     !selectedImageBgColor
-                      ? "border-primaryColor"
+                      ? "border-myPurple"
                       : "border-none"
                   }`}
                 >
@@ -686,7 +690,7 @@ const AiPromptPage = () => {
                     className={`w-[170px] h-[170px] rounded-full ${bg} flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${
                       selectedProcessedImage === processedUrl &&
                       selectedImageBgColor === bg
-                        ? "ring-4 ring-primaryColor"
+                        ? "ring-4 ring-myPurple"
                         : ""
                     }`}
                   >
@@ -705,7 +709,7 @@ const AiPromptPage = () => {
         )}
 
         {/* Chat Box */}
-        <div className="bg-[#a9adb5] mx-auto w-[60%] p-4 h-[300px] overflow-y-auto chat-container custom-scrollbar">
+        <div className="bg-gray-200 mx-auto w-[60%] p-4 h-[300px] overflow-y-auto chat-container custom-scrollbar">
           {promptHistory.map((entry, index) => (
             <div
               key={index}
@@ -719,8 +723,8 @@ const AiPromptPage = () => {
               <div
                 className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm select-none ${
                   entry.type === "user"
-                    ? "bg-myPurple600 text-white ml-2"
-                    : "bg-[#e7e6ec] text-gray-700 mr-2"
+                    ? "bg-myMidPurple text-white ml-2"
+                    : "bg-gray-300 text-gray-700 mr-2"
                 }`}
               >
                 {entry.type === "user" ? "You" : "Ai"}
@@ -729,8 +733,8 @@ const AiPromptPage = () => {
               <div
                 className={`px-4 py-2 rounded-xl ${
                   entry.type === "user"
-                    ? "bg-myPurple600 text-white text-sm"
-                    : "bg-[#e7e6ec] text-gray-700 text-sm"
+                    ? "bg-myMidPurple text-white text-sm"
+                    : "bg-gray-300 text-gray-700 text-sm"
                 }`}
               >
                 {entry.message}
@@ -740,11 +744,11 @@ const AiPromptPage = () => {
           {isChatLoading && (
             <div className="flex items-center mb-2 max-w-[80%] flex-row mr-auto">
               {/* Avatar for AI */}
-              <div className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm select-none bg-[#e7e6ec] text-gray-700 mr-2 mb-2">
+              <div className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm select-none bg-gray-300 text-gray-700 mr-2 mb-2">
                 Ai
               </div>
               {/* Loading bubble */}
-              <div className="flex items-center mb-1 px-4 py-2 rounded-xl bg-[#e7e6ec] text-gray-700">
+              <div className="flex items-center mb-1 px-4 py-2 rounded-xl bg-gray-300 text-gray-700">
                 <div className="flex gap-1 items-end">
                   <span className="dot-bounce"></span>
                   <span className="dot-bounce animation-delay-200"></span>
@@ -756,7 +760,7 @@ const AiPromptPage = () => {
           <style jsx>{`
             .custom-scrollbar {
               scrollbar-width: thin;
-              scrollbar-color: #374151 #a9adb5;
+              scrollbar-color: #374151 #e5e7eb;
               margin-top: 5px; /* thumb color, then track color */
             }
             .custom-scrollbar::-webkit-scrollbar {
@@ -887,7 +891,7 @@ const AiPromptPage = () => {
           selectedTemplate === 7 ||
           selectedTemplate === 10) && (
           <Button
-            variant={"outline"}
+            className="bg-myMidPurple hover:bg-myPurple text-white"
             onClick={() => setShowColorPicker((prev) => !prev)}
           >
             Choose Color
@@ -933,7 +937,7 @@ const AiPromptPage = () => {
             <PDFDownloadLink
               document={<Template1PDF data={parsedData} color={color1} />}
               fileName="resume.pdf"
-              className="bg-myPurple600 text-white px-4 py-2 rounded "
+              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
             >
               {({ loading }) =>
                 loading ? "Preparing document..." : "Download PDF"
@@ -944,7 +948,7 @@ const AiPromptPage = () => {
             <PDFDownloadLink
               document={<Template2PDF data={parsedData} />}
               fileName="resume.pdf"
-              className="bg-myPurple600 text-white px-4 py-2 rounded "
+              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
             >
               {({ loading }) =>
                 loading ? "Preparing document..." : "Download PDF"
@@ -955,7 +959,7 @@ const AiPromptPage = () => {
             <PDFDownloadLink
               document={<Template3PDF data={parsedData} />}
               fileName="resume.pdf"
-              className="bg-myPurple600 text-white px-4 py-2 rounded "
+              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
             >
               {({ loading }) =>
                 loading ? "Preparing document..." : "Download PDF"
@@ -979,7 +983,7 @@ const AiPromptPage = () => {
                 />
               }
               fileName="resume.pdf"
-              className="bg-myPurple600 text-white px-4 py-2 rounded "
+              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
             >
               {({ loading }) =>
                 loading ? "Preparing document..." : "Download PDF"
@@ -990,7 +994,7 @@ const AiPromptPage = () => {
             <PDFDownloadLink
               document={<Template5PDF data={parsedData} />}
               fileName="resume.pdf"
-              className="bg-myPurple600 text-white px-4 py-2 rounded "
+              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
             >
               {({ loading }) =>
                 loading ? "Preparing document..." : "Download PDF"
@@ -1001,7 +1005,7 @@ const AiPromptPage = () => {
             <PDFDownloadLink
               document={<Template6PDF data={parsedData} />}
               fileName="resume.pdf"
-              className="bg-myPurple600 text-white px-4 py-2 rounded "
+              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
             >
               {({ loading }) =>
                 loading ? "Preparing document..." : "Download PDF"
@@ -1025,7 +1029,7 @@ const AiPromptPage = () => {
                 />
               }
               fileName="resume.pdf"
-              className="bg-myPurple600 text-white px-4 py-2 rounded "
+              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
             >
               {({ loading }) =>
                 loading ? "Preparing document..." : "Download PDF"
@@ -1036,7 +1040,7 @@ const AiPromptPage = () => {
             <PDFDownloadLink
               document={<Template8PDF data={parsedData} />}
               fileName="resume.pdf"
-              className="bg-myPurple600 text-white px-4 py-2 rounded "
+              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
             >
               {({ loading }) =>
                 loading ? "Preparing document..." : "Download PDF"
@@ -1059,7 +1063,7 @@ const AiPromptPage = () => {
                 />
               }
               fileName="resume.pdf"
-              className="bg-myPurple600 text-white px-4 py-2 rounded "
+              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
             >
               {({ loading }) =>
                 loading ? "Preparing document..." : "Download PDF"
@@ -1070,7 +1074,7 @@ const AiPromptPage = () => {
             <PDFDownloadLink
               document={<Template10PDF data={parsedData} color={color10} />}
               fileName="resume.pdf"
-              className="bg-myPurple600 text-white px-4 py-2 rounded"
+              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded"
             >
               {({ loading }) =>
                 loading ? "Preparing document..." : "Download PDF"
@@ -1112,7 +1116,7 @@ const AiPromptPage = () => {
                   strokeLinecap="round"
                 />
               </svg>
-              <p className="text-sm text-myPurple600">Generating Resume...</p>
+              <p className="text-sm text-myPurple">Generating Resume...</p>
             </div>
           ) : (
             showTemplate &&

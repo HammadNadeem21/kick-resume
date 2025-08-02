@@ -16,7 +16,9 @@ const config: Config = {
         myMidblue: "#5191a7",
         myLightBlue: "#8bcadf",
         myLightestBlue: "#bcebfa",
-        myPurple600: "#9333ea",
+        myPurple: "#7e22ce",
+        myLightPurple: "#a78bfa",
+        myMidPurple: "#a855f7",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -65,6 +67,5 @@ const config: Config = {
   //   themes: false,  // ❌ No built-in themes
   //   styled: false,  // ❌ No default component styling (bg-base-100 etc.)
   // },
- 
 };
 export default config;

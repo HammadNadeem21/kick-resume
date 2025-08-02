@@ -62,7 +62,7 @@ const Template9 = ({
   selectedTheme?: any; // Add selectedTheme prop type here
 }) => {
   return (
-    <div className="bg-myWhite lg:w-[70%] w-[100%] mx-auto shadow-[0px_0px_46px_0px_rgba(0,_0,_0,_0.1)] px-[60px]">
+    <div className="bg-myWhite lg:w-[70%] w-[100%] mx-auto shadow-lg shadow-myMidPurple/70 px-[60px]">
       <div
         className="grid grid-cols-[30%,70%] gap-3 w-[100%]  py-5"
         //  style={{ backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}

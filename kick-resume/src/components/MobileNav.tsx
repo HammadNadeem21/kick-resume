@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { coverLetter, features, resume } from "@/lib/data";
 import Image from "next/image";
@@ -11,7 +11,8 @@ const components = [
   {
     title: "Alert Dialog",
     href: "/docs/primitives/alert-dialog",
-    description: "A modal dialog that interrupts the user with important content and expects a response.",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
   },
 ];
 
@@ -22,12 +23,12 @@ const MobileNav = () => {
   return (
     <div className="lg:hidden block ml-auto relative">
       <button onClick={() => setIsOpen(true)}>
-        <GiHamburgerMenu size={24} className="text-myWhite"/>
+        <GiHamburgerMenu size={24} className="text-myPurple" />
       </button>
 
       {/* Fullscreen Menu Overlay */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 bg-primaryColor text-white p-6 overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-myPurple text-white p-6 overflow-y-auto">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold">Menu</h2>
             <button onClick={() => setIsOpen(false)}>
@@ -35,11 +36,15 @@ const MobileNav = () => {
             </button>
           </div>
 
-          <ul className="space-y-4">
+          <ul className="">
             {/* Dropdown 1: Features */}
-            <li className="group w-full">
+            {/* <li className="group w-full">
               <div
-                onClick={() => setActiveDropdown(activeDropdown === "features" ? null : "features")}
+                onClick={() =>
+                  setActiveDropdown(
+                    activeDropdown === "features" ? null : "features"
+                  )
+                }
                 className="cursor-pointer flex justify-between items-center w-full text-lg"
               >
                 <span>Features</span>
@@ -60,25 +65,34 @@ const MobileNav = () => {
               </div>
               {activeDropdown === "features" && (
                 <ul className="mt-2 bg-myDarkBlue rounded-xl w-full p-4 rounded-box space-y-2 ">
-                  {features.slice(0,8).map((item) => (
-                    <li key={item.title} className=" hover:translate-x-3 duration-300 p-3 rounded-md ">
+                  {features.slice(0, 8).map((item) => (
+                    <li
+                      key={item.title}
+                      className=" hover:translate-x-3 duration-300 p-3 rounded-md "
+                    >
                       <Link href={item.href} className="flex gap-3">
-                      <span className="h-[20px] w-[40px]">{item.icon}</span>
+                        <span className="h-[20px] w-[40px]">{item.icon}</span>
                         <div>
                           <p>{item.title}</p>
-                          <p className="text-sm text-white/70">{item.description}</p>
+                          <p className="text-sm text-white/70">
+                            {item.description}
+                          </p>
                         </div>
                       </Link>
                     </li>
                   ))}
                 </ul>
               )}
-            </li>
+            </li> */}
 
             {/* Dropdown 2: Resume */}
-            <li className="group w-full">
+            {/* <li className="group w-full">
               <div
-                onClick={() => setActiveDropdown(activeDropdown === "resume" ? null : "resume")}
+                onClick={() =>
+                  setActiveDropdown(
+                    activeDropdown === "resume" ? null : "resume"
+                  )
+                }
                 className="cursor-pointer flex justify-between items-center w-full text-lg"
               >
                 <span>Resume</span>
@@ -99,25 +113,32 @@ const MobileNav = () => {
               </div>
               {activeDropdown === "resume" && (
                 <ul className="mt-2 bg-myDarkBlue rounded-xl w-full p-4 rounded-box space-y-2 ">
-                {resume.slice(0,4).map((item) => (
-                  <li key={item.title} className=" hover:translate-x-3 duration-300 p-3 rounded-md ">
-                    <Link href={item.href} className="flex gap-3">
-                    <span className="h-[20px] w-[40px]">{item.icon}</span>
-                      <div>
-                        <p>{item.title}</p>
-                        <p className="text-sm text-white/70">{item.description}</p>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+                  {resume.slice(0, 4).map((item) => (
+                    <li
+                      key={item.title}
+                      className=" hover:translate-x-3 duration-300 p-3 rounded-md "
+                    >
+                      <Link href={item.href} className="flex gap-3">
+                        <span className="h-[20px] w-[40px]">{item.icon}</span>
+                        <div>
+                          <p>{item.title}</p>
+                          <p className="text-sm text-white/70">
+                            {item.description}
+                          </p>
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               )}
-            </li>
+            </li> */}
 
             {/* Dropdown 3: Cover Letter */}
-            <li className="group w-full">
+            {/* <li className="group w-full">
               <div
-                onClick={() => setActiveDropdown(activeDropdown === "cover" ? null : "cover")}
+                onClick={() =>
+                  setActiveDropdown(activeDropdown === "cover" ? null : "cover")
+                }
                 className="cursor-pointer flex justify-between items-center w-full text-lg"
               >
                 <span>Cover Letter</span>
@@ -138,24 +159,42 @@ const MobileNav = () => {
               </div>
               {activeDropdown === "cover" && (
                 <ul className="mt-2 bg-myDarkBlue rounded-xl w-full p-4 rounded-box space-y-2 ">
-                {coverLetter.slice(0,3).map((item) => (
-                  <li key={item.title} className=" hover:translate-x-3 duration-300 p-3 rounded-md ">
-                    <Link href={item.href} className="flex items-center gap-3">
-                    <div className="h-[20px] w-[40px] flex items-center ">{item.icon}</div>
-                      <div className="">
-                        <p>{item.title}</p>
-                        <p className="text-sm text-white/70">{item.description}</p>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+                  {coverLetter.slice(0, 3).map((item) => (
+                    <li
+                      key={item.title}
+                      className=" hover:translate-x-3 duration-300 p-3 rounded-md "
+                    >
+                      <Link
+                        href={item.href}
+                        className="flex items-center gap-3"
+                      >
+                        <div className="h-[20px] w-[40px] flex items-center ">
+                          {item.icon}
+                        </div>
+                        <div className="">
+                          <p>{item.title}</p>
+                          <p className="text-sm text-white/70">
+                            {item.description}
+                          </p>
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               )}
-            </li>
+            </li> */}
 
             {/* Simple Link */}
-            <li>
-              <Link href="/" className="text-lg">Pricing</Link>
+            <li className="w-full hover:bg-myMidPurple transition-all py-1 px-3 rounded-md">
+              <Link href="/" className="text-lg">
+                Ai Resume Analyzer
+              </Link>
+            </li>
+
+            <li className="w-full hover:bg-myMidPurple transition-all py-1 px-3 rounded-md">
+              <Link href="/ai-resume-builder" className="text-lg">
+                Ai Resume Builder
+              </Link>
             </li>
           </ul>
         </div>

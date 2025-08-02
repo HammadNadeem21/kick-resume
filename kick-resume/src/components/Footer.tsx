@@ -30,59 +30,53 @@ import { HoverButton } from "./HoverButton";
 
 const Footer = () => {
   return (
-    <div className="grid sm:grid-cols-2 grid-cols-1  gap-3 bg-primaryColor pt-16 md:px-[100px] px-10">
-
+    <div className="grid sm:grid-cols-2 grid-cols-1  gap-3 bg-gray-200 pt-16 md:px-[100px] px-10">
       {/* <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1"> */}
 
-        <div className="lg:col-span-4 md:col-span-3 sm:col-span-2 flex items-center justify-between px-10">
-        <Link href='/'>
-            <h1 className="text-sm text-myMidblue hover:underline">About</h1>
-            
-            </Link>
+      <div className="lg:col-span-4 md:col-span-3 sm:col-span-2 flex items-center justify-between px-10">
+        <Link href="/">
+          <h1 className="text-sm text-myPurple hover:underline">About</h1>
+        </Link>
 
-             <Link href='/'>
-            <h1 className="text-sm text-myMidblue hover:underline">Contact us</h1>
-            
-            </Link>
+        <Link href="/">
+          <h1 className="text-sm text-myPurple hover:underline">Contact us</h1>
+        </Link>
 
-             <Link href='/'>
-            <h1 className="text-sm text-myMidblue hover:underline">Features</h1>
-            
-            </Link>
+        <Link href="/">
+          <h1 className="text-sm text-myPurple hover:underline">Features</h1>
+        </Link>
 
-             <Link href='/'>
-            <h1 className="text-sm text-myMidblue hover:underline">Contact</h1>
-            
-            </Link>
-            {/* </div> */}
+        <Link href="/">
+          <h1 className="text-sm text-myPurple hover:underline">Contact</h1>
+        </Link>
+        {/* </div> */}
       </div>
 
-
-{/* Buttom */}
+      {/* Buttom */}
       <div className="sm:col-span-2 col-span-1">
-        <div className=" border-t border-myMidblue py-5 flex flex-wrap justify-center xl:gap-[50px] gap-[40px]">
-          <h1 className="flex items-center gap-1 text-myWhite">
+        <div className=" border-t border-myPurple py-5 flex flex-wrap justify-center xl:gap-[50px] gap-[40px]">
+          <h1 className="flex items-center gap-1 text-myPurple">
             Made with <FaHeart /> by Kickresume
           </h1>
 
           <HoverButton />
 
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-5 text-myMidPurple">
             <Link href="/">
-              <RiTwitterXFill size={30} className="text-myWhite" />
+              <RiTwitterXFill size={30} className="" />
             </Link>
 
             <Link href="/">
-              <FaFacebookF size={30} className="text-myWhite" />
+              <FaFacebookF size={30} className="" />
             </Link>
             <Link href="/">
-              <IoLogoInstagram size={30} className="text-myWhite" />
+              <IoLogoInstagram size={30} className="" />
             </Link>
             <Link href="/">
-              <FaLinkedinIn size={30} className="text-myWhite" />
+              <FaLinkedinIn size={30} className="" />
             </Link>
             <Link href="/">
-              <FaYoutube size={30} className="text-myWhite" />
+              <FaYoutube size={30} className="" />
             </Link>
           </div>
 
