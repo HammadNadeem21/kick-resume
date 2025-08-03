@@ -151,8 +151,8 @@ const AiResumeAnalyzeReort = () => {
     <div className="p-5">
       <div>
         {suggestions && (
-          <div className="mt-6 p-6 bg-myMidblue rounded-xl w-full">
-            <h3 className="text-3xl font-bold mb-4 text-primaryColor text-center">
+          <div className="mt-6 p-6 bg-white rounded-xl w-full">
+            <h3 className="text-3xl font-bold mb-4 text-myPurple text-center">
               Resume Analysis
             </h3>
 
@@ -160,52 +160,60 @@ const AiResumeAnalyzeReort = () => {
             {score !== null && overall && (
               <div className="mb-6 flex flex-col sm:flex-row items-center sm:items-start justify-between px-6">
                 <div className="sm:w-1/2 w-full flex flex-col">
-                  <h4 className="text-xl font-bold text-primaryColor mb-1">
+                  <h4 className="text-xl font-bold text-myPurple mb-1">
                     Overall ATS Score
                   </h4>
                   <ATSCircleChart score={score} />
                 </div>
-                <div className="sm:w-1/2 w-full text-primaryColor">
-                  <h4 className="text-xl font-bold mb-2">Summary</h4>
-                  <p className="">{overall}</p>
+                <div className="sm:w-1/2 w-full">
+                  <h4 className="text-xl font-bold mb-2 text-myPurple">
+                    Summary
+                  </h4>
+                  <p className="text-gray-600">{overall}</p>
                 </div>
               </div>
             )}
-            <div className="h-[1px] w-full bg-primaryColor mb-5"></div>
+            <div className="h-[1px] w-full bg-myPurple mb-5"></div>
 
-            <h4 className="text-2xl font-bold text-primaryColor mb-4">
+            <h4 className="text-2xl font-bold text-myPurple mb-4">
               AI Suggested Updates
             </h4>
 
             {/* Suggestion */}
             {actualSummary && (
-              <div className="mb-8 text-primaryColor">
-                <h4 className="text-xl font-bold mb-4">Actual Summary</h4>
-                <div>{actualSummary}</div>
+              <div className="mb-8">
+                <h4 className="text-xl font-bold mb-4 text-myPurple">
+                  Actual Summary
+                </h4>
+                <div className="text-gray-600">{actualSummary}</div>
               </div>
             )}
 
             {/* summary mistakes  */}
             {summaryMistakes && (
-              <div className="mb-8 text-primaryColor">
-                <h4 className="text-xl font-bold  mb-4">Mistakes:</h4>
-                <div>{summaryMistakes}</div>
+              <div className="mb-8">
+                <h4 className="text-xl text-myPurple font-bold  mb-4">
+                  Mistakes:
+                </h4>
+                <div className="text-gray-600">{summaryMistakes}</div>
               </div>
             )}
 
             {/* improved summary */}
             {improvedSummary && (
-              <div className="mb-8 text-primaryColor">
-                <h4 className="text-xl font-bold mb-4">Improvements:</h4>
-                <div>{improvedSummary}</div>
+              <div className="mb-8 ">
+                <h4 className="text-xl text-myPurple font-bold mb-4">
+                  Improvements:
+                </h4>
+                <div className="text-gray-600">{improvedSummary}</div>
               </div>
             )}
 
             <div className="grid md:grid-cols-2 grid-cols-1 gap-8">
               {/* Keywords Section */}
-              <div className="bg-primaryColor p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-primaryColor">
+              <div className="bg-myMidPurple p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-myMidPurple">
                 {keywords && (
-                  <div className="mb-6 text-myMidblue">
+                  <div className="mb-6 text-white">
                     <div className="flex justify-between items-center mb-4">
                       <h4 className="text-2xl font-bold  mb-2 flex items-center">
                         <FaKey className="inline mr-2" />
@@ -249,8 +257,7 @@ const AiResumeAnalyzeReort = () => {
                           {keywordsScore}/100
                         </span>
                       </div> */}
-                        <SectionScoreChart score={keywordsScore}/>
-
+                      <SectionScoreChart score={keywordsScore} />
                     </div>
 
                     <div>
@@ -274,9 +281,9 @@ const AiResumeAnalyzeReort = () => {
               </div>
 
               {/* Formatting Section */}
-              <div className="bg-primaryColor p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-primaryColor">
+              <div className="bg-myMidPurple p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-myMidPurple">
                 {formatting && (
-                  <div className="mb-6 text-myMidblue">
+                  <div className="mb-6 text-white">
                     <div className="flex justify-between items-center mb-2">
                       <h4 className="text-xl font-bold  mb-2 flex items-center">
                         <IoIosInformationCircle className="inline mr-2" />
@@ -321,7 +328,7 @@ const AiResumeAnalyzeReort = () => {
                         </span>
                       </div> */}
 
-                      <SectionScoreChart score={formattingScore}/>
+                      <SectionScoreChart score={formattingScore} />
                     </div>
 
                     <div className="">
@@ -347,9 +354,9 @@ const AiResumeAnalyzeReort = () => {
               {/* <div className="h-[1px] w-full bg-myMidblue mb-5"></div> */}
 
               {/* Education Section */}
-              <div className="bg-primaryColor p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-primaryColor">
+              <div className="bg-myMidPurple p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-myMidPurple">
                 {education && (
-                  <div className="mb-6 text-myMidblue">
+                  <div className="mb-6 text-white">
                     <div className="flex justify-between items-center mb-2">
                       <h4 className="text-xl font-bold  mb-2 flex items-center">
                         <IoSchoolSharp className="inline mr-2" />
@@ -394,7 +401,7 @@ const AiResumeAnalyzeReort = () => {
                         </span>
                       </div> */}
 
-                      <SectionScoreChart score={educationScore}/>
+                      <SectionScoreChart score={educationScore} />
                     </div>
 
                     <div className="">
@@ -420,9 +427,9 @@ const AiResumeAnalyzeReort = () => {
               {/* <div className="h-[1px] w-full bg-myMidblue mb-5"></div> */}
 
               {/* Experience Section */}
-              <div className="bg-primaryColor p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-primaryColor">
+              <div className="bg-myMidPurple p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-myMidPurple">
                 {experience && (
-                  <div className="mb-6 text-myMidblue">
+                  <div className="mb-6 text-white">
                     <div className="flex justify-between items-center mb-2">
                       <h4 className="text-xl font-bold  mb-2 flex items-center">
                         <GrUserExpert className="inline mr-2" />
@@ -466,7 +473,7 @@ const AiResumeAnalyzeReort = () => {
                           {experienceScore}/100
                         </span>
                       </div> */}
-                      <SectionScoreChart score={experienceScore}/>
+                      <SectionScoreChart score={experienceScore} />
                     </div>
 
                     <div className="">
@@ -496,14 +503,14 @@ const AiResumeAnalyzeReort = () => {
       <div className="mt-6 rounded-xl w-[80%] mx-auto">
         {coverLetter && suggestions && (
           <div>
-            <h3 className="text-3xl font-bold mb-4 text-myMidblue text-center">
+            <h3 className="text-3xl font-bold mb-4 text-myPurple text-center">
               AI Suggested Cover Letter
             </h3>
             {/* Separate div for the editable cover letter */}
-            <div className="bg-myMidblue p-4 rounded-xl shadow mt-8 text-sm">
+            <div className="bg-myMidPurple p-4 rounded-xl shadow mt-8 text-sm">
               <div
                 ref={editorRef}
-                className="mb-6 p-4 bg-myDarkBlue rounded-lg text-myLightBlue"
+                className="mb-6 p-4 bg-myPurple rounded-lg text-white"
               >
                 <Editor
                   editorState={editorState}
@@ -561,7 +568,7 @@ const AiResumeAnalyzeReort = () => {
             </div>
             <button
               onClick={downloadPDF}
-              className="px-5 py-3 mt-5 hover:bg-myMidblue/30 rounded-xl text-myMidblue font-bold text-xl border border-myMidblue transition duration-300 ease-in-out flex items-center gap-2"
+              className="mt-5 text-xl  flex items-center gap-2 py-1 px-4 rounded-lg text-white font-semibold bg-myMidPurple hover:bg-myPurple  transition-all duration-300"
             >
               <MdFileDownload />
               Download as PDF

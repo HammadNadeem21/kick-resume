@@ -60,7 +60,7 @@ const Navbar = () => {
 
   return (
     <div className="">
-      <header className=" bg-myWhite  body-font flex justify-center shadow-[0px_1px_4px_0px_rgba(0,_0,_0,_0.1)]  shadow-myMidPurple">
+      <header className=" bg-gray-100  body-font flex justify-center shadow-[0px_1px_4px_0px_rgba(0,_0,_0,_0.1)]  shadow-myMidPurple">
         <div className="container  flex items-center justify-between py-5 px-3">
           <div className="flex items-center justify-between gap-4">
             {/* Logo */}

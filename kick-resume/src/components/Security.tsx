@@ -8,11 +8,13 @@ const Security = () => {
       {/* Heading */}
       <div className="w-[90%] mx-auto text-center">
         <h1 className="lg:text-4xl sm:text-2xl text-2xl text-myPurple font-semibold">
-          An AI resume review tool designed by recruiters.
+          Built by professionals who know what recruiters look for.
         </h1>
         <p className="lg:text-xl sm:text-sm text-xs text-myPurple mt-2">
-          Kickresume&apos;s online resume checker was designed by a team of
-          experienced recruiters, data analysts, and software engineers.
+          {/* Kickresume&apos;s online resume checker was designed by a team of
+          experienced recruiters, data analysts, and software engineers. */}
+          Created by a team of hiring professionals, data experts and engineers
+          - so your resume meets real-world expectations.
         </p>
       </div>
 

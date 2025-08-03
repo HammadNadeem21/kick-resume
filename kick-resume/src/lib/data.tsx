@@ -15,13 +15,7 @@ export const features: {
     href: "/select-template",
     description: "Create Your Resume yet.",
     icon: (
-      <Image
-        src="/icon-cvbuilder.svg"
-        alt="icon"
-        height={100}
-        width={100}
-        
-      />
+      <Image src="/icon-cvbuilder.svg" alt="icon" height={100} width={100} />
     ),
   },
   // {
@@ -34,7 +28,7 @@ export const features: {
   //       alt="icon"
   //       height={300}
   //       width={300}
-        
+
   //     />
   //   ),
   // },
@@ -48,7 +42,7 @@ export const features: {
   //       alt="icon"
   //       height={300}
   //       width={300}
-        
+
   //     />
   //   ),
   // },
@@ -62,7 +56,7 @@ export const features: {
   //       alt="icon"
   //       height={300}
   //       width={300}
-        
+
   //     />
   //   ),
   // },
@@ -76,7 +70,7 @@ export const features: {
   //       alt="icon"
   //       height={300}
   //       width={300}
-        
+
   //     />
   //   ),
   // },
@@ -90,7 +84,7 @@ export const features: {
   //       alt="icon"
   //       height={300}
   //       width={300}
-        
+
   //     />
   //   ),
   // },
@@ -104,7 +98,7 @@ export const features: {
   //       alt="icon"
   //       height={300}
   //       width={300}
-        
+
   //     />
   //   ),
   // },
@@ -118,7 +112,7 @@ export const features: {
   //       alt="icon"
   //       height={300}
   //       width={300}
-        
+
   //     />
   //   ),
   // },
@@ -507,84 +501,93 @@ export const featureSection = [
   },
 ];
 
-
-
 // Security Section data
 export const securitySection = [
   {
-    heading1: "Hosted in the",
-    heading2: "European Union",
-    content: "We’re based in the EU, which means that you’re being protected by the world’s toughest privacy and security law (GDPR). This gives you a complete control over your data and ensures maximum transparency.",
-    icon: <MdOutlineSecurity size={60} color="#ff0000" className='text-red-600'/>
-    
+    heading1: "",
+    heading2: "Privacy-First, Always",
+    content:
+      "We follow global privacy atandards to make sure your persnal data stays protected and in your hands.",
+    icon: (
+      <MdOutlineSecurity size={60} color="#ff0000" className="text-red-600" />
+    ),
   },
   {
-    heading1: "Trust",
+    heading1: "",
     heading2: "Loyal to our customers",
-    content: "We believe that being loyal to you, our customers, always pays off. Kickresume was built on your trust and we don’t want to lose it. We don’t share your data with third parties unless you tell us to.",
-    icon: <MdOutlineSecurity size={60} className='text-green-600'/>
-    
+    content:
+      "We believe that being loyal to you, our customers, always pays off",
+    icon: <MdOutlineSecurity size={60} className="text-green-600" />,
   },
   {
-    heading1: "Bulletproof",
-    heading2: "Pentested by ethical hackers",
-    content: "Thanks to our partnership with a leading IT security company whose name is subject to confidentiality, we are able to do regular penetration testing of our infrastructure and ensure that your data stays safe with us.",
-    icon: <MdOutlineSecurity size={60} color="#2563eb"/>
-    
-  }
-]
-
+    heading1: "",
+    heading2: "Tested Secured. Hacker-Approved",
+    content:
+      "Our systems undergo regular security audits and penetration testing by certified professionals. So whether you are uploading a resume or generating a cover letter - your information is in safe hands.",
+    icon: <MdOutlineSecurity size={60} color="#2563eb" />,
+  },
+];
 
 // Toolbox Section
 export const toolbox = [
   {
     image: "/ai-resume-builder.svg",
     heading: "AI Resume Builder",
-    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
   },
   {
     image: "/ai-cover-letter.svg",
     heading: "AI Cover Letter Builder",
-    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
   },
   {
     image: "/professional-template.svg",
     heading: "40+ Professional Templates",
-    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
   },
   {
     image: "/ai-resignation-letter.svg",
     heading: "AI Resignation Letter Generator Builder",
-    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
   },
   {
     image: "/resume-example.svg",
     heading: "1500+ Resume Examples",
-    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
   },
   {
     image: "/ats-resume-checker.svg",
     heading: "ATS Resume Checker",
-    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
   },
   {
     image: "/website-builder.svg",
     heading: "Website Builder",
-    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
   },
   {
     image: "/proofreading.svg",
     heading: "Proofreading",
-    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
   },
   {
     image: "/career-map.svg",
     heading: "Career Map",
-    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
   },
   {
     image: "/ai-rewriter.svg",
     heading: "AI ReWriter",
-    content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit."
-  }
-]
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
+  },
+];
