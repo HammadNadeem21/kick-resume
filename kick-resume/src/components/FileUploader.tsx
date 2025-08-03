@@ -313,12 +313,12 @@ ${pdfText}`,
           },
         })}
         className={`sm:w-[400px] sm:h-[200px] w-[300px] h-[160px] border-2 border-dashed rounded-xl flex flex-col gap-2 items-center justify-center text-center cursor-pointer transition ${
-          isDragActive ? "bg-blue-100 border-blue-500" : "border-gray-400"
+          isDragActive ? "bg-blue-100 border-myMidPurple" : "border-myPurple"
         }`}
       >
-        <IoCloudUploadOutline size={40} className="text-myMidblue" />
+        <IoCloudUploadOutline size={40} className="text-myPurple" />
         <input {...getInputProps()} />
-        <p className="text-myMidblue sm:text-lg text-sm">
+        <p className="text-myPurple sm:text-lg text-sm">
           {isDragActive
             ? "Drop the PDF here..."
             : "Drag & drop PDF file here, or click to select"}
@@ -330,7 +330,7 @@ ${pdfText}`,
       {/* Analyze Button */}
       <button
         onClick={handleAnalyze}
-        className="px-5 py-3 mt-5 hover:bg-myMidblue/30 rounded-xl text-myMidblue font-bold text-xl border border-myMidblue"
+        className=" mt-5 py-2 px-5 rounded-lg text-white font-semibold bg-myMidPurple hover:bg-myPurple transition-all duration-300 text-xl"
         disabled={loading || !session}
       >
         {loading ? "Analyzing..." : "Analyze"}

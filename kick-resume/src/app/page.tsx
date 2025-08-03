@@ -9,11 +9,11 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Features />
+      {/* <Features /> */}
       <Security />
       {/* <FileUploaderSection /> */}
       <ToolBoxSection />
-      <QuestionSection />
+      {/* <QuestionSection /> */}
     </>
   );
 }

@@ -11,7 +11,7 @@ const ToolboxCard = (props: {
 }) => {
   return (
     <Link href="/">
-      <div className="flex flex-col gap-3 justify-center items-center text-center mt-10 px-2 py-3 hover:bg-primaryColor/30 transition-all duration-300 hover:-translate-y-3 rounded-lg">
+      <div className="flex flex-col gap-3 justify-center items-center text-center mt-10 px-2 py-3 hover:bg-gray-300 transition-all duration-300 hover:-translate-y-3 rounded-lg">
         <Image
           src={props.image}
           alt="icon"
@@ -19,8 +19,10 @@ const ToolboxCard = (props: {
           width={300}
           className="h-[80px] w-[150px]"
         />
-        <h1 className="text-primaryColor sm:text-xl font-bold text-xl">{props.heading}</h1>
-        <p className="text-primaryColor sm:text-lg text-sm">{props.paragraph}</p>
+        <h1 className="text-myPurple sm:text-xl font-bold text-xl">
+          {props.heading}
+        </h1>
+        <p className="text-myPurple sm:text-lg text-sm">{props.paragraph}</p>
       </div>
     </Link>
   );

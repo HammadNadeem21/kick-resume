@@ -2,17 +2,20 @@ import Image from "next/image";
 import React from "react";
 import DropzoneUploader from "./FileUploader";
 import dynamic from "next/dynamic";
-const AiResumeAnalyzeReort = dynamic(() => import('@/components/AiResumeAnalyzeReort'), {
-  ssr: false,
-});
+const AiResumeAnalyzeReort = dynamic(
+  () => import("@/components/AiResumeAnalyzeReort"),
+  {
+    ssr: false,
+  }
+);
 const Hero = () => {
   return (
-    <div className="grid lg:grid-cols-2 grid-cols-1 bg-primaryColor py-10">
-      <div className=" flex flex-col gap-3 items-center justify-center lg:px-12 px-8 py-10">
-        <h1 className="lg:text-4xl text-3xl font-semibold text-myWhite lg:text-left text-center">
+    <div className="grid lg:grid-cols-2 grid-cols-1  py-10">
+      <div className=" flex flex-col gap-3 items-center justify-center lg:px-[100px] px-8 py-10">
+        <h1 className="lg:text-4xl text-3xl font-semibold text-myPurple lg:text-left text-center">
           AI Resume Checker: Get Your Resume Score Now
         </h1>
-        <p className="text-myWhite mt-7 lg:text-left text-center">
+        <p className="text-myPurple mt-7 lg:text-left text-center">
           Get your resume reviewed in an instant. Scan your resume for issues
           and see how it compares against other resumes in our database.
         </p>
@@ -23,27 +26,27 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="flex items-center md:px-12 px-7">
-        <Image
-          src="/hero-section.png"
-          alt="picture"
-          height={1000}
-          width={1000}
-          className="rounded-xl"
-        />
+      <div className=" flex items-center justify-center">
+        <div className="shadow-lg shadow-myPurple h-[300px] w-[480px] rounded-xl ">
+          <Image
+            src="/hero-section.png"
+            alt="picture"
+            height={1000}
+            width={1000}
+            className="rounded-xl h-full w-full"
+          />
+        </div>
       </div>
 
       <div className="lg:col-span-2 col-span-1">
-        
-        <AiResumeAnalyzeReort/>
-        
+        <AiResumeAnalyzeReort />
       </div>
 
-      <div className="lg:col-span-2 col-span-1 text-center mt-[100px] px-2">
-        <h1 className="text-myWhite">
+      <div className="lg:col-span-2 col-span-1 text-center mt-[50px] px-2">
+        <h1 className="text-myPurple font-semibold">
           Kickresume helps people get hired at the world&apos;s top companies
         </h1>
-        <div className="flex sm:gap-6 gap-3 mt-5 justify-center">
+        {/* <div className="flex sm:gap-6 gap-3 mt-5 justify-center">
           <Image
             src="/google.svg"
             alt="google"
@@ -79,7 +82,7 @@ const Hero = () => {
             width={100}
             className="sm:h-6 h-4 sm:w-[60px] w-[50px]"
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

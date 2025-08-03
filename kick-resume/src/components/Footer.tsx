@@ -35,19 +35,27 @@ const Footer = () => {
 
       <div className="lg:col-span-4 md:col-span-3 sm:col-span-2 flex items-center justify-between px-10">
         <Link href="/">
-          <h1 className="text-sm text-myPurple hover:underline">About</h1>
+          <h1 className="text-sm text-gray-600 hover:text-myPurple hover:underline">
+            About
+          </h1>
         </Link>
 
         <Link href="/">
-          <h1 className="text-sm text-myPurple hover:underline">Contact us</h1>
+          <h1 className="text-sm text-gray-600 hover:text-myPurple hover:underline">
+            Contact us
+          </h1>
         </Link>
 
         <Link href="/">
-          <h1 className="text-sm text-myPurple hover:underline">Features</h1>
+          <h1 className="text-sm text-gray-600 hover:text-myPurple hover:underline">
+            Features
+          </h1>
         </Link>
 
         <Link href="/">
-          <h1 className="text-sm text-myPurple hover:underline">Contact</h1>
+          <h1 className="text-sm text-gray-600 hover:text-myPurple hover:underline">
+            Contact
+          </h1>
         </Link>
         {/* </div> */}
       </div>
