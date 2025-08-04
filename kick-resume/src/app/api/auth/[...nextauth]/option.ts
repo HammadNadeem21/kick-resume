@@ -47,13 +47,25 @@
 //   ],
 // };
 
-
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "../../../../../models/user";
 import bcrypt from "bcryptjs";
+
+import { Session } from "next-auth";
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      _id?: string;
+    };
+  }
+}
 
 export const options: NextAuthOptions = {
   providers: [
@@ -100,7 +112,6 @@ export const options: NextAuthOptions = {
           });
 
           return { id: user._id.toString(), email: user.email };
-          
         }
 
         // ✅ If user exists, check password
@@ -119,10 +130,57 @@ export const options: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
+  // callbacks: {
+  //   async jwt({ token, user }) {
+  //     // User sirf initial login pe hota hai
+  //     if (user) {
+  //       token._id = user.id; // id string ke form mein aa rahi hoti hai
+  //     }
+  //     return token;
+  //   },
+  //   async session({ session, token }) {
+  //     if (token && session.user) {
+  //       session.user._id = token._id as string;
+  //     }
+  //     return session;
+  //   },
+  // },
+
+  callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === "google") {
+        const { email } = user;
+        await connectToDatabase();
+
+        const existingUser = await User.findOne({ email });
+
+        if (!existingUser) {
+          await User.create({
+            email,
+            credits: 100, // default credits for new Google user
+          });
+        }
+      }
+      return true;
+    },
+
+    async jwt({ token, user }) {
+      if (user) {
+        token._id = user.id;
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user._id = token._id as string;
+      }
+      return session;
+    },
+  },
+
   session: {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
-  
 };
-

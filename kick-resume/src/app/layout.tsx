@@ -7,22 +7,27 @@ import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { ResumeProvider } from "@/context/ReaumeContext";
 import { ResumeDataProvider } from "@/context/ResumeBuilderData";
+import { CreditsProvider } from "@/context/CreditsContext";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>
         <SessionProvider>
-          <Navbar/>
-          <ResumeProvider>
-            <ResumeDataProvider>
+          <CreditsProvider>
+            <Navbar />
+            <ResumeProvider>
+              <ResumeDataProvider>{children}</ResumeDataProvider>
+            </ResumeProvider>
 
-          {children}
-          </ResumeDataProvider>
-          </ResumeProvider>
-
-          <Footer/>
-          </SessionProvider> {/* ✅ Wrap your app */}
+            <Footer />
+          </CreditsProvider>
+        </SessionProvider>{" "}
+        {/* ✅ Wrap your app */}
       </body>
     </html>
   );

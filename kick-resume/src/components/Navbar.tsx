@@ -6,6 +6,8 @@ import Image from "next/image";
 import MobileNav from "./MobileNav";
 import { signIn, signOut, useSession } from "next-auth/react";
 
+import { useCredits } from "@/context/CreditsContext";
+
 import { useState } from "react";
 // import { signIn } from 'next-auth/react';
 import { useRouter } from "next/navigation";
@@ -53,6 +55,7 @@ const Navbar = () => {
   // };
 
   const { data: session } = useSession();
+  const { credit } = useCredits();
 
   const handleSignUp = () => {
     signIn();
@@ -126,6 +129,9 @@ const Navbar = () => {
                     </span>
                   )}
                 </div>
+                <h1 className="py-2 px-4 rounded-lg text-white font-semibold bg-myMidPurple hover:bg-myPurple transition-all duration-300">
+                  Credits: {credit}
+                </h1>
               </>
             ) : (
               // ❌ Agar user logged in nahi hai, toh SignUp + Log In buttons show honge

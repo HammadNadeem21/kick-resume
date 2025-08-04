@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
+import { pdf } from "@react-pdf/renderer";
+
 import Template1 from "@/components/Template1";
 import { useDropzone } from "react-dropzone";
 import { PDFDownloadLink } from "@react-pdf/renderer";
@@ -35,6 +37,7 @@ import Template9PDF from "@/components/pdf/Template9PDF";
 import Template10 from "@/components/Template10";
 import Template10PDF from "@/components/pdf/Template10PDF";
 import { CarouselSize } from "@/components/Carousel";
+// import user from "../../../models/user"; // Remove this line
 const robot700 = Roboto({
   subsets: ["latin"],
   weight: ["700"],
@@ -54,51 +57,9 @@ const templateData = [
   { image: "/templates/template10.png", name: "Template 10", id: 10 },
 ];
 
-// const dummyData = {
-//   name: "John Doe",
-//   role: "Software Engineer",
-//   phone: 1234567890,
-//   email: "john.doe@example.com",
-//   address: "123 Main St, Anytown, USA",
-//   summary: "Highly motivated software engineer with 5+ years of experience in developing and deploying scalable web applications. Proficient in front-end and back-end technologies, with a strong focus on clean code and user experience.",
-//   education: [
-//     { degree: "Master of Science in Computer Science", startDate: "Sept 2020", endDate: "May 2022" },
-//     { degree: "Bachelor of Science in Software Engineering", startDate: "Sept 2016", endDate: "May 2020" }
-//   ],
-//   skills: ["JavaScript", "React", "Node.js", "MongoDB", "TypeScript", "Tailwind CSS"],
-//   languages: ["English", "Spanish"],
-//   certifications: ["AWS Certified Developer", "Google Cloud Professional Architect"],
-//   experience: [
-//     {
-//       title: "Senior Frontend Developer",
-//       companyName: "Tech Solutions Inc.",
-//       description: "Led the development of a new customer-facing portal using React and Redux, resulting in a 20% increase in user engagement. Implemented responsive UI designs and optimized application performance.",
-//       startDate: "Jan 2022",
-//       endDate: "Currently working"
-//     },
-//     {
-//       title: "Junior Software Engineer",
-//       companyName: "Innovate Corp.",
-//       description: "Contributed to the development of a microservices-based architecture. Developed RESTful APIs using Node.js and Express, and managed MongoDB databases.",
-//       startDate: "June 2020",
-//       endDate: "Dec 2021"
-//     }
-//   ],
-//   projects: [
-//     {
-//       name: "E-commerce Platform",
-//       description: "Developed a full-stack e-commerce platform with user authentication, product catalog, and payment integration. Utilized Stripe API for secure transactions.",
-//       github: "https://github.com/john-doe/ecommerce",
-//       live: "https://ecommerce.example.com"
-//     },
-//     {
-//       name: "Portfolio Website",
-//       description: "Designed and developed a personal portfolio website to showcase projects and skills. Implemented modern UI/UX principles and ensured mobile responsiveness.",
-//       github: "https://github.com/john-doe/portfolio",
-//       live: "https://portfolio.example.com"
-//     }
-//   ],
-// };
+// for credits
+import { useSession } from "next-auth/react";
+import { useCredits } from "@/context/CreditsContext";
 
 const AiPromptPage = () => {
   const [userPrompt, setUserPrompt] = useState<string>("");
@@ -107,9 +68,9 @@ const AiPromptPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [processedUrl, setProcessedUrl] = useState<string | null>(null);
-  // const [inputData, setInputData] = useState<string | string[]>()
+
   const [showEditor, setShowEditor] = useState(false);
-  // const [editMode, setEditMode] = useState<'summary' | 'skills' | null>(null)
+
   const [editType, setEditType] = useState<
     | "string"
     | "array"
@@ -191,6 +152,80 @@ const AiPromptPage = () => {
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [isTemplateLoading, setIsTemplateLoading] = useState(false);
   const [hasRenderedTemplate, setHasRenderedTemplate] = useState(false);
+
+  // For credits
+  // const [credits, setCredits] = useState<number | null>(0);
+  const { credit, setCredit } = useCredits();
+
+  const { data: session } = useSession();
+  const user = session?.user;
+
+  const fetchCredits = async (email: string) => {
+    try {
+      const res = await fetch("/api/credits/get", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) throw new Error("Failed to fetch credits");
+
+      const data = await res.json();
+      return data.credits;
+    } catch (err) {
+      console.error("Error fetching credits:", err);
+      return null;
+    }
+  };
+
+  // useEffect to run on mount
+  useEffect(() => {
+    const getCredits = async () => {
+      if (!session?.user?.email) return;
+
+      const credits = await fetchCredits(session.user.email);
+      setCredit(credits);
+    };
+
+    getCredits();
+  }, [session, setCredit]);
+
+  // useEffect(() => {
+  //   const fetchCredits = async () => {
+  //     const res = await fetch("/api/credits/get", {
+  //       method: "POST",
+  //       body: JSON.stringify({ email: user?.email }),
+  //     });
+
+  //     const data = await res.json();
+  //     setCredits(data.credits);
+  //   };
+
+  //   fetchCredits();
+  // }, [user?.email]);
+
+  // for display credits
+  // useEffect(() => {
+  //   const fetchCredits = async () => {
+  //     try {
+  //       const res = await fetch("/api/credits/get");
+
+  //       if (!res.ok) {
+  //         console.error("Failed to fetch credits");
+  //         return;
+  //       }
+
+  //       const data = await res.json();
+  //       setCredits(data.credits);
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //     }
+  //   };
+
+  //   fetchCredits();
+  // }, []);
 
   const handleGenerate = async () => {
     if (!userPrompt || !selectedTemplate) {
@@ -309,8 +344,7 @@ const AiPromptPage = () => {
   const handleExperienceFieldClick = (fieldName: string, arrayData: any[]) => {
     setExperienceData(arrayData);
     setCurrentExperienceField(fieldName);
-    // setCurrentProjectField(null);       // 🧼 Reset
-    // setCurrentEducationField(null);
+
     setEditType("experience");
     setShowEditor(true);
   };
@@ -333,18 +367,7 @@ const AiPromptPage = () => {
     setShowEditor(true);
   };
 
-  const handleSkillsClick = (skills: string[]) => {
-    setInputData(skills);
-    setEditType("array");
-    setShowEditor(true);
-  };
-
-  const handleLanguagesClick = (languages: string[]) => {
-    setInputData(languages);
-    setEditType("array");
-    setEditField("languages");
-    setShowEditor(true);
-  };
+  // for phone number
 
   const handlePhoneClickFeild = (fieldName: string, data: number) => {
     setSelectedField(fieldName);
@@ -365,6 +388,88 @@ const AiPromptPage = () => {
       console.log("Parsed Data:", parsedData);
     }
   }, [parsedData]);
+
+  // for sending prompt
+  const handleSendPrompt = async () => {
+    if (!userPrompt || !selectedTemplate) {
+      alert("Please enter a prompt and select a template!");
+      return;
+    }
+    setIsChatLoading(true);
+    setIsTemplateLoading(true); // <-- start spinner
+
+    setPromptHistory((prev) => [
+      ...prev,
+      { type: "user", message: userPrompt },
+    ]);
+
+    const res = await fetch("/api/generate-resume", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        prompt: userPrompt,
+        existingResume: parsedData || {},
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      alert(err.error || "Something went wrong");
+      setIsChatLoading(false);
+      setIsTemplateLoading(false); // <-- stop spinner
+      return;
+    }
+
+    const data = await res.json();
+
+    // Ensure certifications is always an array of strings
+    if (data.certifications && Array.isArray(data.certifications)) {
+      data.certifications = data.certifications.map((item: any) =>
+        typeof item === "string"
+          ? item
+          : [item.name, item.authority, item.date].filter(Boolean).join(" - ")
+      );
+    }
+
+    // 🟡 Call to decrease credits
+    // const creditRes = await fetch("/api/credits/deduct", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ userId: session?.user?._id, amount: 1 }), // ⬅️ deduct 1 credit
+    // });
+
+    // if (!creditRes.ok) {
+    //   const creditErr = await creditRes.json();
+    //   alert("Resume sent, but failed to deduct credits: " + creditErr.error);
+    // }
+
+    const creditRes = await fetch("/api/credits/deduct", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: session?.user?.email, amount: -3 }),
+    });
+
+    if (!creditRes.ok) {
+      const creditErr = await creditRes.json();
+      alert("Resume sent, but failed to deduct credits: " + creditErr.error);
+    } else {
+      const creditData = await creditRes.json();
+      setCredit(creditData.credits); // 👈 Update credits state
+    }
+
+    setShowTemplate(true);
+    setUserPrompt(""); // Clear input
+
+    // 2. AI response message
+    setPromptHistory((prev) => [
+      ...prev,
+      { type: "ai", message: "Resume updated successfully!" },
+    ]);
+    setParsedData(data);
+    setIsChatLoading(false);
+    setIsTemplateLoading(false); // <-- stop spinner
+    if (!hasRenderedTemplate) setHasRenderedTemplate(true);
+  };
 
   const getTemplateId = (image: number) => {
     setSelectedTemplate(image);
@@ -543,6 +648,116 @@ const AiPromptPage = () => {
   console.log("Preview URL:", previewUrl);
   // console.log("phone", parsedData.phone);
 
+  // for download button
+  const handleDownloadPDF = async () => {
+    if (!parsedData || !selectedTemplate) return;
+
+    if (credit < 5) {
+      alert("Not enough credits.");
+      return;
+    }
+
+    let DocumentComponent;
+
+    switch (selectedTemplate) {
+      case 1:
+        DocumentComponent = <Template1PDF data={parsedData} color={color1} />;
+        break;
+      case 2:
+        DocumentComponent = <Template2PDF data={parsedData} />;
+        break;
+      case 3:
+        DocumentComponent = <Template3PDF data={parsedData} />;
+        break;
+      case 4:
+        DocumentComponent = (
+          <Template4PDF
+            data={parsedData}
+            imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
+            imageBgColor={
+              selectedImageBgColor
+                ? tailwindColorMap[selectedImageBgColor]
+                : undefined
+            }
+            color={color4}
+          />
+        );
+        break;
+      case 5:
+        DocumentComponent = <Template5PDF data={parsedData} />;
+        break;
+      case 6:
+        DocumentComponent = <Template6PDF data={parsedData} />;
+        break;
+      case 7:
+        DocumentComponent = (
+          <Template7PDF
+            data={parsedData}
+            imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
+            imageBgColor={
+              selectedImageBgColor
+                ? tailwindColorMap[selectedImageBgColor]
+                : undefined
+            }
+            color={color7}
+          />
+        );
+        break;
+      case 8:
+        DocumentComponent = <Template8PDF data={parsedData} />;
+        break;
+      case 9:
+        DocumentComponent = (
+          <Template9PDF
+            data={parsedData}
+            imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
+            imageBgColor={
+              selectedImageBgColor
+                ? tailwindColorMap[selectedImageBgColor]
+                : undefined
+            }
+          />
+        );
+        break;
+      case 10:
+        DocumentComponent = <Template10PDF data={parsedData} color={color10} />;
+        break;
+      default:
+        alert("Invalid template selected");
+        return;
+    }
+
+    try {
+      const blob = await pdf(DocumentComponent).toBlob();
+
+      // Download
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "resume.pdf";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+
+      // Deduct credits
+      const res = await fetch("/api/credits/deduct", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user?.email, amount: -5 }),
+      });
+
+      if (!res.ok) throw new Error("Failed to deduct credits");
+
+      // Update local credit state
+      const creditData = await res.json();
+      setCredit(creditData.credits);
+    } catch (err) {
+      console.error("Download failed:", err);
+      alert("Download failed");
+    }
+  };
+
   return (
     <div
       className="px-[30px] py-[60px] mx-auto min-h-screen"
@@ -708,6 +923,15 @@ const AiPromptPage = () => {
           </div>
         )}
 
+        {/* <div className="text-center mt-10">
+          <h1 className="text-2xl font-bold">Your Credits</h1>
+          {credit === null ? (
+            <p>Loading...</p>
+          ) : (
+            <p className="text-xl mt-4">💳 {credit} credits remaining</p>
+          )}
+        </div> */}
+
         {/* Chat Box */}
         <div className="bg-gray-200 mx-auto w-[60%] p-4 h-[300px] overflow-y-auto chat-container custom-scrollbar">
           {promptHistory.map((entry, index) => (
@@ -809,67 +1033,18 @@ const AiPromptPage = () => {
           <textarea
             value={userPrompt}
             onChange={(e) => setUserPrompt(e.target.value)}
-            placeholder="Type your prompt..."
+            placeholder={
+              credit < 3
+                ? "You have no credits left. Please upgrade."
+                : "Type your prompt here..."
+            }
             className=" p-3 w-[100%]  text-black resize-none focus:outline-none bg-transparent"
             rows={3}
+            disabled={credit < 3} // Disable if no credits
           />
           <button
             className="border border-[#a9adb5]  text-gray-800 mt-2 px-4 py-2 rounded-xl flex items-center justify-center gap-1"
-            onClick={async () => {
-              if (!userPrompt || !selectedTemplate) {
-                alert("Please enter a prompt and select a template!");
-                return;
-              }
-              setIsChatLoading(true);
-              setIsTemplateLoading(true); // <-- start spinner
-              setPromptHistory((prev) => [
-                ...prev,
-                { type: "user", message: userPrompt },
-              ]);
-
-              const res = await fetch("/api/generate-resume", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  prompt: userPrompt,
-                  existingResume: parsedData || {},
-                }),
-              });
-
-              if (!res.ok) {
-                const err = await res.json();
-                alert(err.error || "Something went wrong");
-                setIsChatLoading(false);
-                setIsTemplateLoading(false); // <-- stop spinner
-                return;
-              }
-
-              const data = await res.json();
-
-              // Ensure certifications is always an array of strings
-              if (data.certifications && Array.isArray(data.certifications)) {
-                data.certifications = data.certifications.map((item: any) =>
-                  typeof item === "string"
-                    ? item
-                    : [item.name, item.authority, item.date]
-                        .filter(Boolean)
-                        .join(" - ")
-                );
-              }
-
-              setShowTemplate(true);
-              setUserPrompt(""); // Clear input
-
-              // 2. AI response message
-              setPromptHistory((prev) => [
-                ...prev,
-                { type: "ai", message: "Resume updated successfully!" },
-              ]);
-              setParsedData(data);
-              setIsChatLoading(false);
-              setIsTemplateLoading(false); // <-- stop spinner
-              if (!hasRenderedTemplate) setHasRenderedTemplate(true);
-            }}
+            onClick={handleSendPrompt}
           >
             Send <IoSend />
           </button>
@@ -932,156 +1107,163 @@ const AiPromptPage = () => {
 
       {/* Download Button */}
       {showTemplate && parsedData && (
-        <div className="flex w-[70%] mx-auto justify-end mt-4 ">
-          {selectedTemplate === 1 && (
-            <PDFDownloadLink
-              document={<Template1PDF data={parsedData} color={color1} />}
-              fileName="resume.pdf"
-              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-            >
-              {({ loading }) =>
-                loading ? "Preparing document..." : "Download PDF"
-              }
-            </PDFDownloadLink>
-          )}
-          {selectedTemplate === 2 && (
-            <PDFDownloadLink
-              document={<Template2PDF data={parsedData} />}
-              fileName="resume.pdf"
-              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-            >
-              {({ loading }) =>
-                loading ? "Preparing document..." : "Download PDF"
-              }
-            </PDFDownloadLink>
-          )}
-          {selectedTemplate === 3 && (
-            <PDFDownloadLink
-              document={<Template3PDF data={parsedData} />}
-              fileName="resume.pdf"
-              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-            >
-              {({ loading }) =>
-                loading ? "Preparing document..." : "Download PDF"
-              }
-            </PDFDownloadLink>
-          )}
-          {selectedTemplate === 4 && (
-            <PDFDownloadLink
-              document={
-                <Template4PDF
-                  data={parsedData}
-                  imageUrl={
-                    selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
-                  }
-                  imageBgColor={
-                    selectedImageBgColor
-                      ? tailwindColorMap[selectedImageBgColor]
-                      : undefined
-                  }
-                  color={color4}
-                />
-              }
-              fileName="resume.pdf"
-              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-            >
-              {({ loading }) =>
-                loading ? "Preparing document..." : "Download PDF"
-              }
-            </PDFDownloadLink>
-          )}
-          {selectedTemplate === 5 && (
-            <PDFDownloadLink
-              document={<Template5PDF data={parsedData} />}
-              fileName="resume.pdf"
-              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-            >
-              {({ loading }) =>
-                loading ? "Preparing document..." : "Download PDF"
-              }
-            </PDFDownloadLink>
-          )}
-          {selectedTemplate === 6 && (
-            <PDFDownloadLink
-              document={<Template6PDF data={parsedData} />}
-              fileName="resume.pdf"
-              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-            >
-              {({ loading }) =>
-                loading ? "Preparing document..." : "Download PDF"
-              }
-            </PDFDownloadLink>
-          )}
-          {selectedTemplate === 7 && (
-            <PDFDownloadLink
-              document={
-                <Template7PDF
-                  data={parsedData}
-                  imageUrl={
-                    selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
-                  }
-                  imageBgColor={
-                    selectedImageBgColor
-                      ? tailwindColorMap[selectedImageBgColor]
-                      : undefined
-                  }
-                  color={color7}
-                />
-              }
-              fileName="resume.pdf"
-              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-            >
-              {({ loading }) =>
-                loading ? "Preparing document..." : "Download PDF"
-              }
-            </PDFDownloadLink>
-          )}
-          {selectedTemplate === 8 && (
-            <PDFDownloadLink
-              document={<Template8PDF data={parsedData} />}
-              fileName="resume.pdf"
-              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-            >
-              {({ loading }) =>
-                loading ? "Preparing document..." : "Download PDF"
-              }
-            </PDFDownloadLink>
-          )}
-          {selectedTemplate === 9 && (
-            <PDFDownloadLink
-              document={
-                <Template9PDF
-                  data={parsedData}
-                  imageUrl={
-                    selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
-                  }
-                  imageBgColor={
-                    selectedImageBgColor
-                      ? tailwindColorMap[selectedImageBgColor]
-                      : undefined
-                  }
-                />
-              }
-              fileName="resume.pdf"
-              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-            >
-              {({ loading }) =>
-                loading ? "Preparing document..." : "Download PDF"
-              }
-            </PDFDownloadLink>
-          )}
-          {selectedTemplate === 10 && (
-            <PDFDownloadLink
-              document={<Template10PDF data={parsedData} color={color10} />}
-              fileName="resume.pdf"
-              className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded"
-            >
-              {({ loading }) =>
-                loading ? "Preparing document..." : "Download PDF"
-              }
-            </PDFDownloadLink>
-          )}
-        </div>
+        // <div className="flex w-[70%] mx-auto justify-end mt-4 ">
+        //   {selectedTemplate === 1 && (
+        //     <PDFDownloadLink
+        //       document={<Template1PDF data={parsedData} color={color1} />}
+        //       fileName="resume.pdf"
+        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
+        //     >
+        //       {({ loading }) =>
+        //         loading ? "Preparing document..." : "Download PDF"
+        //       }
+        //     </PDFDownloadLink>
+        //   )}
+        //   {selectedTemplate === 2 && (
+        //     <PDFDownloadLink
+        //       document={<Template2PDF data={parsedData} />}
+        //       fileName="resume.pdf"
+        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
+        //     >
+        //       {({ loading }) =>
+        //         loading ? "Preparing document..." : "Download PDF"
+        //       }
+        //     </PDFDownloadLink>
+        //   )}
+        //   {selectedTemplate === 3 && (
+        //     <PDFDownloadLink
+        //       document={<Template3PDF data={parsedData} />}
+        //       fileName="resume.pdf"
+        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
+        //     >
+        //       {({ loading }) =>
+        //         loading ? "Preparing document..." : "Download PDF"
+        //       }
+        //     </PDFDownloadLink>
+        //   )}
+        //   {selectedTemplate === 4 && (
+        //     <PDFDownloadLink
+        //       document={
+        //         <Template4PDF
+        //           data={parsedData}
+        //           imageUrl={
+        //             selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
+        //           }
+        //           imageBgColor={
+        //             selectedImageBgColor
+        //               ? tailwindColorMap[selectedImageBgColor]
+        //               : undefined
+        //           }
+        //           color={color4}
+        //         />
+        //       }
+        //       fileName="resume.pdf"
+        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
+        //     >
+        //       {({ loading }) =>
+        //         loading ? "Preparing document..." : "Download PDF"
+        //       }
+        //     </PDFDownloadLink>
+        //   )}
+        //   {selectedTemplate === 5 && (
+        //     <PDFDownloadLink
+        //       document={<Template5PDF data={parsedData} />}
+        //       fileName="resume.pdf"
+        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
+        //     >
+        //       {({ loading }) =>
+        //         loading ? "Preparing document..." : "Download PDF"
+        //       }
+        //     </PDFDownloadLink>
+        //   )}
+        //   {selectedTemplate === 6 && (
+        //     <PDFDownloadLink
+        //       document={<Template6PDF data={parsedData} />}
+        //       fileName="resume.pdf"
+        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
+        //     >
+        //       {({ loading }) =>
+        //         loading ? "Preparing document..." : "Download PDF"
+        //       }
+        //     </PDFDownloadLink>
+        //   )}
+        //   {selectedTemplate === 7 && (
+        //     <PDFDownloadLink
+        //       document={
+        //         <Template7PDF
+        //           data={parsedData}
+        //           imageUrl={
+        //             selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
+        //           }
+        //           imageBgColor={
+        //             selectedImageBgColor
+        //               ? tailwindColorMap[selectedImageBgColor]
+        //               : undefined
+        //           }
+        //           color={color7}
+        //         />
+        //       }
+        //       fileName="resume.pdf"
+        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
+        //     >
+        //       {({ loading }) =>
+        //         loading ? "Preparing document..." : "Download PDF"
+        //       }
+        //     </PDFDownloadLink>
+        //   )}
+        //   {selectedTemplate === 8 && (
+        //     <PDFDownloadLink
+        //       document={<Template8PDF data={parsedData} />}
+        //       fileName="resume.pdf"
+        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
+        //     >
+        //       {({ loading }) =>
+        //         loading ? "Preparing document..." : "Download PDF"
+        //       }
+        //     </PDFDownloadLink>
+        //   )}
+        //   {selectedTemplate === 9 && (
+        //     <PDFDownloadLink
+        //       document={
+        //         <Template9PDF
+        //           data={parsedData}
+        //           imageUrl={
+        //             selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
+        //           }
+        //           imageBgColor={
+        //             selectedImageBgColor
+        //               ? tailwindColorMap[selectedImageBgColor]
+        //               : undefined
+        //           }
+        //         />
+        //       }
+        //       fileName="resume.pdf"
+        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
+        //     >
+        //       {({ loading }) =>
+        //         loading ? "Preparing document..." : "Download PDF"
+        //       }
+        //     </PDFDownloadLink>
+        //   )}
+        //   {selectedTemplate === 10 && (
+        //     <PDFDownloadLink
+        //       document={<Template10PDF data={parsedData} color={color10} />}
+        //       fileName="resume.pdf"
+        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded"
+        //     >
+        //       {({ loading }) =>
+        //         loading ? "Preparing document..." : "Download PDF"
+        //       }
+        //     </PDFDownloadLink>
+        //   )}
+        // </div>
+        <button
+          onClick={handleDownloadPDF}
+          disabled={credit < 5}
+          className="bg-myMidPurple mt-5 hover:bg-myPurple text-white px-4 py-2 rounded disabled:opacity-50"
+        >
+          Download PDF
+        </button>
       )}
 
       <div className="grid grid-cols-1">
