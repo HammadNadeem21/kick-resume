@@ -119,11 +119,11 @@ const AiResumeAnalyzeReort = () => {
     ),
 
     strong: ({ node, ...props }: { node: any; [key: string]: any }) => (
-      <strong className="text-myMidblue text-lg font-[400]" {...props} />
+      <strong className="text-gray-600 text-lg font-[400]" {...props} />
     ),
 
     ul: ({ node, ...props }: { node: any; [key: string]: any }) => (
-      <ul className="list-disc pl-5 text-myMidblue space-y-1" {...props} />
+      <ul className="list-disc pl-5 text-gray-600 space-y-1" {...props} />
     ),
 
     li: ({ node, ...props }: { node: any; [key: string]: any }) => {
@@ -134,7 +134,7 @@ const AiResumeAnalyzeReort = () => {
 
       return (
         <li
-          className={`text-myMidblue ${
+          className={`text-gray-600 ${
             isImportant ? "text-red-600 font-semibold" : ""
           }`}
           {...props}
@@ -151,7 +151,7 @@ const AiResumeAnalyzeReort = () => {
     <div className="p-5">
       <div>
         {suggestions && (
-          <div className="mt-6 p-6 bg-white rounded-xl w-full">
+          <div className="mt-6 p-6 bg-gray-200 rounded-xl w-full">
             <h3 className="text-3xl font-bold mb-4 text-myPurple text-center">
               Resume Analysis
             </h3>
@@ -507,10 +507,10 @@ const AiResumeAnalyzeReort = () => {
               AI Suggested Cover Letter
             </h3>
             {/* Separate div for the editable cover letter */}
-            <div className="bg-myMidPurple p-4 rounded-xl shadow mt-8 text-sm">
+            <div className="bg-gray-200 p-4 rounded-xl shadow mt-8 text-sm">
               <div
                 ref={editorRef}
-                className="mb-6 p-4 bg-myPurple rounded-lg text-white"
+                className="mb-6 p-4 bg-myMidPurple shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-myMidPurple rounded-lg text-white"
               >
                 <Editor
                   editorState={editorState}
@@ -545,12 +545,12 @@ const AiResumeAnalyzeReort = () => {
                 />
                 <style jsx global>{`
                   .custom-toolbar-bg {
-                    background-color: #022c3a !important; /* Editbar background */
+                    background-color: #e5e7eb !important; /* Editbar background */
                     border-radius: 0.5rem;
                     border: none !important; /* Remove border */
                   }
                   .custom-toolbar-bg .rdw-option-wrapper {
-                    background-color: #225566 !important; /* Editbar option background */
+                    background-color: #a855f7 !important; /* Editbar option background */
                     border-radius: 0.375rem;
                     border: none !important;
                   }
