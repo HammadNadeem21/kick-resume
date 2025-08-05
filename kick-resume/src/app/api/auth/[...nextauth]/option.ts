@@ -146,25 +146,64 @@ export const options: NextAuthOptions = {
   //   },
   // },
 
+  // callbacks: {
+  //   async signIn({ user, account }) {
+  //     if (account?.provider === "google") {
+  //       const { email } = user;
+  //       await connectToDatabase();
+
+  //       const existingUser = await User.findOne({ email });
+
+  //       if (!existingUser) {
+  //         await User.create({
+  //           email,
+  //           credits: 100, // default credits for new Google user
+  //         });
+  //       }
+  //     }
+  //     return true;
+  //   },
+
+  //   async jwt({ token, user }) {
+  //     if (user) {
+  //       token._id = user.id;
+  //     }
+  //     return token;
+  //   },
+
+  //   async session({ session, token }) {
+  //     if (token && session.user) {
+  //       session.user._id = token._id as string;
+  //     }
+  //     return session;
+  //   },
+  // },
+
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === "google") {
         const { email } = user;
         await connectToDatabase();
 
-        const existingUser = await User.findOne({ email });
+        let existingUser = await User.findOne({ email });
 
         if (!existingUser) {
-          await User.create({
+          // ✅ Create new user
+          existingUser = await User.create({
             email,
-            credits: 100, // default credits for new Google user
+            credits: 100,
           });
         }
+
+        // ✅ Store MongoDB user ID in user object
+        user.id = existingUser._id.toString();
       }
+
       return true;
     },
 
     async jwt({ token, user }) {
+      // ✅ Set _id in token (from Google or Credentials)
       if (user) {
         token._id = user.id;
       }
@@ -172,13 +211,13 @@ export const options: NextAuthOptions = {
     },
 
     async session({ session, token }) {
+      // ✅ Attach MongoDB _id to session
       if (token && session.user) {
         session.user._id = token._id as string;
       }
       return session;
     },
   },
-
   session: {
     strategy: "jwt",
   },
