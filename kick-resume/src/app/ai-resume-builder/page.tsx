@@ -160,37 +160,37 @@ const AiPromptPage = () => {
   const { data: session } = useSession();
   const user = session?.user;
 
-  const fetchCredits = async (email: string) => {
-    try {
-      const res = await fetch("/api/credits/get", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+  // const fetchCredits = async (email: string) => {
+  //   try {
+  //     const res = await fetch("/api/credits/get", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ email }),
+  //     });
 
-      if (!res.ok) throw new Error("Failed to fetch credits");
+  //     if (!res.ok) throw new Error("Failed to fetch credits");
 
-      const data = await res.json();
-      return data.credits;
-    } catch (err) {
-      console.error("Error fetching credits:", err);
-      return null;
-    }
-  };
+  //     const data = await res.json();
+  //     return data.credits;
+  //   } catch (err) {
+  //     console.error("Error fetching credits:", err);
+  //     return null;
+  //   }
+  // };
 
-  // useEffect to run on mount
-  useEffect(() => {
-    const getCredits = async () => {
-      if (!session?.user?.email) return;
+  // // useEffect to run on mount
+  // useEffect(() => {
+  //   const getCredits = async () => {
+  //     if (!session?.user?.email) return;
 
-      const credits = await fetchCredits(session.user.email);
-      setCredit(credits);
-    };
+  //     const credits = await fetchCredits(session.user.email);
+  //     setCredit(credits);
+  //   };
 
-    getCredits();
-  }, [session, setCredit]);
+  //   getCredits();
+  // }, [session, setCredit]);
 
   // useEffect(() => {
   //   const fetchCredits = async () => {
