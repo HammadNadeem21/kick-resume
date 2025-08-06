@@ -130,21 +130,21 @@ export const options: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
-  // callbacks: {
-  //   async jwt({ token, user }) {
-  //     // User sirf initial login pe hota hai
-  //     if (user) {
-  //       token._id = user.id; // id string ke form mein aa rahi hoti hai
-  //     }
-  //     return token;
-  //   },
-  //   async session({ session, token }) {
-  //     if (token && session.user) {
-  //       session.user._id = token._id as string;
-  //     }
-  //     return session;
-  //   },
-  // },
+  callbacks: {
+    async jwt({ token, user }) {
+      // User sirf initial login pe hota hai
+      if (user) {
+        token._id = user.id; // id string ke form mein aa rahi hoti hai
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user._id = token._id as string;
+      }
+      return session;
+    },
+  },
 
   // callbacks: {
   //   async signIn({ user, account }) {
@@ -179,45 +179,45 @@ export const options: NextAuthOptions = {
   //   },
   // },
 
-  callbacks: {
-    async signIn({ user, account }) {
-      if (account?.provider === "google") {
-        const { email } = user;
-        await connectToDatabase();
+  // callbacks: {
+  //   async signIn({ user, account }) {
+  //     if (account?.provider === "google") {
+  //       const { email } = user;
+  //       await connectToDatabase();
 
-        let existingUser = await User.findOne({ email });
+  //       let existingUser = await User.findOne({ email });
 
-        if (!existingUser) {
-          // ✅ Create new user
-          existingUser = await User.create({
-            email,
-            credits: 100,
-          });
-        }
+  //       if (!existingUser) {
+  //         // ✅ Create new user
+  //         existingUser = await User.create({
+  //           email,
+  //           credits: 100,
+  //         });
+  //       }
 
-        // ✅ Store MongoDB user ID in user object
-        user.id = existingUser._id.toString();
-      }
+  //       // ✅ Store MongoDB user ID in user object
+  //       user.id = existingUser._id.toString();
+  //     }
 
-      return true;
-    },
+  //     return true;
+  //   },
 
-    async jwt({ token, user }) {
-      // ✅ Set _id in token (from Google or Credentials)
-      if (user) {
-        token._id = user.id;
-      }
-      return token;
-    },
+  //   async jwt({ token, user }) {
+  //     // ✅ Set _id in token (from Google or Credentials)
+  //     if (user) {
+  //       token._id = user.id;
+  //     }
+  //     return token;
+  //   },
 
-    async session({ session, token }) {
-      // ✅ Attach MongoDB _id to session
-      if (token && session.user) {
-        session.user._id = token._id as string;
-      }
-      return session;
-    },
-  },
+  //   async session({ session, token }) {
+  //     // ✅ Attach MongoDB _id to session
+  //     if (token && session.user) {
+  //       session.user._id = token._id as string;
+  //     }
+  //     return session;
+  //   },
+  // },
   session: {
     strategy: "jwt",
   },
