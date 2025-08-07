@@ -90,6 +90,13 @@ const Navbar = () => {
               >
                 Ai Resume Builder
               </Link>
+
+              <Link
+                href="/job"
+                className="text-lg text-gray-600 hover:text-myPurple"
+              >
+                Job
+              </Link>
               {/* </div> */}
             </nav>
           </div>

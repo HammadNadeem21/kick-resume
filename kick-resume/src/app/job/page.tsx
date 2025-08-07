@@ -64,9 +64,11 @@ import { useCredits } from "@/context/CreditsContext";
 const AiPromptPage = () => {
   const [userPrompt, setUserPrompt] = useState<string>("");
   const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
-  // for generating Resume
 
-  const [parsedData, setParsedData] = useState<any>(null);
+  //   for generating Resume
+  const [userName, setUserName] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
+  const [resumeData, setResumeData] = useState<any>(null);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -163,125 +165,6 @@ const AiPromptPage = () => {
   const { data: session } = useSession();
   const user = session?.user;
 
-  // const fetchCredits = async (email: string) => {
-  //   try {
-  //     const res = await fetch("/api/credits/get", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ email }),
-  //     });
-
-  //     if (!res.ok) throw new Error("Failed to fetch credits");
-
-  //     const data = await res.json();
-  //     return data.credits;
-  //   } catch (err) {
-  //     console.error("Error fetching credits:", err);
-  //     return null;
-  //   }
-  // };
-
-  // // useEffect to run on mount
-  // useEffect(() => {
-  //   const getCredits = async () => {
-  //     if (!session?.user?.email) return;
-
-  //     const credits = await fetchCredits(session.user.email);
-  //     setCredit(credits);
-  //   };
-
-  //   getCredits();
-  // }, [session, setCredit]);
-
-  // useEffect(() => {
-  //   const fetchCredits = async () => {
-  //     const res = await fetch("/api/credits/get", {
-  //       method: "POST",
-  //       body: JSON.stringify({ email: user?.email }),
-  //     });
-
-  //     const data = await res.json();
-  //     setCredits(data.credits);
-  //   };
-
-  //   fetchCredits();
-  // }, [user?.email]);
-
-  // for display credits
-  // useEffect(() => {
-  //   const fetchCredits = async () => {
-  //     try {
-  //       const res = await fetch("/api/credits/get");
-
-  //       if (!res.ok) {
-  //         console.error("Failed to fetch credits");
-  //         return;
-  //       }
-
-  //       const data = await res.json();
-  //       setCredits(data.credits);
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //     }
-  //   };
-
-  //   fetchCredits();
-  // }, []);
-
-  const handleGenerate = async () => {
-    if (!userPrompt || !selectedTemplate) {
-      alert("Please write a prompt and select a template!");
-      return;
-    }
-
-    try {
-      setIsChatLoading(true);
-      const res = await fetch("/api/generate-resume", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prompt: userPrompt,
-          existingResume: parsedData || {}, // ✅ ye zaroor hona chahiye
-        }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        alert(err.error || "Something went wrong");
-        setIsChatLoading(false);
-        return;
-      }
-
-      const data = await res.json();
-
-      // Ensure certifications is always an array of strings
-      if (data.certifications && Array.isArray(data.certifications)) {
-        data.certifications = data.certifications.map((item: any) =>
-          typeof item === "string"
-            ? item
-            : [item.name, item.authority, item.date].filter(Boolean).join(" - ")
-        );
-      }
-
-      // ✅ Add both user and AI messages to chat
-      setPromptHistory((prev) => [
-        ...prev,
-        { type: "user", message: userPrompt },
-        { type: "ai", message: "✅ Resume created successfully!" },
-      ]);
-
-      setParsedData(data);
-      setShowTemplate(true);
-      setUserPrompt(""); // Clear field
-      setIsChatLoading(false);
-    } catch (error) {
-      setIsChatLoading(false);
-      console.log("Error", error);
-    }
-  };
-
   const onDrop = async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     if (file) {
@@ -309,7 +192,7 @@ const AiPromptPage = () => {
     const newValue = e.target.value;
     setInputData(newValue);
 
-    setParsedData((prev: any) => ({
+    setResumeData((prev: any) => ({
       ...prev,
       [currentStringField as string]: newValue,
     }));
@@ -326,7 +209,7 @@ const AiPromptPage = () => {
     updated.splice(index, 1);
     setInputData(updated);
 
-    setParsedData((prev: any) => ({
+    setResumeData((prev: any) => ({
       ...prev,
       [currentArrayField as string]: updated,
     }));
@@ -338,7 +221,7 @@ const AiPromptPage = () => {
     setInputData(updated);
     setNewItem("");
 
-    setParsedData((prev: any) => ({
+    setResumeData((prev: any) => ({
       ...prev,
       [currentArrayField as string]: updated,
     }));
@@ -387,91 +270,51 @@ const AiPromptPage = () => {
   };
 
   useEffect(() => {
-    if (parsedData) {
-      console.log("Parsed Data:", parsedData);
+    if (resumeData) {
+      //   console.log("Parsed Data:", resumeData);
     }
-  }, [parsedData]);
+  }, [resumeData]);
 
   // for sending prompt
   const handleSendPrompt = async () => {
-    if (!userPrompt || !selectedTemplate) {
-      alert("Please enter a prompt and select a template!");
+    if (!userName || !jobDescription || !selectedTemplate) {
+      alert("Please enter your name and job description!");
       return;
     }
-    setIsChatLoading(true);
-    setIsTemplateLoading(true); // <-- start spinner
+    setIsTemplateLoading(true);
 
-    setPromptHistory((prev) => [
-      ...prev,
-      { type: "user", message: userPrompt },
-    ]);
+    setIsChatLoading(true); // optional loader
+    try {
+      const res = await fetch("/api/job", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userName,
+          jobDescription,
+        }),
+      });
 
-    const res = await fetch("/api/generate-resume", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        prompt: userPrompt,
-        existingResume: parsedData || {},
-      }),
-    });
+      if (!res.ok) {
+        const err = await res.json();
+        alert(err.error || "Something went wrong");
+        return;
+      }
 
-    if (!res.ok) {
-      const err = await res.json();
-      alert(err.error || "Something went wrong");
+      const data = await res.json(); // 👈 result yahan mil gaya
+      console.log("API Response:", data);
+      setResumeData(data); // Set the resume data
+      setIsTemplateLoading(false);
+      // You can store this in a state if needed
+      // setResult(data);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong");
+    } finally {
+      setShowTemplate(true); // Show template after fetching data
       setIsChatLoading(false);
-      setIsTemplateLoading(false); // <-- stop spinner
-      return;
+      setIsTemplateLoading(false);
+      if (!hasRenderedTemplate) setHasRenderedTemplate(true);
     }
-
-    const data = await res.json();
-
-    // Ensure certifications is always an array of strings
-    if (data.certifications && Array.isArray(data.certifications)) {
-      data.certifications = data.certifications.map((item: any) =>
-        typeof item === "string"
-          ? item
-          : [item.name, item.authority, item.date].filter(Boolean).join(" - ")
-      );
-    }
-
-    // 🟡 Call to decrease credits
-    // const creditRes = await fetch("/api/credits/deduct", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ userId: session?.user?._id, amount: 1 }), // ⬅️ deduct 1 credit
-    // });
-
-    // if (!creditRes.ok) {
-    //   const creditErr = await creditRes.json();
-    //   alert("Resume sent, but failed to deduct credits: " + creditErr.error);
-    // }
-
-    const creditRes = await fetch("/api/credits/deduct", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: session?.user?.email, amount: -3 }),
-    });
-
-    if (!creditRes.ok) {
-      const creditErr = await creditRes.json();
-      alert("Resume sent, but failed to deduct credits: " + creditErr.error);
-    } else {
-      const creditData = await creditRes.json();
-      setCredit(creditData.credits); // 👈 Update credits state
-    }
-
-    setShowTemplate(true);
-    setUserPrompt(""); // Clear input
-
-    // 2. AI response message
-    setPromptHistory((prev) => [
-      ...prev,
-      { type: "ai", message: "Resume updated successfully!" },
-    ]);
-    setParsedData(data);
-    setIsChatLoading(false);
-    setIsTemplateLoading(false); // <-- stop spinner
-    if (!hasRenderedTemplate) setHasRenderedTemplate(true);
   };
 
   const getTemplateId = (image: number) => {
@@ -492,7 +335,7 @@ const AiPromptPage = () => {
     if (selectedTemplate === 1)
       return (
         <Template1
-          data={parsedData}
+          data={resumeData}
           handleStringFeildClick={handleStringFieldClick}
           handleArrayFieldClick={handleArrayFieldClick}
           handleExperienceFieldClick={handleExperienceFieldClick}
@@ -506,7 +349,7 @@ const AiPromptPage = () => {
     if (selectedTemplate === 2)
       return (
         <Template2
-          data={parsedData}
+          data={resumeData}
           handleStringFeildClick={handleStringFieldClick}
           handleArrayFieldClick={handleArrayFieldClick}
           handleExperienceFieldClick={handleExperienceFieldClick}
@@ -519,7 +362,7 @@ const AiPromptPage = () => {
     if (selectedTemplate === 3)
       return (
         <Template3
-          data={parsedData}
+          data={resumeData}
           handleStringFeildClick={handleStringFieldClick}
           handleArrayFieldClick={handleArrayFieldClick}
           handleExperienceFieldClick={handleExperienceFieldClick}
@@ -532,7 +375,7 @@ const AiPromptPage = () => {
     if (selectedTemplate === 4)
       return (
         <Template4
-          data={parsedData}
+          data={resumeData}
           handleStringFeildClick={handleStringFieldClick}
           handleArrayFieldClick={handleArrayFieldClick}
           handleExperienceFieldClick={handleExperienceFieldClick}
@@ -548,7 +391,7 @@ const AiPromptPage = () => {
     if (selectedTemplate === 5)
       return (
         <Template5
-          data={parsedData}
+          data={resumeData}
           handleStringFeildClick={handleStringFieldClick}
           handleArrayFieldClick={handleArrayFieldClick}
           handleExperienceFieldClick={handleExperienceFieldClick}
@@ -561,7 +404,7 @@ const AiPromptPage = () => {
     if (selectedTemplate === 6)
       return (
         <Template6
-          data={parsedData}
+          data={resumeData}
           handleStringFeildClick={handleStringFieldClick}
           handleArrayFieldClick={handleArrayFieldClick}
           handleExperienceFieldClick={handleExperienceFieldClick}
@@ -574,7 +417,7 @@ const AiPromptPage = () => {
     if (selectedTemplate === 7)
       return (
         <Template7
-          data={parsedData}
+          data={resumeData}
           handleStringFeildClick={handleStringFieldClick}
           handleArrayFieldClick={handleArrayFieldClick}
           handleExperienceFieldClick={handleExperienceFieldClick}
@@ -590,7 +433,7 @@ const AiPromptPage = () => {
     if (selectedTemplate === 8)
       return (
         <Template8
-          data={parsedData}
+          data={resumeData}
           handleStringFeildClick={handleStringFieldClick}
           handleArrayFieldClick={handleArrayFieldClick}
           handleExperienceFieldClick={handleExperienceFieldClick}
@@ -603,7 +446,7 @@ const AiPromptPage = () => {
     if (selectedTemplate === 9)
       return (
         <Template9
-          data={parsedData}
+          data={resumeData}
           handleStringFeildClick={handleStringFieldClick}
           handleArrayFieldClick={handleArrayFieldClick}
           handleExperienceFieldClick={handleExperienceFieldClick}
@@ -618,7 +461,7 @@ const AiPromptPage = () => {
     if (selectedTemplate === 10)
       return (
         <Template10
-          data={parsedData}
+          data={resumeData}
           handleStringFeildClick={handleStringFieldClick}
           handleArrayFieldClick={handleArrayFieldClick}
           handleExperienceFieldClick={handleExperienceFieldClick}
@@ -642,18 +485,12 @@ const AiPromptPage = () => {
     scrollToBottom();
   }, [promptHistory]);
 
-  // List Change
-  const handleListChange = (data: string[]) => {
-    const newList = data;
-    setInputData(newList);
-  };
-
   console.log("Preview URL:", previewUrl);
   // console.log("phone", parsedData.phone);
 
   // for download button
   const handleDownloadPDF = async () => {
-    if (!parsedData || !selectedTemplate) return;
+    if (!resumeData || !selectedTemplate) return;
 
     if (credit < 5) {
       alert("Not enough credits.");
@@ -664,18 +501,18 @@ const AiPromptPage = () => {
 
     switch (selectedTemplate) {
       case 1:
-        DocumentComponent = <Template1PDF data={parsedData} color={color1} />;
+        DocumentComponent = <Template1PDF data={resumeData} color={color1} />;
         break;
       case 2:
-        DocumentComponent = <Template2PDF data={parsedData} />;
+        DocumentComponent = <Template2PDF data={resumeData} />;
         break;
       case 3:
-        DocumentComponent = <Template3PDF data={parsedData} />;
+        DocumentComponent = <Template3PDF data={resumeData} />;
         break;
       case 4:
         DocumentComponent = (
           <Template4PDF
-            data={parsedData}
+            data={resumeData}
             imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
             imageBgColor={
               selectedImageBgColor
@@ -687,15 +524,15 @@ const AiPromptPage = () => {
         );
         break;
       case 5:
-        DocumentComponent = <Template5PDF data={parsedData} />;
+        DocumentComponent = <Template5PDF data={resumeData} />;
         break;
       case 6:
-        DocumentComponent = <Template6PDF data={parsedData} />;
+        DocumentComponent = <Template6PDF data={resumeData} />;
         break;
       case 7:
         DocumentComponent = (
           <Template7PDF
-            data={parsedData}
+            data={resumeData}
             imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
             imageBgColor={
               selectedImageBgColor
@@ -707,12 +544,12 @@ const AiPromptPage = () => {
         );
         break;
       case 8:
-        DocumentComponent = <Template8PDF data={parsedData} />;
+        DocumentComponent = <Template8PDF data={resumeData} />;
         break;
       case 9:
         DocumentComponent = (
           <Template9PDF
-            data={parsedData}
+            data={resumeData}
             imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
             imageBgColor={
               selectedImageBgColor
@@ -723,7 +560,7 @@ const AiPromptPage = () => {
         );
         break;
       case 10:
-        DocumentComponent = <Template10PDF data={parsedData} color={color10} />;
+        DocumentComponent = <Template10PDF data={resumeData} color={color10} />;
         break;
       default:
         alert("Invalid template selected");
@@ -775,29 +612,6 @@ const AiPromptPage = () => {
 
         {/* Select Template */}
         <div className="flex flex-wrap justify-center gap-6 mb-10">
-          {/* {templateData.map((template) => (
-            <div
-              key={template.id}
-              onClick={() => getTemplateId(template.id)}
-              className={`relative cursor-pointer rounded-md transition-all duration-300 shadow-md shadow-purple-400`}
-            >
-              <div className='h-[280px] w-[200px]'>
-                <Image src={template.image} alt={template.name} height={150} width={150} className='h-full w-full' />
-              </div>
-              {selectedTemplate === template.id && (
-                <div
-                  className="absolute inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center pointer-events-none"
-                  style={{ zIndex: 10 }}
-                >
-                  <div className="border border-white text-white rounded-full px-1 py-1 z-20">
-                    <TiTick size={50} />
-                  </div>
-
-                </div>
-              )}
-            </div>
-          ))} */}
-
           <CarouselSize
             array={templateData}
             getTemplateId={(id) => setSelectedTemplate(id)}
@@ -925,144 +739,42 @@ const AiPromptPage = () => {
             )}
           </div>
         )}
+      </div>
 
-        {/* <div className="text-center mt-10">
-          <h1 className="text-2xl font-bold">Your Credits</h1>
-          {credit === null ? (
-            <p>Loading...</p>
-          ) : (
-            <p className="text-xl mt-4">💳 {credit} credits remaining</p>
-          )}
-        </div> */}
+      <h1 className="text-myPurple font-bold text-lg text-center mt-5 mb-5">
+        Please fill the details
+      </h1>
 
-        {/* Chat Box */}
-        <div className="bg-gray-200 mx-auto w-[60%] p-4 h-[300px] overflow-y-auto chat-container custom-scrollbar">
-          {promptHistory.map((entry, index) => (
-            <div
-              key={index}
-              className={`flex items-end mb-2 max-w-[80%]  ${
-                entry.type === "user"
-                  ? "flex-row-reverse ml-auto"
-                  : "flex-row mr-auto"
-              } animate-fade-in-up`}
-            >
-              {/* Avatar */}
-              <div
-                className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm select-none ${
-                  entry.type === "user"
-                    ? "bg-myMidPurple text-white ml-2"
-                    : "bg-gray-300 text-gray-700 mr-2"
-                }`}
-              >
-                {entry.type === "user" ? "You" : "Ai"}
-              </div>
-              {/* Chat bubble */}
-              <div
-                className={`px-4 py-2 rounded-xl ${
-                  entry.type === "user"
-                    ? "bg-myMidPurple text-white text-sm"
-                    : "bg-gray-300 text-gray-700 text-sm"
-                }`}
-              >
-                {entry.message}
-              </div>
-            </div>
-          ))}
-          {isChatLoading && (
-            <div className="flex items-center mb-2 max-w-[80%] flex-row mr-auto">
-              {/* Avatar for AI */}
-              <div className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm select-none bg-gray-300 text-gray-700 mr-2 mb-2">
-                Ai
-              </div>
-              {/* Loading bubble */}
-              <div className="flex items-center mb-1 px-4 py-2 rounded-xl bg-gray-300 text-gray-700">
-                <div className="flex gap-1 items-end">
-                  <span className="dot-bounce"></span>
-                  <span className="dot-bounce animation-delay-200"></span>
-                  <span className="dot-bounce animation-delay-400"></span>
-                </div>
-              </div>
-            </div>
-          )}
-          <style jsx>{`
-            .custom-scrollbar {
-              scrollbar-width: thin;
-              scrollbar-color: #374151 #e5e7eb;
-              margin-top: 5px; /* thumb color, then track color */
-            }
-            .custom-scrollbar::-webkit-scrollbar {
-              width: 8px;
-              background: #c084fc; /* scrollbar track background color */
-            }
-            .custom-scrollbar::-webkit-scrollbar-thumb {
-              background: #a855f7;
-              border-radius: 8px;
-            }
-            .custom-scrollbar::-webkit-scrollbar-button {
-              display: none;
-            }
-            .dot-bounce {
-              display: inline-block;
-              width: 8px;
-              height: 8px;
-              background: #374151;
-              border-radius: 50%;
-              margin: 0 2px;
-              animation: bounce 1s infinite;
-            }
-            .animation-delay-200 {
-              animation-delay: 0.2s;
-            }
-            .animation-delay-400 {
-              animation-delay: 0.4s;
-            }
-            @keyframes bounce {
-              0%,
-              80%,
-              100% {
-                transform: scale(0.8);
-                opacity: 0.7;
-              }
-              40% {
-                transform: scale(1.2);
-                opacity: 1;
-              }
-            }
-          `}</style>
-        </div>
+      <div className="flex flex-col gap-4 justify-center items-center">
+        <input
+          type="text"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          placeholder="Your Name"
+          required
+          className="text-myPurple w-[50%] border border-myMidPurple py-1 px-2 rounded-xl focus:outline-none"
+        />
+        <textarea
+          placeholder="Job Description"
+          required
+          value={jobDescription}
+          onChange={(e) => setJobDescription(e.target.value)}
+          className="text-myPurple w-[50%] border border-myMidPurple py-1 px-2 rounded-xl focus:outline-none"
+          rows={4}
+        ></textarea>
 
-        {/* Input Field */}
-        <div className=" w-[60%] mx-auto border-2 border-[#a9adb5] px-4 py-2 custom-scrollbar">
-          <textarea
-            value={userPrompt}
-            onChange={(e) => setUserPrompt(e.target.value)}
-            placeholder={
-              credit < 3
-                ? "You have no credits left. Please upgrade."
-                : "Type your prompt here..."
-            }
-            className=" p-3 w-[100%]  text-black resize-none focus:outline-none bg-transparent"
-            rows={3}
-            disabled={credit < 3} // Disable if no credits
-          />
-          <button
-            className="border border-[#a9adb5]  text-gray-800 mt-2 px-4 py-2 rounded-xl flex items-center justify-center gap-1"
-            onClick={handleSendPrompt}
-          >
-            Send <IoSend />
-          </button>
-        </div>
+        <button
+          className="bg-myMidPurple hover:bg-myPurple text-white py-1 px-5 rounded-lg"
+          onClick={handleSendPrompt}
+          disabled={isTemplateLoading}
+        >
+          {isTemplateLoading ? "Generating..." : "Create"}
+        </button>
       </div>
 
       {/* Image Preview + Dropzone Uploader */}
 
       <div className="flex items-center gap-10">
-        {/* <Button
-        variant='secondary'
-        className='bg-myMidblue hover:bg-myMidblue/60'
-        onClick={handleGenerate}
-      >Create</Button> */}
-
         {/* Theme Selection Section */}
         {(selectedTemplate === 4 ||
           selectedTemplate === 1 ||
@@ -1109,157 +821,7 @@ const AiPromptPage = () => {
       )}
 
       {/* Download Button */}
-      {showTemplate && parsedData && (
-        // <div className="flex w-[70%] mx-auto justify-end mt-4 ">
-        //   {selectedTemplate === 1 && (
-        //     <PDFDownloadLink
-        //       document={<Template1PDF data={parsedData} color={color1} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 2 && (
-        //     <PDFDownloadLink
-        //       document={<Template2PDF data={parsedData} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 3 && (
-        //     <PDFDownloadLink
-        //       document={<Template3PDF data={parsedData} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 4 && (
-        //     <PDFDownloadLink
-        //       document={
-        //         <Template4PDF
-        //           data={parsedData}
-        //           imageUrl={
-        //             selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
-        //           }
-        //           imageBgColor={
-        //             selectedImageBgColor
-        //               ? tailwindColorMap[selectedImageBgColor]
-        //               : undefined
-        //           }
-        //           color={color4}
-        //         />
-        //       }
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 5 && (
-        //     <PDFDownloadLink
-        //       document={<Template5PDF data={parsedData} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 6 && (
-        //     <PDFDownloadLink
-        //       document={<Template6PDF data={parsedData} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 7 && (
-        //     <PDFDownloadLink
-        //       document={
-        //         <Template7PDF
-        //           data={parsedData}
-        //           imageUrl={
-        //             selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
-        //           }
-        //           imageBgColor={
-        //             selectedImageBgColor
-        //               ? tailwindColorMap[selectedImageBgColor]
-        //               : undefined
-        //           }
-        //           color={color7}
-        //         />
-        //       }
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 8 && (
-        //     <PDFDownloadLink
-        //       document={<Template8PDF data={parsedData} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 9 && (
-        //     <PDFDownloadLink
-        //       document={
-        //         <Template9PDF
-        //           data={parsedData}
-        //           imageUrl={
-        //             selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
-        //           }
-        //           imageBgColor={
-        //             selectedImageBgColor
-        //               ? tailwindColorMap[selectedImageBgColor]
-        //               : undefined
-        //           }
-        //         />
-        //       }
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 10 && (
-        //     <PDFDownloadLink
-        //       document={<Template10PDF data={parsedData} color={color10} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded"
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        // </div>
+      {showTemplate && resumeData && (
         <button
           onClick={handleDownloadPDF}
           disabled={credit < 5}
@@ -1305,7 +867,7 @@ const AiPromptPage = () => {
             </div>
           ) : (
             showTemplate &&
-            parsedData && (
+            resumeData && (
               <div>
                 <div className="mt-5">{renderSelectedTemplate()}</div>
               </div>
@@ -1496,7 +1058,7 @@ const AiPromptPage = () => {
                     <button
                       className="bg-myDarkBlue text-white px-4 py-2 rounded"
                       onClick={() => {
-                        setParsedData((prev: any) => ({
+                        setResumeData((prev: any) => ({
                           ...prev,
                           [currentExperienceField as string]: experienceData,
                         }));
@@ -1599,7 +1161,7 @@ const AiPromptPage = () => {
                     <button
                       className="bg-myDarkBlue text-white px-4 py-2 rounded"
                       onClick={() => {
-                        setParsedData((prev: any) => ({
+                        setResumeData((prev: any) => ({
                           ...prev,
                           [currentProjectField as string]: projectData,
                         }));
@@ -1693,7 +1255,7 @@ const AiPromptPage = () => {
                     <button
                       className="bg-myDarkBlue text-white px-4 py-2 rounded"
                       onClick={() => {
-                        setParsedData((prev: any) => ({
+                        setResumeData((prev: any) => ({
                           ...prev,
                           [currentEducationField as string]: educationData,
                         }));
@@ -1709,7 +1271,7 @@ const AiPromptPage = () => {
                 </div>
               )}
               {/* Phone Number Editor */}
-              {/* Phone Number Editor */}
+              {/* Email Editor */}
               {editType === "email" && (
                 <div className="p-6">
                   <h2 className="text-lg font-bold mb-4 text-black">
@@ -1735,7 +1297,7 @@ const AiPromptPage = () => {
                       className="px-4 py-2 bg-blue-600 text-white rounded"
                       onClick={() => {
                         if (emailField && selectedEmail !== null) {
-                          setParsedData((prev: any) => ({
+                          setResumeData((prev: any) => ({
                             ...prev,
                             [emailField]: selectedEmail,
                           }));
@@ -1775,7 +1337,7 @@ const AiPromptPage = () => {
                       className="px-4 py-2 bg-blue-600 text-white rounded"
                       onClick={() => {
                         if (selectedField && selectedNumber !== null) {
-                          setParsedData((prev: any) => ({
+                          setResumeData((prev: any) => ({
                             ...prev,
                             [selectedField]: selectedNumber,
                           }));
