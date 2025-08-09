@@ -875,6 +875,24 @@ const AiPromptPage = () => {
           )}
         </div>
 
+        {showTemplate && resumeData && (
+          <div className="mt-5">
+            {resumeData.mockInterview.map((item: any, index: number) => (
+              <div key={index} className="bg-gray-100 p-4 rounded-md mb-4">
+                <h3 className="text-lg font-semibold text-myPurple">
+                  {`Q${index}: ${item.question}`}
+                </h3>
+                <p className="text-gray-700">
+                  <span className="text-lg font-semibold text-myPurple">
+                    Ans:{" "}
+                  </span>
+                  {item.answer}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
         {showEditor && (
           <div
             className={`fixed top-0 right-0 h-full w-[400px] bg-myWhite shadow-lg z-50 transition-transform duration-500 ease-in-out transform ${

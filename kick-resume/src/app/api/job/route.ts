@@ -9,7 +9,9 @@ export async function POST(request: NextRequest) {
 
     const model = genAi.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-    const fullPrompt = `Generate a professional resume based on the following user information.
+    const fullPrompt = `
+    
+    Generate a professional resume based on the following user information.
 
     User Name: {${userName}}
 
@@ -24,7 +26,16 @@ export async function POST(request: NextRequest) {
     6. Certifications (optional)
     7. Languages (optional)
 
-    Use a formal, professional tone. Tailor the resume content to match the job description provided. Output the result in a structured JSON format with this structure:
+    Use a formal, professional tone. Tailor the resume content to match the job description provided.
+    
+ Generate **10–20 realistic technical & behavioral interview questions** tailored to the job description.
+- Each question should have:
+  - \`question\` (string)
+  - \`answer\` (string)
+    
+    
+    
+    Output the result in a structured JSON format with this structure:
 
     {
       "name": "{${userName}}",
@@ -53,42 +64,16 @@ export async function POST(request: NextRequest) {
         }
       ],
       "certifications": ["..."],
-      "languages": ["..."]
+      "languages": ["..."],
+      "mockInterview": [
+        {
+            "question": "...",
+            "answer": "..."
+        }
+        ]
     }
     `;
 
-    //     const fullPrompt = `
-    // You are an expert resume writer. Based on the following user input, generate a professional and ATS-friendly resume tailored to the given job description.
-
-    // User Name: ${userName}
-    // Job Description: ${jobDescription}
-
-    // Generate the resume with the following sections:
-    // 1. **Summary**
-    // 2. **Skills**
-    // 3. **Experience**
-    // 4. **Education**
-    // 5. **Projects**
-    // 6. **Certifications**
-    // 7. **Languages**
-
-    // 🎯 Use a formal and professional tone.
-    // 🧠 Ensure the resume is optimized to match keywords from the job description.
-    // 📦 Return the resume strictly in the following structured **JSON format**:
-
-    // {
-    //   "name": "${userName}",
-    //   "summary": "...",
-    //   "skills": ["..."],
-    //   "experience": [...],
-    //   "education": [...],
-    //   "projects": [...],
-    //   "certifications": ["..."],
-    //   "languages": ["..."]
-    // }
-
-    // Only return valid JSON without extra commentary.
-    // `;
     const result = await model.generateContent(fullPrompt);
 
     const response = await result.response;

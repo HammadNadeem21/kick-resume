@@ -48,5 +48,6 @@ export const config = {
     "/ai-resume-builder/:path*",
     "/select-template/:path*",
     "/job/:path*",
+    "/resume/:path*",
   ],
 };

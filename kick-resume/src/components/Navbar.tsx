@@ -74,7 +74,7 @@ const Navbar = () => {
             </Link>
 
             {/* Navbar */}
-            <nav className="md:flex items-center justify-center gap-8  font-semibold  hidden">
+            <nav className="lg:flex items-center justify-center gap-8  font-semibold  hidden">
               {/* <NavigationMenuDemo /> */}
               {/* <div className="flex items-center justify-center gap-8"> */}
               <Link
@@ -96,6 +96,13 @@ const Navbar = () => {
                 className="text-lg text-gray-600 hover:text-myPurple"
               >
                 Job
+              </Link>
+
+              <Link
+                href="/resume"
+                className="text-lg text-gray-600 hover:text-myPurple"
+              >
+                Resume
               </Link>
               {/* </div> */}
             </nav>

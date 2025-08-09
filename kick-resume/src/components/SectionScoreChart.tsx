@@ -1,4 +1,3 @@
-
 // 'use client';
 // import React from 'react';
 // import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
@@ -51,27 +50,37 @@
 
 // export default SectionScoreChart;
 
+"use client";
+import React from "react";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { motion } from "framer-motion";
 
-'use client';
-import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import { motion } from 'framer-motion';
-
-const SectionScoreChart = ({ score }: { score: number | null }) => {
-  const safeScore = typeof score === 'number' && !isNaN(score) && score >= 0 && score <= 100 ? score : 0;
+const SectionScoreChart = ({
+  score,
+  textColor,
+  scoreText,
+}: {
+  score: number | null;
+  textColor: string;
+  scoreText?: string;
+}) => {
+  const safeScore =
+    typeof score === "number" && !isNaN(score) && score >= 0 && score <= 100
+      ? score
+      : 0;
 
   // Dynamic color based on score range
   const getScoreColor = (score: number) => {
-    if (score < 50) return '#ef4444'; // Red
-    if (score < 70) return '#facc15'; // Yellow
-    return '#22c55e';                // Green
+    if (score < 50) return "#ef4444"; // Red
+    if (score < 70) return "#facc15"; // Yellow
+    return "#22c55e"; // Green
   };
 
-  const COLORS = [getScoreColor(safeScore), '#E5E7EB']; // Score color, then background
+  const COLORS = [getScoreColor(safeScore), "#E5E7EB"]; // Score color, then background
 
   const data = [
-    { name: 'Score', value: safeScore },
-    { name: 'Remaining', value: 100 - safeScore },
+    { name: "Score", value: safeScore },
+    { name: "Remaining", value: 100 - safeScore },
   ];
 
   return (
@@ -102,8 +111,18 @@ const SectionScoreChart = ({ score }: { score: number | null }) => {
         </PieChart>
       </ResponsiveContainer>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="sm:text-sm text-xs font-bold text-white">{safeScore} / 100</span>
-        <span className="sm:text-[10px] text-[8px] text-white font-bold">ATS Score</span>
+        <span
+          className="sm:text-[15px] text-[8px] font-bold"
+          style={{ color: textColor }}
+        >
+          {safeScore} / 100
+        </span>
+        <span
+          className="sm:text-[10px] text-[8px]  font-bold"
+          style={{ color: textColor }}
+        >
+          {scoreText}
+        </span>
       </div>
     </motion.div>
   );

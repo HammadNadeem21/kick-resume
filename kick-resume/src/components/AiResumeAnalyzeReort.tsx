@@ -257,7 +257,11 @@ const AiResumeAnalyzeReort = () => {
                           {keywordsScore}/100
                         </span>
                       </div> */}
-                      <SectionScoreChart score={keywordsScore} />
+                      <SectionScoreChart
+                        score={keywordsScore}
+                        textColor="#ffffff"
+                        scoreText="ATS Score"
+                      />
                     </div>
 
                     <div>
@@ -328,7 +332,11 @@ const AiResumeAnalyzeReort = () => {
                         </span>
                       </div> */}
 
-                      <SectionScoreChart score={formattingScore} />
+                      <SectionScoreChart
+                        score={formattingScore}
+                        textColor="#ffffff"
+                        scoreText="ATS Score"
+                      />
                     </div>
 
                     <div className="">
@@ -401,7 +409,11 @@ const AiResumeAnalyzeReort = () => {
                         </span>
                       </div> */}
 
-                      <SectionScoreChart score={educationScore} />
+                      <SectionScoreChart
+                        score={educationScore}
+                        textColor="#ffffff"
+                        scoreText="ATS Score"
+                      />
                     </div>
 
                     <div className="">
@@ -473,7 +485,11 @@ const AiResumeAnalyzeReort = () => {
                           {experienceScore}/100
                         </span>
                       </div> */}
-                      <SectionScoreChart score={experienceScore} />
+                      <SectionScoreChart
+                        score={experienceScore}
+                        textColor="#ffffff"
+                        scoreText="ATS Score"
+                      />
                     </div>
 
                     <div className="">
