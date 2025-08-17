@@ -22,3 +22,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .animate-fade-in-up {
   animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+.bg-gradient-hero {
+  background: linear-gradient(to right, #7e22ce, #8bcadf, #eab308);
+}

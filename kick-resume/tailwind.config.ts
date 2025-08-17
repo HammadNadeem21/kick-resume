@@ -18,7 +18,9 @@ const config: Config = {
         myLightestBlue: "#bcebfa",
         myPurple: "#7e22ce",
         myLightPurple: "#a78bfa",
+        myLightPurple2: "#cfb0eb",
         myMidPurple: "#a855f7",
+        mySkyBlue: "#55CEF6",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

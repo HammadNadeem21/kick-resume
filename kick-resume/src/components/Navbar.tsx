@@ -10,7 +10,7 @@ import { useCredits } from "@/context/CreditsContext";
 
 import { useState } from "react";
 // import { signIn } from 'next-auth/react';
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { SignUp } from "./SignUp";
 import { LogIn } from "lucide-react";
 import { Login } from "./LogIn";
@@ -56,6 +56,7 @@ const Navbar = () => {
 
   const { data: session } = useSession();
   const { credit } = useCredits();
+  const pathname = usePathname();
 
   const handleSignUp = () => {
     signIn();
@@ -79,28 +80,36 @@ const Navbar = () => {
               {/* <div className="flex items-center justify-center gap-8"> */}
               <Link
                 href="/"
-                className="text-lg text-gray-600 hover:text-myPurple"
+                className={`text-lg text-gray-600 hover:text-myPurple ${
+                  pathname === "/" ? "text-myPurple" : ""
+                }`}
               >
                 Ai Resume Analyzer
               </Link>
 
               <Link
                 href="/ai-resume-builder"
-                className="text-lg text-gray-600 hover:text-myPurple"
+                className={`text-lg text-gray-600 hover:text-myPurple ${
+                  pathname === "/ai-resume-builder" ? "text-myPurple" : ""
+                }`}
               >
                 Ai Resume Builder
               </Link>
 
               <Link
                 href="/job"
-                className="text-lg text-gray-600 hover:text-myPurple"
+                className={`text-lg text-gray-600 hover:text-myPurple ${
+                  pathname === "/job" ? "text-myPurple" : ""
+                }`}
               >
                 Job
               </Link>
 
               <Link
                 href="/resume"
-                className="text-lg text-gray-600 hover:text-myPurple"
+                className={`text-lg text-gray-600 hover:text-myPurple ${
+                  pathname === "/resume" ? "text-myPurple" : ""
+                }`}
               >
                 Resume
               </Link>

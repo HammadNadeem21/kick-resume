@@ -3,11 +3,12 @@
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { FaFileAlt } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { GoogleGenAI } from "@google/genai";
-import ATSCircleChart from "./ATSCircleChart";
-import AccordionSection from "./AccordianSection";
+// import ATSCircleChart from "./ATSCircleChart";
+// import AccordionSection from "./AccordianSection";
 import { useResumeContext } from "@/context/ReaumeContext";
 
 const DropzoneUploader = () => {
@@ -316,12 +317,14 @@ ${pdfText}`,
           isDragActive ? "bg-blue-100 border-myMidPurple" : "border-myPurple"
         }`}
       >
-        <IoCloudUploadOutline size={40} className="text-myPurple" />
+        <div className="py-3 px-3 flex items-center justify-center bg-myLightPurple2 rounded-lg">
+          <FaFileAlt size={25} className="text-myPurple" />
+        </div>
         <input {...getInputProps()} />
         <p className="text-myPurple sm:text-lg text-sm">
           {isDragActive
             ? "Drop the PDF here..."
-            : "Drag & drop PDF file here, or click to select"}
+            : "Upload Your Resume (PDF only)"}
         </p>
         {fileName && <p className="text-sm text-green-600">{fileName}</p>}
         {error && <p className="text-sm text-red-500">❌ {error}</p>}
