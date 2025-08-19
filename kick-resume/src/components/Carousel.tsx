@@ -83,7 +83,7 @@ export function CarouselSize({
               onClick={() => getTemplateId(template.id)}
               className="relative cursor-pointer mb-2 rounded-md transition-all duration-300 "
             >
-              <div className="h-[300px] w-full shadow-md shadow-purple-400">
+              <div className="h-[300px] w-full shadow-md shadow-mySkyBlue ">
                 <Image
                   src={template.image}
                   alt={template.name}

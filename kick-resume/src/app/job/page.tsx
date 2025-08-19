@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-
+import { Briefcase } from "lucide-react";
 import { pdf } from "@react-pdf/renderer";
 
 import Template1 from "@/components/Template1";
@@ -603,12 +603,36 @@ const AiPromptPage = () => {
       className="px-[30px] py-[60px] mx-auto min-h-screen"
       // style={{ background: "linear-gradient(to right, #f3f4f6, #e5e7eb)" }}
     >
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h1 className="text-5xl lg:text-6xl font-black mb-6 tracking-tight">
+            <span
+              className="bg-gradient-hero bg-clip-text text-transparent"
+              style={{
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                color: "transparent",
+              }}
+            >
+              Job-Tailored
+            </span>
+            <br />
+            <span className="text-black">Resume Generator</span>
+          </h1>
+          <p className="text-xl lg:text-2xl text-gray-500 max-w-3xl mx-auto leading-relaxed">
+            Paste any job description and get a perfectly tailored resume that
+            matches the requirements.
+          </p>
+        </div>
+      </section>
+
       <div className="mb-8">
-        <h1
-          className={`text-3xl ${robot700.className} mb-4 text-purple-500 font-bold`}
+        {/* <h1
+          className={`text-3xl ${robot700.className} mb-4 text-mySkyBlue font-bold`}
         >
           Build Your Resume Chat-Wise
-        </h1>
+        </h1> */}
 
         {/* Select Template */}
         <div className="flex flex-wrap justify-center gap-6 mb-10">
@@ -657,7 +681,7 @@ const AiPromptPage = () => {
 
             <div className=" flex items-center justify-center">
               <Button
-                className="bg-myMidPurple hover:bg-myPurple text-white mx-auto mt-4 mb-4"
+                className="bg-mySkyBlue/50 hover:bg-mySkyBlue text-white mx-auto mt-4 mb-4"
                 onClick={async () => {
                   if (!imageFile) return alert("Please upload an image!");
 
@@ -690,10 +714,10 @@ const AiPromptPage = () => {
                     setSelectedProcessedImage(previewUrl);
                     setSelectedImageBgColor(undefined); // Reset background color on click
                   }}
-                  className={`w-[170px] h-[170px] rounded-full flex items-center justify-center overflow-hidden cursor-pointer border-4 transition-all duration-300 ${
+                  className={`w-[170px] h-[170px] rounded-full flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${
                     selectedProcessedImage === previewUrl &&
                     !selectedImageBgColor
-                      ? "border-myPurple"
+                      ? "border-2 border-mySkyBlue ring-1 ring-mySkyBlue"
                       : "border-none"
                   }`}
                 >
@@ -722,7 +746,7 @@ const AiPromptPage = () => {
                     className={`w-[170px] h-[170px] rounded-full ${bg} flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${
                       selectedProcessedImage === processedUrl &&
                       selectedImageBgColor === bg
-                        ? "ring-4 ring-myPurple"
+                        ? "border-2 border-mySkyBlue ring-1 ring-mySkyBlue"
                         : ""
                     }`}
                   >
@@ -741,100 +765,121 @@ const AiPromptPage = () => {
         )}
       </div>
 
-      <h1 className="text-myPurple font-bold text-lg text-center mt-5 mb-5">
-        Please fill the details
-      </h1>
+      <div className="py-8 px-4 grid lg:grid-cols-12 grid-cols-1 gap-[40px]">
+        <div className="col-span-4">
+          <div className="text-center lg:text-left">
+            <h2 className="text-3xl font-bold mb-4 text-mySkyBlue">
+              Job Description
+            </h2>
+            <p className="text-lg text-gray-500">
+              Paste the complete job posting for optimal results
+            </p>
+          </div>
+          {/* <h1 className="text-mySkyBlue font-bold text-lg text-center mt-5 mb-5">
+            Please fill the details
+          </h1> */}
 
-      <div className="flex flex-col gap-4 justify-center items-center">
-        <input
-          type="text"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          placeholder="Your Name"
-          required
-          className="text-myPurple w-[50%] border border-myMidPurple py-1 px-2 rounded-xl focus:outline-none"
-        />
-        <textarea
-          placeholder="Job Description"
-          required
-          value={jobDescription}
-          onChange={(e) => setJobDescription(e.target.value)}
-          className="text-myPurple w-[50%] border border-myMidPurple py-1 px-2 rounded-xl focus:outline-none"
-          rows={4}
-        ></textarea>
+          <div className="flex flex-col gap-4 justify-center items-center mt-2">
+            <input
+              type="text"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              placeholder="Your Name"
+              required
+              className="text-mySkyBlue w-[100%] border border-mySkyBlue py-1 px-2 rounded-xl focus:outline-none"
+            />
+            <textarea
+              placeholder="Job Description"
+              required
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
+              className="text-mySkyBlue w-[100%] h-[220px] border border-mySkyBlue py-1 px-2 rounded-xl focus:outline-none"
+              rows={4}
+            ></textarea>
 
-        <button
-          className="bg-myMidPurple hover:bg-myPurple text-white py-1 px-5 rounded-lg"
-          onClick={handleSendPrompt}
-          disabled={isTemplateLoading}
-        >
-          {isTemplateLoading ? "Generating..." : "Create"}
-        </button>
-      </div>
-
-      {/* Image Preview + Dropzone Uploader */}
-
-      <div className="flex items-center gap-10">
-        {/* Theme Selection Section */}
-        {(selectedTemplate === 4 ||
-          selectedTemplate === 1 ||
-          selectedTemplate === 7 ||
-          selectedTemplate === 10) && (
-          <Button
-            className="bg-myMidPurple hover:bg-myPurple text-white"
-            onClick={() => setShowColorPicker((prev) => !prev)}
-          >
-            Choose Color
-          </Button>
-        )}
-      </div>
-
-      {showColorPicker && (
-        <div className="mt-10">
-          {/* <ColorPicker/> */}
-          <RgbColorPicker
-            color={
-              selectedTemplate === 1
-                ? color1
-                : selectedTemplate === 4
-                ? color4
-                : selectedTemplate === 7
-                ? color7
-                : selectedTemplate === 10
-                ? color10
-                : color1 // fallback
-            }
-            onChange={
-              selectedTemplate === 1
-                ? setColor1
-                : selectedTemplate === 4
-                ? setColor4
-                : selectedTemplate === 7
-                ? setColor7
-                : selectedTemplate === 10
-                ? setColor10
-                : setColor1 // fallback
-            }
-          />
-          {/* <div className="value">{JSON.stringify(color)}</div> */}
+            <button
+              className="bg-mySkyBlue/50 hover:bg-mySkyBlue w-[100%] text-white font-bold py-1 px-5 rounded-lg"
+              onClick={handleSendPrompt}
+              disabled={isTemplateLoading}
+            >
+              {isTemplateLoading ? "Generating..." : "Create"}
+            </button>
+          </div>
         </div>
-      )}
 
-      {/* Download Button */}
-      {showTemplate && resumeData && (
-        <button
-          onClick={handleDownloadPDF}
-          disabled={credit < 5}
-          className="bg-myMidPurple mt-5 hover:bg-myPurple text-white px-4 py-2 rounded disabled:opacity-50"
-        >
-          Download PDF
-        </button>
-      )}
+        <div className="col-span-8">
+          <div className="text-center lg:text-left">
+            <h2 className="text-3xl font-bold mb-4 text-mySkyBlue">
+              Tailored Resume
+            </h2>
+            <p className="text-lg text-gray-500">
+              AI-optimized to match job requirements
+            </p>
+          </div>
+          <div className="flex items-center gap-10">
+            {/* Theme Selection Section */}
+            {(selectedTemplate === 4 ||
+              selectedTemplate === 1 ||
+              selectedTemplate === 7 ||
+              selectedTemplate === 10) && (
+              <Button
+                className="bg-mySkyBlue/50 hover:bg-mySkyBlue w-[100%] font-bold text-white"
+                onClick={() => setShowColorPicker((prev) => !prev)}
+              >
+                Choose Color
+              </Button>
+            )}
+          </div>
+          {showColorPicker && (
+            <div className="mt-10">
+              {/* <ColorPicker/> */}
+              <RgbColorPicker
+                color={
+                  selectedTemplate === 1
+                    ? color1
+                    : selectedTemplate === 4
+                    ? color4
+                    : selectedTemplate === 7
+                    ? color7
+                    : selectedTemplate === 10
+                    ? color10
+                    : color1 // fallback
+                }
+                onChange={
+                  selectedTemplate === 1
+                    ? setColor1
+                    : selectedTemplate === 4
+                    ? setColor4
+                    : selectedTemplate === 7
+                    ? setColor7
+                    : selectedTemplate === 10
+                    ? setColor10
+                    : setColor1 // fallback
+                }
+              />
+              {/* <div className="value">{JSON.stringify(color)}</div> */}
+            </div>
+          )}
 
-      <div className="grid grid-cols-1">
-        <div>
-          {isTemplateLoading && !hasRenderedTemplate ? (
-            <div className="flex flex-col gap-1 justify-center items-center h-64">
+          {showTemplate && resumeData && (
+            <button
+              onClick={handleDownloadPDF}
+              disabled={credit < 5}
+              className="bg-mySkyBlue/50 mt-5 hover:bg-mySkyBlue w-[100%] text-white px-5 py-1 rounded-lg disabled:opacity-50"
+            >
+              Download PDF
+            </button>
+          )}
+
+          {!isTemplateLoading && !hasRenderedTemplate ? (
+            <div className="w-[100%] bg-gray-200 mt-2 h-[350px] flex flex-col items-center justify-center rounded-lg">
+              <Briefcase size={40} className="text-gray-500" />
+              <p className="text-lg text-gray-500">
+                Paste a job description to generate a tailored resume
+              </p>
+            </div>
+          ) : isTemplateLoading && !hasRenderedTemplate ? (
+            <div className="flex flex-col gap-1 justify-center items-center h-[350px]">
               <svg
                 className="animate-spin"
                 width="48"
@@ -856,14 +901,14 @@ const AiPromptPage = () => {
                   cy="25"
                   r="20"
                   fill="none"
-                  stroke="#9333ea"
+                  stroke="#55CEF6"
                   strokeWidth="8"
                   strokeDasharray="90"
                   strokeDashoffset="30"
                   strokeLinecap="round"
                 />
               </svg>
-              <p className="text-sm text-myPurple">Generating Resume...</p>
+              <p className="text-sm text-mySkyBlue">Generating Resume...</p>
             </div>
           ) : (
             showTemplate &&
@@ -874,515 +919,514 @@ const AiPromptPage = () => {
             )
           )}
         </div>
+      </div>
 
-        {showTemplate && resumeData && (
-          <div className="mt-5">
-            {resumeData.mockInterview.map((item: any, index: number) => (
-              <div key={index} className="bg-gray-100 p-4 rounded-md mb-4">
-                <h3 className="text-lg font-semibold text-myPurple">
-                  {`Q${index}: ${item.question}`}
-                </h3>
-                <p className="text-gray-700">
-                  <span className="text-lg font-semibold text-myPurple">
-                    Ans:{" "}
-                  </span>
-                  {item.answer}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
+      {/* Mock Interview Q & A */}
+      {showTemplate && resumeData && (
+        <div className="mt-5">
+          {resumeData.mockInterview.map((item: any, index: number) => (
+            <div key={index} className="bg-gray-100 p-4 rounded-md mb-4">
+              <h3 className="text-lg font-semibold text-myPurple">
+                {`Q${index}: ${item.question}`}
+              </h3>
+              <p className="text-gray-700">
+                <span className="text-lg font-semibold text-myPurple">
+                  Ans:{" "}
+                </span>
+                {item.answer}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
 
-        {showEditor && (
-          <div
-            className={`fixed top-0 right-0 h-full w-[400px] bg-myWhite shadow-lg z-50 transition-transform duration-500 ease-in-out transform ${
-              showEditor ? "translate-x-0" : "translate-x-full"
-            }`}
-          >
-            <div className="p-6">
-              <h2 className="text-lg font-bold mb-4 text-black">
-                {/* {editType === "summary" ? "Edit Summary" : "Edit Skills"} */}
-                Editor
-              </h2>
+      {showEditor && (
+        <div
+          className={`fixed top-0 right-0 h-full w-[400px] bg-myWhite shadow-lg z-50 transition-transform duration-500 ease-in-out transform ${
+            showEditor ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="p-6">
+            <h2 className="text-lg font-bold mb-4 text-black">
+              {/* {editType === "summary" ? "Edit Summary" : "Edit Skills"} */}
+              Editor
+            </h2>
 
-              {/* Summary Textarea */}
-              {editType === "string" && (
-                <>
-                  <textarea
-                    value={inputData as string}
-                    onChange={handleStringFieldChange}
-                    className="w-full h-[100px] resize-none border border-primaryColor rounded-md p-2 text-black bg-transparent"
-                  />
-                </>
-              )}
+            {/* Summary Textarea */}
+            {editType === "string" && (
+              <>
+                <textarea
+                  value={inputData as string}
+                  onChange={handleStringFieldChange}
+                  className="w-full h-[100px] resize-none border border-primaryColor rounded-md p-2 text-black bg-transparent"
+                />
+              </>
+            )}
 
-              {/* Skills Badge UI */}
-              {editType === "array" && (
-                <>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {(inputData as string[]).map((item, i) => (
-                      <span
-                        key={i}
-                        className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full flex items-center"
+            {/* Skills Badge UI */}
+            {editType === "array" && (
+              <>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {(inputData as string[]).map((item, i) => (
+                    <span
+                      key={i}
+                      className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full flex items-center"
+                    >
+                      {item}
+                      <button
+                        onClick={() => handleRemoveItem(i)}
+                        className="ml-2 text-gray-500 font-bold"
                       >
-                        {item}
-                        <button
-                          onClick={() => handleRemoveItem(i)}
-                          className="ml-2 text-gray-500 font-bold"
-                        >
-                          ×
-                        </button>
-                      </span>
-                    ))}
-                  </div>
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
 
-                  <div className="flex gap-2">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={newItem}
+                    onChange={(e) => setNewItem(e.target.value)}
+                    placeholder="Add new"
+                    className="flex-1 p-2 border border-primaryColor rounded text-black"
+                  />
+                  <Button
+                    onClick={handleAddItem}
+                    className="bg-myDarkBlue text-white hover:bg-myDarkBlue"
+                  >
+                    Add
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {/* Experience */}
+            {editType === "experience" && (
+              <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
+                <h2 className="text-lg font-bold mb-4 text-black">
+                  Edit Experience
+                </h2>
+
+                {experienceData.map((exp, index) => (
+                  <div
+                    key={index}
+                    className="mb-6 border p-3 rounded-md bg-gray-100"
+                  >
                     <input
                       type="text"
-                      value={newItem}
-                      onChange={(e) => setNewItem(e.target.value)}
-                      placeholder="Add new"
-                      className="flex-1 p-2 border border-primaryColor rounded text-black"
+                      value={exp.title}
+                      onChange={(e) => {
+                        const updated = [...experienceData];
+                        updated[index].title = e.target.value;
+                        setExperienceData(updated);
+                      }}
+                      placeholder="Title"
+                      className="w-full p-2 mb-2 border text-black"
                     />
+                    <textarea
+                      value={exp.description}
+                      onChange={(e) => {
+                        const updated = [...experienceData];
+                        updated[index].description = e.target.value;
+                        setExperienceData(updated);
+                      }}
+                      placeholder="Description"
+                      className="w-full p-2 mb-2 border text-black"
+                    />
+                    <div className="grid grid-cols-2 gap-2 mb-2">
+                      <input
+                        type="text"
+                        value={exp.startDate}
+                        onChange={(e) => {
+                          const updated = [...experienceData];
+                          updated[index].startDate = e.target.value;
+                          setExperienceData(updated);
+                        }}
+                        placeholder="Start Date"
+                        className=" p-2 border text-black"
+                      />
+                      <input
+                        type="text"
+                        value={
+                          exp.endDate === "Currently working" ? "" : exp.endDate
+                        }
+                        onChange={(e) => {
+                          const updated = [...experienceData];
+                          updated[index].endDate = e.target.value;
+                          setExperienceData(updated);
+                        }}
+                        placeholder="End Date"
+                        className="p-2 border text-black"
+                        disabled={exp.endDate === "Currently working"}
+                      />
+                      {/* current employer */}
+                      <div className="flex items-center gap-2">
+                        <label
+                          htmlFor={`currentEmployer-${index}`}
+                          className="text-black"
+                        >
+                          Current Employer
+                        </label>
+                        <input
+                          type="checkbox"
+                          id={`currentEmployer-${index}`}
+                          checked={exp.endDate === "Currently working"}
+                          onChange={(e) => {
+                            const updated = [...experienceData];
+                            if (e.target.checked) {
+                              updated[index].endDate = "Currently working";
+                            } else {
+                              updated[index].endDate = "";
+                            }
+                            setExperienceData(updated);
+                          }}
+                        />
+                      </div>
+                    </div>
+
                     <Button
-                      onClick={handleAddItem}
-                      className="bg-myDarkBlue text-white hover:bg-myDarkBlue"
+                      onClick={() => {
+                        const updated = [...experienceData];
+                        updated.splice(index, 1);
+                        setExperienceData(updated);
+                      }}
+                      className="bg-red-600 text-white"
                     >
-                      Add
+                      Remove
                     </Button>
                   </div>
-                </>
-              )}
+                ))}
 
-              {/* Experience */}
-              {editType === "experience" && (
-                <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                  <h2 className="text-lg font-bold mb-4 text-black">
-                    Edit Experience
-                  </h2>
-
-                  {experienceData.map((exp, index) => (
-                    <div
-                      key={index}
-                      className="mb-6 border p-3 rounded-md bg-gray-100"
-                    >
-                      <input
-                        type="text"
-                        value={exp.title}
-                        onChange={(e) => {
-                          const updated = [...experienceData];
-                          updated[index].title = e.target.value;
-                          setExperienceData(updated);
-                        }}
-                        placeholder="Title"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <textarea
-                        value={exp.description}
-                        onChange={(e) => {
-                          const updated = [...experienceData];
-                          updated[index].description = e.target.value;
-                          setExperienceData(updated);
-                        }}
-                        placeholder="Description"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <div className="grid grid-cols-2 gap-2 mb-2">
-                        <input
-                          type="text"
-                          value={exp.startDate}
-                          onChange={(e) => {
-                            const updated = [...experienceData];
-                            updated[index].startDate = e.target.value;
-                            setExperienceData(updated);
-                          }}
-                          placeholder="Start Date"
-                          className=" p-2 border text-black"
-                        />
-                        <input
-                          type="text"
-                          value={
-                            exp.endDate === "Currently working"
-                              ? ""
-                              : exp.endDate
-                          }
-                          onChange={(e) => {
-                            const updated = [...experienceData];
-                            updated[index].endDate = e.target.value;
-                            setExperienceData(updated);
-                          }}
-                          placeholder="End Date"
-                          className="p-2 border text-black"
-                          disabled={exp.endDate === "Currently working"}
-                        />
-                        {/* current employer */}
-                        <div className="flex items-center gap-2">
-                          <label
-                            htmlFor={`currentEmployer-${index}`}
-                            className="text-black"
-                          >
-                            Current Employer
-                          </label>
-                          <input
-                            type="checkbox"
-                            id={`currentEmployer-${index}`}
-                            checked={exp.endDate === "Currently working"}
-                            onChange={(e) => {
-                              const updated = [...experienceData];
-                              if (e.target.checked) {
-                                updated[index].endDate = "Currently working";
-                              } else {
-                                updated[index].endDate = "";
-                              }
-                              setExperienceData(updated);
-                            }}
-                          />
-                        </div>
-                      </div>
-
-                      <Button
-                        onClick={() => {
-                          const updated = [...experienceData];
-                          updated.splice(index, 1);
-                          setExperienceData(updated);
-                        }}
-                        className="bg-red-600 text-white"
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  ))}
-
-                  {/* Add new experience */}
-                  <Button
-                    onClick={() => {
-                      const updated = [
-                        ...experienceData,
-                        {
-                          title: "",
-                          description: "",
-                          startDate: "",
-                          endDate: "",
-                        },
-                      ];
-                      setExperienceData(updated);
-                    }}
-                    className="bg-green-600 text-white mt-4"
-                  >
-                    + Add Experience
-                  </Button>
-
-                  <div className="flex justify-end mt-4">
-                    <button
-                      className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                      onClick={() => {
-                        setResumeData((prev: any) => ({
-                          ...prev,
-                          [currentExperienceField as string]: experienceData,
-                        }));
-                        setShowEditor(false);
-                      }}
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Project */}
-              {editType === "projects" && (
-                <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                  <h2 className="text-lg font-bold mb-4 text-black">
-                    Edit Projects
-                  </h2>
-
-                  {projectData.map((proj, index) => (
-                    <div
-                      key={index}
-                      className="mb-6 border p-3 rounded-md bg-gray-100"
-                    >
-                      <input
-                        type="text"
-                        value={proj.name}
-                        onChange={(e) => {
-                          const updated = [...projectData];
-                          updated[index].name = e.target.value;
-                          setProjectData(updated);
-                        }}
-                        placeholder="Project Name"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <textarea
-                        value={proj.description}
-                        onChange={(e) => {
-                          const updated = [...projectData];
-                          updated[index].description = e.target.value;
-                          setProjectData(updated);
-                        }}
-                        placeholder="Description"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <input
-                        type="text"
-                        value={proj.github}
-                        onChange={(e) => {
-                          const updated = [...projectData];
-                          updated[index].github = e.target.value;
-                          setProjectData(updated);
-                        }}
-                        placeholder="GitHub Link"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <input
-                        type="text"
-                        value={proj.live}
-                        onChange={(e) => {
-                          const updated = [...projectData];
-                          updated[index].live = e.target.value;
-                          setProjectData(updated);
-                        }}
-                        placeholder="Live Link"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <Button
-                        onClick={() => {
-                          const updated = [...projectData];
-                          updated.splice(index, 1);
-                          setProjectData(updated);
-                        }}
-                        className="bg-red-600 text-white"
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  ))}
-
-                  <Button
-                    onClick={() => {
-                      const updated = [
-                        ...projectData,
-                        {
-                          name: "",
-                          description: "",
-                          github: "",
-                          live: "",
-                        },
-                      ];
-                      setProjectData(updated);
-                    }}
-                    className="bg-green-600 text-white mt-4"
-                  >
-                    + Add Project
-                  </Button>
-
-                  <div className="flex justify-end mt-4">
-                    <button
-                      className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                      onClick={() => {
-                        setResumeData((prev: any) => ({
-                          ...prev,
-                          [currentProjectField as string]: projectData,
-                        }));
-                        setShowEditor(false);
-                      }}
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Education */}
-              {editType === "education" && (
-                <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                  <h2 className="text-lg font-bold mb-4 text-black">
-                    Edit Education
-                  </h2>
-
-                  {educationData.map((edu, index) => (
-                    <div
-                      key={index}
-                      className="mb-6 border p-3 rounded-md bg-gray-100"
-                    >
-                      <input
-                        type="text"
-                        value={edu.degree}
-                        onChange={(e) => {
-                          const updated = [...educationData];
-                          updated[index].degree = e.target.value;
-                          setEducationData(updated);
-                        }}
-                        placeholder="Degree"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          value={edu.startDate}
-                          onChange={(e) => {
-                            const updated = [...educationData];
-                            updated[index].startDate = e.target.value;
-                            setEducationData(updated);
-                          }}
-                          placeholder="Start Date"
-                          className="flex-1 p-2 mb-2 border text-black"
-                        />
-                        <input
-                          type="text"
-                          value={edu.endDate}
-                          onChange={(e) => {
-                            const updated = [...educationData];
-                            updated[index].endDate = e.target.value;
-                            setEducationData(updated);
-                          }}
-                          placeholder="End Date"
-                          className="flex-1 p-2 mb-2 border text-black"
-                        />
-                      </div>
-                      <Button
-                        onClick={() => {
-                          const updated = [...educationData];
-                          updated.splice(index, 1);
-                          setEducationData(updated);
-                        }}
-                        className="bg-red-600 text-white"
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  ))}
-
-                  <Button
-                    onClick={() => {
-                      const updated = [
-                        ...educationData,
-                        {
-                          degree: "",
-                          startDate: "",
-                          endDate: "",
-                        },
-                      ];
-                      setEducationData(updated);
-                    }}
-                    className="bg-green-600 text-white mt-4"
-                  >
-                    + Add Education
-                  </Button>
-
-                  <div className="flex justify-end mt-4">
-                    <button
-                      className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                      onClick={() => {
-                        setResumeData((prev: any) => ({
-                          ...prev,
-                          [currentEducationField as string]: educationData,
-                        }));
-                        // setCurrentEducationField(null);
-                        // setCurrentProjectField(null);
-                        // setCurrentExperienceField(null)
-                        setShowEditor(false);
-                      }}
-                    >
-                      Save & Close
-                    </button>
-                  </div>
-                </div>
-              )}
-              {/* Phone Number Editor */}
-              {/* Email Editor */}
-              {editType === "email" && (
-                <div className="p-6">
-                  <h2 className="text-lg font-bold mb-4 text-black">
-                    Edit Email
-                  </h2>
-
-                  <input
-                    type="email"
-                    className="w-full border border-gray-300 px-3 py-2 rounded mb-4 text-black"
-                    value={selectedEmail ?? ""}
-                    onChange={(e) => setSelectedEmail(e.target.value)}
-                    placeholder="Enter your Email"
-                  />
-
-                  <div className="flex justify-end gap-2">
-                    {/* <button
-                      className="px-4 py-2 bg-gray-300 rounded text-black"
-                      onClick={() => setShowEditor(false)}
-                    >
-                      Cancel
-                    </button> */}
-                    <button
-                      className="px-4 py-2 bg-blue-600 text-white rounded"
-                      onClick={() => {
-                        if (emailField && selectedEmail !== null) {
-                          setResumeData((prev: any) => ({
-                            ...prev,
-                            [emailField]: selectedEmail,
-                          }));
-                        }
-                        setShowEditor(false);
-                      }}
-                    >
-                      Add
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Phone Editor */}
-              {editType === "phone" && (
-                <div className="p-6">
-                  <h2 className="text-lg font-bold mb-4 text-black">
-                    Edit Phone Number
-                  </h2>
-
-                  <input
-                    type="email"
-                    className="w-full border border-gray-300 px-3 py-2 rounded mb-4 text-black"
-                    value={selectedNumber ?? ""}
-                    onChange={(e) => setSelectedNumber(Number(e.target.value))}
-                    placeholder="Enter your number"
-                  />
-
-                  <div className="flex justify-end gap-2">
-                    {/* <button
-                      className="px-4 py-2 bg-gray-300 rounded text-black"
-                      onClick={() => setShowEditor(false)}
-                    >
-                      Cancel
-                    </button> */}
-                    <button
-                      className="px-4 py-2 bg-blue-600 text-white rounded"
-                      onClick={() => {
-                        if (selectedField && selectedNumber !== null) {
-                          setResumeData((prev: any) => ({
-                            ...prev,
-                            [selectedField]: selectedNumber,
-                          }));
-                        }
-                        setShowEditor(false);
-                      }}
-                    >
-                      Add
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              <div className="flex justify-end mt-4">
-                <button
-                  className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                  onClick={() => setShowEditor(false)}
+                {/* Add new experience */}
+                <Button
+                  onClick={() => {
+                    const updated = [
+                      ...experienceData,
+                      {
+                        title: "",
+                        description: "",
+                        startDate: "",
+                        endDate: "",
+                      },
+                    ];
+                    setExperienceData(updated);
+                  }}
+                  className="bg-green-600 text-white mt-4"
                 >
-                  Close
-                </button>
+                  + Add Experience
+                </Button>
+
+                <div className="flex justify-end mt-4">
+                  <button
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                    onClick={() => {
+                      setResumeData((prev: any) => ({
+                        ...prev,
+                        [currentExperienceField as string]: experienceData,
+                      }));
+                      setShowEditor(false);
+                    }}
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
+            )}
+
+            {/* Project */}
+            {editType === "projects" && (
+              <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
+                <h2 className="text-lg font-bold mb-4 text-black">
+                  Edit Projects
+                </h2>
+
+                {projectData.map((proj, index) => (
+                  <div
+                    key={index}
+                    className="mb-6 border p-3 rounded-md bg-gray-100"
+                  >
+                    <input
+                      type="text"
+                      value={proj.name}
+                      onChange={(e) => {
+                        const updated = [...projectData];
+                        updated[index].name = e.target.value;
+                        setProjectData(updated);
+                      }}
+                      placeholder="Project Name"
+                      className="w-full p-2 mb-2 border text-black"
+                    />
+                    <textarea
+                      value={proj.description}
+                      onChange={(e) => {
+                        const updated = [...projectData];
+                        updated[index].description = e.target.value;
+                        setProjectData(updated);
+                      }}
+                      placeholder="Description"
+                      className="w-full p-2 mb-2 border text-black"
+                    />
+                    <input
+                      type="text"
+                      value={proj.github}
+                      onChange={(e) => {
+                        const updated = [...projectData];
+                        updated[index].github = e.target.value;
+                        setProjectData(updated);
+                      }}
+                      placeholder="GitHub Link"
+                      className="w-full p-2 mb-2 border text-black"
+                    />
+                    <input
+                      type="text"
+                      value={proj.live}
+                      onChange={(e) => {
+                        const updated = [...projectData];
+                        updated[index].live = e.target.value;
+                        setProjectData(updated);
+                      }}
+                      placeholder="Live Link"
+                      className="w-full p-2 mb-2 border text-black"
+                    />
+                    <Button
+                      onClick={() => {
+                        const updated = [...projectData];
+                        updated.splice(index, 1);
+                        setProjectData(updated);
+                      }}
+                      className="bg-red-600 text-white"
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                ))}
+
+                <Button
+                  onClick={() => {
+                    const updated = [
+                      ...projectData,
+                      {
+                        name: "",
+                        description: "",
+                        github: "",
+                        live: "",
+                      },
+                    ];
+                    setProjectData(updated);
+                  }}
+                  className="bg-green-600 text-white mt-4"
+                >
+                  + Add Project
+                </Button>
+
+                <div className="flex justify-end mt-4">
+                  <button
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                    onClick={() => {
+                      setResumeData((prev: any) => ({
+                        ...prev,
+                        [currentProjectField as string]: projectData,
+                      }));
+                      setShowEditor(false);
+                    }}
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Education */}
+            {editType === "education" && (
+              <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
+                <h2 className="text-lg font-bold mb-4 text-black">
+                  Edit Education
+                </h2>
+
+                {educationData.map((edu, index) => (
+                  <div
+                    key={index}
+                    className="mb-6 border p-3 rounded-md bg-gray-100"
+                  >
+                    <input
+                      type="text"
+                      value={edu.degree}
+                      onChange={(e) => {
+                        const updated = [...educationData];
+                        updated[index].degree = e.target.value;
+                        setEducationData(updated);
+                      }}
+                      placeholder="Degree"
+                      className="w-full p-2 mb-2 border text-black"
+                    />
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={edu.startDate}
+                        onChange={(e) => {
+                          const updated = [...educationData];
+                          updated[index].startDate = e.target.value;
+                          setEducationData(updated);
+                        }}
+                        placeholder="Start Date"
+                        className="flex-1 p-2 mb-2 border text-black"
+                      />
+                      <input
+                        type="text"
+                        value={edu.endDate}
+                        onChange={(e) => {
+                          const updated = [...educationData];
+                          updated[index].endDate = e.target.value;
+                          setEducationData(updated);
+                        }}
+                        placeholder="End Date"
+                        className="flex-1 p-2 mb-2 border text-black"
+                      />
+                    </div>
+                    <Button
+                      onClick={() => {
+                        const updated = [...educationData];
+                        updated.splice(index, 1);
+                        setEducationData(updated);
+                      }}
+                      className="bg-red-600 text-white"
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                ))}
+
+                <Button
+                  onClick={() => {
+                    const updated = [
+                      ...educationData,
+                      {
+                        degree: "",
+                        startDate: "",
+                        endDate: "",
+                      },
+                    ];
+                    setEducationData(updated);
+                  }}
+                  className="bg-green-600 text-white mt-4"
+                >
+                  + Add Education
+                </Button>
+
+                <div className="flex justify-end mt-4">
+                  <button
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                    onClick={() => {
+                      setResumeData((prev: any) => ({
+                        ...prev,
+                        [currentEducationField as string]: educationData,
+                      }));
+                      // setCurrentEducationField(null);
+                      // setCurrentProjectField(null);
+                      // setCurrentExperienceField(null)
+                      setShowEditor(false);
+                    }}
+                  >
+                    Save & Close
+                  </button>
+                </div>
+              </div>
+            )}
+            {/* Phone Number Editor */}
+            {/* Email Editor */}
+            {editType === "email" && (
+              <div className="p-6">
+                <h2 className="text-lg font-bold mb-4 text-black">
+                  Edit Email
+                </h2>
+
+                <input
+                  type="email"
+                  className="w-full border border-gray-300 px-3 py-2 rounded mb-4 text-black"
+                  value={selectedEmail ?? ""}
+                  onChange={(e) => setSelectedEmail(e.target.value)}
+                  placeholder="Enter your Email"
+                />
+
+                <div className="flex justify-end gap-2">
+                  {/* <button
+                      className="px-4 py-2 bg-gray-300 rounded text-black"
+                      onClick={() => setShowEditor(false)}
+                    >
+                      Cancel
+                    </button> */}
+                  <button
+                    className="px-4 py-2 bg-blue-600 text-white rounded"
+                    onClick={() => {
+                      if (emailField && selectedEmail !== null) {
+                        setResumeData((prev: any) => ({
+                          ...prev,
+                          [emailField]: selectedEmail,
+                        }));
+                      }
+                      setShowEditor(false);
+                    }}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Phone Editor */}
+            {editType === "phone" && (
+              <div className="p-6">
+                <h2 className="text-lg font-bold mb-4 text-black">
+                  Edit Phone Number
+                </h2>
+
+                <input
+                  type="email"
+                  className="w-full border border-gray-300 px-3 py-2 rounded mb-4 text-black"
+                  value={selectedNumber ?? ""}
+                  onChange={(e) => setSelectedNumber(Number(e.target.value))}
+                  placeholder="Enter your number"
+                />
+
+                <div className="flex justify-end gap-2">
+                  {/* <button
+                      className="px-4 py-2 bg-gray-300 rounded text-black"
+                      onClick={() => setShowEditor(false)}
+                    >
+                      Cancel
+                    </button> */}
+                  <button
+                    className="px-4 py-2 bg-blue-600 text-white rounded"
+                    onClick={() => {
+                      if (selectedField && selectedNumber !== null) {
+                        setResumeData((prev: any) => ({
+                          ...prev,
+                          [selectedField]: selectedNumber,
+                        }));
+                      }
+                      setShowEditor(false);
+                    }}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="flex justify-end mt-4">
+              <button
+                className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                onClick={() => setShowEditor(false)}
+              >
+                Close
+              </button>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Download Button */}
-      </div>
+      {/* Download Button */}
     </div>
   );
 };

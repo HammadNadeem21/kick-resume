@@ -168,6 +168,10 @@ import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.entry";
 import SectionScoreChart from "@/components/SectionScoreChart";
 import { FaFileAlt } from "react-icons/fa";
+import { LuUpload } from "react-icons/lu";
+
+import { TiTick } from "react-icons/ti";
+import { IoClose } from "react-icons/io5";
 
 // PDF.js worker set
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
@@ -231,9 +235,13 @@ const Page = () => {
       const prompt = `
 Compare the following resume with the given job description. 
 Provide:
-1. Compatibility score out of 100
-2. Missing keywords/skills
-3. Specific suggestions to improve the resume to match the job.
+1. Compatibility score out of 100.
+2. Skills match percentage (0–100).
+3. Education match: Return "Matched" if the user's education aligns with the job description requirements, otherwise return "Not Matched".  
+4. Experience match: Return "Matched" if the user's work experience aligns with the job description requirements, otherwise return "Not Matched".
+
+5. Missing keywords/skills.
+6. Specific detailed suggestions to improve the resume to match the job.
 
 Job Description:
 ${jobDescription}
@@ -244,8 +252,16 @@ ${resumeText}
 Output JSON in this structure:
 {
   "score": number,
+  "skillsMatch": number,
+  "educationMatch": "...",
+  "experienceMatch": "...",
   "missingSkills": ["..."],
-  "suggestions": ["..."]
+  "suggestions": [
+  {
+  "heading": "...",
+  "content": "...."  
+  }
+  ]
 }
       `;
 
@@ -294,104 +310,214 @@ Output JSON in this structure:
         </div>
       </section>
 
-      <section className="py-8 px-4 grid lg:grid-cols-2 grid-cols-1 gap-2">
+      <section className="py-8 px-4 grid lg:grid-cols-2 grid-cols-1 gap-10">
         {/* Resume Uploader */}
         <div className="flex flex-col gap-4">
-          <div className="text-center lg:text-left">
-            <h2 className="text-3xl font-bold mb-4 text-foreground">
-              Upload & Compare
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Upload your resume and paste the job description
-            </p>
-          </div>
-          <div
-            {...getRootProps()}
-            className=" w-[100%] h-[180px] border-2 border-dashed border-mySkyBlue rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer bg-white hover:bg-mySkyBlue/10 transition-all"
-          >
-            <div className="py-3 px-3 mb-2 flex items-center justify-center bg-mySkyBlue/30 rounded-lg">
-              <FaFileAlt size={25} className="text-mySkyBlue" />
+          <div className="">
+            <div className="text-center lg:text-left">
+              <h2 className="text-3xl font-bold mb-4 text-foreground">
+                Upload & Compare
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                Upload your resume and paste the job description
+              </p>
             </div>
-            <input {...getInputProps()} />
-            {isDragActive ? (
-              <p className="text-mySkyBlue">Drop the PDF here ...</p>
-            ) : (
-              <>
-                <p className="text-mySkyBlue font-semibold">
-                  Drag & drop your PDF resume here, or click to select
-                </p>
-                <p className="text-gray-500 text-sm mt-2">
-                  Only PDF files are accepted
-                </p>
-              </>
-            )}
-            {fileName && (
-              <div className="mt-4 text-mySkyBlue font-medium">
-                Uploaded: {fileName}
+            <div
+              {...getRootProps()}
+              className=" w-[100%] h-[250px] mt-5 border-2 border-dashed border-mySkyBlue rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer bg-white hover:bg-mySkyBlue/10 transition-all"
+            >
+              <div className="py-3 px-3 mb-2 flex items-center justify-center bg-mySkyBlue/30 rounded-lg">
+                <LuUpload size={25} className="text-mySkyBlue" />
+              </div>
+              <input {...getInputProps()} />
+              {isDragActive ? (
+                <p className="text-mySkyBlue">Drop the PDF here ...</p>
+              ) : (
+                <>
+                  <p className="text-mySkyBlue font-semibold">
+                    Drag & drop your PDF resume here, or click to select
+                  </p>
+                  <p className="text-gray-500 text-sm mt-2">
+                    Only PDF files are accepted
+                  </p>
+                </>
+              )}
+              {fileName && (
+                <div className="mt-4 text-mySkyBlue font-medium">
+                  Uploaded: {fileName}
+                </div>
+              )}
+            </div>
+            {file && (
+              <div className="border border-mySkyBlue bg-mySkyBlue/20 mt-5 rounded-lg py-3 px-3 flex items-center justify-between">
+                <div className="flex items-center justify-center gap-2">
+                  <FaFileAlt size={20} className="text-mySkyBlue" />
+                  <span className="ml-2 text-gray-500">{file}</span>
+                </div>
+                {/* Remove Button */}
+                <button
+                  onClick={() => {
+                    setPdfFile(null);
+                    setFileName("");
+                    setFile("");
+                  }}
+                  className="text-gray-500"
+                >
+                  Remove
+                </button>
               </div>
             )}
           </div>
-          {file && (
-            <div className="border border-mySkyBlue bg-mySkyBlue/20 rounded-lg py-3 px-3 flex items-center justify-between">
-              <div className="flex items-center justify-center gap-2">
-                <FaFileAlt size={20} className="text-mySkyBlue" />
-                <span className="ml-2 text-gray-500">{file}</span>
-              </div>
-              {/* Remove Button */}
-              <button
-                onClick={() => {
-                  setPdfFile(null);
-                  setFileName("");
-                  setFile("");
-                }}
-                className="text-gray-500"
-              >
-                Remove
-              </button>
-            </div>
-          )}
 
           {/* Job Description Textarea */}
           <textarea
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
             placeholder="Type Job Description"
-            className="border border-mySkyBlue text-gray-600 rounded-lg focus:outline-none w-[100%] py-2 px-3"
-            rows={7}
+            className="h-[250px] border border-mySkyBlue text-gray-600 rounded-lg focus:outline-none w-[100%] py-2 px-3"
           ></textarea>
+
+          <div className="flex items-center justify-center py-5 mt-1">
+            <button
+              onClick={handleAnalyze}
+              disabled={loading}
+              className="py-1 px-5 w-[100%] rounded-lg text-white font-semibold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300"
+            >
+              {loading ? "Analyzing..." : "Analyze Resume"}
+            </button>
+          </div>
         </div>
 
         <div className="">
+          <div className="text-center lg:text-left">
+            <h2 className="text-3xl font-bold mb-4 text-foreground">
+              Compatibility Analysis
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Detailed comparison and recommendations
+            </p>
+          </div>
           {analysisResult && (
             <div className="mt-8 bg-gray-100 p-6 rounded-lg">
               <h2 className="md:text-2xl font-bold text-center text-mySkyBlue">
                 Analysis Result
               </h2>
               <div className="grid grid-cols-1 mt-5">
-                <div className="flex flex-col justify-center">
-                  <p className="mt-2 ml-5 text-mySkyBlue font-semibold">
-                    Analysis Score
-                  </p>
-                  <SectionScoreChart
-                    score={analysisResult.score}
-                    textColor="#4b5563"
-                  />
+                <div className="flex items-center justify-between  flex-wrap mb-4 gap-2 px-2">
+                  <div className="flex flex-col justify-center">
+                    <p className="mt-2 ml-5 text-mySkyBlue font-semibold">
+                      Analysis Score
+                    </p>
+                    <SectionScoreChart
+                      score={analysisResult.score}
+                      textColor="#4b5563"
+                    />
+                  </div>
+
+                  <div className="flex flex-col justify-center gap-1">
+                    {analysisResult.skillsMatch && (
+                      <div className="sm:text-lg text-sm font-semibold text-mySkyBlue">
+                        {analysisResult.skillsMatch > 80 ? (
+                          <h1 className="flex items-center gap-1">
+                            Skills Matched:{" "}
+                            <span className="py-1 px-2 rounded-xl bg-green-600 text-white sm:text-sm text-xs">
+                              {analysisResult.skillsMatch}%
+                            </span>
+                          </h1>
+                        ) : analysisResult.skillsMatch > 60 ? (
+                          <h1 className="flex items-center gap-1">
+                            Skills Matched:
+                            <span className="py-1 px-2 rounded-xl bg-orange-600 text-white sm:text-sm text-xs">
+                              {analysisResult.skillsMatch}%
+                            </span>
+                          </h1>
+                        ) : (
+                          <h1 className="flex items-center gap-1">
+                            Skills Matched:
+                            <span className="py-1 px-2 rounded-xl bg-red-600 text-white sm:text-sm text-xs">
+                              {analysisResult.skillsMatch}%
+                            </span>
+                          </h1>
+                        )}
+                      </div>
+                    )}
+
+                    {analysisResult.educationMatch && (
+                      <div className="sm:text-lg text-sm font-semibold text-mySkyBlue">
+                        {analysisResult.educationMatch === "Matched" ? (
+                          <h1 className="flex items-center gap-1">
+                            Education Matched:{" "}
+                            <span className="py-1 px-2 rounded-xl bg-green-600 text-white sm:text-sm text-xs">
+                              {analysisResult.educationMatch}
+                            </span>
+                          </h1>
+                        ) : (
+                          <h1 className="flex items-center gap-1">
+                            Education Matched:{" "}
+                            <span className="py-1 px-2 rounded-xl bg-red-600 text-white sm:text-sm text-xs">
+                              {analysisResult.educationMatch}
+                            </span>
+                          </h1>
+                        )}
+                      </div>
+                    )}
+
+                    {analysisResult.experienceMatch && (
+                      <div className="sm:text-lg text-sm font-semibold text-mySkyBlue">
+                        {analysisResult.experienceMatch === "Matched" ? (
+                          <h1 className="flex items-center gap-1">
+                            Experience Matched:{" "}
+                            <span className="py-1 px-2 rounded-xl bg-green-600 text-white sm:text-sm text-xs">
+                              {analysisResult.experienceMatch}
+                            </span>
+                          </h1>
+                        ) : (
+                          <h1 className="flex items-center gap-1">
+                            Experience Matched:{" "}
+                            <span className="py-1 px-2 rounded-xl bg-red-600 text-white sm:text-sm text-xs">
+                              {analysisResult.experienceMatch}
+                            </span>
+                          </h1>
+                        )}
+                      </div>
+                    )}
+
+                    {/* {analysisResult.educationMatch && (
+                      <div className="text-lg font-semibold text-mySkyBlue">
+                        {analysisResult.educationMatch > 50 ? (
+                          <h1 className="flex items-center gap-1">
+                            <TiTick size={25} />
+                            Required Education
+                          </h1>
+                        ) : (
+                          <h1 className="flex items-center gap-1">
+                            <IoClose size={20} />
+                            Required Education
+                          </h1>
+                        )}
+                      </div>
+                    )} */}
+                  </div>
                 </div>
 
                 <div className="flex flex-col">
-                  <p className="mt-2 text-mySkyBlue font-semibold">
+                  <p className="mt-2 text-mySkyBlue font-semibold sm:text-lg text-sm">
                     Missing Skills
                   </p>
 
-                  {analysisResult.missingSkills?.join(", ") || "None"}
+                  <p className="sm:text-lg text-sm text-[#4b5563]">
+                    {analysisResult.missingSkills?.join(", ") || "None"}
+                  </p>
                 </div>
               </div>
               <div className="mt-5">
-                <strong className="text-mySkyBlue text-lg">Suggestions</strong>
-                <ul className="list-disc list-inside">
-                  {analysisResult.suggestions?.map((s: string, i: number) => (
+                <strong className="text-mySkyBlue sm:text-lg text-sm">
+                  Suggestions
+                </strong>
+                <ul className="list-disc list-inside sm:text-lg text-sm">
+                  {analysisResult.suggestions?.map((items: any, i: number) => (
                     <li key={i} className="text-[#4b5563] mt-2">
-                      {s}
+                      <strong>{items.heading}:</strong> {items.content}
                     </li>
                   ))}
                 </ul>

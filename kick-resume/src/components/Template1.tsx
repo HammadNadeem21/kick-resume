@@ -69,7 +69,7 @@ export default function Template1({
   //     return <p>No resume data found. Please fill the form first.</p>;
 
   return (
-    <div className="bg-myWhite grid grid-cols-[35%,65%] text-gray-700  lg:w-[70%] w-[100%] mx-auto shadow-lg shadow-myMidPurple/70">
+    <div className="bg-myWhite grid grid-cols-[35%,65%] text-gray-700 w-[100%] shadow-lg shadow-mySkyBlue">
       {/* left-side */}
       <div
         className=" py-2 md:px-3 px-1"
