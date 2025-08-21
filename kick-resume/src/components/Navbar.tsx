@@ -79,9 +79,9 @@ const Navbar = () => {
               {/* <NavigationMenuDemo /> */}
               {/* <div className="flex items-center justify-center gap-8"> */}
               <Link
-                href="/"
+                href="/airesumeanalyzer"
                 className={`text-lg text-gray-600 hover:text-myPurple ${
-                  pathname === "/" ? "text-myPurple" : ""
+                  pathname === "/airesumeanalyzer" ? "text-myPurple" : ""
                 }`}
               >
                 Ai Resume Analyzer

@@ -3,6 +3,8 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { Briefcase, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { pdf } from "@react-pdf/renderer";
 
@@ -766,513 +768,404 @@ const AiPromptPage = () => {
       className="px-[30px] py-[60px] mx-auto min-h-screen"
       // style={{ background: "linear-gradient(to right, #f3f4f6, #e5e7eb)" }}
     >
-      <div className="mb-8">
-        <h1
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h1 className="text-5xl lg:text-6xl font-black mb-6 tracking-tight">
+            <span
+              className="bg-gradient-hero bg-clip-text text-transparent"
+              style={{
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                color: "transparent",
+              }}
+            >
+              AI Resume
+            </span>
+            <br />
+            <span className="text-black">Builder</span>
+          </h1>
+          <p className="text-xl lg:text-2xl text-gray-500 max-w-3xl mx-auto leading-relaxed">
+            Choose a template and let AI create a professional resume tailored
+            to your career goals.
+          </p>
+        </div>
+      </section>
+
+      {/* <div className="mb-8"> */}
+      {/* <h1
           className={`text-3xl ${robot700.className} mb-4 text-purple-500 font-bold`}
         >
           Build Your Resume Chat-Wise
-        </h1>
+        </h1> */}
 
-        {/* Select Template */}
-        <div className="flex flex-wrap justify-center gap-6 mb-10">
-          {/* {templateData.map((template) => (
-            <div
-              key={template.id}
-              onClick={() => getTemplateId(template.id)}
-              className={`relative cursor-pointer rounded-md transition-all duration-300 shadow-md shadow-purple-400`}
-            >
-              <div className='h-[280px] w-[200px]'>
-                <Image src={template.image} alt={template.name} height={150} width={150} className='h-full w-full' />
-              </div>
-              {selectedTemplate === template.id && (
-                <div
-                  className="absolute inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center pointer-events-none"
-                  style={{ zIndex: 10 }}
-                >
-                  <div className="border border-white text-white rounded-full px-1 py-1 z-20">
-                    <TiTick size={50} />
-                  </div>
+      {/* Select Template */}
+      <div className="grid lg:grid-cols-12 grid-cols-1  lg:h-[350px]  mb-10">
+        {/* Upload Image */}
 
+        <div className="col-span-4 flex flex-col justify-center gap-2">
+          <div className="flex flex-col items-center">
+            <div className="w-[100px] h-[100px] rounded-full border-2 border-white overflow-hidden mb-3">
+              {previewUrl ? (
+                <Image
+                  width={158}
+                  height={158}
+                  src={previewUrl}
+                  alt="Preview"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-300 flex items-center justify-center text-sm text-gray-600">
+                  No Image
                 </div>
               )}
             </div>
-          ))} */}
 
+            {/* Dropzone uploader */}
+            <div
+              {...getRootProps()}
+              className="text-center cursor-pointer border border-dashed border-gray-400 rounded-md p-2 hover:bg-white/10 transition-all"
+            >
+              <input {...getInputProps()} />
+              <p className="text-xs text-gray-300">
+                {isDragActive
+                  ? "Drop the image here..."
+                  : "Click or drag an image to upload"}
+              </p>
+            </div>
+          </div>
+
+          <Button
+            className="bg-mySkyBlue/60 hover:bg-mySkyBlue font-bold text-white mx-auto "
+            onClick={async () => {
+              if (!imageFile) return alert("Please upload an image!");
+
+              const fd = new FormData();
+              fd.append("image", imageFile);
+
+              const res = await fetch("/api/process-image", {
+                method: "POST",
+                body: fd,
+              });
+
+              const json = await res.json();
+
+              if (json.url) {
+                setProcessedUrl(json.url); // set processed image (no bg + colored bg)
+              } else {
+                alert("Failed to process image");
+              }
+            }}
+          >
+            Remove BG
+          </Button>
+
+          {processedUrl && (
+            <div className="lg:grid grid-cols-5 flex items-center justify-center gap-2 w-[100%] mx-auto flex-wrap mt-2 mb-2">
+              {/* Original Image */}
+              <div
+                onClick={() => {
+                  setSelectedProcessedImage(previewUrl);
+                  setSelectedImageBgColor(undefined); // Reset background color on click
+                }}
+                className={`w-[50px] h-[50px] rounded-full flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${
+                  selectedProcessedImage === previewUrl && !selectedImageBgColor
+                    ? "ring-4 ring-mySkyBlue"
+                    : ""
+                }`}
+              >
+                <Image
+                  src={previewUrl ?? "/dummy.jpg"}
+                  width={170}
+                  height={170}
+                  alt="Original"
+                  className="object-contain"
+                />
+              </div>
+              {/* Processed Images (with colored backgrounds) */}
+              {[
+                "bg-blue-500",
+                "bg-white",
+                "bg-green-500",
+                "bg-gray-500",
+                "bg-yellow-600",
+                "bg-black",
+                "bg-purple-500",
+                "bg-yellow-300",
+                "bg-[#28384a]",
+              ].map((bg, index) => (
+                <div
+                  key={index}
+                  onClick={() => {
+                    setSelectedProcessedImage(processedUrl);
+                    setSelectedImageBgColor(bg); // Set background color on click
+                  }}
+                  className={`w-[50px] h-[50px] rounded-full ${bg} flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${
+                    selectedProcessedImage === processedUrl &&
+                    selectedImageBgColor === bg
+                      ? "ring-4 ring-mySkyBlue"
+                      : ""
+                  }`}
+                >
+                  <Image
+                    src={processedUrl}
+                    width={160}
+                    height={160}
+                    alt={`Processed Image ${index}`}
+                    className="object-fill mt-4"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="col-span-8 flex items-center justify-center lg:mt-0 mt-5">
           <CarouselSize
             array={templateData}
             getTemplateId={(id) => setSelectedTemplate(id)}
             selectedTemplate={selectedTemplate}
           />
         </div>
+      </div>
 
-        {/* Upload Image */}
-        {(selectedTemplate === 4 ||
-          selectedTemplate === 7 ||
-          selectedTemplate === 9) && (
-          <div>
-            <div className="flex flex-col items-center mb-6">
-              <div className="w-[200px] h-[200px] rounded-full border-2 border-white overflow-hidden mb-3">
-                {previewUrl ? (
-                  <Image
-                    width={158}
-                    height={158}
-                    src={previewUrl}
-                    alt="Preview"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-300 flex items-center justify-center text-sm text-gray-600">
-                    No Image
-                  </div>
-                )}
-              </div>
+      <div className="py-8 px-4 grid lg:grid-cols-12 grid-cols-1 gap-[40px]">
+        <div className="col-span-4">
+          {/* Chat Box */}
 
-              {/* Dropzone uploader */}
-              <div
-                {...getRootProps()}
-                className="text-center cursor-pointer border border-dashed border-gray-400 rounded-md p-2 hover:bg-white/10 transition-all"
-              >
-                <input {...getInputProps()} />
-                <p className="text-sm text-gray-300">
-                  {isDragActive
-                    ? "Drop the image here..."
-                    : "Click or drag an image to upload"}
-                </p>
-              </div>
-            </div>
-
-            <div className=" flex items-center justify-center">
-              <Button
-                className="bg-myMidPurple hover:bg-myPurple text-white mx-auto mt-4 mb-4"
-                onClick={async () => {
-                  if (!imageFile) return alert("Please upload an image!");
-
-                  const fd = new FormData();
-                  fd.append("image", imageFile);
-
-                  const res = await fetch("/api/process-image", {
-                    method: "POST",
-                    body: fd,
-                  });
-
-                  const json = await res.json();
-
-                  if (json.url) {
-                    setProcessedUrl(json.url); // set processed image (no bg + colored bg)
-                  } else {
-                    alert("Failed to process image");
-                  }
-                }}
-              >
-                Remove BG
-              </Button>
-            </div>
-
-            {processedUrl && (
-              <div className="flex items-center justify-center gap-5 flex-wrap mt-5 mb-5">
-                {/* Original Image */}
-                <div
-                  onClick={() => {
-                    setSelectedProcessedImage(previewUrl);
-                    setSelectedImageBgColor(undefined); // Reset background color on click
-                  }}
-                  className={`w-[170px] h-[170px] rounded-full flex items-center justify-center overflow-hidden cursor-pointer border-4 transition-all duration-300 ${
-                    selectedProcessedImage === previewUrl &&
-                    !selectedImageBgColor
-                      ? "border-myPurple"
-                      : "border-none"
-                  }`}
-                >
-                  <Image
-                    src={previewUrl ?? "/dummy.jpg"}
-                    width={170}
-                    height={170}
-                    alt="Original"
-                    className="object-contain"
-                  />
+          <div className="bg-gray-100 mt-3 py-2 px-3 mb-2 rounded-xl flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-4">
+                <div className="py-2 px-2 text-mySkyBlue bg-mySkyBlue/30 rounded-xl">
+                  <Sparkles size={15} />
                 </div>
-                {/* Processed Images (with colored backgrounds) */}
-                {[
-                  "bg-blue-500",
-                  "bg-white",
-                  "bg-green-500",
-                  "bg-gray-500",
-                  "bg-yellow-500",
-                ].map((bg, index) => (
+                <h1 className="text-mySkyBlue text-xl font-semibold">
+                  AI Instructions
+                </h1>
+              </div>
+              <h2 className="text-gray-500 text-[15px]">
+                Describe your background, skills, and career goals
+              </h2>
+            </div>
+
+            {promptHistory.length > 0 && (
+              <div className=" mx-auto w-[100%] p-4 h-[300px] overflow-y-auto chat-container custom-scrollbar">
+                {promptHistory.map((entry, index) => (
                   <div
                     key={index}
-                    onClick={() => {
-                      setSelectedProcessedImage(processedUrl);
-                      setSelectedImageBgColor(bg); // Set background color on click
-                    }}
-                    className={`w-[170px] h-[170px] rounded-full ${bg} flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${
-                      selectedProcessedImage === processedUrl &&
-                      selectedImageBgColor === bg
-                        ? "ring-4 ring-myPurple"
-                        : ""
-                    }`}
+                    className={`flex items-end mb-2 max-w-[100%] text-xs ${
+                      entry.type === "user"
+                        ? "flex-row-reverse ml-auto"
+                        : "flex-row mr-auto"
+                    } animate-fade-in-up`}
                   >
-                    <Image
-                      src={processedUrl}
-                      width={160}
-                      height={160}
-                      alt={`Processed Image ${index}`}
-                      className="object-fill mt-4"
-                    />
+                    {/* Avatar */}
+                    <div
+                      className={`shrink-0 h-[30px] w-[30px] rounded-full flex items-center justify-center font-bold text-xs select-none ${
+                        entry.type === "user"
+                          ? "bg-mySkyBlue text-white ml-2"
+                          : "bg-gray-300 text-gray-700 mr-2"
+                      }`}
+                    >
+                      {entry.type === "user" ? "You" : "Ai"}
+                    </div>
+                    {/* Chat bubble */}
+                    <div
+                      className={`px-2 py-2 rounded-xl ${
+                        entry.type === "user"
+                          ? "bg-mySkyBlue text-white text-xs"
+                          : "bg-gray-300 text-gray-700 text-xs"
+                      }`}
+                    >
+                      {entry.message}
+                    </div>
                   </div>
                 ))}
+                {isChatLoading && (
+                  <div className="flex items-center mb-2 max-w-[80%] flex-row mr-auto">
+                    {/* Avatar for AI */}
+                    <div className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm select-none bg-gray-300 text-gray-700 mr-2 mb-2">
+                      Ai
+                    </div>
+                    {/* Loading bubble */}
+                    <div className="flex items-center mb-1 px-4 py-2 rounded-xl bg-gray-300 text-gray-700">
+                      <div className="flex gap-1 items-end">
+                        <span className="dot-bounce"></span>
+                        <span className="dot-bounce animation-delay-200"></span>
+                        <span className="dot-bounce animation-delay-400"></span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <style jsx>{`
+                  .custom-scrollbar {
+                    scrollbar-width: thin;
+                    scrollbar-color: #374151 #f3f4f6;
+                    margin-top: 5px; /* thumb color, then track color */
+                  }
+                  .custom-scrollbar::-webkit-scrollbar {
+                    width: 8px;
+                    background: #c084fc; /* scrollbar track background color */
+                  }
+                  .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background: #a855f7;
+                    border-radius: 8px;
+                  }
+                  .custom-scrollbar::-webkit-scrollbar-button {
+                    display: none;
+                  }
+                  .dot-bounce {
+                    display: inline-block;
+                    width: 8px;
+                    height: 8px;
+                    background: #374151;
+                    border-radius: 50%;
+                    margin: 0 2px;
+                    animation: bounce 1s infinite;
+                  }
+                  .animation-delay-200 {
+                    animation-delay: 0.2s;
+                  }
+                  .animation-delay-400 {
+                    animation-delay: 0.4s;
+                  }
+                  @keyframes bounce {
+                    0%,
+                    80%,
+                    100% {
+                      transform: scale(0.8);
+                      opacity: 0.7;
+                    }
+                    40% {
+                      transform: scale(1.2);
+                      opacity: 1;
+                    }
+                  }
+                `}</style>
               </div>
             )}
+
+            {/* Input Field */}
+            <div className=" w-[100%] mx-auto border border-[#a9adb5] rounded-xl px-4 py-2 custom-scrollbar">
+              <textarea
+                value={userPrompt}
+                onChange={(e) => setUserPrompt(e.target.value)}
+                placeholder={
+                  credit < 3
+                    ? "You have no credits left. Please upgrade."
+                    : "Type your prompt here..."
+                }
+                className=" p-3 w-[100%]  text-gray-500 resize-none focus:outline-none bg-transparent"
+                rows={3}
+                disabled={credit < 3} // Disable if no credits
+              />
+              <button
+                className="w-[100%] border border-[#a9adb5]  text-gray-800 mt-2 px-4 py-2 rounded-xl flex items-center justify-center gap-1"
+                onClick={handleSendPrompt}
+              >
+                Send <IoSend />
+              </button>
+            </div>
           </div>
-        )}
+        </div>
 
-        {/* <div className="text-center mt-10">
-          <h1 className="text-2xl font-bold">Your Credits</h1>
-          {credit === null ? (
-            <p>Loading...</p>
-          ) : (
-            <p className="text-xl mt-4">💳 {credit} credits remaining</p>
-          )}
-        </div> */}
+        <div className="col-span-8">
+          <div className="flex items-center justify-between">
+            <div className="text-center lg:text-left">
+              <h2 className="text-3xl font-bold mb-4 text-mySkyBlue">
+                Tailored Resume
+              </h2>
+              <p className="text-lg text-gray-500">
+                AI-optimized to match job requirements
+              </p>
+            </div>
 
-        {/* Chat Box */}
-        <div className="bg-gray-200 mx-auto w-[60%] p-4 h-[300px] overflow-y-auto chat-container custom-scrollbar">
-          {promptHistory.map((entry, index) => (
-            <div
-              key={index}
-              className={`flex items-end mb-2 max-w-[80%]  ${
-                entry.type === "user"
-                  ? "flex-row-reverse ml-auto"
-                  : "flex-row mr-auto"
-              } animate-fade-in-up`}
+            <div className="flex items-end justify-center gap-2">
+              <div className="relative mt-10 flex flex-col items-center">
+                {/* Theme Selection Section */}
+                {(selectedTemplate === 4 ||
+                  selectedTemplate === 1 ||
+                  selectedTemplate === 7 ||
+                  selectedTemplate === 10) && (
+                  <button
+                    className="bg-mySkyBlue/50 hover:bg-mySkyBlue font-bold text-white px-5 py-2 rounded-lg"
+                    onClick={() => setShowColorPicker((prev) => !prev)}
+                  >
+                    Choose Color
+                  </button>
+                )}
+
+                <AnimatePresence>
+                  {showColorPicker && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }} // shuru main halka upar aur hidden
+                      animate={{ opacity: 1, y: 0 }} // show hote waqt neeche slide + fade in
+                      exit={{ opacity: 0, y: -10 }} // hide hote waqt upar slide + fade out
+                      transition={{ duration: 0.3 }}
+                      className="absolute top-[30px]  w-60 rounded-xl p-4"
+                    >
+                      {/* <ColorPicker/> */}
+                      <RgbColorPicker
+                        color={
+                          selectedTemplate === 1
+                            ? color1
+                            : selectedTemplate === 4
+                            ? color4
+                            : selectedTemplate === 7
+                            ? color7
+                            : selectedTemplate === 10
+                            ? color10
+                            : color1 // fallback
+                        }
+                        onChange={
+                          selectedTemplate === 1
+                            ? setColor1
+                            : selectedTemplate === 4
+                            ? setColor4
+                            : selectedTemplate === 7
+                            ? setColor7
+                            : selectedTemplate === 10
+                            ? setColor10
+                            : setColor1 // fallback
+                        }
+                      />
+                      {/* <div className="value">{JSON.stringify(color)}</div> */}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* {showTemplate && parsedData && ( */}
+              <button
+                onClick={handleDownloadPDF}
+                disabled={credit < 5}
+                className="bg-mySkyBlue/50 mt-5 hover:bg-mySkyBlue text-white font-bold px-5 py-2 rounded-lg disabled:opacity-50 cursor-pointer"
+              >
+                Download PDF
+              </button>
+              {/* )} */}
+            </div>
+          </div>
+
+          {showTemplate && parsedData && (
+            <button
+              onClick={handleDownloadPDF}
+              disabled={credit < 5}
+              className="bg-mySkyBlue/50 mt-5 hover:bg-mySkyBlue w-[100%] text-white px-5 py-1 rounded-lg disabled:opacity-50 cursor-pointer"
             >
-              {/* Avatar */}
-              <div
-                className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm select-none ${
-                  entry.type === "user"
-                    ? "bg-myMidPurple text-white ml-2"
-                    : "bg-gray-300 text-gray-700 mr-2"
-                }`}
-              >
-                {entry.type === "user" ? "You" : "Ai"}
-              </div>
-              {/* Chat bubble */}
-              <div
-                className={`px-4 py-2 rounded-xl ${
-                  entry.type === "user"
-                    ? "bg-myMidPurple text-white text-sm"
-                    : "bg-gray-300 text-gray-700 text-sm"
-                }`}
-              >
-                {entry.message}
-              </div>
-            </div>
-          ))}
-          {isChatLoading && (
-            <div className="flex items-center mb-2 max-w-[80%] flex-row mr-auto">
-              {/* Avatar for AI */}
-              <div className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm select-none bg-gray-300 text-gray-700 mr-2 mb-2">
-                Ai
-              </div>
-              {/* Loading bubble */}
-              <div className="flex items-center mb-1 px-4 py-2 rounded-xl bg-gray-300 text-gray-700">
-                <div className="flex gap-1 items-end">
-                  <span className="dot-bounce"></span>
-                  <span className="dot-bounce animation-delay-200"></span>
-                  <span className="dot-bounce animation-delay-400"></span>
-                </div>
-              </div>
-            </div>
+              Download PDF
+            </button>
           )}
-          <style jsx>{`
-            .custom-scrollbar {
-              scrollbar-width: thin;
-              scrollbar-color: #374151 #e5e7eb;
-              margin-top: 5px; /* thumb color, then track color */
-            }
-            .custom-scrollbar::-webkit-scrollbar {
-              width: 8px;
-              background: #c084fc; /* scrollbar track background color */
-            }
-            .custom-scrollbar::-webkit-scrollbar-thumb {
-              background: #a855f7;
-              border-radius: 8px;
-            }
-            .custom-scrollbar::-webkit-scrollbar-button {
-              display: none;
-            }
-            .dot-bounce {
-              display: inline-block;
-              width: 8px;
-              height: 8px;
-              background: #374151;
-              border-radius: 50%;
-              margin: 0 2px;
-              animation: bounce 1s infinite;
-            }
-            .animation-delay-200 {
-              animation-delay: 0.2s;
-            }
-            .animation-delay-400 {
-              animation-delay: 0.4s;
-            }
-            @keyframes bounce {
-              0%,
-              80%,
-              100% {
-                transform: scale(0.8);
-                opacity: 0.7;
-              }
-              40% {
-                transform: scale(1.2);
-                opacity: 1;
-              }
-            }
-          `}</style>
-        </div>
 
-        {/* Input Field */}
-        <div className=" w-[60%] mx-auto border-2 border-[#a9adb5] px-4 py-2 custom-scrollbar">
-          <textarea
-            value={userPrompt}
-            onChange={(e) => setUserPrompt(e.target.value)}
-            placeholder={
-              credit < 3
-                ? "You have no credits left. Please upgrade."
-                : "Type your prompt here..."
-            }
-            className=" p-3 w-[100%]  text-black resize-none focus:outline-none bg-transparent"
-            rows={3}
-            disabled={credit < 3} // Disable if no credits
-          />
-          <button
-            className="border border-[#a9adb5]  text-gray-800 mt-2 px-4 py-2 rounded-xl flex items-center justify-center gap-1"
-            onClick={handleSendPrompt}
-          >
-            Send <IoSend />
-          </button>
-        </div>
-      </div>
-
-      {/* Image Preview + Dropzone Uploader */}
-
-      <div className="flex items-center gap-10">
-        {/* <Button
-        variant='secondary'
-        className='bg-myMidblue hover:bg-myMidblue/60'
-        onClick={handleGenerate}
-      >Create</Button> */}
-
-        {/* Theme Selection Section */}
-        {(selectedTemplate === 4 ||
-          selectedTemplate === 1 ||
-          selectedTemplate === 7 ||
-          selectedTemplate === 10) && (
-          <Button
-            className="bg-myMidPurple hover:bg-myPurple text-white"
-            onClick={() => setShowColorPicker((prev) => !prev)}
-          >
-            Choose Color
-          </Button>
-        )}
-      </div>
-
-      {showColorPicker && (
-        <div className="mt-10">
-          {/* <ColorPicker/> */}
-          <RgbColorPicker
-            color={
-              selectedTemplate === 1
-                ? color1
-                : selectedTemplate === 4
-                ? color4
-                : selectedTemplate === 7
-                ? color7
-                : selectedTemplate === 10
-                ? color10
-                : color1 // fallback
-            }
-            onChange={
-              selectedTemplate === 1
-                ? setColor1
-                : selectedTemplate === 4
-                ? setColor4
-                : selectedTemplate === 7
-                ? setColor7
-                : selectedTemplate === 10
-                ? setColor10
-                : setColor1 // fallback
-            }
-          />
-          {/* <div className="value">{JSON.stringify(color)}</div> */}
-        </div>
-      )}
-
-      {/* Download Button */}
-      {showTemplate && parsedData && (
-        // <div className="flex w-[70%] mx-auto justify-end mt-4 ">
-        //   {selectedTemplate === 1 && (
-        //     <PDFDownloadLink
-        //       document={<Template1PDF data={parsedData} color={color1} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 2 && (
-        //     <PDFDownloadLink
-        //       document={<Template2PDF data={parsedData} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 3 && (
-        //     <PDFDownloadLink
-        //       document={<Template3PDF data={parsedData} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 4 && (
-        //     <PDFDownloadLink
-        //       document={
-        //         <Template4PDF
-        //           data={parsedData}
-        //           imageUrl={
-        //             selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
-        //           }
-        //           imageBgColor={
-        //             selectedImageBgColor
-        //               ? tailwindColorMap[selectedImageBgColor]
-        //               : undefined
-        //           }
-        //           color={color4}
-        //         />
-        //       }
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 5 && (
-        //     <PDFDownloadLink
-        //       document={<Template5PDF data={parsedData} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 6 && (
-        //     <PDFDownloadLink
-        //       document={<Template6PDF data={parsedData} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 7 && (
-        //     <PDFDownloadLink
-        //       document={
-        //         <Template7PDF
-        //           data={parsedData}
-        //           imageUrl={
-        //             selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
-        //           }
-        //           imageBgColor={
-        //             selectedImageBgColor
-        //               ? tailwindColorMap[selectedImageBgColor]
-        //               : undefined
-        //           }
-        //           color={color7}
-        //         />
-        //       }
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 8 && (
-        //     <PDFDownloadLink
-        //       document={<Template8PDF data={parsedData} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 9 && (
-        //     <PDFDownloadLink
-        //       document={
-        //         <Template9PDF
-        //           data={parsedData}
-        //           imageUrl={
-        //             selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"
-        //           }
-        //           imageBgColor={
-        //             selectedImageBgColor
-        //               ? tailwindColorMap[selectedImageBgColor]
-        //               : undefined
-        //           }
-        //         />
-        //       }
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded "
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        //   {selectedTemplate === 10 && (
-        //     <PDFDownloadLink
-        //       document={<Template10PDF data={parsedData} color={color10} />}
-        //       fileName="resume.pdf"
-        //       className="bg-myMidPurple hover:bg-myPurple text-white px-4 py-2 rounded"
-        //     >
-        //       {({ loading }) =>
-        //         loading ? "Preparing document..." : "Download PDF"
-        //       }
-        //     </PDFDownloadLink>
-        //   )}
-        // </div>
-        <button
-          onClick={handleDownloadPDF}
-          disabled={credit < 5}
-          className="bg-myMidPurple mt-5 hover:bg-myPurple text-white px-4 py-2 rounded disabled:opacity-50"
-        >
-          Download PDF
-        </button>
-      )}
-
-      <div className="grid grid-cols-1">
-        <div>
-          {isTemplateLoading && !hasRenderedTemplate ? (
-            <div className="flex flex-col gap-1 justify-center items-center h-64">
+          {!isTemplateLoading && !hasRenderedTemplate ? (
+            <div className="w-[100%] bg-gray-200 mt-2 h-[350px] flex flex-col items-center justify-center rounded-lg">
+              <Briefcase size={40} className="text-gray-500" />
+              <p className="text-lg text-gray-500">
+                Paste a job description to generate a tailored resume
+              </p>
+            </div>
+          ) : isTemplateLoading && !hasRenderedTemplate ? (
+            <div className="flex flex-col gap-1 justify-center items-center h-[350px]">
               <svg
                 className="animate-spin"
                 width="48"
@@ -1294,14 +1187,14 @@ const AiPromptPage = () => {
                   cy="25"
                   r="20"
                   fill="none"
-                  stroke="#9333ea"
+                  stroke="#55CEF6"
                   strokeWidth="8"
                   strokeDasharray="90"
                   strokeDashoffset="30"
                   strokeLinecap="round"
                 />
               </svg>
-              <p className="text-sm text-myPurple">Generating Resume...</p>
+              <p className="text-sm text-mySkyBlue">Generating Resume...</p>
             </div>
           ) : (
             showTemplate &&
@@ -1312,497 +1205,497 @@ const AiPromptPage = () => {
             )
           )}
         </div>
+      </div>
 
-        {showEditor && (
-          <div
-            className={`fixed top-0 right-0 h-full w-[400px] bg-myWhite shadow-lg z-50 transition-transform duration-500 ease-in-out transform ${
-              showEditor ? "translate-x-0" : "translate-x-full"
-            }`}
-          >
-            <div className="p-6">
-              <h2 className="text-lg font-bold mb-4 text-black">
-                {/* {editType === "summary" ? "Edit Summary" : "Edit Skills"} */}
-                Editor
-              </h2>
+      {/* Editor Modal */}
 
-              {/* Summary Textarea */}
-              {editType === "string" && (
-                <>
-                  <textarea
-                    value={inputData as string}
-                    onChange={handleStringFieldChange}
-                    className="w-full h-[100px] resize-none border border-primaryColor rounded-md p-2 text-black bg-transparent"
-                  />
-                </>
-              )}
+      {showEditor && (
+        <div
+          className={`fixed top-0 right-0 h-full w-[400px] bg-myWhite shadow-lg z-50 transition-transform duration-500 ease-in-out transform ${
+            showEditor ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="p-6">
+            <h2 className="text-lg font-bold mb-4 text-black">
+              {/* {editType === "summary" ? "Edit Summary" : "Edit Skills"} */}
+              Editor
+            </h2>
 
-              {/* Skills Badge UI */}
-              {editType === "array" && (
-                <>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {(inputData as string[]).map((item, i) => (
-                      <span
-                        key={i}
-                        className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full flex items-center"
+            {/* Summary Textarea */}
+            {editType === "string" && (
+              <>
+                <textarea
+                  value={inputData as string}
+                  onChange={handleStringFieldChange}
+                  className="w-full h-[100px] resize-none border border-primaryColor rounded-md p-2 text-black bg-transparent"
+                />
+              </>
+            )}
+
+            {/* Skills Badge UI */}
+            {editType === "array" && (
+              <>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {(inputData as string[]).map((item, i) => (
+                    <span
+                      key={i}
+                      className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full flex items-center"
+                    >
+                      {item}
+                      <button
+                        onClick={() => handleRemoveItem(i)}
+                        className="ml-2 text-gray-500 font-bold"
                       >
-                        {item}
-                        <button
-                          onClick={() => handleRemoveItem(i)}
-                          className="ml-2 text-gray-500 font-bold"
-                        >
-                          ×
-                        </button>
-                      </span>
-                    ))}
-                  </div>
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
 
-                  <div className="flex gap-2">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={newItem}
+                    onChange={(e) => setNewItem(e.target.value)}
+                    placeholder="Add new"
+                    className="flex-1 p-2 border border-primaryColor rounded text-black"
+                  />
+                  <Button
+                    onClick={handleAddItem}
+                    className="bg-myDarkBlue text-white hover:bg-myDarkBlue"
+                  >
+                    Add
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {/* Experience */}
+            {editType === "experience" && (
+              <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
+                <h2 className="text-lg font-bold mb-4 text-black">
+                  Edit Experience
+                </h2>
+
+                {experienceData.map((exp, index) => (
+                  <div
+                    key={index}
+                    className="mb-6 border p-3 rounded-md bg-gray-100"
+                  >
                     <input
                       type="text"
-                      value={newItem}
-                      onChange={(e) => setNewItem(e.target.value)}
-                      placeholder="Add new"
-                      className="flex-1 p-2 border border-primaryColor rounded text-black"
+                      value={exp.title}
+                      onChange={(e) => {
+                        const updated = [...experienceData];
+                        updated[index].title = e.target.value;
+                        setExperienceData(updated);
+                      }}
+                      placeholder="Title"
+                      className="w-full p-2 mb-2 border text-black"
                     />
+                    <textarea
+                      value={exp.description}
+                      onChange={(e) => {
+                        const updated = [...experienceData];
+                        updated[index].description = e.target.value;
+                        setExperienceData(updated);
+                      }}
+                      placeholder="Description"
+                      className="w-full p-2 mb-2 border text-black"
+                    />
+                    <div className="grid grid-cols-2 gap-2 mb-2">
+                      <input
+                        type="text"
+                        value={exp.startDate}
+                        onChange={(e) => {
+                          const updated = [...experienceData];
+                          updated[index].startDate = e.target.value;
+                          setExperienceData(updated);
+                        }}
+                        placeholder="Start Date"
+                        className=" p-2 border text-black"
+                      />
+                      <input
+                        type="text"
+                        value={
+                          exp.endDate === "Currently working" ? "" : exp.endDate
+                        }
+                        onChange={(e) => {
+                          const updated = [...experienceData];
+                          updated[index].endDate = e.target.value;
+                          setExperienceData(updated);
+                        }}
+                        placeholder="End Date"
+                        className="p-2 border text-black"
+                        disabled={exp.endDate === "Currently working"}
+                      />
+                      {/* current employer */}
+                      <div className="flex items-center gap-2">
+                        <label
+                          htmlFor={`currentEmployer-${index}`}
+                          className="text-black"
+                        >
+                          Current Employer
+                        </label>
+                        <input
+                          type="checkbox"
+                          id={`currentEmployer-${index}`}
+                          checked={exp.endDate === "Currently working"}
+                          onChange={(e) => {
+                            const updated = [...experienceData];
+                            if (e.target.checked) {
+                              updated[index].endDate = "Currently working";
+                            } else {
+                              updated[index].endDate = "";
+                            }
+                            setExperienceData(updated);
+                          }}
+                        />
+                      </div>
+                    </div>
+
                     <Button
-                      onClick={handleAddItem}
-                      className="bg-myDarkBlue text-white hover:bg-myDarkBlue"
+                      onClick={() => {
+                        const updated = [...experienceData];
+                        updated.splice(index, 1);
+                        setExperienceData(updated);
+                      }}
+                      className="bg-red-600 text-white"
                     >
-                      Add
+                      Remove
                     </Button>
                   </div>
-                </>
-              )}
+                ))}
 
-              {/* Experience */}
-              {editType === "experience" && (
-                <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                  <h2 className="text-lg font-bold mb-4 text-black">
-                    Edit Experience
-                  </h2>
-
-                  {experienceData.map((exp, index) => (
-                    <div
-                      key={index}
-                      className="mb-6 border p-3 rounded-md bg-gray-100"
-                    >
-                      <input
-                        type="text"
-                        value={exp.title}
-                        onChange={(e) => {
-                          const updated = [...experienceData];
-                          updated[index].title = e.target.value;
-                          setExperienceData(updated);
-                        }}
-                        placeholder="Title"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <textarea
-                        value={exp.description}
-                        onChange={(e) => {
-                          const updated = [...experienceData];
-                          updated[index].description = e.target.value;
-                          setExperienceData(updated);
-                        }}
-                        placeholder="Description"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <div className="grid grid-cols-2 gap-2 mb-2">
-                        <input
-                          type="text"
-                          value={exp.startDate}
-                          onChange={(e) => {
-                            const updated = [...experienceData];
-                            updated[index].startDate = e.target.value;
-                            setExperienceData(updated);
-                          }}
-                          placeholder="Start Date"
-                          className=" p-2 border text-black"
-                        />
-                        <input
-                          type="text"
-                          value={
-                            exp.endDate === "Currently working"
-                              ? ""
-                              : exp.endDate
-                          }
-                          onChange={(e) => {
-                            const updated = [...experienceData];
-                            updated[index].endDate = e.target.value;
-                            setExperienceData(updated);
-                          }}
-                          placeholder="End Date"
-                          className="p-2 border text-black"
-                          disabled={exp.endDate === "Currently working"}
-                        />
-                        {/* current employer */}
-                        <div className="flex items-center gap-2">
-                          <label
-                            htmlFor={`currentEmployer-${index}`}
-                            className="text-black"
-                          >
-                            Current Employer
-                          </label>
-                          <input
-                            type="checkbox"
-                            id={`currentEmployer-${index}`}
-                            checked={exp.endDate === "Currently working"}
-                            onChange={(e) => {
-                              const updated = [...experienceData];
-                              if (e.target.checked) {
-                                updated[index].endDate = "Currently working";
-                              } else {
-                                updated[index].endDate = "";
-                              }
-                              setExperienceData(updated);
-                            }}
-                          />
-                        </div>
-                      </div>
-
-                      <Button
-                        onClick={() => {
-                          const updated = [...experienceData];
-                          updated.splice(index, 1);
-                          setExperienceData(updated);
-                        }}
-                        className="bg-red-600 text-white"
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  ))}
-
-                  {/* Add new experience */}
-                  <Button
-                    onClick={() => {
-                      const updated = [
-                        ...experienceData,
-                        {
-                          title: "",
-                          description: "",
-                          startDate: "",
-                          endDate: "",
-                        },
-                      ];
-                      setExperienceData(updated);
-                    }}
-                    className="bg-green-600 text-white mt-4"
-                  >
-                    + Add Experience
-                  </Button>
-
-                  <div className="flex justify-end mt-4">
-                    <button
-                      className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                      onClick={() => {
-                        setParsedData((prev: any) => ({
-                          ...prev,
-                          [currentExperienceField as string]: experienceData,
-                        }));
-                        setShowEditor(false);
-                      }}
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Project */}
-              {editType === "projects" && (
-                <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                  <h2 className="text-lg font-bold mb-4 text-black">
-                    Edit Projects
-                  </h2>
-
-                  {projectData.map((proj, index) => (
-                    <div
-                      key={index}
-                      className="mb-6 border p-3 rounded-md bg-gray-100"
-                    >
-                      <input
-                        type="text"
-                        value={proj.name}
-                        onChange={(e) => {
-                          const updated = [...projectData];
-                          updated[index].name = e.target.value;
-                          setProjectData(updated);
-                        }}
-                        placeholder="Project Name"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <textarea
-                        value={proj.description}
-                        onChange={(e) => {
-                          const updated = [...projectData];
-                          updated[index].description = e.target.value;
-                          setProjectData(updated);
-                        }}
-                        placeholder="Description"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <input
-                        type="text"
-                        value={proj.github}
-                        onChange={(e) => {
-                          const updated = [...projectData];
-                          updated[index].github = e.target.value;
-                          setProjectData(updated);
-                        }}
-                        placeholder="GitHub Link"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <input
-                        type="text"
-                        value={proj.live}
-                        onChange={(e) => {
-                          const updated = [...projectData];
-                          updated[index].live = e.target.value;
-                          setProjectData(updated);
-                        }}
-                        placeholder="Live Link"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <Button
-                        onClick={() => {
-                          const updated = [...projectData];
-                          updated.splice(index, 1);
-                          setProjectData(updated);
-                        }}
-                        className="bg-red-600 text-white"
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  ))}
-
-                  <Button
-                    onClick={() => {
-                      const updated = [
-                        ...projectData,
-                        {
-                          name: "",
-                          description: "",
-                          github: "",
-                          live: "",
-                        },
-                      ];
-                      setProjectData(updated);
-                    }}
-                    className="bg-green-600 text-white mt-4"
-                  >
-                    + Add Project
-                  </Button>
-
-                  <div className="flex justify-end mt-4">
-                    <button
-                      className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                      onClick={() => {
-                        setParsedData((prev: any) => ({
-                          ...prev,
-                          [currentProjectField as string]: projectData,
-                        }));
-                        setShowEditor(false);
-                      }}
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Education */}
-              {editType === "education" && (
-                <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                  <h2 className="text-lg font-bold mb-4 text-black">
-                    Edit Education
-                  </h2>
-
-                  {educationData.map((edu, index) => (
-                    <div
-                      key={index}
-                      className="mb-6 border p-3 rounded-md bg-gray-100"
-                    >
-                      <input
-                        type="text"
-                        value={edu.degree}
-                        onChange={(e) => {
-                          const updated = [...educationData];
-                          updated[index].degree = e.target.value;
-                          setEducationData(updated);
-                        }}
-                        placeholder="Degree"
-                        className="w-full p-2 mb-2 border text-black"
-                      />
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          value={edu.startDate}
-                          onChange={(e) => {
-                            const updated = [...educationData];
-                            updated[index].startDate = e.target.value;
-                            setEducationData(updated);
-                          }}
-                          placeholder="Start Date"
-                          className="flex-1 p-2 mb-2 border text-black"
-                        />
-                        <input
-                          type="text"
-                          value={edu.endDate}
-                          onChange={(e) => {
-                            const updated = [...educationData];
-                            updated[index].endDate = e.target.value;
-                            setEducationData(updated);
-                          }}
-                          placeholder="End Date"
-                          className="flex-1 p-2 mb-2 border text-black"
-                        />
-                      </div>
-                      <Button
-                        onClick={() => {
-                          const updated = [...educationData];
-                          updated.splice(index, 1);
-                          setEducationData(updated);
-                        }}
-                        className="bg-red-600 text-white"
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  ))}
-
-                  <Button
-                    onClick={() => {
-                      const updated = [
-                        ...educationData,
-                        {
-                          degree: "",
-                          startDate: "",
-                          endDate: "",
-                        },
-                      ];
-                      setEducationData(updated);
-                    }}
-                    className="bg-green-600 text-white mt-4"
-                  >
-                    + Add Education
-                  </Button>
-
-                  <div className="flex justify-end mt-4">
-                    <button
-                      className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                      onClick={() => {
-                        setParsedData((prev: any) => ({
-                          ...prev,
-                          [currentEducationField as string]: educationData,
-                        }));
-                        // setCurrentEducationField(null);
-                        // setCurrentProjectField(null);
-                        // setCurrentExperienceField(null)
-                        setShowEditor(false);
-                      }}
-                    >
-                      Save & Close
-                    </button>
-                  </div>
-                </div>
-              )}
-              {/* Phone Number Editor */}
-              {/* Phone Number Editor */}
-              {editType === "email" && (
-                <div className="p-6">
-                  <h2 className="text-lg font-bold mb-4 text-black">
-                    Edit Email
-                  </h2>
-
-                  <input
-                    type="email"
-                    className="w-full border border-gray-300 px-3 py-2 rounded mb-4 text-black"
-                    value={selectedEmail ?? ""}
-                    onChange={(e) => setSelectedEmail(e.target.value)}
-                    placeholder="Enter your Email"
-                  />
-
-                  <div className="flex justify-end gap-2">
-                    {/* <button
-                      className="px-4 py-2 bg-gray-300 rounded text-black"
-                      onClick={() => setShowEditor(false)}
-                    >
-                      Cancel
-                    </button> */}
-                    <button
-                      className="px-4 py-2 bg-blue-600 text-white rounded"
-                      onClick={() => {
-                        if (emailField && selectedEmail !== null) {
-                          setParsedData((prev: any) => ({
-                            ...prev,
-                            [emailField]: selectedEmail,
-                          }));
-                        }
-                        setShowEditor(false);
-                      }}
-                    >
-                      Add
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Phone Editor */}
-              {editType === "phone" && (
-                <div className="p-6">
-                  <h2 className="text-lg font-bold mb-4 text-black">
-                    Edit Phone Number
-                  </h2>
-
-                  <input
-                    type="email"
-                    className="w-full border border-gray-300 px-3 py-2 rounded mb-4 text-black"
-                    value={selectedNumber ?? ""}
-                    onChange={(e) => setSelectedNumber(Number(e.target.value))}
-                    placeholder="Enter your number"
-                  />
-
-                  <div className="flex justify-end gap-2">
-                    {/* <button
-                      className="px-4 py-2 bg-gray-300 rounded text-black"
-                      onClick={() => setShowEditor(false)}
-                    >
-                      Cancel
-                    </button> */}
-                    <button
-                      className="px-4 py-2 bg-blue-600 text-white rounded"
-                      onClick={() => {
-                        if (selectedField && selectedNumber !== null) {
-                          setParsedData((prev: any) => ({
-                            ...prev,
-                            [selectedField]: selectedNumber,
-                          }));
-                        }
-                        setShowEditor(false);
-                      }}
-                    >
-                      Add
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              <div className="flex justify-end mt-4">
-                <button
-                  className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                  onClick={() => setShowEditor(false)}
+                {/* Add new experience */}
+                <Button
+                  onClick={() => {
+                    const updated = [
+                      ...experienceData,
+                      {
+                        title: "",
+                        description: "",
+                        startDate: "",
+                        endDate: "",
+                      },
+                    ];
+                    setExperienceData(updated);
+                  }}
+                  className="bg-green-600 text-white mt-4"
                 >
-                  Close
-                </button>
+                  + Add Experience
+                </Button>
+
+                <div className="flex justify-end mt-4">
+                  <button
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                    onClick={() => {
+                      setParsedData((prev: any) => ({
+                        ...prev,
+                        [currentExperienceField as string]: experienceData,
+                      }));
+                      setShowEditor(false);
+                    }}
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
+            )}
+
+            {/* Project */}
+            {editType === "projects" && (
+              <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
+                <h2 className="text-lg font-bold mb-4 text-black">
+                  Edit Projects
+                </h2>
+
+                {projectData.map((proj, index) => (
+                  <div
+                    key={index}
+                    className="mb-6 border p-3 rounded-md bg-gray-100"
+                  >
+                    <input
+                      type="text"
+                      value={proj.name}
+                      onChange={(e) => {
+                        const updated = [...projectData];
+                        updated[index].name = e.target.value;
+                        setProjectData(updated);
+                      }}
+                      placeholder="Project Name"
+                      className="w-full p-2 mb-2 border text-black"
+                    />
+                    <textarea
+                      value={proj.description}
+                      onChange={(e) => {
+                        const updated = [...projectData];
+                        updated[index].description = e.target.value;
+                        setProjectData(updated);
+                      }}
+                      placeholder="Description"
+                      className="w-full p-2 mb-2 border text-black"
+                    />
+                    <input
+                      type="text"
+                      value={proj.github}
+                      onChange={(e) => {
+                        const updated = [...projectData];
+                        updated[index].github = e.target.value;
+                        setProjectData(updated);
+                      }}
+                      placeholder="GitHub Link"
+                      className="w-full p-2 mb-2 border text-black"
+                    />
+                    <input
+                      type="text"
+                      value={proj.live}
+                      onChange={(e) => {
+                        const updated = [...projectData];
+                        updated[index].live = e.target.value;
+                        setProjectData(updated);
+                      }}
+                      placeholder="Live Link"
+                      className="w-full p-2 mb-2 border text-black"
+                    />
+                    <Button
+                      onClick={() => {
+                        const updated = [...projectData];
+                        updated.splice(index, 1);
+                        setProjectData(updated);
+                      }}
+                      className="bg-red-600 text-white"
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                ))}
+
+                <Button
+                  onClick={() => {
+                    const updated = [
+                      ...projectData,
+                      {
+                        name: "",
+                        description: "",
+                        github: "",
+                        live: "",
+                      },
+                    ];
+                    setProjectData(updated);
+                  }}
+                  className="bg-green-600 text-white mt-4"
+                >
+                  + Add Project
+                </Button>
+
+                <div className="flex justify-end mt-4">
+                  <button
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                    onClick={() => {
+                      setParsedData((prev: any) => ({
+                        ...prev,
+                        [currentProjectField as string]: projectData,
+                      }));
+                      setShowEditor(false);
+                    }}
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Education */}
+            {editType === "education" && (
+              <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
+                <h2 className="text-lg font-bold mb-4 text-black">
+                  Edit Education
+                </h2>
+
+                {educationData.map((edu, index) => (
+                  <div
+                    key={index}
+                    className="mb-6 border p-3 rounded-md bg-gray-100"
+                  >
+                    <input
+                      type="text"
+                      value={edu.degree}
+                      onChange={(e) => {
+                        const updated = [...educationData];
+                        updated[index].degree = e.target.value;
+                        setEducationData(updated);
+                      }}
+                      placeholder="Degree"
+                      className="w-full p-2 mb-2 border text-black"
+                    />
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={edu.startDate}
+                        onChange={(e) => {
+                          const updated = [...educationData];
+                          updated[index].startDate = e.target.value;
+                          setEducationData(updated);
+                        }}
+                        placeholder="Start Date"
+                        className="flex-1 p-2 mb-2 border text-black"
+                      />
+                      <input
+                        type="text"
+                        value={edu.endDate}
+                        onChange={(e) => {
+                          const updated = [...educationData];
+                          updated[index].endDate = e.target.value;
+                          setEducationData(updated);
+                        }}
+                        placeholder="End Date"
+                        className="flex-1 p-2 mb-2 border text-black"
+                      />
+                    </div>
+                    <Button
+                      onClick={() => {
+                        const updated = [...educationData];
+                        updated.splice(index, 1);
+                        setEducationData(updated);
+                      }}
+                      className="bg-red-600 text-white"
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                ))}
+
+                <Button
+                  onClick={() => {
+                    const updated = [
+                      ...educationData,
+                      {
+                        degree: "",
+                        startDate: "",
+                        endDate: "",
+                      },
+                    ];
+                    setEducationData(updated);
+                  }}
+                  className="bg-green-600 text-white mt-4"
+                >
+                  + Add Education
+                </Button>
+
+                <div className="flex justify-end mt-4">
+                  <button
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                    onClick={() => {
+                      setParsedData((prev: any) => ({
+                        ...prev,
+                        [currentEducationField as string]: educationData,
+                      }));
+                      // setCurrentEducationField(null);
+                      // setCurrentProjectField(null);
+                      // setCurrentExperienceField(null)
+                      setShowEditor(false);
+                    }}
+                  >
+                    Save & Close
+                  </button>
+                </div>
+              </div>
+            )}
+            {/* Phone Number Editor */}
+            {/* Phone Number Editor */}
+            {editType === "email" && (
+              <div className="p-6">
+                <h2 className="text-lg font-bold mb-4 text-black">
+                  Edit Email
+                </h2>
+
+                <input
+                  type="email"
+                  className="w-full border border-gray-300 px-3 py-2 rounded mb-4 text-black"
+                  value={selectedEmail ?? ""}
+                  onChange={(e) => setSelectedEmail(e.target.value)}
+                  placeholder="Enter your Email"
+                />
+
+                <div className="flex justify-end gap-2">
+                  {/* <button
+                      className="px-4 py-2 bg-gray-300 rounded text-black"
+                      onClick={() => setShowEditor(false)}
+                    >
+                      Cancel
+                    </button> */}
+                  <button
+                    className="px-4 py-2 bg-blue-600 text-white rounded"
+                    onClick={() => {
+                      if (emailField && selectedEmail !== null) {
+                        setParsedData((prev: any) => ({
+                          ...prev,
+                          [emailField]: selectedEmail,
+                        }));
+                      }
+                      setShowEditor(false);
+                    }}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Phone Editor */}
+            {editType === "phone" && (
+              <div className="p-6">
+                <h2 className="text-lg font-bold mb-4 text-black">
+                  Edit Phone Number
+                </h2>
+
+                <input
+                  type="email"
+                  className="w-full border border-gray-300 px-3 py-2 rounded mb-4 text-black"
+                  value={selectedNumber ?? ""}
+                  onChange={(e) => setSelectedNumber(Number(e.target.value))}
+                  placeholder="Enter your number"
+                />
+
+                <div className="flex justify-end gap-2">
+                  {/* <button
+                      className="px-4 py-2 bg-gray-300 rounded text-black"
+                      onClick={() => setShowEditor(false)}
+                    >
+                      Cancel
+                    </button> */}
+                  <button
+                    className="px-4 py-2 bg-blue-600 text-white rounded"
+                    onClick={() => {
+                      if (selectedField && selectedNumber !== null) {
+                        setParsedData((prev: any) => ({
+                          ...prev,
+                          [selectedField]: selectedNumber,
+                        }));
+                      }
+                      setShowEditor(false);
+                    }}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="flex justify-end mt-4">
+              <button
+                className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                onClick={() => setShowEditor(false)}
+              >
+                Close
+              </button>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Download Button */}
-      </div>
+      {/* Download Button */}
     </div>
   );
 };

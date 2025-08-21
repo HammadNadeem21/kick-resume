@@ -5,7 +5,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Briefcase } from "lucide-react";
 import { pdf } from "@react-pdf/renderer";
-
+import { motion, AnimatePresence } from "framer-motion";
 import Template1 from "@/components/Template1";
 import { useDropzone } from "react-dropzone";
 import { PDFDownloadLink } from "@react-pdf/renderer";
@@ -627,147 +627,139 @@ const AiPromptPage = () => {
         </div>
       </section>
 
-      <div className="mb-8">
-        {/* <h1
-          className={`text-3xl ${robot700.className} mb-4 text-mySkyBlue font-bold`}
-        >
-          Build Your Resume Chat-Wise
-        </h1> */}
+      {/* Select Template */}
+      <div className="grid lg:grid-cols-12 grid-cols-1  lg:h-[350px]  mb-10">
+        {/* Upload Image */}
 
-        {/* Select Template */}
-        <div className="flex flex-wrap justify-center gap-6 mb-10">
+        <div className="col-span-4 flex flex-col justify-center gap-2">
+          <div className="flex flex-col items-center">
+            <div className="w-[100px] h-[100px] rounded-full border-2 border-white overflow-hidden mb-3">
+              {previewUrl ? (
+                <Image
+                  width={158}
+                  height={158}
+                  src={previewUrl}
+                  alt="Preview"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-300 flex items-center justify-center text-sm text-gray-600">
+                  No Image
+                </div>
+              )}
+            </div>
+
+            {/* Dropzone uploader */}
+            <div
+              {...getRootProps()}
+              className="text-center cursor-pointer border border-dashed border-gray-400 rounded-md p-2 hover:bg-white/10 transition-all"
+            >
+              <input {...getInputProps()} />
+              <p className="text-xs text-gray-300">
+                {isDragActive
+                  ? "Drop the image here..."
+                  : "Click or drag an image to upload"}
+              </p>
+            </div>
+          </div>
+
+          <Button
+            className="bg-mySkyBlue/60 hover:bg-mySkyBlue font-bold text-white mx-auto "
+            onClick={async () => {
+              if (!imageFile) return alert("Please upload an image!");
+
+              const fd = new FormData();
+              fd.append("image", imageFile);
+
+              const res = await fetch("/api/process-image", {
+                method: "POST",
+                body: fd,
+              });
+
+              const json = await res.json();
+
+              if (json.url) {
+                setProcessedUrl(json.url); // set processed image (no bg + colored bg)
+              } else {
+                alert("Failed to process image");
+              }
+            }}
+          >
+            Remove BG
+          </Button>
+
+          {processedUrl && (
+            <div className="lg:grid grid-cols-5 flex items-center justify-center gap-2 w-[100%] mx-auto flex-wrap mt-2 mb-2">
+              {/* Original Image */}
+              <div
+                onClick={() => {
+                  setSelectedProcessedImage(previewUrl);
+                  setSelectedImageBgColor(undefined); // Reset background color on click
+                }}
+                className={`w-[50px] h-[50px] rounded-full flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${
+                  selectedProcessedImage === previewUrl && !selectedImageBgColor
+                    ? "ring-4 ring-mySkyBlue"
+                    : ""
+                }`}
+              >
+                <Image
+                  src={previewUrl ?? "/dummy.jpg"}
+                  width={170}
+                  height={170}
+                  alt="Original"
+                  className="object-contain"
+                />
+              </div>
+              {/* Processed Images (with colored backgrounds) */}
+              {[
+                "bg-blue-500",
+                "bg-white",
+                "bg-green-500",
+                "bg-gray-500",
+                "bg-yellow-600",
+                "bg-black",
+                "bg-purple-500",
+                "bg-yellow-300",
+                "bg-[#28384a]",
+              ].map((bg, index) => (
+                <div
+                  key={index}
+                  onClick={() => {
+                    setSelectedProcessedImage(processedUrl);
+                    setSelectedImageBgColor(bg); // Set background color on click
+                  }}
+                  className={`w-[50px] h-[50px] rounded-full ${bg} flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${
+                    selectedProcessedImage === processedUrl &&
+                    selectedImageBgColor === bg
+                      ? "ring-4 ring-mySkyBlue"
+                      : ""
+                  }`}
+                >
+                  <Image
+                    src={processedUrl}
+                    width={160}
+                    height={160}
+                    alt={`Processed Image ${index}`}
+                    className="object-fill mt-4"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="col-span-8 flex items-center justify-center lg:mt-0 mt-5">
           <CarouselSize
             array={templateData}
             getTemplateId={(id) => setSelectedTemplate(id)}
             selectedTemplate={selectedTemplate}
           />
         </div>
-
-        {/* Upload Image */}
-        {(selectedTemplate === 4 ||
-          selectedTemplate === 7 ||
-          selectedTemplate === 9) && (
-          <div>
-            <div className="flex flex-col items-center mb-6">
-              <div className="w-[200px] h-[200px] rounded-full border-2 border-white overflow-hidden mb-3">
-                {previewUrl ? (
-                  <Image
-                    width={158}
-                    height={158}
-                    src={previewUrl}
-                    alt="Preview"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-300 flex items-center justify-center text-sm text-gray-600">
-                    No Image
-                  </div>
-                )}
-              </div>
-
-              {/* Dropzone uploader */}
-              <div
-                {...getRootProps()}
-                className="text-center cursor-pointer border border-dashed border-gray-400 rounded-md p-2 hover:bg-white/10 transition-all"
-              >
-                <input {...getInputProps()} />
-                <p className="text-sm text-gray-300">
-                  {isDragActive
-                    ? "Drop the image here..."
-                    : "Click or drag an image to upload"}
-                </p>
-              </div>
-            </div>
-
-            <div className=" flex items-center justify-center">
-              <Button
-                className="bg-mySkyBlue/50 hover:bg-mySkyBlue text-white mx-auto mt-4 mb-4"
-                onClick={async () => {
-                  if (!imageFile) return alert("Please upload an image!");
-
-                  const fd = new FormData();
-                  fd.append("image", imageFile);
-
-                  const res = await fetch("/api/process-image", {
-                    method: "POST",
-                    body: fd,
-                  });
-
-                  const json = await res.json();
-
-                  if (json.url) {
-                    setProcessedUrl(json.url); // set processed image (no bg + colored bg)
-                  } else {
-                    alert("Failed to process image");
-                  }
-                }}
-              >
-                Remove BG
-              </Button>
-            </div>
-
-            {processedUrl && (
-              <div className="flex items-center justify-center gap-5 flex-wrap mt-5 mb-5">
-                {/* Original Image */}
-                <div
-                  onClick={() => {
-                    setSelectedProcessedImage(previewUrl);
-                    setSelectedImageBgColor(undefined); // Reset background color on click
-                  }}
-                  className={`w-[170px] h-[170px] rounded-full flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${
-                    selectedProcessedImage === previewUrl &&
-                    !selectedImageBgColor
-                      ? "border-2 border-mySkyBlue ring-1 ring-mySkyBlue"
-                      : "border-none"
-                  }`}
-                >
-                  <Image
-                    src={previewUrl ?? "/dummy.jpg"}
-                    width={170}
-                    height={170}
-                    alt="Original"
-                    className="object-contain"
-                  />
-                </div>
-                {/* Processed Images (with colored backgrounds) */}
-                {[
-                  "bg-blue-500",
-                  "bg-white",
-                  "bg-green-500",
-                  "bg-gray-500",
-                  "bg-yellow-500",
-                ].map((bg, index) => (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      setSelectedProcessedImage(processedUrl);
-                      setSelectedImageBgColor(bg); // Set background color on click
-                    }}
-                    className={`w-[170px] h-[170px] rounded-full ${bg} flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${
-                      selectedProcessedImage === processedUrl &&
-                      selectedImageBgColor === bg
-                        ? "border-2 border-mySkyBlue ring-1 ring-mySkyBlue"
-                        : ""
-                    }`}
-                  >
-                    <Image
-                      src={processedUrl}
-                      width={160}
-                      height={160}
-                      alt={`Processed Image ${index}`}
-                      className="object-fill mt-4"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
       <div className="py-8 px-4 grid lg:grid-cols-12 grid-cols-1 gap-[40px]">
         <div className="col-span-4">
-          <div className="text-center lg:text-left">
+          <div className="text-center lg:text-left mb-5">
             <h2 className="text-3xl font-bold mb-4 text-mySkyBlue">
               Job Description
             </h2>
@@ -775,6 +767,7 @@ const AiPromptPage = () => {
               Paste the complete job posting for optimal results
             </p>
           </div>
+
           {/* <h1 className="text-mySkyBlue font-bold text-lg text-center mt-5 mb-5">
             Please fill the details
           </h1> */}
@@ -786,14 +779,14 @@ const AiPromptPage = () => {
               onChange={(e) => setUserName(e.target.value)}
               placeholder="Your Name"
               required
-              className="text-mySkyBlue w-[100%] border border-mySkyBlue py-1 px-2 rounded-xl focus:outline-none"
+              className="text-gray-500 w-[100%] border border-mySkyBlue py-1 px-2 rounded-xl focus:outline-none"
             />
             <textarea
               placeholder="Job Description"
               required
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
-              className="text-mySkyBlue w-[100%] h-[220px] border border-mySkyBlue py-1 px-2 rounded-xl focus:outline-none"
+              className="text-gray-500 w-[100%] h-[220px] border border-mySkyBlue py-1 px-2 rounded-xl focus:outline-none resize-none"
               rows={4}
             ></textarea>
 
@@ -808,68 +801,82 @@ const AiPromptPage = () => {
         </div>
 
         <div className="col-span-8">
-          <div className="text-center lg:text-left">
-            <h2 className="text-3xl font-bold mb-4 text-mySkyBlue">
-              Tailored Resume
-            </h2>
-            <p className="text-lg text-gray-500">
-              AI-optimized to match job requirements
-            </p>
-          </div>
-          <div className="flex items-center gap-10">
-            {/* Theme Selection Section */}
-            {(selectedTemplate === 4 ||
-              selectedTemplate === 1 ||
-              selectedTemplate === 7 ||
-              selectedTemplate === 10) && (
-              <Button
-                className="bg-mySkyBlue/50 hover:bg-mySkyBlue w-[100%] font-bold text-white"
-                onClick={() => setShowColorPicker((prev) => !prev)}
-              >
-                Choose Color
-              </Button>
-            )}
-          </div>
-          {showColorPicker && (
-            <div className="mt-10">
-              {/* <ColorPicker/> */}
-              <RgbColorPicker
-                color={
-                  selectedTemplate === 1
-                    ? color1
-                    : selectedTemplate === 4
-                    ? color4
-                    : selectedTemplate === 7
-                    ? color7
-                    : selectedTemplate === 10
-                    ? color10
-                    : color1 // fallback
-                }
-                onChange={
-                  selectedTemplate === 1
-                    ? setColor1
-                    : selectedTemplate === 4
-                    ? setColor4
-                    : selectedTemplate === 7
-                    ? setColor7
-                    : selectedTemplate === 10
-                    ? setColor10
-                    : setColor1 // fallback
-                }
-              />
-              {/* <div className="value">{JSON.stringify(color)}</div> */}
+          <div className="flex items-center justify-between">
+            <div className="text-center lg:text-left">
+              <h2 className="text-3xl font-bold mb-4 text-mySkyBlue">
+                Tailored Resume
+              </h2>
+              <p className="text-lg text-gray-500">
+                AI-optimized to match job requirements
+              </p>
             </div>
-          )}
 
-          {showTemplate && resumeData && (
-            <button
-              onClick={handleDownloadPDF}
-              disabled={credit < 5}
-              className="bg-mySkyBlue/50 mt-5 hover:bg-mySkyBlue w-[100%] text-white px-5 py-1 rounded-lg disabled:opacity-50"
-            >
-              Download PDF
-            </button>
-          )}
+            <div className="flex items-end justify-center gap-2">
+              <div className="relative mt-10 flex flex-col items-center">
+                {/* Theme Selection Section */}
+                {(selectedTemplate === 4 ||
+                  selectedTemplate === 1 ||
+                  selectedTemplate === 7 ||
+                  selectedTemplate === 10) && (
+                  <button
+                    className="bg-mySkyBlue/50 hover:bg-mySkyBlue font-bold text-white px-5 py-2 rounded-lg"
+                    onClick={() => setShowColorPicker((prev) => !prev)}
+                  >
+                    Choose Color
+                  </button>
+                )}
+
+                <AnimatePresence>
+                  {showColorPicker && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }} // shuru main halka upar aur hidden
+                      animate={{ opacity: 1, y: 0 }} // show hote waqt neeche slide + fade in
+                      exit={{ opacity: 0, y: -10 }} // hide hote waqt upar slide + fade out
+                      transition={{ duration: 0.3 }}
+                      className="absolute top-[30px]  w-60 rounded-xl p-4"
+                    >
+                      {/* <ColorPicker/> */}
+                      <RgbColorPicker
+                        color={
+                          selectedTemplate === 1
+                            ? color1
+                            : selectedTemplate === 4
+                            ? color4
+                            : selectedTemplate === 7
+                            ? color7
+                            : selectedTemplate === 10
+                            ? color10
+                            : color1 // fallback
+                        }
+                        onChange={
+                          selectedTemplate === 1
+                            ? setColor1
+                            : selectedTemplate === 4
+                            ? setColor4
+                            : selectedTemplate === 7
+                            ? setColor7
+                            : selectedTemplate === 10
+                            ? setColor10
+                            : setColor1 // fallback
+                        }
+                      />
+                      {/* <div className="value">{JSON.stringify(color)}</div> */}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* {showTemplate && parsedData && ( */}
+              <button
+                onClick={handleDownloadPDF}
+                disabled={credit < 5}
+                className="bg-mySkyBlue/50 mt-5 hover:bg-mySkyBlue text-white font-bold px-5 py-2 rounded-lg disabled:opacity-50 cursor-pointer"
+              >
+                Download PDF
+              </button>
+              {/* )} */}
+            </div>
+          </div>
 
           {!isTemplateLoading && !hasRenderedTemplate ? (
             <div className="w-[100%] bg-gray-200 mt-2 h-[350px] flex flex-col items-center justify-center rounded-lg">
@@ -926,11 +933,11 @@ const AiPromptPage = () => {
         <div className="mt-5">
           {resumeData.mockInterview.map((item: any, index: number) => (
             <div key={index} className="bg-gray-100 p-4 rounded-md mb-4">
-              <h3 className="text-lg font-semibold text-myPurple">
+              <h3 className="text-lg font-semibold text-mySkyBlue">
                 {`Q${index}: ${item.question}`}
               </h3>
               <p className="text-gray-700">
-                <span className="text-lg font-semibold text-myPurple">
+                <span className="text-lg font-semibold text-mySkyBlue">
                   Ans:{" "}
                 </span>
                 {item.answer}

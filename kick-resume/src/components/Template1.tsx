@@ -69,7 +69,10 @@ export default function Template1({
   //     return <p>No resume data found. Please fill the form first.</p>;
 
   return (
-    <div className="bg-myWhite grid grid-cols-[35%,65%] text-gray-700 w-[100%] shadow-lg shadow-mySkyBlue">
+    <div
+      style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+      className="bg-myWhite grid grid-cols-[35%,65%] text-gray-700 max-w-[794px] shadow-lg shadow-mySkyBlue"
+    >
       {/* left-side */}
       <div
         className=" py-2 md:px-3 px-1"
@@ -92,12 +95,15 @@ export default function Template1({
         {/* Education */}
         {data.education.length > 0 && (
           <div
-            className="mt-8 mb-8 cursor-pointer"
+            className="mt-5 mb-5 cursor-pointer"
             onClick={() =>
               handleEducationFieldClick("education", data.education)
             }
           >
-            <h1 className={`md:text-xl text-sm mb-2 text-left mt-5 text-white`}>
+            <h1
+              style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+              className={`md:text-lg text-sm mb-2 text-left  text-white`}
+            >
               Education
             </h1>
 
@@ -117,7 +123,7 @@ export default function Template1({
         {/* Skills */}
         {data.skills.length > 0 && (
           <div
-            className="mt-8 mb-8 cursor-pointer"
+            className="mt-5 mb-5 cursor-pointer"
             onClick={() => handleArrayFieldClick("skills", data.skills)}
           >
             <h1 className={`md:text-xl text-sm mb-2 text-left mt-5 text-white`}>
@@ -140,7 +146,7 @@ export default function Template1({
         {/* languages */}
         {data.languages.length > 0 && (
           <div
-            className="mt-8 mb-8 cursor-pointer"
+            className="mt-5 mb-5 cursor-pointer"
             onClick={() => handleArrayFieldClick("languages", data.languages)}
           >
             <h1 className={`md:text-xl text-sm mb-2 text-left mt-5 text-white`}>
@@ -163,7 +169,7 @@ export default function Template1({
         {/* Certifications */}
         {data.certifications.length > 0 && (
           <div
-            className="mt-8 mb-8 cursor-pointer"
+            className="mt-5 mb-5 cursor-pointer"
             onClick={() =>
               handleArrayFieldClick("certifications", data.certifications)
             }

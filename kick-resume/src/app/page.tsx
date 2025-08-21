@@ -4,11 +4,13 @@ import Security from "@/components/Security";
 // import FileUploaderSection from "@/components/FileUploaderSection";
 import ToolBoxSection from "@/components/ToolBoxSection";
 import QuestionSection from "@/components/QuestionSection";
+import LandingPage from "@/components/LandingPage";
 
 export default function Home() {
   return (
     <>
-      <Hero />
+      {/* <Hero /> */}
+      <LandingPage />
       {/* <Features /> */}
       <Security />
       {/* <FileUploaderSection /> */}

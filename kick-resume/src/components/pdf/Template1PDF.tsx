@@ -1,5 +1,11 @@
-import { Page, Text, View, Document, StyleSheet, Link } from "@react-pdf/renderer";
-
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Link,
+} from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   page: {
@@ -13,7 +19,10 @@ const styles = StyleSheet.create({
     width: "35%",
     // backgroundColor: "#193042",
     color: "white",
-    padding: 16,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 8,
+    paddingRight: 8,
     minHeight: "100%",
   },
   right: {
@@ -23,40 +32,41 @@ const styles = StyleSheet.create({
     minHeight: "100%",
   },
   heading: {
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 4,
-    fontWeight: 500,
+    fontWeight: 400,
+    color: "#fff",
   },
   section: {
-    marginBottom: 12,
+    marginBottom: 16,
+    marginTop: 16,
   },
   divider: {
     borderBottomWidth: 1,
     borderBottomColor: "#fff",
-    marginVertical: 8,
+    marginTop: 8,
+    // marginVertical: 6,
   },
   listItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
     marginBottom: 4,
     marginLeft: 0,
     marginTop: 2,
     fontSize: 10,
   },
   ExperienceItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
     marginBottom: 4,
     marginLeft: 0,
     marginTop: 2,
     fontSize: 12,
     fontWeight: "bold",
-
-
   },
   bullet: {
     fontSize: 10,
-    color: 'white',
+    color: "white",
     marginRight: 6,
     marginTop: 0,
     width: 14,
@@ -66,7 +76,7 @@ const styles = StyleSheet.create({
   },
   bulletRight: {
     fontSize: 14,
-    color: '#193042',
+    color: "#193042",
     marginRight: 6,
     marginTop: 0,
     width: 14,
@@ -90,7 +100,7 @@ const styles = StyleSheet.create({
   contact: {
     fontSize: 10,
     marginBottom: 2,
-    color: "#374151"
+    color: "#374151",
   },
   projectTitle: {
     fontWeight: "bold",
@@ -98,33 +108,48 @@ const styles = StyleSheet.create({
   },
   projectLink: {
     fontSize: 11,
-    color: '#666',
-    textDecoration: 'underline',
+    color: "#666",
+    textDecoration: "underline",
     marginRight: 15,
   },
   projectLinksContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 5,
   },
 });
 
 function getBulletChar(color: string = "white") {
-
   return "•";
 }
 
-export default function Template1PDF({ data, color }: { data: any, color: any }) {
+export default function Template1PDF({
+  data,
+  color,
+}: {
+  data: any;
+  color: any;
+}) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Left Side */}
-        <View style={{ ...styles.left, backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}>
+        <View
+          style={{
+            ...styles.left,
+            backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+          }}
+        >
           <Text style={styles.name}>{data.name}</Text>
           <View style={styles.divider} />
-          <View style={styles.section}>
+          <View style={{ ...styles.section, width: "80%" }}>
             <Text style={styles.heading}>Education</Text>
             {data.education?.map((item: any, i: number) => (
-              <View key={i} style={styles.listItem}>
+              <View
+                key={i}
+                style={{
+                  ...styles.listItem,
+                }}
+              >
                 <Text style={styles.bullet}>{getBulletChar()}</Text>
                 <Text>{item.degree}</Text>
               </View>
@@ -150,9 +175,7 @@ export default function Template1PDF({ data, color }: { data: any, color: any })
               </View>
             ))}
           </View>
-          {data.certifications.length > 0 && (
-            <View style={styles.divider} />
-          )}
+          {data.certifications.length > 0 && <View style={styles.divider} />}
           {data.certifications.length > 0 && (
             <View style={styles.section}>
               <Text style={styles.heading}>Certifications</Text>
@@ -164,8 +187,6 @@ export default function Template1PDF({ data, color }: { data: any, color: any })
               ))}
             </View>
           )}
-
-
         </View>
         {/* Right Side */}
         <View style={styles.right}>
@@ -194,20 +215,20 @@ export default function Template1PDF({ data, color }: { data: any, color: any })
             <Text style={{ lineHeight: 1 }}>{data.summary}</Text>
           </View>
 
-          {data.experience.length > 0 && (
-            <View style={styles.divider} />
-
-          )}
+          {data.experience.length > 0 && <View style={styles.divider} />}
           {data.experience.length > 0 && (
             <View style={styles.section}>
               <Text style={styles.heading}>Experience</Text>
               {data.experience?.map((item: any, i: number) => (
-                <View key={i} style={{ marginBottom: 8, flexDirection: "column" }}>
+                <View
+                  key={i}
+                  style={{ marginBottom: 8, flexDirection: "column" }}
+                >
                   <View style={styles.ExperienceItem}>
-                    <Text style={styles.bulletRight}>{getBulletChar("#193042")}</Text>
-                    <Text>
-                      {item.title}
+                    <Text style={styles.bulletRight}>
+                      {getBulletChar("#193042")}
                     </Text>
+                    <Text>{item.title}</Text>
                   </View>
 
                   <Text style={{ lineHeight: 1 }}>{item.description}</Text>
@@ -219,17 +240,20 @@ export default function Template1PDF({ data, color }: { data: any, color: any })
             </View>
           )}
 
-          {data.projects.length > 0 && (
-            <View style={styles.divider} />
-          )}
+          {data.projects.length > 0 && <View style={styles.divider} />}
 
           {data.projects.length > 0 && (
             <View style={styles.section}>
               <Text style={styles.heading}>Projects</Text>
               {data.projects?.map((item: any, i: number) => (
-                <View key={i} style={{ marginBottom: 8, flexDirection: "column" }}>
+                <View
+                  key={i}
+                  style={{ marginBottom: 8, flexDirection: "column" }}
+                >
                   <View style={styles.listItem}>
-                    <Text style={styles.bulletRight}>{getBulletChar("#193042")}</Text>
+                    <Text style={styles.bulletRight}>
+                      {getBulletChar("#193042")}
+                    </Text>
                     <Text style={styles.projectTitle}>{item.name}</Text>
                   </View>
                   <Text style={{ lineHeight: 1 }}>{item.description}</Text>
@@ -247,7 +271,6 @@ export default function Template1PDF({ data, color }: { data: any, color: any })
               ))}
             </View>
           )}
-
         </View>
       </Page>
     </Document>

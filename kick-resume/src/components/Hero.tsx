@@ -12,13 +12,13 @@ const Hero = () => {
   return (
     <div className="grid lg:grid-cols-2 grid-cols-1  py-10">
       <div className=" flex flex-col gap-3 items-center justify-center lg:px-[100px] px-8 py-10">
-        <h1 className="lg:text-4xl text-3xl font-semibold text-myPurple lg:text-left text-center">
+        {/* <h1 className="lg:text-4xl text-3xl font-semibold text-myPurple lg:text-left text-center">
           Let AI Score & Improve Your Resume in Seconds
         </h1>
         <p className="text-myPurple mt-7 lg:text-left text-center">
           Upload your resume for a quick AI review - get actionable suggestions
           to improve formatting, content and impact.
-        </p>
+        </p> */}
 
         {/* <FileUploader/> */}
         <div className="mt-8">
@@ -27,7 +27,7 @@ const Hero = () => {
       </div>
 
       <div className=" flex items-center justify-center">
-        <div className="shadow-lg shadow-myPurple h-[300px] w-[480px] rounded-xl ">
+        <div className="shadow-lg shadow-mySkyBlue h-[300px] w-[480px] rounded-xl ">
           <Image
             src="/hero-section.png"
             alt="picture"
@@ -43,7 +43,7 @@ const Hero = () => {
       </div>
 
       <div className="lg:col-span-2 col-span-1 text-center px-2">
-        <h1 className="text-myPurple font-semibold">
+        <h1 className="text-mySkyBlue font-semibold">
           Built to help your your resume shine - whether you are applying
           locally or globally.
         </h1>

@@ -314,14 +314,14 @@ ${pdfText}`,
           },
         })}
         className={`sm:w-[400px] sm:h-[200px] w-[300px] h-[160px] border-2 border-dashed rounded-xl flex flex-col gap-2 items-center justify-center text-center cursor-pointer transition ${
-          isDragActive ? "bg-blue-100 border-myMidPurple" : "border-myPurple"
+          isDragActive ? "bg-blue-100 border-mySkyBlue" : "border-mySkyBlue"
         }`}
       >
-        <div className="py-3 px-3 flex items-center justify-center bg-myLightPurple2 rounded-lg">
-          <FaFileAlt size={25} className="text-myPurple" />
+        <div className="py-3 px-3 flex items-center justify-center bg-mySkyBlue/30 rounded-lg">
+          <FaFileAlt size={25} className="text-mySkyBlue" />
         </div>
         <input {...getInputProps()} />
-        <p className="text-myPurple sm:text-lg text-sm">
+        <p className="text-mySkyBlue sm:text-lg text-sm">
           {isDragActive
             ? "Drop the PDF here..."
             : "Upload Your Resume (PDF only)"}
@@ -333,7 +333,7 @@ ${pdfText}`,
       {/* Analyze Button */}
       <button
         onClick={handleAnalyze}
-        className=" mt-5 py-2 px-5 rounded-lg text-white font-semibold bg-myMidPurple hover:bg-myPurple transition-all duration-300 text-xl"
+        className=" mt-5 py-2 px-5 rounded-lg text-white font-semibold bg-mySkyBlue/60 hover:bg-mySkyBlue transition-all duration-300 text-xl"
         disabled={loading || !session}
       >
         {loading ? "Analyzing..." : "Analyze"}

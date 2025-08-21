@@ -71,7 +71,7 @@ export function CarouselSize({
       opts={{
         align: "start",
       }}
-      className="lg:w-[70%] md:w-[60%] sm:w-[80%] w-[50%]  max-w-5xl"
+      className=" lg:w-[90%] w-[60%] max-w-5xl"
     >
       <CarouselContent>
         {array.map((template) => (
@@ -83,7 +83,7 @@ export function CarouselSize({
               onClick={() => getTemplateId(template.id)}
               className="relative cursor-pointer mb-2 rounded-md transition-all duration-300 "
             >
-              <div className="h-[300px] w-full shadow-md shadow-mySkyBlue ">
+              <div className="sm:h-[240px] h-[340px] w-full shadow-md shadow-mySkyBlue ">
                 <Image
                   src={template.image}
                   alt={template.name}
@@ -95,7 +95,7 @@ export function CarouselSize({
 
               {selectedTemplate === template.id && (
                 <div
-                  className="absolute inset-0 h-[300px] w-full bg-gray-700 bg-opacity-50 flex items-center justify-center"
+                  className="absolute inset-0 sm:h-[240px] h-[340px] w-full bg-gray-700 bg-opacity-50 flex items-center justify-center"
                   style={{ zIndex: 10 }}
                 >
                   <div className="border border-white text-white rounded-full px-1 py-1 z-20">
