@@ -1,165 +1,3 @@
-// "use client";
-// import React, { useCallback, useState } from "react";
-// import { useDropzone } from "react-dropzone";
-
-// const Page = () => {
-//   const [pdfFile, setPdfFile] = useState<File | null>(null);
-//   const [fileName, setFileName] = useState("");
-//   const [jobDescription, setJobDescription] = useState("");
-//   const [analysisResult, setAnalysisResult] = useState<any>(null);
-//   const [loading, setLoading] = useState(false);
-
-//   const onDrop = useCallback((acceptedFiles: File[]) => {
-//     const file = acceptedFiles[0];
-//     if (file && file.type === "application/pdf") {
-//       setPdfFile(file);
-//       setFileName(file.name);
-//     } else {
-//       alert("Please upload a PDF file only.");
-//     }
-//   }, []);
-
-//   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-//     onDrop,
-//     accept: { "application/pdf": [] },
-//     multiple: false,
-//   });
-
-//   const handleAnalyze = async () => {
-//     if (!jobDescription || !pdfFile) {
-//       alert("Please enter job description and upload resume!");
-//       return;
-//     }
-
-//     setLoading(true);
-//     setAnalysisResult(null);
-
-//     try {
-//       const formData = new FormData();
-//       formData.append("jobDescription", jobDescription);
-//       formData.append("resume", pdfFile);
-
-//       const res = await fetch("/api/resume", {
-//         headers: { "Content-Type": "application/json" },
-//         method: "POST",
-//         body: formData,
-//       });
-//       console.log("Response status:", res.status);
-//       console.log("Response text:", await res.text());
-//       const data = await res.json();
-//       if (!res.ok) {
-//         alert(data.error || "Something went wrong");
-//         return;
-//       }
-
-//       setAnalysisResult(data);
-//       console.log("Analysis Result:", data);
-//     } catch (error) {
-//       console.error("Error analyzing:", error);
-//       alert("Something went wrong");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="px-[30px] py-[60px]">
-//       <div className="flex items-center justify-between px-[100px]">
-//         <textarea
-//           value={jobDescription}
-//           onChange={(e) => setJobDescription(e.target.value)}
-//           placeholder="Type Job Dexcription"
-//           className="border border-myPurple text-myPurple rounded-lg focus:outline-none w-[40%] py-2 px-3"
-//           rows={7}
-//         ></textarea>
-
-//         {/* Resume Uploader */}
-//         {/* <div
-//           {...getRootProps()}
-//           className="w-[40%] border-2 border-dashed border-myPurple rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer bg-white hover:bg-myPurple/10 transition-all"
-//         >
-//           <input {...getInputProps()} />
-//           {isDragActive ? (
-//             <p className="text-myPurple">Drop the PDF here ...</p>
-//           ) : (
-//             <>
-//               <p className="text-myPurple font-semibold">
-//                 Drag & drop your PDF resume here, or click to select
-//               </p>
-//               <p className="text-gray-500 text-sm mt-2">
-//                 Only PDF files are accepted
-//               </p>
-//             </>
-//           )}
-//           {fileName && (
-//             <div className="mt-4 text-green-600 font-medium">
-//               Uploaded: {fileName}
-//             </div>
-//           )}
-//         </div> */}
-
-//         <div
-//           {...getRootProps()}
-//           className="w-[40%] border-2 border-dashed border-myPurple rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer bg-white hover:bg-myPurple/10 transition-all"
-//         >
-//           <input {...getInputProps()} />
-//           {isDragActive ? (
-//             <p className="text-myPurple">Drop the PDF here ...</p>
-//           ) : (
-//             <>
-//               <p className="text-myPurple font-semibold">
-//                 Drag & drop your PDF resume here, or click to select
-//               </p>
-//               <p className="text-gray-500 text-sm mt-2">
-//                 Only PDF files are accepted
-//               </p>
-//             </>
-//           )}
-//           {fileName && (
-//             <div className="mt-4 text-green-600 font-medium">
-//               Uploaded: {fileName}
-//             </div>
-//           )}
-//         </div>
-//       </div>
-
-//       <div className="flex items-center justify-center py-5 mt-5">
-//         <button
-//           onClick={handleAnalyze}
-//           disabled={loading}
-//           className="py-1 px-4 rounded-lg text-white font-semibold bg-myMidPurple hover:bg-myPurple transition-all duration-300"
-//         >
-//           {loading ? "Analyzing..." : "Analyze"}
-//         </button>
-//       </div>
-
-//       {/* Result */}
-//       {analysisResult && (
-//         <div className="mt-8 bg-gray-100 p-6 rounded-lg">
-//           <h2 className="text-lg font-bold">Analysis Result</h2>
-//           <p className="mt-2">
-//             <strong>Score:</strong> {analysisResult.score}/100
-//           </p>
-//           <p className="mt-2">
-//             <strong>Missing Skills:</strong>{" "}
-//             {analysisResult.missingSkills?.join(", ") || "None"}
-//           </p>
-//           <div className="mt-2">
-//             <strong>Suggestions:</strong>
-//             <ul className="list-disc list-inside">
-//               {analysisResult.suggestions?.map((s: string, i: number) => (
-//                 <li key={i}>{s}</li>
-//               ))}
-//             </ul>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Page;
-
 "use client";
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -169,6 +7,7 @@ import pdfWorker from "pdfjs-dist/build/pdf.worker.entry";
 import SectionScoreChart from "@/components/SectionScoreChart";
 import { FaFileAlt } from "react-icons/fa";
 import { LuUpload } from "react-icons/lu";
+import { Briefcase } from "lucide-react";
 
 import { TiTick } from "react-icons/ti";
 import { IoClose } from "react-icons/io5";
@@ -397,6 +236,15 @@ Output JSON in this structure:
               Detailed comparison and recommendations
             </p>
           </div>
+          {!analysisResult && (
+            <div className="flex flex-col bg-gray-200 items-center justify-center h-[550px] mt-5 rounded-lg">
+              <Briefcase size={40} className="text-gray-500" />
+              <p className="text-gray-500 text-center">
+                Upload your resume and job description to see the analysis
+                results here.
+              </p>
+            </div>
+          )}
           {analysisResult && (
             <div className="mt-8 bg-gray-100 p-6 rounded-lg">
               <h2 className="md:text-2xl font-bold text-center text-mySkyBlue">

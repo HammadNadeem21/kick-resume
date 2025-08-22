@@ -827,42 +827,46 @@ const AiPromptPage = () => {
                 )}
 
                 <AnimatePresence>
-                  {showColorPicker && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }} // shuru main halka upar aur hidden
-                      animate={{ opacity: 1, y: 0 }} // show hote waqt neeche slide + fade in
-                      exit={{ opacity: 0, y: -10 }} // hide hote waqt upar slide + fade out
-                      transition={{ duration: 0.3 }}
-                      className="absolute top-[30px]  w-60 rounded-xl p-4"
-                    >
-                      {/* <ColorPicker/> */}
-                      <RgbColorPicker
-                        color={
-                          selectedTemplate === 1
-                            ? color1
-                            : selectedTemplate === 4
-                            ? color4
-                            : selectedTemplate === 7
-                            ? color7
-                            : selectedTemplate === 10
-                            ? color10
-                            : color1 // fallback
-                        }
-                        onChange={
-                          selectedTemplate === 1
-                            ? setColor1
-                            : selectedTemplate === 4
-                            ? setColor4
-                            : selectedTemplate === 7
-                            ? setColor7
-                            : selectedTemplate === 10
-                            ? setColor10
-                            : setColor1 // fallback
-                        }
-                      />
-                      {/* <div className="value">{JSON.stringify(color)}</div> */}
-                    </motion.div>
-                  )}
+                  {showColorPicker &&
+                    (selectedTemplate === 4 ||
+                      selectedTemplate === 1 ||
+                      selectedTemplate === 7 ||
+                      selectedTemplate === 10) && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }} // shuru main halka upar aur hidden
+                        animate={{ opacity: 1, y: 0 }} // show hote waqt neeche slide + fade in
+                        exit={{ opacity: 0, y: -10 }} // hide hote waqt upar slide + fade out
+                        transition={{ duration: 0.3 }}
+                        className="absolute top-[30px]  w-60 rounded-xl p-4"
+                      >
+                        {/* <ColorPicker/> */}
+                        <RgbColorPicker
+                          color={
+                            selectedTemplate === 1
+                              ? color1
+                              : selectedTemplate === 4
+                              ? color4
+                              : selectedTemplate === 7
+                              ? color7
+                              : selectedTemplate === 10
+                              ? color10
+                              : color1 // fallback
+                          }
+                          onChange={
+                            selectedTemplate === 1
+                              ? setColor1
+                              : selectedTemplate === 4
+                              ? setColor4
+                              : selectedTemplate === 7
+                              ? setColor7
+                              : selectedTemplate === 10
+                              ? setColor10
+                              : setColor1 // fallback
+                          }
+                        />
+                        {/* <div className="value">{JSON.stringify(color)}</div> */}
+                      </motion.div>
+                    )}
                 </AnimatePresence>
               </div>
 
