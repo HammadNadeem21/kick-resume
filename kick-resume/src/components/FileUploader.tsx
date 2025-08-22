@@ -313,7 +313,7 @@ ${pdfText}`,
             }
           },
         })}
-        className={`sm:w-[400px] sm:h-[200px] w-[300px] h-[160px] border-2 border-dashed rounded-xl flex flex-col gap-2 items-center justify-center text-center cursor-pointer transition ${
+        className={`sm:w-[480px] sm:h-[300px] w-[300px] h-[160px] border-2 border-dashed rounded-xl flex flex-col gap-2 items-center justify-center text-center cursor-pointer transition ${
           isDragActive ? "bg-blue-100 border-mySkyBlue" : "border-mySkyBlue"
         }`}
       >
