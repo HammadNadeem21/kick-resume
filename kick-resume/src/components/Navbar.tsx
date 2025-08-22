@@ -101,7 +101,7 @@ const Navbar = () => {
               <Link
                 href="/job"
                 className={`text-lg text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
-                  pathname === "/job" ? "bg-mySkyBlue" : ""
+                  pathname === "/job-matcher" ? "bg-mySkyBlue" : ""
                 }`}
               >
                 Job
@@ -110,7 +110,7 @@ const Navbar = () => {
               <Link
                 href="/resume"
                 className={`text-lg text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
-                  pathname === "/resume" ? "bg-mySkyBlue" : ""
+                  pathname === "/resume-job-analysis" ? "bg-mySkyBlue" : ""
                 }`}
               >
                 Resume

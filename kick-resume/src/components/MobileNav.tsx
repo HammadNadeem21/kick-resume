@@ -23,16 +23,16 @@ const MobileNav = () => {
   return (
     <div className="lg:hidden block ml-auto relative">
       <button onClick={() => setIsOpen(true)}>
-        <GiHamburgerMenu size={24} className="text-myPurple" />
+        <GiHamburgerMenu size={24} className="text-mySkyBlue" />
       </button>
 
       {/* Fullscreen Menu Overlay */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 bg-myPurple text-white p-6 overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-mySkyBlue  p-6 overflow-y-auto">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold">Menu</h2>
+            <h2 className="text-xl font-bold text-white">Menu</h2>
             <button onClick={() => setIsOpen(false)}>
-              <IoMdClose size={28} />
+              <IoMdClose size={28} className="text-white" />
             </button>
           </div>
 
@@ -185,15 +185,27 @@ const MobileNav = () => {
             </li> */}
 
             {/* Simple Link */}
-            <li className="w-full hover:bg-myMidPurple transition-all py-1 px-3 rounded-md">
-              <Link href="/" className="text-lg">
+            <li className="w-full hover:text-gray-500 text-white transition-all py-1 px-3 rounded-md">
+              <Link href="/ai-resume-analyzer" className="text-lg">
                 Ai Resume Analyzer
               </Link>
             </li>
 
-            <li className="w-full hover:bg-myMidPurple transition-all py-1 px-3 rounded-md">
+            <li className="w-full hover:text-gray-500 text-white transition-all py-1 px-3 rounded-md">
               <Link href="/ai-resume-builder" className="text-lg">
                 Ai Resume Builder
+              </Link>
+            </li>
+
+            <li className="w-full hover:text-gray-500 text-white transition-all py-1 px-3 rounded-md">
+              <Link href="/job-matcher" className="text-lg">
+                Job Matcher
+              </Link>
+            </li>
+
+            <li className="w-full hover:text-gray-500 text-white transition-all py-1 px-3 rounded-md">
+              <Link href="/resume-job-analysis" className="text-lg">
+                Resume Job Analysis
               </Link>
             </li>
           </ul>
