@@ -8,7 +8,7 @@ import LandingPage from "@/components/LandingPage";
 
 export default function Home() {
   return (
-    <>
+    <div className="">
       {/* <Hero /> */}
       <LandingPage />
       {/* <Features /> */}
@@ -16,6 +16,6 @@ export default function Home() {
       {/* <FileUploaderSection /> */}
       <ToolBoxSection />
       {/* <QuestionSection /> */}
-    </>
+    </div>
   );
 }
