@@ -1073,10 +1073,10 @@ const AiPromptPage = () => {
           <div className="flex items-center justify-between">
             <div className="text-center lg:text-left">
               <h2 className="text-3xl font-bold mb-4 text-mySkyBlue">
-                Tailored Resume
+                Resume Preview
               </h2>
               <p className="text-lg text-gray-500">
-                AI-optimized to match job requirements
+                See your AI-generated resume in real-time
               </p>
             </div>
 

@@ -64,13 +64,15 @@ const Navbar = () => {
 
   return (
     <div className="">
-      <header className=" bg-gray-100  body-font flex justify-center shadow-[0px_1px_4px_0px_rgba(0,_0,_0,_0.1)]  shadow-myMidPurple">
+      <header className=" bg-mySkyBlue/30  body-font flex justify-center shadow-[0px_1px_4px_0px_rgba(0,_0,_0,_0.1)]  shadow-mySkyBlue">
         <div className="container  flex items-center justify-between py-5 px-3">
           <div className="flex items-center justify-between gap-4">
             {/* Logo */}
             <Link href={"/"}>
-              <div className="h-10 w-[180px] flex items-center text-myPurple">
-                @ABC
+              <div className="h-10 w-[180px] flex items-center">
+                <h1 className="text-xl font-extrabold bg-gradient-to-r from-blue-400 via-purple-400 to-orange-400 bg-clip-text text-transparent">
+                  AI Resume{" "}
+                </h1>
               </div>
             </Link>
 
@@ -79,9 +81,9 @@ const Navbar = () => {
               {/* <NavigationMenuDemo /> */}
               {/* <div className="flex items-center justify-center gap-8"> */}
               <Link
-                href="/airesumeanalyzer"
-                className={`text-lg text-gray-600 hover:text-myPurple ${
-                  pathname === "/airesumeanalyzer" ? "text-myPurple" : ""
+                href="/ai-resume-analyzer"
+                className={`text-lg text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
+                  pathname === "/ai-resume-analyzer" ? " bg-mySkyBlue" : ""
                 }`}
               >
                 Ai Resume Analyzer
@@ -89,8 +91,8 @@ const Navbar = () => {
 
               <Link
                 href="/ai-resume-builder"
-                className={`text-lg text-gray-600 hover:text-myPurple ${
-                  pathname === "/ai-resume-builder" ? "text-myPurple" : ""
+                className={`text-lg text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
+                  pathname === "/ai-resume-builder" ? "bg-mySkyBlue" : ""
                 }`}
               >
                 Ai Resume Builder
@@ -98,8 +100,8 @@ const Navbar = () => {
 
               <Link
                 href="/job"
-                className={`text-lg text-gray-600 hover:text-myPurple ${
-                  pathname === "/job" ? "text-myPurple" : ""
+                className={`text-lg text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
+                  pathname === "/job" ? "bg-mySkyBlue" : ""
                 }`}
               >
                 Job
@@ -107,8 +109,8 @@ const Navbar = () => {
 
               <Link
                 href="/resume"
-                className={`text-lg text-gray-600 hover:text-myPurple ${
-                  pathname === "/resume" ? "text-myPurple" : ""
+                className={`text-lg text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
+                  pathname === "/resume" ? "bg-mySkyBlue" : ""
                 }`}
               >
                 Resume
@@ -133,11 +135,11 @@ const Navbar = () => {
               <>
                 <button
                   onClick={() => signOut()}
-                  className="py-1 px-4 rounded-lg text-white font-semibold bg-myMidPurple hover:bg-myPurple  transition-all duration-300"
+                  className="py-1 px-4 rounded-lg text-white font-semibold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300"
                 >
                   Sign Out
                 </button>
-                <div className="h-10 w-10 rounded-full overflow-hidden flex items-center justify-center bg-myPurple text-white font-bold">
+                <div className="h-10 w-10 rounded-full overflow-hidden flex items-center justify-center bg-mySkyBlue text-white font-bold">
                   {session?.user?.image ? (
                     <Image
                       src={session.user.image}
@@ -152,7 +154,7 @@ const Navbar = () => {
                     </span>
                   )}
                 </div>
-                <h1 className="py-2 px-4 rounded-lg text-white font-semibold bg-myMidPurple hover:bg-myPurple transition-all duration-300">
+                <h1 className="py-2 px-4 rounded-lg text-white font-semibold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300">
                   Credits: {credit}
                 </h1>
               </>
@@ -161,13 +163,13 @@ const Navbar = () => {
               <>
                 <button
                   onClick={() => signIn()}
-                  className="py-1 px-4 rounded-lg text-white font-semibold bg-myMidPurple hover:bg-myPurple transition-all duration-300"
+                  className="py-1 px-4 rounded-lg text-white font-semibold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300"
                 >
                   Log In
                 </button>
                 <button
                   onClick={() => signIn()}
-                  className="py-1 px-2 rounded-lg text-white font-semibold bg-myMidPurple hover:bg-myPurple"
+                  className="py-1 px-2 rounded-lg text-white font-semibold bg-mySkyBlue/50 hover:bg-mySkyBlue"
                 >
                   SignUp
                 </button>

@@ -11,7 +11,7 @@ export default function Home() {
     <div className="">
       {/* <Hero /> */}
       <LandingPage />
-      {/* <Features /> */}
+      <Features />
       <Security />
       {/* <FileUploaderSection /> */}
       <ToolBoxSection />

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { MdOutlineSecurity } from "react-icons/md";
+import { Brain, FileText, Briefcase, Target } from "lucide-react";
 
 import { MdKeyboardArrowRight } from "react-icons/md";
 
@@ -450,54 +451,35 @@ export const company = [
 ];
 
 // Feature Section
-export const featureSection = [
+export const featuresSection = [
   {
-    heading: "Find out your resume score, see how you compare.",
-    paragraph:
-      "Our resume checker puts your resume up against other resumes from our database that were written by people who got hired at the world’s top companies.",
-    points: [
-      "Check how your resume score compares against the best",
-      "Get a detailed resume review report",
-      "Improve your CV with personalized tips",
-    ],
-    lastLine: "Check my resume score now",
-    image: "/feature1.png",
+    title: "AI Resume Analyzer",
+    description:
+      "Upload your resume and get instant AI-powered analysis with actionable insights and automated cover letter generation.",
+    icon: FileText,
+    link: "/ai-resume-analyzer",
+    gradient: true,
   },
   {
-    heading: "How do we calculate your resume score?",
-    paragraph:
-      "Our online resume checker grades your resume based on three different types of criteria. These were chosen based on what recruiters usually look for in a resume.",
-    points: [
-      "Does the resume contain everything it should?",
-      "Are you using the space effectively?",
-      "Any overused expressions? Action verbs?",
-    ],
-    lastLine: "Review my resume score now",
-    image: "/feature2.png",
+    title: "AI Resume Builder",
+    description:
+      "Choose from professional templates and let AI create a stunning resume tailored to your career goals.",
+    icon: Brain,
+    link: "/ai-resume-builder",
   },
   {
-    heading: "Improve your resume’s quality with a single click.",
-    paragraph:
-      "Each resume metric comes with a set of suggested resume revision tips that will help you quickly improve your resume and its overall strength.",
-    points: [
-      "Accept suggested revisions with a single click",
-      "Custom-tailored resume tips",
-      "Increase your resume score & get hired faster",
-    ],
-    lastLine: "Make my resume better now",
-    image: "/feature3.png",
+    title: "Job-Tailored Resume",
+    description:
+      "Paste any job description and get a perfectly optimized resume that matches the requirements.",
+    icon: Briefcase,
+    link: "/job",
   },
   {
-    heading: "Get instant resume feedback from our AI recruiter.",
-    paragraph:
-      "Let our GPT-4-powered analyzer review your resume and go over its strongest and weakest points. The AI is meant to simulate a real recruiter’s resume feedback and will give you additional tips on how to make your CV stand out.",
-    points: [
-      "Detailed analysis of your CV’s strongest and weakest points",
-      "Simulates resume feedback from a real recruiter with AI",
-      "Get tailored feedback for each version of your resume",
-    ],
-
-    image: "/feature4.png",
+    title: "Resume vs Job Analysis",
+    description:
+      "Compare your resume against specific job postings and get detailed compatibility insights.",
+    icon: Target,
+    link: "/resume",
   },
 ];
 

@@ -7,7 +7,7 @@ const SecurityCard = (props: {
   icon: JSX.Element;
 }) => {
   return (
-    <div className="hover:bg-mySkyBlue group transition-all duration-300 hover:-translate-y-3 px-4 py-5 flex flex-col gap-5 rounded-lg cursor-pointer">
+    <div className="hover:bg-mySkyBlue/50 group transition-all duration-300 hover:-translate-y-3 px-4 py-5 flex flex-col gap-5 rounded-lg cursor-pointer">
       <div className="flex items-center sm:gap-4 gap-2">
         {props.icon}
 

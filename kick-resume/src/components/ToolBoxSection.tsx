@@ -6,7 +6,7 @@ import Link from "next/link";
 const ToolBoxSection = () => {
   return (
     <div className="bg-mySkyBlue/20 py-[100px] px-4 text-center">
-      <div className="mx-w-[1200px] mx-auto">
+      <div className="max-w-[1200px] mx-auto">
         {/* Heading */}
         <div className=" col-span-2 w-[80%] mx-auto">
           <h1 className="lg:text-4xl sm:text-2xl text-xl text-mySkyBlue font-semibold">

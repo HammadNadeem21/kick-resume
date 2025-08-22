@@ -45,7 +45,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/airesumeanalyzer/:path*",
+    "/ai-resume-analyzer/:path*",
     "/ai-resume-builder/:path*",
     "/job/:path*",
     "/resume/:path*",

@@ -7,7 +7,7 @@ import pdfWorker from "pdfjs-dist/build/pdf.worker.entry";
 import SectionScoreChart from "@/components/SectionScoreChart";
 import { FaFileAlt } from "react-icons/fa";
 import { LuUpload } from "react-icons/lu";
-import { Briefcase } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 
 import { TiTick } from "react-icons/ti";
 import { IoClose } from "react-icons/io5";
@@ -154,10 +154,10 @@ Output JSON in this structure:
         <div className="flex flex-col gap-4">
           <div className="">
             <div className="text-center lg:text-left">
-              <h2 className="text-3xl font-bold mb-4 text-foreground">
+              <h2 className="text-3xl font-bold mb-4 text-mySkyBlue">
                 Upload & Compare
               </h2>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-lg text-gray-500">
                 Upload your resume and paste the job description
               </p>
             </div>
@@ -229,16 +229,16 @@ Output JSON in this structure:
 
         <div className="">
           <div className="text-center lg:text-left">
-            <h2 className="text-3xl font-bold mb-4 text-foreground">
+            <h2 className="text-3xl font-bold mb-4 text-mySkyBlue">
               Compatibility Analysis
             </h2>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-lg text-gray-500">
               Detailed comparison and recommendations
             </p>
           </div>
           {!analysisResult && (
             <div className="flex flex-col bg-gray-200 items-center justify-center h-[550px] mt-5 rounded-lg">
-              <Briefcase size={40} className="text-gray-500" />
+              <TrendingUp size={40} className="text-gray-500" />
               <p className="text-gray-500 text-center">
                 Upload your resume and job description to see the analysis
                 results here.

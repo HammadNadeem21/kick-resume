@@ -30,30 +30,30 @@ import { HoverButton } from "./HoverButton";
 
 const Footer = () => {
   return (
-    <div className="grid sm:grid-cols-2 grid-cols-1  gap-3 bg-gray-200 pt-16 md:px-[100px] px-10">
+    <div className="grid sm:grid-cols-2 grid-cols-1  gap-3 bg-mySkyBlue/40 pt-16 md:px-[100px] px-10">
       {/* <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1"> */}
 
       <div className="lg:col-span-4 md:col-span-3 sm:col-span-2 flex items-center justify-between px-10">
         <Link href="/">
-          <h1 className="text-sm text-gray-600 hover:text-myPurple hover:underline">
+          <h1 className="text-sm text-gray-500 hover:text-mySkyBlue hover:underline">
             About
           </h1>
         </Link>
 
         <Link href="/">
-          <h1 className="text-sm text-gray-600 hover:text-myPurple hover:underline">
+          <h1 className="text-sm text-gray-500 hover:text-mySkyBlue hover:underline">
             Contact us
           </h1>
         </Link>
 
         <Link href="/">
-          <h1 className="text-sm text-gray-600 hover:text-myPurple hover:underline">
+          <h1 className="text-sm text-gray-500 hover:text-mySkyBlue hover:underline">
             Features
           </h1>
         </Link>
 
         <Link href="/">
-          <h1 className="text-sm text-gray-600 hover:text-myPurple hover:underline">
+          <h1 className="text-sm text-gray-500 hover:text-mySkyBlue hover:underline">
             Contact
           </h1>
         </Link>
@@ -62,14 +62,14 @@ const Footer = () => {
 
       {/* Buttom */}
       <div className="sm:col-span-2 col-span-1">
-        <div className=" border-t border-myPurple py-5 flex flex-wrap justify-center xl:gap-[50px] gap-[40px]">
-          <h1 className="flex items-center gap-1 text-myPurple">
+        <div className=" border-t border-mySkyBlue py-5 flex flex-wrap justify-center xl:gap-[50px] gap-[40px]">
+          <h1 className="flex items-center gap-1 text-mySkyBlue ">
             Made with <FaHeart /> by Kickresume
           </h1>
 
           <HoverButton />
 
-          <div className="flex items-center gap-5 text-myMidPurple">
+          <div className="flex items-center gap-5 text-mySkyBlue">
             <Link href="/">
               <RiTwitterXFill size={30} className="" />
             </Link>
