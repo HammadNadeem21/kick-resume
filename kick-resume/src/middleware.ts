@@ -47,7 +47,7 @@ export const config = {
   matcher: [
     "/ai-resume-analyzer/:path*",
     "/ai-resume-builder/:path*",
-    "/job/:path*",
-    "/resume/:path*",
+    "/job-matcher/:path*",
+    "/resume-job-analysis/:path*",
   ],
 };

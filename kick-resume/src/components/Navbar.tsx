@@ -99,7 +99,7 @@ const Navbar = () => {
               </Link>
 
               <Link
-                href="/job"
+                href="/job-matcher"
                 className={`text-lg text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
                   pathname === "/job-matcher" ? "bg-mySkyBlue" : ""
                 }`}
@@ -108,7 +108,7 @@ const Navbar = () => {
               </Link>
 
               <Link
-                href="/resume"
+                href="/resume-job-analysis"
                 className={`text-lg text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
                   pathname === "/resume-job-analysis" ? "bg-mySkyBlue" : ""
                 }`}
