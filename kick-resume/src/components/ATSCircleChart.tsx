@@ -40,7 +40,7 @@
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { motion } from "framer-motion";
 
-const COLORS = ["#7e22ce", "#E5E7EB"]; // Blue = score, Gray = remaining
+const COLORS = ["#55cef6", "#E5E7EB"]; // Blue = score, Gray = remaining
 
 const ATSCircleChart = ({ score }: { score: number }) => {
   const data = [
@@ -76,7 +76,7 @@ const ATSCircleChart = ({ score }: { score: number }) => {
         </PieChart>
       </ResponsiveContainer>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-xl font-bold text-myPurple">{score} / 100</span>
+        <span className="text-xl font-bold text-mySkyBlue">{score} / 100</span>
         <span className="text-xs text-gray-600 font-bold">ATS Score</span>
       </div>
     </motion.div>

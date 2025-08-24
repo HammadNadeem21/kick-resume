@@ -65,7 +65,7 @@ const Template7 = ({
   color: Color;
 }) => {
   return (
-    <div className="bg-myWhite grid grid-cols-[65%,35%] text-gray-700  lg:w-[70%] w-[100%] mx-auto shadow-lg shadow-myMidPurple/70">
+    <div className="bg-myWhite grid grid-cols-[65%,35%] text-gray-700  max-w-[794px] mx-auto shadow-lg shadow-myMidPurple/70">
       {/* Right-side */}
       <div className="py-3 md:px-5 px-2 flex flex-col gap-2">
         <h1

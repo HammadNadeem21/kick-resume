@@ -104,7 +104,7 @@ const Template2 = ({
   handleEmailFieldClick: (fieldName: string, data: string) => void;
 }) => {
   return (
-    <div className="bg-myWhite md:px-5 px-2 py-5 text-gray-700 lg:w-[70%] w-[100%] mx-auto shadow-lg shadow-myMidPurple/70">
+    <div className="bg-myWhite md:px-5 px-2 py-5 text-gray-700 max-w-[794px] mx-auto shadow-lg shadow-myMidPurple/70">
       {/* Divider */}
       <div className="h-[1px] w-full bg-gray-400"></div>
 
