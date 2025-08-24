@@ -803,7 +803,7 @@ const AiPromptPage = () => {
       <div className="grid lg:grid-cols-12 grid-cols-1  lg:h-[350px]  mb-10">
         {/* Upload Image */}
 
-        <div className="col-span-4 flex flex-col justify-center gap-2">
+        <div className="lg:col-span-4 col-span-1 flex flex-col justify-center gap-2">
           <div className="flex flex-col items-center">
             <div className="w-[100px] h-[100px] rounded-full border-2 border-white overflow-hidden mb-3">
               {previewUrl ? (
@@ -920,7 +920,7 @@ const AiPromptPage = () => {
           )}
         </div>
 
-        <div className="col-span-8 flex items-center justify-center lg:mt-0 mt-5">
+        <div className="lg:col-span-8 col-span-1 flex items-center justify-center lg:mt-0 mt-5">
           <CarouselSize
             array={templateData}
             getTemplateId={(id) => setSelectedTemplate(id)}
@@ -929,8 +929,8 @@ const AiPromptPage = () => {
         </div>
       </div>
 
-      <div className="py-8 px-4 grid lg:grid-cols-12 grid-cols-1 gap-[40px]">
-        <div className="col-span-4">
+      <div className="py-8 px-1 grid lg:grid-cols-12 grid-cols-1 lg:gap-[40px] gap-0">
+        <div className="lg:col-span-4 col-span-1">
           {/* Chat Box */}
 
           <div className="bg-gray-100 mt-3 py-2 px-3 mb-2 rounded-xl flex flex-col gap-4">
@@ -1069,7 +1069,7 @@ const AiPromptPage = () => {
           </div>
         </div>
 
-        <div className="col-span-8">
+        <div className="lg:col-span-8 col-span-1">
           <div className="flex items-center justify-between">
             <div className="text-center lg:text-left">
               <h2 className="text-3xl font-bold mb-4 text-mySkyBlue">
