@@ -58,7 +58,6 @@ const AuthForm = ({ mode }: { mode: "login" | "signup" }) => {
           </h1>
 
           <h1 className="text-lg text-gray-500 text-center font-semibold">
-            Log in with email
             {mode === "login" ? "Log in with email" : "Sign Up with email"}
           </h1>
         </div>
