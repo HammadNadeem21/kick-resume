@@ -13,7 +13,7 @@ import { withAuth } from "next-auth/middleware";
 
 export default withAuth({
   pages: {
-    signIn: "/login", // unauthenticated user yaha redirect hoga
+    signIn: "/auth/signup", // unauthenticated user yaha redirect hoga
   },
 });
 
