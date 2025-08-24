@@ -3,28 +3,32 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
-
 import { SessionProvider } from "next-auth/react";
 import { ResumeProvider } from "@/context/ReaumeContext";
 import { ResumeDataProvider } from "@/context/ResumeBuilderData";
 import { CreditsProvider } from "@/context/CreditsContext";
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
+  const hideLayout = pathname === "/auth/login" || pathname === "/auth/signup";
+
   return (
     <html lang="en">
       <body>
         <SessionProvider>
           <CreditsProvider>
-            <Navbar />
+            {!hideLayout && <Navbar />}
             <ResumeProvider>
               <ResumeDataProvider>{children}</ResumeDataProvider>
             </ResumeProvider>
 
-            <Footer />
+            {!hideLayout && <Footer />}
           </CreditsProvider>
         </SessionProvider>{" "}
         {/* ✅ Wrap your app */}

@@ -13,7 +13,7 @@ import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { SignUp } from "./SignUp";
 import { LogIn } from "lucide-react";
-import { Login } from "./LogIn";
+import AuthDialog from "./LogIn";
 
 const Navbar = () => {
   // const [mode, setMode] = useState<'login' | 'signup' | null>(null);
@@ -64,63 +64,60 @@ const Navbar = () => {
 
   return (
     <div className="">
-      <header className=" bg-mySkyBlue/30  body-font flex justify-center shadow-[0px_1px_4px_0px_rgba(0,_0,_0,_0.1)]  shadow-mySkyBlue">
-        <div className="container  flex items-center justify-between py-5 px-3">
-          <div className="flex items-center justify-between gap-4">
-            {/* Logo */}
-            <Link href={"/"}>
-              <div className="h-10 w-[180px] flex items-center">
-                <h1 className="text-xl font-extrabold bg-gradient-to-r from-blue-400 via-purple-400 to-orange-400 bg-clip-text text-transparent">
-                  AI Resume{" "}
-                </h1>
-              </div>
+      <header className=" bg-mySkyBlue/30  body-font  shadow-[0px_1px_4px_0px_rgba(0,_0,_0,_0.1)]  shadow-mySkyBlue">
+        <div className="flex items-center justify-between py-5 px-4">
+          {/* Logo */}
+          <Link href={"/"}>
+            <div className=" h-10 sm:w-[180px] w-auto flex items-center">
+              <h1 className="sm:text-xl text-lg font-extrabold bg-gradient-to-r from-blue-400 via-purple-400 to-orange-400 bg-clip-text text-transparent">
+                AI Resume{" "}
+              </h1>
+            </div>
+          </Link>
+
+          {/* Navbar */}
+          <nav className="lg:flex items-center justify-center gap-5  font-semibold  hidden">
+            {/* <NavigationMenuDemo /> */}
+            {/* <div className="flex items-center justify-center gap-8"> */}
+            <Link
+              href="/ai-resume-analyzer"
+              className={`text-[15px] text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
+                pathname === "/ai-resume-analyzer" ? " bg-mySkyBlue" : ""
+              }`}
+            >
+              Ai Resume Analyzer
             </Link>
 
-            {/* Navbar */}
-            <nav className="lg:flex items-center justify-center gap-8  font-semibold  hidden">
-              {/* <NavigationMenuDemo /> */}
-              {/* <div className="flex items-center justify-center gap-8"> */}
-              <Link
-                href="/ai-resume-analyzer"
-                className={`text-lg text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
-                  pathname === "/ai-resume-analyzer" ? " bg-mySkyBlue" : ""
-                }`}
-              >
-                Ai Resume Analyzer
-              </Link>
+            <Link
+              href="/ai-resume-builder"
+              className={`text-[15px] text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
+                pathname === "/ai-resume-builder" ? "bg-mySkyBlue" : ""
+              }`}
+            >
+              Ai Resume Builder
+            </Link>
 
-              <Link
-                href="/ai-resume-builder"
-                className={`text-lg text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
-                  pathname === "/ai-resume-builder" ? "bg-mySkyBlue" : ""
-                }`}
-              >
-                Ai Resume Builder
-              </Link>
+            <Link
+              href="/job-matcher"
+              className={`text-[15px] text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
+                pathname === "/job-matcher" ? "bg-mySkyBlue" : ""
+              }`}
+            >
+              Job
+            </Link>
 
-              <Link
-                href="/job-matcher"
-                className={`text-lg text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
-                  pathname === "/job-matcher" ? "bg-mySkyBlue" : ""
-                }`}
-              >
-                Job
-              </Link>
+            <Link
+              href="/resume-job-analysis"
+              className={`text-[15px] text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
+                pathname === "/resume-job-analysis" ? "bg-mySkyBlue" : ""
+              }`}
+            >
+              Resume
+            </Link>
+            {/* </div> */}
+          </nav>
 
-              <Link
-                href="/resume-job-analysis"
-                className={`text-lg text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
-                  pathname === "/resume-job-analysis" ? "bg-mySkyBlue" : ""
-                }`}
-              >
-                Resume
-              </Link>
-              {/* </div> */}
-            </nav>
-          </div>
-
-          {/* Button Side */}
-          <div className="lg:flex hidden gap-4">
+          <div className="flex items-center  sm:gap-4 gap-2 ">
             {/* <button className=" py-1 px-4 focus:outline-none  rounded-lg text-base mt-4 md:mt-0 text-myWhite border border-myWhite hover:bg-myWhite hover:text-primaryColor transition-all duration-300">
               Log In
             </button>
@@ -135,11 +132,11 @@ const Navbar = () => {
               <>
                 <button
                   onClick={() => signOut()}
-                  className="py-1 px-4 rounded-lg text-white font-semibold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300"
+                  className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300"
                 >
                   Sign Out
                 </button>
-                <div className="h-10 w-10 rounded-full overflow-hidden flex items-center justify-center bg-mySkyBlue text-white font-bold">
+                <div className="sm:h-10 sm:w-10 h-7 w-7 rounded-full overflow-hidden flex items-center justify-center bg-mySkyBlue text-white font-bold">
                   {session?.user?.image ? (
                     <Image
                       src={session.user.image}
@@ -154,24 +151,31 @@ const Navbar = () => {
                     </span>
                   )}
                 </div>
-                <h1 className="py-2 px-4 rounded-lg text-white font-semibold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300">
+                <h1 className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300">
                   Credits: {credit}
                 </h1>
               </>
             ) : (
               // ❌ Agar user logged in nahi hai, toh SignUp + Log In buttons show honge
               <>
-                <button
+                {/* <button
                   onClick={() => signIn()}
                   className="py-1 px-4 rounded-lg text-white font-semibold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300"
                 >
                   Log In
+                </button> */}
+                <button className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300">
+                  <Link href="/auth/login">logIn</Link>
                 </button>
-                <button
+
+                {/* <button
                   onClick={() => signIn()}
                   className="py-1 px-2 rounded-lg text-white font-semibold bg-mySkyBlue/50 hover:bg-mySkyBlue"
                 >
                   SignUp
+                </button> */}
+                <button className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300">
+                  <Link href="/auth/signup">SignUp</Link>
                 </button>
               </>
             )}
@@ -190,10 +194,14 @@ const Navbar = () => {
             {/* <SignUp/>
 
 <Login/> */}
+            <div className="lg:hidden flex">
+              <MobileNav />
+            </div>
           </div>
 
+          {/* Button Side */}
+
           {/* Mobile Navbar */}
-          <MobileNav />
         </div>
       </header>
     </div>

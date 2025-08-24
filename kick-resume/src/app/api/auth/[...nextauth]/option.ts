@@ -72,7 +72,7 @@ export const options: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: {
+        email: {
           label: "Email",
           type: "email",
           placeholder: "Your email",
@@ -84,7 +84,7 @@ export const options: NextAuthOptions = {
         },
       },
       async authorize(credentials) {
-        const email = credentials?.username;
+        const email = credentials?.email;
         const password = credentials?.password;
 
         if (!email || !password) {
@@ -130,54 +130,6 @@ export const options: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
-  // callbacks: {
-  //   async jwt({ token, user }) {
-  //     // User sirf initial login pe hota hai
-  //     if (user) {
-  //       token._id = user.id; // id string ke form mein aa rahi hoti hai
-  //     }
-  //     return token;
-  //   },
-  //   async session({ session, token }) {
-  //     if (token && session.user) {
-  //       session.user._id = token._id as string;
-  //     }
-  //     return session;
-  //   },
-  // },
-
-  // callbacks: {
-  //   async signIn({ user, account }) {
-  //     if (account?.provider === "google") {
-  //       const { email } = user;
-  //       await connectToDatabase();
-
-  //       const existingUser = await User.findOne({ email });
-
-  //       if (!existingUser) {
-  //         await User.create({
-  //           email,
-  //           credits: 100, // default credits for new Google user
-  //         });
-  //       }
-  //     }
-  //     return true;
-  //   },
-
-  //   async jwt({ token, user }) {
-  //     if (user) {
-  //       token._id = user.id;
-  //     }
-  //     return token;
-  //   },
-
-  //   async session({ session, token }) {
-  //     if (token && session.user) {
-  //       session.user._id = token._id as string;
-  //     }
-  //     return session;
-  //   },
-  // },
 
   callbacks: {
     async signIn({ user, account }) {

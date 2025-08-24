@@ -23,7 +23,7 @@ const MobileNav = () => {
   return (
     <div className="lg:hidden block ml-auto relative">
       <button onClick={() => setIsOpen(true)}>
-        <GiHamburgerMenu size={24} className="text-mySkyBlue" />
+        <GiHamburgerMenu className="text-mySkyBlue sm:text-[20px] text-[15px]" />
       </button>
 
       {/* Fullscreen Menu Overlay */}
