@@ -62,17 +62,61 @@ const templateData = [
 // for credits
 import { useSession } from "next-auth/react";
 import { useCredits } from "@/context/CreditsContext";
+import { useAiResumeBuilder } from "@/context/AiResumeBuilder";
 
 const AiPromptPage = () => {
-  const [userPrompt, setUserPrompt] = useState<string>("");
-  const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
+  const { parsedData,
+    setParsedData,
+    imageFile,
+    setImageFile,
+    previewUrl,
+    setPreviewUrl,
+    processedUrl,
+    setProcessedUrl,
+    userPrompt,
+    setUserPrompt,
+    selectedTemplate,
+    setSelectedTemplate,
+    promptHistory,
+    setPromptHistory,
+    showTemplate,
+    setShowTemplate,
+    isChatLoading,
+    setIsChatLoading,
+    isTemplateLoading,
+    setIsTemplateLoading,
+    hasRenderedTemplate,
+    setHasRenderedTemplate,
+    selectedProcessedImage,
+    setSelectedProcessedImage,
+    selectedImageBgColor,
+    setSelectedImageBgColor,
+    color1,
+    setColor1,
+    color4,
+    setColor4,
+    color7,
+    setColor7,
+    color10,
+    setColor10 } = useAiResumeBuilder();
+
+  // const [userPrompt, setUserPrompt] = useState<string>("");
+  // const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
   // for generating Resume
 
-  const [parsedData, setParsedData] = useState<any>(null);
+  // const [parsedData, setParsedData] = useState<any>(null);
 
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [processedUrl, setProcessedUrl] = useState<string | null>(null);
+  // const [imageFile, setImageFile] = useState<File | null>(null);
+  // const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  // const [processedUrl, setProcessedUrl] = useState<string | null>(null);
+  // const { parsedData,
+  //   setParsedData,
+  //   imageFile,
+  //   setImageFile,
+  //   previewUrl,
+  //   setPreviewUrl,
+  //   processedUrl,
+  //   setProcessedUrl, } = useAiResumeBuilder();
 
   const [showEditor, setShowEditor] = useState(false);
 
@@ -98,13 +142,13 @@ const AiPromptPage = () => {
   );
 
   // selected image state
-  const [selectedProcessedImage, setSelectedProcessedImage] = useState<
-    string | null
-  >(null);
+  // const [selectedProcessedImage, setSelectedProcessedImage] = useState<
+  //   string | null
+  // >(null);
   // selected background color state
-  const [selectedImageBgColor, setSelectedImageBgColor] = useState<
-    string | undefined
-  >(undefined);
+  // const [selectedImageBgColor, setSelectedImageBgColor] = useState<
+  //   string | undefined
+  // >(undefined);
   // selected theme state
 
   const tailwindColorMap: { [key: string]: string } = {
@@ -117,10 +161,10 @@ const AiPromptPage = () => {
 
   // for color picker
   const [showColorPicker, setShowColorPicker] = useState(false);
-  const [color1, setColor1] = useState({ r: 40, g: 56, b: 74 }); // Default for Template 1
-  const [color4, setColor4] = useState({ r: 200, g: 150, b: 35 });
-  const [color7, setColor7] = useState({ r: 131, g: 123, b: 106 }); // Default for Template 4
-  const [color10, setColor10] = useState({ r: 131, g: 123, b: 106 });
+  // const [color1, setColor1] = useState({ r: 40, g: 56, b: 74 }); // Default for Template 1
+  // const [color4, setColor4] = useState({ r: 200, g: 150, b: 35 });
+  // const [color7, setColor7] = useState({ r: 131, g: 123, b: 106 }); // Default for Template 4
+  // const [color10, setColor10] = useState({ r: 131, g: 123, b: 106 });
 
   // for phone number
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
@@ -149,14 +193,14 @@ const AiPromptPage = () => {
   >(null);
 
   // For multiple prompt
-  const [promptHistory, setPromptHistory] = useState<
-    { type: "user" | "ai"; message: string }[]
-  >([]);
+  // const [promptHistory, setPromptHistory] = useState<
+  //   { type: "user" | "ai"; message: string }[]
+  // >([]);
 
   // for loader
-  const [isChatLoading, setIsChatLoading] = useState(false);
-  const [isTemplateLoading, setIsTemplateLoading] = useState(false);
-  const [hasRenderedTemplate, setHasRenderedTemplate] = useState(false);
+  // const [isChatLoading, setIsChatLoading] = useState(false);
+  // const [isTemplateLoading, setIsTemplateLoading] = useState(false);
+  // const [hasRenderedTemplate, setHasRenderedTemplate] = useState(false);
 
   // For credits
   // const [credits, setCredits] = useState<number | null>(0);
@@ -635,10 +679,14 @@ const AiPromptPage = () => {
     return <p>Please select a template above.</p>;
   };
 
-  const [showTemplate, setShowTemplate] = useState(false);
+  // const [showTemplate, setShowTemplate] = useState(false);
   useEffect(() => {
-    setShowTemplate(false); // Reset jab prompt ya template change ho
-  }, []);
+    // setShowTemplate(false); // Reset jab prompt ya template change ho
+    if (!parsedData && !userPrompt && promptHistory.length === 0) {
+      setShowTemplate(false); // Only reset if no data at all
+      setHasRenderedTemplate(false);
+    }
+  }, [parsedData, userPrompt, promptHistory, setShowTemplate, setHasRenderedTemplate]);
 
   useEffect(() => {
     scrollToBottom();
@@ -810,7 +858,7 @@ const AiPromptPage = () => {
                 <Image
                   width={158}
                   height={158}
-                  src={previewUrl}
+                  src={previewUrl || "/placeholder.png"}
                   alt="Preview"
                   className="w-full h-full object-cover"
                 />
@@ -908,7 +956,7 @@ const AiPromptPage = () => {
                   }`}
                 >
                   <Image
-                    src={processedUrl}
+                    src={processedUrl || "/dummy.jpg"}
                     width={160}
                     height={160}
                     alt={`Processed Image ${index}`}
@@ -1151,7 +1199,7 @@ const AiPromptPage = () => {
             </div>
           </div>
 
-          {showTemplate && parsedData && (
+          {/* {showTemplate && parsedData && (
             <button
               onClick={handleDownloadPDF}
               disabled={credit < 5}
@@ -1159,7 +1207,7 @@ const AiPromptPage = () => {
             >
               Download PDF
             </button>
-          )}
+          )} */}
 
           {!isTemplateLoading && !hasRenderedTemplate ? (
             <div className="w-[100%] bg-gray-200 mt-2 h-[350px] flex flex-col items-center justify-center rounded-lg">

@@ -1,71 +1,85 @@
-import { Page, Text, View, Document, StyleSheet, Link } from '@react-pdf/renderer';
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Link,
+} from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: '#fff',
+    backgroundColor: "#eef5ff",
     fontSize: 12,
-    fontFamily: 'Helvetica',
+    fontFamily: "Helvetica",
     padding: 20,
-    color: '#4a4a4a', // Default text color
+    color: "#374151", // Default text color
   },
   headerDivider: {
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    marginBottom: 10,
+    borderBottomColor: "#9ca3af",
+    // marginBottom: 10,
+    marginTop: 10,
   },
   fullName: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontSize: 34,
+    color: "#374151",
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 4,
   },
   position: {
-    fontSize: 16,
-    textAlign: 'center',
+    fontSize: 14,
+    color: "#374151",
+    textAlign: "center",
     marginBottom: 16,
   },
   gridContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     // borderTopWidth: 1,
     // borderTopColor: '#ccc',
   },
   leftColumn: {
-    width: '35%',
+    width: "35%",
     borderRightWidth: 1,
-    borderRightColor: '#ccc',
-    padding: 10,
+    borderRightColor: "#374151",
+    // padding: 10,
     paddingTop: 15,
   },
   rightColumn: {
-    width: '65%',
-    padding: 10,
+    width: "65%",
+    // padding: 10,
     paddingTop: 15,
   },
   sectionTitle: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 8,
-    color: '#222',
+    // color: "#222",
   },
   contactItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 5,
-    fontSize: 11,
+    marginTop: 5,
+    fontSize: 10,
+    fontWeight: "bold",
   },
   contactText: {
     marginLeft: 5,
   },
   summaryText: {
     marginBottom: 10,
-    fontSize: 12,
+    fontSize: 11,
+    lineHeight: 1.4,
+    letterSpacing: 0.2,
   },
   list: {
     marginBottom: 8,
   },
   listItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
     marginBottom: 2,
   },
   bullet: {
@@ -74,8 +88,8 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   bulletRight: {
-        fontSize: 14,
-    color: '#193042',
+    fontSize: 14,
+    color: "#193042",
     marginRight: 6,
     marginTop: 0,
     width: 14,
@@ -84,40 +98,40 @@ const styles = StyleSheet.create({
     lineHeight: 1.2,
   },
   educationItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 4,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
   },
   educationDegree: {
-    fontSize: 10,
+    fontSize: 12,
   },
   educationYear: {
     fontSize: 8,
-    color: '#666',
+    color: "#666",
   },
   experienceItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
     marginBottom: 4,
     marginLeft: 0,
     marginTop: 0,
   },
   experienceTitle: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 2,
   },
   experienceDate: {
     fontSize: 10,
-    color: '#666',
+    color: "#666",
   },
   projectItem: {
     marginBottom: 10,
   },
   projectTitle: {
     fontSize: 13,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 2,
   },
   projectDescription: {
@@ -126,12 +140,12 @@ const styles = StyleSheet.create({
   },
   projectLink: {
     fontSize: 11,
-    color: '#666',
-    textDecoration: 'underline',
+    color: "#666",
+    textDecoration: "underline",
     marginRight: 15,
   },
   projectLinksContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 5,
   },
 });
@@ -153,9 +167,8 @@ export default function Template2PDF({ data }: { data: any }) {
             <Text style={styles.sectionTitle}>Contact</Text>
             <View style={{ marginBottom: 15 }}>
               <View style={styles.contactItem}>
-
                 {/* <Text>📞</Text> */}
-                <Text style={styles.contactText}>Phone: {data.phone}</Text>
+                <Text style={styles.contactText}>Phone: +{data.phone}</Text>
               </View>
               <View style={styles.contactItem}>
                 {/* <Text>📧</Text> */}
@@ -167,25 +180,35 @@ export default function Template2PDF({ data }: { data: any }) {
               </View>
             </View>
 
-        <View style={styles.headerDivider} />
-
-
-            <Text style={styles.sectionTitle}>Education</Text>
-            <View style={styles.list}>
-              {data.education?.map((item: any, i: number) => (
-                <View key={i} style={styles.educationItem}>
-                  <View style={styles.listItem}>
-                    <Text style={styles.bullet}>•</Text>
-                    <Text style={styles.educationDegree}>{item.degree}</Text>
+            {data.education && data.education.length > 0 && (
+              <View>
+                <View style={styles.headerDivider} />
+                <View
+                  style={{
+                    marginTop: 10,
+                  }}
+                >
+                  <Text style={styles.sectionTitle}>Education</Text>
+                  <View style={styles.list}>
+                    {data.education?.map((item: any, i: number) => (
+                      <View key={i} style={styles.educationItem}>
+                        <View style={{ ...styles.listItem, width: "70%" }}>
+                          <Text style={styles.bullet}>•</Text>
+                          <Text style={styles.educationDegree}>
+                            {item.degree}
+                          </Text>
+                        </View>
+                        {/* <Text style={styles.educationYear}>
+                        ({item.startYear} - {item.endYear})
+                      </Text> */}
+                      </View>
+                    ))}
                   </View>
-                  <Text style={styles.educationYear}>
-                    ({item.startYear} - {item.endYear})
-                  </Text>
                 </View>
-              ))}
-            </View>
-        <View style={styles.headerDivider} />
+              </View>
+            )}
 
+            <View style={styles.headerDivider} />
 
             <Text style={styles.sectionTitle}>Skills</Text>
             <View style={styles.list}>
@@ -196,8 +219,7 @@ export default function Template2PDF({ data }: { data: any }) {
                 </View>
               ))}
             </View>
-        <View style={styles.headerDivider} />
-
+            <View style={styles.headerDivider} />
 
             <Text style={styles.sectionTitle}>Languages</Text>
             <View style={styles.list}>
@@ -208,8 +230,7 @@ export default function Template2PDF({ data }: { data: any }) {
                 </View>
               ))}
             </View>
-        <View style={styles.headerDivider} />
-
+            <View style={styles.headerDivider} />
 
             <Text style={styles.sectionTitle}>Certifications</Text>
             <View style={styles.list}>
@@ -220,8 +241,7 @@ export default function Template2PDF({ data }: { data: any }) {
                 </View>
               ))}
             </View>
-        {/* <View style={styles.headerDivider} /> */}
-
+            {/* <View style={styles.headerDivider} /> */}
           </View>
 
           {/* Right Column */}
@@ -238,8 +258,8 @@ export default function Template2PDF({ data }: { data: any }) {
                     <Text style={styles.experienceTitle}>{item.title}</Text>
                   </View>
                   <Text style={{ marginLeft: 8, fontStyle: "italic" }}>
-                  ({item.startDate} - {item.endDate})
-                 </Text>   
+                    ({item.startDate} - {item.endDate})
+                  </Text>
                 </View>
               ))}
             </View>
@@ -249,7 +269,9 @@ export default function Template2PDF({ data }: { data: any }) {
               {data.projects?.map((item: any, i: number) => (
                 <View key={i} style={styles.projectItem}>
                   <Text style={styles.projectTitle}>{item.name}</Text>
-                  <Text style={styles.projectDescription}>{item.description}</Text>
+                  <Text style={styles.projectDescription}>
+                    {item.description}
+                  </Text>
                   <View style={styles.projectLinksContainer}>
                     <Link style={styles.projectLink} src={item.github}>
                       GitHub
@@ -261,13 +283,10 @@ export default function Template2PDF({ data }: { data: any }) {
                 </View>
               ))}
             </View>
-        {/* <View style={styles.headerDivider} /> */}
-
+            {/* <View style={styles.headerDivider} /> */}
           </View>
-
         </View>
         <View style={styles.headerDivider} />
-
       </Page>
     </Document>
   );

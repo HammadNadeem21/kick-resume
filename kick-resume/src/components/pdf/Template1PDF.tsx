@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
     width: "35%",
     // backgroundColor: "#193042",
     color: "white",
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingTop: 12,
+    paddingBottom: 12,
     paddingLeft: 8,
     paddingRight: 8,
     minHeight: "100%",
@@ -28,14 +28,24 @@ const styles = StyleSheet.create({
   right: {
     width: "65%",
     padding: 16,
-    color: "#193042",
+    color: "#eef5ff",
     minHeight: "100%",
+    paddingTop: 12,
+    paddingBottom: 12,
+    paddingLeft: 12,
+    paddingRight: 12,
   },
   heading: {
     fontSize: 14,
-    marginBottom: 4,
-    fontWeight: 400,
+    marginBottom: 10,
+    fontWeight: 600,
     color: "#fff",
+  },
+  rightHeading: {
+    fontSize: 14,
+    marginBottom: 10,
+    fontWeight: 600,
+    color: "#374151",
   },
   section: {
     marginBottom: 16,
@@ -44,16 +54,51 @@ const styles = StyleSheet.create({
   divider: {
     borderBottomWidth: 1,
     borderBottomColor: "#fff",
-    marginTop: 8,
+    // marginTop: 4,
+    // marginVertical: 6,
+  },
+  rightdivider: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#374151",
+    marginBottom: 4,
+    // marginTop: 4,
     // marginVertical: 6,
   },
   listItem: {
     flexDirection: "row",
     alignItems: "flex-start",
-    marginBottom: 4,
+    // marginBottom: 4,
     marginLeft: 0,
     marginTop: 2,
     fontSize: 10,
+    fontWeight: 600,
+  },
+  skillslistItem: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginBottom: 8,
+    marginLeft: 0,
+    marginTop: 2,
+    fontSize: 11,
+    fontWeight: 600,
+  },
+  languagelistItem: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginBottom: 6,
+    marginLeft: 0,
+    marginTop: 2,
+    fontSize: 10,
+    fontWeight: 600,
+  },
+  certificationlistItem: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginBottom: 8,
+    marginLeft: 0,
+    marginTop: 2,
+    fontSize: 10,
+    fontWeight: 600,
   },
   ExperienceItem: {
     flexDirection: "row",
@@ -63,6 +108,8 @@ const styles = StyleSheet.create({
     marginTop: 2,
     fontSize: 12,
     fontWeight: "bold",
+    lineHeight: 1.5,
+    color: "#374151",
   },
   bullet: {
     fontSize: 10,
@@ -71,7 +118,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
     width: 14,
     textAlign: "center",
-    fontWeight: "bold",
+    fontWeight: 700,
     lineHeight: 1.2,
   },
   bulletRight: {
@@ -87,7 +134,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 18,
     textAlign: "center",
     color: "white",
   },
@@ -99,21 +146,29 @@ const styles = StyleSheet.create({
   },
   contact: {
     fontSize: 10,
+    fontWeight: 600,
+    marginTop: 8,
     marginBottom: 2,
     color: "#374151",
   },
   projectTitle: {
     fontWeight: "bold",
     fontSize: 12,
+    color: "#374151",
   },
   projectLink: {
-    fontSize: 11,
-    color: "#666",
-    textDecoration: "underline",
+    fontSize: 10,
+    // color: "#666",
+    // textDecoration: "underline",
     marginRight: 15,
+    textDecoration: "none",
+    color: "#374151",
   },
   projectLinksContainer: {
+    marginVertical: 8,
     flexDirection: "row",
+    alignItems: "center",
+    gap: 20,
     marginTop: 5,
   },
 });
@@ -159,7 +214,7 @@ export default function Template1PDF({
           <View style={styles.section}>
             <Text style={styles.heading}>Skills</Text>
             {data.skills?.map((item: any, i: number) => (
-              <View key={i} style={styles.listItem}>
+              <View key={i} style={styles.skillslistItem}>
                 <Text style={styles.bullet}>{getBulletChar()}</Text>
                 <Text>{item}</Text>
               </View>
@@ -169,7 +224,7 @@ export default function Template1PDF({
           <View style={styles.section}>
             <Text style={styles.heading}>Languages</Text>
             {data.languages?.map((item: any, i: number) => (
-              <View key={i} style={styles.listItem}>
+              <View key={i} style={styles.languagelistItem}>
                 <Text style={styles.bullet}>{getBulletChar()}</Text>
                 <Text>{item}</Text>
               </View>
@@ -177,10 +232,10 @@ export default function Template1PDF({
           </View>
           {data.certifications.length > 0 && <View style={styles.divider} />}
           {data.certifications.length > 0 && (
-            <View style={styles.section}>
+            <View style={{ ...styles.section, width: "80%" }}>
               <Text style={styles.heading}>Certifications</Text>
               {data.certifications?.map((item: any, i: number) => (
-                <View key={i} style={styles.listItem}>
+                <View key={i} style={styles.certificationlistItem}>
                   <Text style={styles.bullet}>{getBulletChar()}</Text>
                   <Text>{item}</Text>
                 </View>
@@ -192,11 +247,11 @@ export default function Template1PDF({
         <View style={styles.right}>
           <Text style={styles.position}>{data.role}</Text>
           <View style={styles.section}>
-            <Text style={styles.heading}>Contact</Text>
+            {/* <Text style={styles.rightHeading}>Contact</Text> */}
             {/* {data.phone && (
               <Text style={styles.contact}>Phone: {data.phone}</Text>
             )} */}
-            <Text style={styles.contact}>Phone: {data.phone}</Text>
+            <Text style={styles.contact}>Phone: +{data.phone}</Text>
             {/* {data.email && (
               <Text style={styles.contact}>Email: {data.email}</Text>
 
@@ -209,16 +264,26 @@ export default function Template1PDF({
             )} */}
             <Text style={styles.contact}>Address: {data.address}</Text>
           </View>
-          <View style={styles.divider} />
+          <View style={styles.rightdivider} />
           <View style={styles.section}>
-            <Text style={styles.heading}>Summary</Text>
-            <Text style={{ lineHeight: 1 }}>{data.summary}</Text>
+            <Text style={styles.rightHeading}>Summary</Text>
+            <Text
+              style={{
+                lineHeight: 1.5,
+                color: "#374151",
+                fontSize: 12,
+                letterSpacing: 0.2,
+                fontWeight: 500,
+              }}
+            >
+              {data.summary}
+            </Text>
           </View>
 
-          {data.experience.length > 0 && <View style={styles.divider} />}
+          {data.experience.length > 0 && <View style={styles.rightdivider} />}
           {data.experience.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.heading}>Experience</Text>
+              <Text style={styles.rightHeading}>Experience</Text>
               {data.experience?.map((item: any, i: number) => (
                 <View
                   key={i}
@@ -228,11 +293,55 @@ export default function Template1PDF({
                     <Text style={styles.bulletRight}>
                       {getBulletChar("#193042")}
                     </Text>
-                    <Text>{item.title}</Text>
+
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 8,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "#374151",
+                          fontSize: 10,
+                        }}
+                      >
+                        {item.companyName}
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#374151",
+                          fontSize: 10,
+                          marginTop: 2,
+                          fontWeight: 500,
+                        }}
+                      >
+                        {item.title}
+                      </Text>
+                    </View>
                   </View>
 
-                  <Text style={{ lineHeight: 1 }}>{item.description}</Text>
-                  <Text style={{ marginLeft: 8, fontStyle: "italic" }}>
+                  <Text
+                    style={{
+                      lineHeight: 1.5,
+                      color: "#374151",
+                      fontSize: 12,
+                      // letterSpacing: 0.2,
+                      fontWeight: 500,
+                    }}
+                  >
+                    {item.description}
+                  </Text>
+                  <Text
+                    style={{
+                      marginLeft: 8,
+                      fontStyle: "italic",
+                      color: "#374151",
+                      fontSize: 8,
+                    }}
+                  >
                     ({item.startDate} - {item.endDate})
                   </Text>
                 </View>
@@ -240,11 +349,11 @@ export default function Template1PDF({
             </View>
           )}
 
-          {data.projects.length > 0 && <View style={styles.divider} />}
+          {data.projects.length > 0 && <View style={styles.rightdivider} />}
 
           {data.projects.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.heading}>Projects</Text>
+              <Text style={styles.rightHeading}>Projects</Text>
               {data.projects?.map((item: any, i: number) => (
                 <View
                   key={i}
@@ -256,7 +365,17 @@ export default function Template1PDF({
                     </Text>
                     <Text style={styles.projectTitle}>{item.name}</Text>
                   </View>
-                  <Text style={{ lineHeight: 1 }}>{item.description}</Text>
+                  <Text
+                    style={{
+                      lineHeight: 1.5,
+                      color: "#374151",
+                      fontSize: 12,
+                      // letterSpacing: 0.2,
+                      fontWeight: 500,
+                    }}
+                  >
+                    {item.description}
+                  </Text>
                   {/* <Text>GitHub: {item.github}</Text> */}
                   <View style={styles.projectLinksContainer}>
                     <Link style={styles.projectLink} src={item.github}>

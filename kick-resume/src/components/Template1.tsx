@@ -61,13 +61,6 @@ export default function Template1({
   handleEmailFieldClick: (fieldName: string, data: string) => void;
   color: Color;
 }) {
-  //   const { resumeData } = useResumeDataContext();
-
-  //   console.log("education", resumeData?.experience[0]);
-
-  //   if (!resumeData)
-  //     return <p>No resume data found. Please fill the form first.</p>;
-
   return (
     <div
       style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
@@ -75,7 +68,7 @@ export default function Template1({
     >
       {/* left-side */}
       <div
-        className=" py-2 md:px-3 px-1"
+        className=" md:px-3 px-1"
         style={{
           backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
         }}
@@ -200,7 +193,7 @@ export default function Template1({
           onClick={() => handlePhoneClickFeild("phone", data.phone)}
         >
           <h1 className="font-bold">Phone: </h1>
-          <h2 className="">{`+${data.phone}`}</h2>
+          <h2 className="font-bold">{`+${data.phone}`}</h2>
         </div>
 
         {/* email */}
@@ -209,7 +202,7 @@ export default function Template1({
           onClick={() => handleEmailFieldClick("email", data.email)}
         >
           <h1 className="font-bold">Email: </h1>
-          <h2 className="">{data.email}</h2>
+          <h2 className="font-bold">{data.email}</h2>
         </div>
 
         {/* Address */}
@@ -218,7 +211,7 @@ export default function Template1({
           onClick={() => handleStringFeildClick("address", data.address)}
         >
           <h1 className="font-bold">Address: </h1>
-          <h2 className="">{data.address}</h2>
+          <h2 className="font-bold">{data.address}</h2>
         </div>
 
         {/* Divider */}
@@ -269,7 +262,7 @@ export default function Template1({
                   </ul>
                   <p>{item.description}</p>
 
-                  <div className="flex items-center gap-2 md:text-xs text-[7px]">
+                  <div className="flex items-center gap-2 md:text-xs text-[7px] italic">
                     <span>{`(${item.startDate}`}</span>
                     <span>
                       {item.endDate === "Currently working"

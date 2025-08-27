@@ -104,7 +104,10 @@ const Template2 = ({
   handleEmailFieldClick: (fieldName: string, data: string) => void;
 }) => {
   return (
-    <div className="bg-myWhite md:px-5 px-2 py-5 text-gray-700 max-w-[794px] mx-auto shadow-lg shadow-myMidPurple/70">
+    <div
+      style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+      className="bg-myWhite md:px-5 px-2 py-5 text-gray-700 max-w-[794px] mx-auto shadow-lg shadow-myMidPurple/70"
+    >
       {/* Divider */}
       <div className="h-[1px] w-full bg-gray-400"></div>
 
@@ -183,34 +186,37 @@ const Template2 = ({
 
         <div className="flex flex-col">
           {/* Education */}
-          <div
-            onClick={() =>
-              handleEducationFieldClick("education", data.education)
-            }
-            className="cursor-pointer md:px-3 px-0 py-3 border-r border-b border-r-gray-400 border-b-gray-400 text-[15px]"
-          >
-            <h1 className="md:text-xl text-sm font-bold text-gray-700">
-              Education
-            </h1>
-            <div className="md:px-3 px-0 ml-3 mt-3 text-gray-700  md:text-[15px] text-[10px]">
-              {data.education.map((item: any, i: number) => (
-                <div
-                  key={i}
-                  className="grid grid-cols-[1fr,auto] items-center justify-between "
-                >
-                  <ul className="list-disc ">
-                    <li>{item.degree}</li>
-                  </ul>
-                  {/* {(item.startDate && item.endDate) && (
+
+          {data.education && data.education.length > 0 && (
+            <div
+              onClick={() =>
+                handleEducationFieldClick("education", data.education)
+              }
+              className="cursor-pointer md:px-3 px-0 py-3 border-r border-b border-r-gray-400 border-b-gray-400 text-[15px]"
+            >
+              <h1 className="md:text-xl text-sm font-bold text-gray-700">
+                Education
+              </h1>
+              <div className="md:px-3 px-0 ml-3 mt-3 text-gray-700  md:text-[15px] text-[10px]">
+                {data.education.map((item: any, i: number) => (
+                  <div
+                    key={i}
+                    className="grid grid-cols-[1fr,auto] items-center justify-between "
+                  >
+                    <ul className="list-disc ">
+                      <li>{item.degree}</li>
+                    </ul>
+                    {/* {(item.startDate && item.endDate) && (
 
                     <p className="text-gray-500 md:text-sm text-[8px] text-right">
                       ({item.startYear} - {item.endYear})
                     </p>
                   )} */}
-                </div>
-              ))}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Skills */}
           <div
