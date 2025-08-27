@@ -7,10 +7,48 @@ import { useState } from "react";
 import Image from "next/image";
 
 import React from "react";
+import { useAiResumeBuilder } from "@/context/AiResumeBuilder";
 
 const AuthForm = ({ mode }: { mode: "login" | "signup" }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const {
+    parsedData,
+    setParsedData,
+    imageFile,
+    setImageFile,
+    previewUrl,
+    setPreviewUrl,
+    processedUrl,
+    setProcessedUrl,
+    userPrompt,
+    setUserPrompt,
+    selectedTemplate,
+    setSelectedTemplate,
+    promptHistory,
+    setPromptHistory,
+    showTemplate,
+    setShowTemplate,
+    isChatLoading,
+    setIsChatLoading,
+    isTemplateLoading,
+    setIsTemplateLoading,
+    hasRenderedTemplate,
+    setHasRenderedTemplate,
+    selectedProcessedImage,
+    setSelectedProcessedImage,
+    selectedImageBgColor,
+    setSelectedImageBgColor,
+    color1,
+    setColor1,
+    color4,
+    setColor4,
+    color7,
+    setColor7,
+    color10,
+    setColor10,
+  } = useAiResumeBuilder();
 
   // credentials handler
   const handleCredentialsSignUp = async (e: React.FormEvent) => {
@@ -22,6 +60,8 @@ const AuthForm = ({ mode }: { mode: "login" | "signup" }) => {
         redirect: true, // agar redirect chahiye
         callbackUrl: "/", // kis page pr redirect karna hai
       });
+      setParsedData(null);
+      sessionStorage.removeItem("parsedData");
     } catch (error) {
       console.error("Error signing in with credentials:", error);
     }
@@ -34,6 +74,8 @@ const AuthForm = ({ mode }: { mode: "login" | "signup" }) => {
         redirect: true,
         callbackUrl: "/",
       });
+      setParsedData(null);
+      sessionStorage.removeItem("parsedData");
     } catch (error) {
       console.error("Error signing in with Google:", error);
     }
