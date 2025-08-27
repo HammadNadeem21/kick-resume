@@ -82,8 +82,8 @@ const AiPromptPage = () => {
     setSelectedProcessedImage,
     selectedImageBgColor,
     setSelectedImageBgColor,
-    showColorPicker,
-    setShowColorPicker,
+    // showColorPicker,
+    // setShowColorPicker,
     color1,
     setColor1,
     color4,
@@ -103,6 +103,8 @@ const AiPromptPage = () => {
     hasRenderedTemplate,
     setHasRenderedTemplate,
   } = useJobMatcher();
+
+  const [showColorPicker, setShowColorPicker] = useState(false);
 
   //   for generating Resume
   // const [userName, setUserName] = useState("");
@@ -517,11 +519,23 @@ const AiPromptPage = () => {
 
   // const [showTemplate, setShowTemplate] = useState(false);
   useEffect(() => {
-    if (!resumeData && !userName && !jobDescription && promptHistory.length === 0) {
+    if (
+      !resumeData &&
+      !userName &&
+      !jobDescription &&
+      promptHistory.length === 0
+    ) {
       setShowTemplate(false); // Only reset if no data at all
       setHasRenderedTemplate(false);
     }
-  }, [resumeData, userName, jobDescription, promptHistory, setShowTemplate, setHasRenderedTemplate]);
+  }, [
+    resumeData,
+    userName,
+    jobDescription,
+    promptHistory,
+    setShowTemplate,
+    setHasRenderedTemplate,
+  ]);
 
   useEffect(() => {
     scrollToBottom();

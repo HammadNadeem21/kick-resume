@@ -26,8 +26,8 @@ type JobMatcherContextType = {
   setSelectedProcessedImage: (url: string | null) => void;
   selectedImageBgColor: string | undefined;
   setSelectedImageBgColor: (color: string | undefined) => void;
-  showColorPicker: boolean;
-  setShowColorPicker: (show: boolean) => void;
+  // showColorPicker: boolean;
+  // setShowColorPicker: (show: boolean) => void;
   color1: { r: number; g: number; b: number };
   setColor1: (color: { r: number; g: number; b: number }) => void;
   color4: { r: number; g: number; b: number };
@@ -67,13 +67,17 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
     }
     return "";
   });
-  const [selectedTemplate, setSelectedTemplate] = useState<number | null>(() => {
-    if (typeof window !== "undefined") {
-      const storedTemplate = localStorage.getItem("jobMatcherSelectedTemplate");
-      return storedTemplate ? parseInt(storedTemplate) : null;
+  const [selectedTemplate, setSelectedTemplate] = useState<number | null>(
+    () => {
+      if (typeof window !== "undefined") {
+        const storedTemplate = localStorage.getItem(
+          "jobMatcherSelectedTemplate"
+        );
+        return storedTemplate ? parseInt(storedTemplate) : null;
+      }
+      return null;
     }
-    return null;
-  });
+  );
   const [resumeData, setResumeData] = useState<any>(() => {
     if (typeof window !== "undefined") {
       const storedData = localStorage.getItem("jobMatcherResumeData");
@@ -96,20 +100,28 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
     }
     return null;
   });
-  const [selectedProcessedImage, setSelectedProcessedImage] = useState<string | null>(() => {
+  const [selectedProcessedImage, setSelectedProcessedImage] = useState<
+    string | null
+  >(() => {
     if (typeof window !== "undefined") {
       return localStorage.getItem("jobMatcherSelectedProcessedImage") || null;
     }
     return null;
   });
-  const [selectedImageBgColor, setSelectedImageBgColor] = useState<string | undefined>(() => {
+  const [selectedImageBgColor, setSelectedImageBgColor] = useState<
+    string | undefined
+  >(() => {
     if (typeof window !== "undefined") {
-      const storedColor = localStorage.getItem("jobMatcherSelectedImageBgColor");
-      return storedColor && storedColor !== "undefined" ? storedColor : undefined;
+      const storedColor = localStorage.getItem(
+        "jobMatcherSelectedImageBgColor"
+      );
+      return storedColor && storedColor !== "undefined"
+        ? storedColor
+        : undefined;
     }
     return undefined;
   });
-  const [showColorPicker, setShowColorPicker] = useState<boolean>(false); // Not persisting, usually transient
+  // const [showColorPicker, setShowColorPicker] = useState<boolean>(false); // Not persisting, usually transient
   const [color1, setColor1] = useState(() => {
     if (typeof window !== "undefined") {
       const storedColor = localStorage.getItem("jobMatcherColor1");
@@ -156,13 +168,17 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
   });
   const [isChatLoading, setIsChatLoading] = useState<boolean>(false);
   const [isTemplateLoading, setIsTemplateLoading] = useState<boolean>(false);
-  const [hasRenderedTemplate, setHasRenderedTemplate] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      const storedRendered = localStorage.getItem("jobMatcherHasRenderedTemplate");
-      return storedRendered ? JSON.parse(storedRendered) : false;
+  const [hasRenderedTemplate, setHasRenderedTemplate] = useState<boolean>(
+    () => {
+      if (typeof window !== "undefined") {
+        const storedRendered = localStorage.getItem(
+          "jobMatcherHasRenderedTemplate"
+        );
+        return storedRendered ? JSON.parse(storedRendered) : false;
+      }
+      return false;
     }
-    return false;
-  });
+  );
 
   useEffect(() => {
     localStorage.setItem("jobMatcherUserName", userName);
@@ -174,7 +190,10 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (selectedTemplate !== null) {
-      localStorage.setItem("jobMatcherSelectedTemplate", selectedTemplate.toString());
+      localStorage.setItem(
+        "jobMatcherSelectedTemplate",
+        selectedTemplate.toString()
+      );
     } else {
       localStorage.removeItem("jobMatcherSelectedTemplate");
     }
@@ -202,7 +221,10 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (selectedProcessedImage) {
-      localStorage.setItem("jobMatcherSelectedProcessedImage", selectedProcessedImage);
+      localStorage.setItem(
+        "jobMatcherSelectedProcessedImage",
+        selectedProcessedImage
+      );
     } else {
       localStorage.removeItem("jobMatcherSelectedProcessedImage");
     }
@@ -210,7 +232,10 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (selectedImageBgColor) {
-      localStorage.setItem("jobMatcherSelectedImageBgColor", selectedImageBgColor);
+      localStorage.setItem(
+        "jobMatcherSelectedImageBgColor",
+        selectedImageBgColor
+      );
     } else {
       localStorage.removeItem("jobMatcherSelectedImageBgColor");
     }
@@ -234,15 +259,24 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
   }, [color10]);
 
   useEffect(() => {
-    localStorage.setItem("jobMatcherPromptHistory", JSON.stringify(promptHistory));
+    localStorage.setItem(
+      "jobMatcherPromptHistory",
+      JSON.stringify(promptHistory)
+    );
   }, [promptHistory]);
 
   useEffect(() => {
-    localStorage.setItem("jobMatcherShowTemplate", JSON.stringify(showTemplate));
+    localStorage.setItem(
+      "jobMatcherShowTemplate",
+      JSON.stringify(showTemplate)
+    );
   }, [showTemplate]);
 
   useEffect(() => {
-    localStorage.setItem("jobMatcherHasRenderedTemplate", JSON.stringify(hasRenderedTemplate));
+    localStorage.setItem(
+      "jobMatcherHasRenderedTemplate",
+      JSON.stringify(hasRenderedTemplate)
+    );
   }, [hasRenderedTemplate]);
 
   return (
@@ -266,8 +300,8 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
         setSelectedProcessedImage,
         selectedImageBgColor,
         setSelectedImageBgColor,
-        showColorPicker,
-        setShowColorPicker,
+        // showColorPicker,
+        // setShowColorPicker,
         color1,
         setColor1,
         color4,
