@@ -62,6 +62,8 @@ const AuthForm = ({ mode }: { mode: "login" | "signup" }) => {
       });
       setParsedData(null);
       sessionStorage.removeItem("parsedData");
+      setPromptHistory([]);
+      sessionStorage.removeItem("promptHistory");
     } catch (error) {
       console.error("Error signing in with credentials:", error);
     }
@@ -76,6 +78,8 @@ const AuthForm = ({ mode }: { mode: "login" | "signup" }) => {
       });
       setParsedData(null);
       sessionStorage.removeItem("parsedData");
+      setPromptHistory([]);
+      sessionStorage.removeItem("promptHistory");
     } catch (error) {
       console.error("Error signing in with Google:", error);
     }
