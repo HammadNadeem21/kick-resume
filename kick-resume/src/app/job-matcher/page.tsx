@@ -60,19 +60,58 @@ const templateData = [
 // for credits
 import { useSession } from "next-auth/react";
 import { useCredits } from "@/context/CreditsContext";
+import { JobMatcherProvider, useJobMatcher } from "@/context/JobMatcherContext";
 
 const AiPromptPage = () => {
-  const [userPrompt, setUserPrompt] = useState<string>("");
-  const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
+  const {
+    userName,
+    setUserName,
+    jobDescription,
+    setJobDescription,
+    selectedTemplate,
+    setSelectedTemplate,
+    resumeData,
+    setResumeData,
+    imageFile,
+    setImageFile,
+    previewUrl,
+    setPreviewUrl,
+    processedUrl,
+    setProcessedUrl,
+    selectedProcessedImage,
+    setSelectedProcessedImage,
+    selectedImageBgColor,
+    setSelectedImageBgColor,
+    showColorPicker,
+    setShowColorPicker,
+    color1,
+    setColor1,
+    color4,
+    setColor4,
+    color7,
+    setColor7,
+    color10,
+    setColor10,
+    promptHistory,
+    setPromptHistory,
+    showTemplate,
+    setShowTemplate,
+    isChatLoading,
+    setIsChatLoading,
+    isTemplateLoading,
+    setIsTemplateLoading,
+    hasRenderedTemplate,
+    setHasRenderedTemplate,
+  } = useJobMatcher();
 
   //   for generating Resume
-  const [userName, setUserName] = useState("");
-  const [jobDescription, setJobDescription] = useState("");
-  const [resumeData, setResumeData] = useState<any>(null);
+  // const [userName, setUserName] = useState("");
+  // const [jobDescription, setJobDescription] = useState("");
+  // const [resumeData, setResumeData] = useState<any>(null);
 
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [processedUrl, setProcessedUrl] = useState<string | null>(null);
+  // const [imageFile, setImageFile] = useState<File | null>(null);
+  // const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  // const [processedUrl, setProcessedUrl] = useState<string | null>(null);
 
   const [showEditor, setShowEditor] = useState(false);
 
@@ -98,13 +137,13 @@ const AiPromptPage = () => {
   );
 
   // selected image state
-  const [selectedProcessedImage, setSelectedProcessedImage] = useState<
-    string | null
-  >(null);
+  // const [selectedProcessedImage, setSelectedProcessedImage] = useState<
+  //   string | null
+  // >(null);
   // selected background color state
-  const [selectedImageBgColor, setSelectedImageBgColor] = useState<
-    string | undefined
-  >(undefined);
+  // const [selectedImageBgColor, setSelectedImageBgColor] = useState<
+  //   string | undefined
+  // >(undefined);
   // selected theme state
 
   const tailwindColorMap: { [key: string]: string } = {
@@ -116,11 +155,11 @@ const AiPromptPage = () => {
   };
 
   // for color picker
-  const [showColorPicker, setShowColorPicker] = useState(false);
-  const [color1, setColor1] = useState({ r: 40, g: 56, b: 74 }); // Default for Template 1
-  const [color4, setColor4] = useState({ r: 200, g: 150, b: 35 });
-  const [color7, setColor7] = useState({ r: 131, g: 123, b: 106 }); // Default for Template 4
-  const [color10, setColor10] = useState({ r: 131, g: 123, b: 106 });
+  // const [showColorPicker, setShowColorPicker] = useState(false);
+  // const [color1, setColor1] = useState({ r: 40, g: 56, b: 74 }); // Default for Template 1
+  // const [color4, setColor4] = useState({ r: 200, g: 150, b: 35 });
+  // const [color7, setColor7] = useState({ r: 131, g: 123, b: 106 }); // Default for Template 4
+  // const [color10, setColor10] = useState({ r: 131, g: 123, b: 106 });
 
   // for phone number
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
@@ -149,14 +188,14 @@ const AiPromptPage = () => {
   >(null);
 
   // For multiple prompt
-  const [promptHistory, setPromptHistory] = useState<
-    { type: "user" | "ai"; message: string }[]
-  >([]);
+  // const [promptHistory, setPromptHistory] = useState<
+  //   { type: "user" | "ai"; message: string }[]
+  // >([]);
 
   // for loader
-  const [isChatLoading, setIsChatLoading] = useState(false);
-  const [isTemplateLoading, setIsTemplateLoading] = useState(false);
-  const [hasRenderedTemplate, setHasRenderedTemplate] = useState(false);
+  // const [isChatLoading, setIsChatLoading] = useState(false);
+  // const [isTemplateLoading, setIsTemplateLoading] = useState(false);
+  // const [hasRenderedTemplate, setHasRenderedTemplate] = useState(false);
 
   // For credits
   // const [credits, setCredits] = useState<number | null>(0);
@@ -476,10 +515,13 @@ const AiPromptPage = () => {
     return <p>Please select a template above.</p>;
   };
 
-  const [showTemplate, setShowTemplate] = useState(false);
+  // const [showTemplate, setShowTemplate] = useState(false);
   useEffect(() => {
-    setShowTemplate(false); // Reset jab prompt ya template change ho
-  }, []);
+    if (!resumeData && !userName && !jobDescription && promptHistory.length === 0) {
+      setShowTemplate(false); // Only reset if no data at all
+      setHasRenderedTemplate(false);
+    }
+  }, [resumeData, userName, jobDescription, promptHistory, setShowTemplate, setHasRenderedTemplate]);
 
   useEffect(() => {
     scrollToBottom();

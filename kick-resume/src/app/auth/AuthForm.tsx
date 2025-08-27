@@ -100,7 +100,7 @@ const AuthForm = ({ mode }: { mode: "login" | "signup" }) => {
           </Button>
         </form>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-center">
           <div className="h-[1px] w-[40%] bg-mySkyBlue"></div>
           <div className="text-center text-lg text-gray-700 mb-1">or</div>
 

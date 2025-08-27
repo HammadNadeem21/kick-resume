@@ -16,7 +16,7 @@ const Features = () => {
             experienced recruiters, data analysts, and software engineers.
           </p>
         </div>
-        <div className=" py-[10px] px-4 grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 text-center gap-5 mt-6">
+        <div className=" py-[10px] px-4 grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 text-center justify-center gap-5 mt-6">
           {/* Content */}
           {featuresSection.map((feature: any, index: number) => (
             <FeatureCard

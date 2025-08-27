@@ -472,14 +472,14 @@ export const featuresSection = [
     description:
       "Paste any job description and get a perfectly optimized resume that matches the requirements.",
     icon: Briefcase,
-    link: "/job",
+    link: "/job-matcher",
   },
   {
     title: "Resume vs Job Analysis",
     description:
       "Compare your resume against specific job postings and get detailed compatibility insights.",
     icon: Target,
-    link: "/resume",
+    link: "/resume-job-analysis",
   },
 ];
 

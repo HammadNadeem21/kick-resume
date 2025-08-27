@@ -9,6 +9,7 @@ import { ResumeDataProvider } from "@/context/ResumeBuilderData";
 import { CreditsProvider } from "@/context/CreditsContext";
 import { usePathname } from "next/navigation";
 import { AiResumeBuilderProvider } from "@/context/AiResumeBuilder";
+import { JobMatcherProvider } from "@/context/JobMatcherContext";
 
 export default function RootLayout({
   children,
@@ -26,7 +27,7 @@ export default function RootLayout({
           <CreditsProvider>
             {!hideLayout && <Navbar />}
             <ResumeProvider>
-              <AiResumeBuilderProvider>{children}</AiResumeBuilderProvider>
+              <AiResumeBuilderProvider><JobMatcherProvider>{children}</JobMatcherProvider></AiResumeBuilderProvider>
             </ResumeProvider>
 
             {!hideLayout && <Footer />}
