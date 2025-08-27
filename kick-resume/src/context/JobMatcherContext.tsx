@@ -57,20 +57,20 @@ const JobMatcherContext = createContext<JobMatcherContextType | undefined>(
 export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
   const [userName, setUserName] = useState<string>(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("jobMatcherUserName") || "";
+      return sessionStorage.getItem("jobMatcherUserName") || "";
     }
     return "";
   });
   const [jobDescription, setJobDescription] = useState<string>(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("jobMatcherJobDescription") || "";
+      return sessionStorage.getItem("jobMatcherJobDescription") || "";
     }
     return "";
   });
   const [selectedTemplate, setSelectedTemplate] = useState<number | null>(
     () => {
       if (typeof window !== "undefined") {
-        const storedTemplate = localStorage.getItem(
+        const storedTemplate = sessionStorage.getItem(
           "jobMatcherSelectedTemplate"
         );
         return storedTemplate ? parseInt(storedTemplate) : null;
@@ -80,22 +80,22 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
   );
   const [resumeData, setResumeData] = useState<any>(() => {
     if (typeof window !== "undefined") {
-      const storedData = localStorage.getItem("jobMatcherResumeData");
+      const storedData = sessionStorage.getItem("jobMatcherResumeData");
       return storedData ? JSON.parse(storedData) : null;
     }
     return null;
   });
-  const [imageFile, setImageFile] = useState<File | null>(null); // File objects cannot be stored in localStorage
+  const [imageFile, setImageFile] = useState<File | null>(null); // File objects cannot be stored in sessionStorage
   const [previewUrl, setPreviewUrl] = useState<string | null>(() => {
     if (typeof window !== "undefined") {
-      const storedUrl = localStorage.getItem("jobMatcherPreviewUrl");
+      const storedUrl = sessionStorage.getItem("jobMatcherPreviewUrl");
       return storedUrl && storedUrl !== "null" ? storedUrl : null;
     }
     return null;
   });
   const [processedUrl, setProcessedUrl] = useState<string | null>(() => {
     if (typeof window !== "undefined") {
-      const storedUrl = localStorage.getItem("jobMatcherProcessedUrl");
+      const storedUrl = sessionStorage.getItem("jobMatcherProcessedUrl");
       return storedUrl && storedUrl !== "null" ? storedUrl : null;
     }
     return null;
@@ -104,7 +104,7 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
     string | null
   >(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("jobMatcherSelectedProcessedImage") || null;
+      return sessionStorage.getItem("jobMatcherSelectedProcessedImage") || null;
     }
     return null;
   });
@@ -112,7 +112,7 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
     string | undefined
   >(() => {
     if (typeof window !== "undefined") {
-      const storedColor = localStorage.getItem(
+      const storedColor = sessionStorage.getItem(
         "jobMatcherSelectedImageBgColor"
       );
       return storedColor && storedColor !== "undefined"
@@ -124,28 +124,28 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
   // const [showColorPicker, setShowColorPicker] = useState<boolean>(false); // Not persisting, usually transient
   const [color1, setColor1] = useState(() => {
     if (typeof window !== "undefined") {
-      const storedColor = localStorage.getItem("jobMatcherColor1");
+      const storedColor = sessionStorage.getItem("jobMatcherColor1");
       return storedColor ? JSON.parse(storedColor) : { r: 40, g: 56, b: 74 };
     }
     return { r: 40, g: 56, b: 74 };
   });
   const [color4, setColor4] = useState(() => {
     if (typeof window !== "undefined") {
-      const storedColor = localStorage.getItem("jobMatcherColor4");
+      const storedColor = sessionStorage.getItem("jobMatcherColor4");
       return storedColor ? JSON.parse(storedColor) : { r: 200, g: 150, b: 35 };
     }
     return { r: 200, g: 150, b: 35 };
   });
   const [color7, setColor7] = useState(() => {
     if (typeof window !== "undefined") {
-      const storedColor = localStorage.getItem("jobMatcherColor7");
+      const storedColor = sessionStorage.getItem("jobMatcherColor7");
       return storedColor ? JSON.parse(storedColor) : { r: 131, g: 123, b: 106 };
     }
     return { r: 131, g: 123, b: 106 };
   });
   const [color10, setColor10] = useState(() => {
     if (typeof window !== "undefined") {
-      const storedColor = localStorage.getItem("jobMatcherColor10");
+      const storedColor = sessionStorage.getItem("jobMatcherColor10");
       return storedColor ? JSON.parse(storedColor) : { r: 131, g: 123, b: 106 };
     }
     return { r: 131, g: 123, b: 106 };
@@ -154,14 +154,16 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
     { type: "user" | "ai"; message: string }[]
   >(() => {
     if (typeof window !== "undefined") {
-      const storedHistory = localStorage.getItem("jobMatcherPromptHistory");
+      const storedHistory = sessionStorage.getItem("jobMatcherPromptHistory");
       return storedHistory ? JSON.parse(storedHistory) : [];
     }
     return [];
   });
   const [showTemplate, setShowTemplate] = useState<boolean>(() => {
     if (typeof window !== "undefined") {
-      const storedShowTemplate = localStorage.getItem("jobMatcherShowTemplate");
+      const storedShowTemplate = sessionStorage.getItem(
+        "jobMatcherShowTemplate"
+      );
       return storedShowTemplate ? JSON.parse(storedShowTemplate) : false;
     }
     return false;
@@ -171,7 +173,7 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
   const [hasRenderedTemplate, setHasRenderedTemplate] = useState<boolean>(
     () => {
       if (typeof window !== "undefined") {
-        const storedRendered = localStorage.getItem(
+        const storedRendered = sessionStorage.getItem(
           "jobMatcherHasRenderedTemplate"
         );
         return storedRendered ? JSON.parse(storedRendered) : false;
@@ -181,99 +183,99 @@ export const JobMatcherProvider = ({ children }: { children: ReactNode }) => {
   );
 
   useEffect(() => {
-    localStorage.setItem("jobMatcherUserName", userName);
+    sessionStorage.setItem("jobMatcherUserName", userName);
   }, [userName]);
 
   useEffect(() => {
-    localStorage.setItem("jobMatcherJobDescription", jobDescription);
+    sessionStorage.setItem("jobMatcherJobDescription", jobDescription);
   }, [jobDescription]);
 
   useEffect(() => {
     if (selectedTemplate !== null) {
-      localStorage.setItem(
+      sessionStorage.setItem(
         "jobMatcherSelectedTemplate",
         selectedTemplate.toString()
       );
     } else {
-      localStorage.removeItem("jobMatcherSelectedTemplate");
+      sessionStorage.removeItem("jobMatcherSelectedTemplate");
     }
   }, [selectedTemplate]);
 
   useEffect(() => {
-    localStorage.setItem("jobMatcherResumeData", JSON.stringify(resumeData));
+    sessionStorage.setItem("jobMatcherResumeData", JSON.stringify(resumeData));
   }, [resumeData]);
 
   useEffect(() => {
     if (previewUrl) {
-      localStorage.setItem("jobMatcherPreviewUrl", previewUrl);
+      sessionStorage.setItem("jobMatcherPreviewUrl", previewUrl);
     } else {
-      localStorage.removeItem("jobMatcherPreviewUrl");
+      sessionStorage.removeItem("jobMatcherPreviewUrl");
     }
   }, [previewUrl]);
 
   useEffect(() => {
     if (processedUrl) {
-      localStorage.setItem("jobMatcherProcessedUrl", processedUrl);
+      sessionStorage.setItem("jobMatcherProcessedUrl", processedUrl);
     } else {
-      localStorage.removeItem("jobMatcherProcessedUrl");
+      sessionStorage.removeItem("jobMatcherProcessedUrl");
     }
   }, [processedUrl]);
 
   useEffect(() => {
     if (selectedProcessedImage) {
-      localStorage.setItem(
+      sessionStorage.setItem(
         "jobMatcherSelectedProcessedImage",
         selectedProcessedImage
       );
     } else {
-      localStorage.removeItem("jobMatcherSelectedProcessedImage");
+      sessionStorage.removeItem("jobMatcherSelectedProcessedImage");
     }
   }, [selectedProcessedImage]);
 
   useEffect(() => {
     if (selectedImageBgColor) {
-      localStorage.setItem(
+      sessionStorage.setItem(
         "jobMatcherSelectedImageBgColor",
         selectedImageBgColor
       );
     } else {
-      localStorage.removeItem("jobMatcherSelectedImageBgColor");
+      sessionStorage.removeItem("jobMatcherSelectedImageBgColor");
     }
   }, [selectedImageBgColor]);
 
   // For color states
   useEffect(() => {
-    localStorage.setItem("jobMatcherColor1", JSON.stringify(color1));
+    sessionStorage.setItem("jobMatcherColor1", JSON.stringify(color1));
   }, [color1]);
 
   useEffect(() => {
-    localStorage.setItem("jobMatcherColor4", JSON.stringify(color4));
+    sessionStorage.setItem("jobMatcherColor4", JSON.stringify(color4));
   }, [color4]);
 
   useEffect(() => {
-    localStorage.setItem("jobMatcherColor7", JSON.stringify(color7));
+    sessionStorage.setItem("jobMatcherColor7", JSON.stringify(color7));
   }, [color7]);
 
   useEffect(() => {
-    localStorage.setItem("jobMatcherColor10", JSON.stringify(color10));
+    sessionStorage.setItem("jobMatcherColor10", JSON.stringify(color10));
   }, [color10]);
 
   useEffect(() => {
-    localStorage.setItem(
+    sessionStorage.setItem(
       "jobMatcherPromptHistory",
       JSON.stringify(promptHistory)
     );
   }, [promptHistory]);
 
   useEffect(() => {
-    localStorage.setItem(
+    sessionStorage.setItem(
       "jobMatcherShowTemplate",
       JSON.stringify(showTemplate)
     );
   }, [showTemplate]);
 
   useEffect(() => {
-    localStorage.setItem(
+    sessionStorage.setItem(
       "jobMatcherHasRenderedTemplate",
       JSON.stringify(hasRenderedTemplate)
     );

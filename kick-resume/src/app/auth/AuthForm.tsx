@@ -8,47 +8,14 @@ import Image from "next/image";
 
 import React from "react";
 import { useAiResumeBuilder } from "@/context/AiResumeBuilder";
+import { useJobMatcher } from "@/context/JobMatcherContext";
 
 const AuthForm = ({ mode }: { mode: "login" | "signup" }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const {
-    parsedData,
-    setParsedData,
-    imageFile,
-    setImageFile,
-    previewUrl,
-    setPreviewUrl,
-    processedUrl,
-    setProcessedUrl,
-    userPrompt,
-    setUserPrompt,
-    selectedTemplate,
-    setSelectedTemplate,
-    promptHistory,
-    setPromptHistory,
-    showTemplate,
-    setShowTemplate,
-    isChatLoading,
-    setIsChatLoading,
-    isTemplateLoading,
-    setIsTemplateLoading,
-    hasRenderedTemplate,
-    setHasRenderedTemplate,
-    selectedProcessedImage,
-    setSelectedProcessedImage,
-    selectedImageBgColor,
-    setSelectedImageBgColor,
-    color1,
-    setColor1,
-    color4,
-    setColor4,
-    color7,
-    setColor7,
-    color10,
-    setColor10,
-  } = useAiResumeBuilder();
+  const { setParsedData, setPromptHistory } = useAiResumeBuilder();
+  const { setResumeData, setUserName, setJobDescription } = useJobMatcher();
 
   // credentials handler
   const handleCredentialsSignUp = async (e: React.FormEvent) => {
@@ -64,6 +31,12 @@ const AuthForm = ({ mode }: { mode: "login" | "signup" }) => {
       sessionStorage.removeItem("parsedData");
       setPromptHistory([]);
       sessionStorage.removeItem("promptHistory");
+      setResumeData(null);
+      sessionStorage.removeItem("resumeData");
+      setUserName("");
+      sessionStorage.removeItem("userName");
+      setJobDescription("");
+      sessionStorage.removeItem("jobDescription");
     } catch (error) {
       console.error("Error signing in with credentials:", error);
     }
@@ -80,6 +53,12 @@ const AuthForm = ({ mode }: { mode: "login" | "signup" }) => {
       sessionStorage.removeItem("parsedData");
       setPromptHistory([]);
       sessionStorage.removeItem("promptHistory");
+      setResumeData(null);
+      sessionStorage.removeItem("resumeData");
+      setUserName("");
+      sessionStorage.removeItem("userName");
+      setJobDescription("");
+      sessionStorage.removeItem("jobDescription");
     } catch (error) {
       console.error("Error signing in with Google:", error);
     }
