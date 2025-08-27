@@ -57,69 +57,113 @@ export const AiResumeBuilderProvider = ({
 }) => {
   //   const [parsedData, setParsedData] = useState<any>(null);
   const [parsedData, setParsedData] = useState<any>(() => {
-    const storedData = localStorage.getItem("parsedData");
-    return storedData ? JSON.parse(storedData) : null;
+    if (typeof window !== "undefined") {
+      const storedData = localStorage.getItem("parsedData");
+      return storedData ? JSON.parse(storedData) : null;
+    }
+    return null;
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   //   const [imageFile, setImageFile] = useState<File | null>(() => {
   //     return localStorage.getItem("imageFile");
   //   });
+  //   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(() => {
-    const storedUrl = localStorage.getItem("previewUrl");
-    return storedUrl && storedUrl !== "null" ? storedUrl : null;
+    if (typeof window !== "undefined") {
+      const storedUrl = localStorage.getItem("previewUrl");
+      return storedUrl && storedUrl !== "null" ? storedUrl : null;
+    }
+    return null;
   });
   //   const [processedUrl, setProcessedUrl] = useState<string | null>(null);
   const [processedUrl, setProcessedUrl] = useState<string | null>(() => {
-    const storedUrl = localStorage.getItem("processedUrl");
-    return storedUrl && storedUrl !== "null" ? storedUrl : null;
+    if (typeof window !== "undefined") {
+      const storedUrl = localStorage.getItem("processedUrl");
+      return storedUrl && storedUrl !== "null" ? storedUrl : null;
+    }
+    return null;
   });
 
   const [userPrompt, setUserPrompt] = useState<string>(() => {
-    return localStorage.getItem("userPrompt") || "";
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("userPrompt") || "";
+    }
+    return "";
   });
   const [selectedTemplate, setSelectedTemplate] = useState<number | null>(() => {
-    const storedTemplate = localStorage.getItem("selectedTemplate");
-    return storedTemplate ? parseInt(storedTemplate) : null;
+    if (typeof window !== "undefined") {
+      const storedTemplate = localStorage.getItem("selectedTemplate");
+      return storedTemplate ? parseInt(storedTemplate) : null;
+    }
+    return null;
   });
   const [promptHistory, setPromptHistory] = useState<
     { type: "user" | "ai"; message: string }[]
   >(() => {
-    const storedHistory = localStorage.getItem("promptHistory");
-    return storedHistory ? JSON.parse(storedHistory) : [];
+    if (typeof window !== "undefined") {
+      const storedHistory = localStorage.getItem("promptHistory");
+      return storedHistory ? JSON.parse(storedHistory) : [];
+    }
+    return [];
   });
   const [showTemplate, setShowTemplate] = useState<boolean>(() => {
-    const storedShowTemplate = localStorage.getItem("showTemplate");
-    return storedShowTemplate ? JSON.parse(storedShowTemplate) : false;
+    if (typeof window !== "undefined") {
+      const storedShowTemplate = localStorage.getItem("showTemplate");
+      return storedShowTemplate ? JSON.parse(storedShowTemplate) : false;
+    }
+    return false;
   });
   const [isChatLoading, setIsChatLoading] = useState<boolean>(false);
   const [isTemplateLoading, setIsTemplateLoading] = useState<boolean>(false);
   const [hasRenderedTemplate, setHasRenderedTemplate] = useState<boolean>(() => {
-    const storedRendered = localStorage.getItem("hasRenderedTemplate");
-    return storedRendered ? JSON.parse(storedRendered) : false;
+    if (typeof window !== "undefined") {
+      const storedRendered = localStorage.getItem("hasRenderedTemplate");
+      return storedRendered ? JSON.parse(storedRendered) : false;
+    }
+    return false;
   });
 
   const [selectedProcessedImage, setSelectedProcessedImage] = useState<string | null>(() => {
-    return localStorage.getItem("selectedProcessedImage");
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("selectedProcessedImage") || null;
+    }
+    return null;
   });
   const [selectedImageBgColor, setSelectedImageBgColor] = useState<string | undefined>(() => {
-    return localStorage.getItem("selectedImageBgColor") || undefined;
+    if (typeof window !== "undefined") {
+      const storedColor = localStorage.getItem("selectedImageBgColor");
+      return storedColor && storedColor !== "undefined" ? storedColor : undefined;
+    }
+    return undefined;
   });
 
   const [color1, setColor1] = useState(() => {
-    const storedColor = localStorage.getItem("color1");
-    return storedColor ? JSON.parse(storedColor) : { r: 40, g: 56, b: 74 };
+    if (typeof window !== "undefined") {
+      const storedColor = localStorage.getItem("color1");
+      return storedColor ? JSON.parse(storedColor) : { r: 40, g: 56, b: 74 };
+    }
+    return { r: 40, g: 56, b: 74 };
   });
   const [color4, setColor4] = useState(() => {
-    const storedColor = localStorage.getItem("color4");
-    return storedColor ? JSON.parse(storedColor) : { r: 200, g: 150, b: 35 };
+    if (typeof window !== "undefined") {
+      const storedColor = localStorage.getItem("color4");
+      return storedColor ? JSON.parse(storedColor) : { r: 200, g: 150, b: 35 };
+    }
+    return { r: 200, g: 150, b: 35 };
   });
   const [color7, setColor7] = useState(() => {
-    const storedColor = localStorage.getItem("color7");
-    return storedColor ? JSON.parse(storedColor) : { r: 131, g: 123, b: 106 };
+    if (typeof window !== "undefined") {
+      const storedColor = localStorage.getItem("color7");
+      return storedColor ? JSON.parse(storedColor) : { r: 131, g: 123, b: 106 };
+    }
+    return { r: 131, g: 123, b: 106 };
   });
   const [color10, setColor10] = useState(() => {
-    const storedColor = localStorage.getItem("color10");
-    return storedColor ? JSON.parse(storedColor) : { r: 131, g: 123, b: 106 };
+    if (typeof window !== "undefined") {
+      const storedColor = localStorage.getItem("color10");
+      return storedColor ? JSON.parse(storedColor) : { r: 131, g: 123, b: 106 };
+    }
+    return { r: 131, g: 123, b: 106 };
   });
 
   useEffect(() => {
