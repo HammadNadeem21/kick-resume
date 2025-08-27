@@ -21,8 +21,8 @@ export default withAuth({
 export const config = {
   matcher: [
     "/ai-resume-analyzer/:path*",
-    // "/ai-resume-builder/:path*",
-    // "/job-matcher/:path*",
+    "/ai-resume-builder/:path*",
+    "/job-matcher/:path*",
     "/resume-job-analysis/:path*",
   ],
 };
