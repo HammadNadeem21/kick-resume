@@ -14,7 +14,7 @@ const ToolBoxSection = () => {
           </h1>
         </div>
 
-        <div className="grid lg:grid-cols-3 md:grid-cols-2  grid-cols-1 gap-3 mt-[60px] sm:px-8 px-3">
+        <div className="flex flex-wrap items-center justify-center gap-5 mt-[60px] sm:px-8 px-3">
           {toolbox.map((item: any, index) => (
             <ToolboxCard
               key={index}
@@ -25,10 +25,10 @@ const ToolBoxSection = () => {
           ))}
         </div>
 
-        <button className="mt-[100px] py-1 px-5 rounded-lg text-white font-semibold bg-mySkyBlue/60 hover:bg-mySkyBlue transition-all duration-300">
+        {/* <button className="mt-[100px] py-1 px-5 rounded-lg text-white font-semibold bg-mySkyBlue/60 hover:bg-mySkyBlue transition-all duration-300">
           Try
           <Link href="ai-resume-builder"></Link>
-        </button>
+        </button> */}
       </div>
     </div>
   );

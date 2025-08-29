@@ -11,7 +11,7 @@ const ToolboxCard = (props: {
 }) => {
   return (
     <Link href="/">
-      <div className="flex flex-col gap-3 justify-center items-center text-center mt-10 px-2 py-3 hover:bg-mySkyBlue/20 transition-all duration-300 hover:-translate-y-3 rounded-lg">
+      <div className="max-w-[300px] flex flex-col gap-3 justify-center items-center text-center mt-10 px-2 py-3 hover:bg-mySkyBlue/20 transition-all duration-300 hover:-translate-y-3 rounded-lg">
         <Image
           src={props.image}
           alt="icon"

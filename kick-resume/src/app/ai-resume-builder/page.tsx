@@ -65,7 +65,8 @@ import { useCredits } from "@/context/CreditsContext";
 import { useAiResumeBuilder } from "@/context/AiResumeBuilder";
 
 const AiPromptPage = () => {
-  const { parsedData,
+  const {
+    parsedData,
     setParsedData,
     imageFile,
     setImageFile,
@@ -98,7 +99,8 @@ const AiPromptPage = () => {
     color7,
     setColor7,
     color10,
-    setColor10 } = useAiResumeBuilder();
+    setColor10,
+  } = useAiResumeBuilder();
 
   // const [userPrompt, setUserPrompt] = useState<string>("");
   // const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
@@ -686,7 +688,13 @@ const AiPromptPage = () => {
       setShowTemplate(false); // Only reset if no data at all
       setHasRenderedTemplate(false);
     }
-  }, [parsedData, userPrompt, promptHistory, setShowTemplate, setHasRenderedTemplate]);
+  }, [
+    parsedData,
+    userPrompt,
+    promptHistory,
+    setShowTemplate,
+    setHasRenderedTemplate,
+  ]);
 
   useEffect(() => {
     scrollToBottom();
@@ -813,12 +821,12 @@ const AiPromptPage = () => {
 
   return (
     <div
-      className="px-[30px] py-[60px] mx-auto min-h-screen"
+      className="px-[30px] py-[60px] max-w-[1200px] mx-auto min-h-screen"
       // style={{ background: "linear-gradient(to right, #f3f4f6, #e5e7eb)" }}
     >
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-5xl lg:text-6xl font-black mb-6 tracking-tight">
+          <h1 className="md:text-5xl lg:text-6xl text-3xl font-black mb-6 tracking-tight">
             <span
               className="bg-gradient-hero bg-clip-text text-transparent"
               style={{
@@ -833,7 +841,7 @@ const AiPromptPage = () => {
             <br />
             <span className="text-black">Builder</span>
           </h1>
-          <p className="text-xl lg:text-2xl text-gray-500 max-w-3xl mx-auto leading-relaxed">
+          <p className="md:text-xl lg:text-2xl text-[15px] text-gray-500 max-w-3xl mx-auto leading-relaxed">
             Choose a template and let AI create a professional resume tailored
             to your career goals.
           </p>
@@ -977,11 +985,11 @@ const AiPromptPage = () => {
         </div>
       </div>
 
-      <div className="py-8 px-1 grid lg:grid-cols-12 grid-cols-1 lg:gap-[40px] gap-0">
+      <div className="py-8 grid lg:grid-cols-12 grid-cols-1 lg:gap-[40px] gap-0">
         <div className="lg:col-span-4 col-span-1">
           {/* Chat Box */}
 
-          <div className="bg-gray-100 mt-3 py-2 px-3 mb-2 rounded-xl flex flex-col gap-4">
+          <div className="bg-gray-100 mt-3  py-2 sm:px-3 px-2 mb-2 rounded-xl flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-4">
                 <div className="py-2 px-2 text-mySkyBlue bg-mySkyBlue/30 rounded-xl">
@@ -991,7 +999,7 @@ const AiPromptPage = () => {
                   AI Instructions
                 </h1>
               </div>
-              <h2 className="text-gray-500 text-[15px]">
+              <h2 className="text-gray-500 sm:text-[15px] text-[12px]">
                 Describe your background, skills, and career goals
               </h2>
             </div>

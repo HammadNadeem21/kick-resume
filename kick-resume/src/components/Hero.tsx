@@ -27,7 +27,7 @@ const Hero = () => {
       </div>
 
       <div className=" flex items-center justify-center">
-        <div className="shadow-lg shadow-mySkyBlue h-[300px] w-[480px] rounded-xl ">
+        <div className="shadow-lg shadow-mySkyBlue sm:h-[300px] sm:w-[480px] h-[180px] w-[310px] rounded-xl ">
           <Image
             src="/hero-section.png"
             alt="picture"

@@ -66,7 +66,7 @@ const AuthForm = ({ mode }: { mode: "login" | "signup" }) => {
 
   return (
     <div>
-      <div className="bg-gray-200 py-3 px-3 rounded-xl w-[400px] min-w-[260px] flex flex-col gap-4 shadow-lg shadow-gray-400">
+      <div className="bg-gray-200 py-3 px-3 rounded-xl sm:w-[400px] w-[300px]  flex flex-col gap-4 shadow-lg shadow-gray-400">
         <div className="">
           <h1 className="text-xl uppercase text-center  font-black tracking-tight">
             <span

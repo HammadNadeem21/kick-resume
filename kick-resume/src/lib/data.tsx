@@ -526,7 +526,7 @@ export const toolbox = [
   },
   {
     image: "/professional-template.svg",
-    heading: "40+ Professional Templates",
+    heading: "Professional Templates",
     content:
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
   },
@@ -536,40 +536,40 @@ export const toolbox = [
     content:
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
   },
-  {
-    image: "/resume-example.svg",
-    heading: "1500+ Resume Examples",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
-  },
+  // {
+  //   image: "/resume-example.svg",
+  //   heading: "1500+ Resume Examples",
+  //   content:
+  //     "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
+  // },
   {
     image: "/ats-resume-checker.svg",
     heading: "ATS Resume Checker",
     content:
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
   },
-  {
-    image: "/website-builder.svg",
-    heading: "Website Builder",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
-  },
-  {
-    image: "/proofreading.svg",
-    heading: "Proofreading",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
-  },
-  {
-    image: "/career-map.svg",
-    heading: "Career Map",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
-  },
-  {
-    image: "/ai-rewriter.svg",
-    heading: "AI ReWriter",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
-  },
+  // {
+  //   image: "/website-builder.svg",
+  //   heading: "Website Builder",
+  //   content:
+  //     "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
+  // },
+  // {
+  //   image: "/proofreading.svg",
+  //   heading: "Proofreading",
+  //   content:
+  //     "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
+  // },
+  // {
+  //   image: "/career-map.svg",
+  //   heading: "Career Map",
+  //   content:
+  //     "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
+  // },
+  // {
+  //   image: "/ai-rewriter.svg",
+  //   heading: "AI ReWriter",
+  //   content:
+  //     "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit expedita atque facilis impedit.",
+  // },
 ];

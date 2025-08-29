@@ -33,7 +33,7 @@ const LandingPage = () => {
               Revolution
             </span>
           </h1>
-          <p className="md:text-xl lg:text-2xl text-lg text-gray-500 max-w-3xl mx-auto leading-relaxed">
+          <p className="md:text-xl lg:text-2xl text-[15px] text-gray-500 max-w-3xl mx-auto leading-relaxed">
             Upload your resume and get instant AI-powered analysis with
             actionable insights and automated cover letter generation.
           </p>
