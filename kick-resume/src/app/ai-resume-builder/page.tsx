@@ -1125,13 +1125,13 @@ const AiPromptPage = () => {
           </div>
         </div>
 
-        <div className="lg:col-span-8 col-span-1">
-          <div className="flex items-center justify-between">
-            <div className="text-center lg:text-left">
-              <h2 className="text-3xl font-bold mb-4 text-mySkyBlue">
+        <div className="lg:col-span-8 col-span-1 lg:mt-0 mt-10">
+          <div className="flex sm:flex-row flex-col sm:items-center justify-between items-start ">
+            <div className="text-left">
+              <h2 className="md:text-3xl text-xl font-bold mb-4 text-mySkyBlue">
                 Resume Preview
               </h2>
-              <p className="text-lg text-gray-500">
+              <p className="md:text-lg text-sm text-gray-500">
                 See your AI-generated resume in real-time
               </p>
             </div>
@@ -1144,7 +1144,7 @@ const AiPromptPage = () => {
                   selectedTemplate === 7 ||
                   selectedTemplate === 10) && (
                   <button
-                    className="bg-mySkyBlue/50 hover:bg-mySkyBlue font-bold text-white px-5 py-2 rounded-lg"
+                    className="bg-mySkyBlue/50 hover:bg-mySkyBlue md:text-lg sm:text-sm text-[12px] font-bold text-white sm:px-5 px-3 sm:py-2 py-1 rounded-lg"
                     onClick={() => setShowColorPicker((prev) => !prev)}
                   >
                     Choose Color
@@ -1199,7 +1199,7 @@ const AiPromptPage = () => {
               <button
                 onClick={handleDownloadPDF}
                 disabled={credit < 5}
-                className="bg-mySkyBlue/50 mt-5 hover:bg-mySkyBlue text-white font-bold px-5 py-2 rounded-lg disabled:opacity-50 cursor-pointer"
+                className="bg-mySkyBlue/50 mt-5 hover:bg-mySkyBlue text-white md:text-lg sm:text-sm text-[12px] font-bold sm:px-5 px-3 sm:py-2 py-1 rounded-lg disabled:opacity-50 cursor-pointer"
               >
                 Download PDF
               </button>

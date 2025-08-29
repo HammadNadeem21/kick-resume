@@ -106,7 +106,7 @@ const Template2 = ({
   return (
     <div
       style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
-      className="bg-myWhite md:px-5 px-2 py-5 text-gray-700 max-w-[794px] mx-auto shadow-lg shadow-myMidPurple/70"
+      className="bg-myWhite md:px-5 px-2 py-5 text-gray-700 max-w-[794px] mx-auto shadow-lg shadow-mySkyBlue"
     >
       {/* Divider */}
       <div className="h-[1px] w-full bg-gray-400"></div>
