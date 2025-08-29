@@ -39,8 +39,8 @@
 
 // app/api/generate-resume/route.ts
 
-console.log("GEMINI_API_KEY present:", !!process.env.GEMINI_API_KEY);
-console.log("Request received at /api/generate-resume");
+// console.log("GEMINI_API_KEY present:", !!process.env.GEMINI_API_KEY);
+// console.log("Request received at /api/generate-resume");
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
@@ -50,7 +50,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 export async function POST(request: NextRequest) {
   try {
     const { prompt, existingResume } = await request.json();
-    console.log("Prompt received:", prompt);
+    // console.log("Prompt received:", prompt);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     const result = await model.generateContent(`
  You are a resume extraction AI. Read the prompt below and extract the following fields in **valid JSON format**.
@@ -118,13 +118,25 @@ ${prompt}
     `);
 
     const response = await result.response;
+
+    // console.log(
+    //   "Raw response received from Gemini API",
+    //   response.usageMetadata
+    // );
+
+    const tokensUsed = response.usageMetadata;
+    console.log("Tokens used in this request:", tokensUsed);
+    // const {} = response.usageMetadata;
     const text = await response.text();
 
     // Try to extract the first JSON object from the text
     const match = text.match(/\{[\s\S]*\}/);
     if (match) {
       const jsonData = JSON.parse(match[0]);
-      return NextResponse.json(jsonData);
+      return NextResponse.json({
+        ...jsonData,
+        tokensUsed: tokensUsed || null,
+      });
     } else {
       throw new Error("No valid JSON found in response");
     }

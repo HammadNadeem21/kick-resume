@@ -13,14 +13,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    if (user.credits + amount < 0) {
+    if (user.credits - amount < 0) {
       return NextResponse.json(
         { error: "Not enough credits" },
         { status: 400 }
       );
     }
 
-    user.credits += amount;
+    const updatedCredits = user.credits - amount;
+
+    user.credits = updatedCredits;
     await user.save();
 
     return NextResponse.json({ success: true, credits: user.credits });

@@ -63,8 +63,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className="">
-      <header className=" bg-mySkyBlue/30  body-font  shadow-[0px_1px_4px_0px_rgba(0,_0,_0,_0.1)]  shadow-mySkyBlue">
+    <div className="bg-mySkyBlue/30 shadow-[0px_1px_4px_0px_rgba(0,_0,_0,_0.1)]  shadow-mySkyBlue">
+      <header className="  max-w-[1200px] mx-auto  body-font  ">
         <div className="flex items-center justify-between py-5 px-4">
           {/* Logo */}
           <Link href={"/"}>
@@ -132,7 +132,7 @@ const Navbar = () => {
               <>
                 <button
                   onClick={() => signOut()}
-                  className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300"
+                  className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue transition-all duration-300"
                 >
                   Sign Out
                 </button>
@@ -151,8 +151,8 @@ const Navbar = () => {
                     </span>
                   )}
                 </div>
-                <h1 className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300">
-                  Credits: {credit}
+                <h1 className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue transition-all duration-300">
+                  Credits: {credit.toFixed(1)}
                 </h1>
               </>
             ) : (
@@ -164,7 +164,7 @@ const Navbar = () => {
                 >
                   Log In
                 </button> */}
-                <button className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300">
+                <button className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue transition-all duration-300">
                   <Link href="/auth/login">logIn</Link>
                 </button>
 
@@ -174,7 +174,7 @@ const Navbar = () => {
                 >
                   SignUp
                 </button> */}
-                <button className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue/50 hover:bg-mySkyBlue transition-all duration-300">
+                <button className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue transition-all duration-300">
                   <Link href="/auth/signup">SignUp</Link>
                 </button>
               </>

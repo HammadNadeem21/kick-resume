@@ -63,6 +63,7 @@ const templateData = [
 import { useSession } from "next-auth/react";
 import { useCredits } from "@/context/CreditsContext";
 import { useAiResumeBuilder } from "@/context/AiResumeBuilder";
+import { calculateCreditFromTokens } from "../../../utils/commonHelpers";
 
 const AiPromptPage = () => {
   const {
@@ -194,89 +195,10 @@ const AiPromptPage = () => {
     string | null
   >(null);
 
-  // For multiple prompt
-  // const [promptHistory, setPromptHistory] = useState<
-  //   { type: "user" | "ai"; message: string }[]
-  // >([]);
-
-  // for loader
-  // const [isChatLoading, setIsChatLoading] = useState(false);
-  // const [isTemplateLoading, setIsTemplateLoading] = useState(false);
-  // const [hasRenderedTemplate, setHasRenderedTemplate] = useState(false);
-
-  // For credits
-  // const [credits, setCredits] = useState<number | null>(0);
   const { credit, setCredit } = useCredits();
 
   const { data: session } = useSession();
   const user = session?.user;
-
-  // const fetchCredits = async (email: string) => {
-  //   try {
-  //     const res = await fetch("/api/credits/get", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ email }),
-  //     });
-
-  //     if (!res.ok) throw new Error("Failed to fetch credits");
-
-  //     const data = await res.json();
-  //     return data.credits;
-  //   } catch (err) {
-  //     console.error("Error fetching credits:", err);
-  //     return null;
-  //   }
-  // };
-
-  // // useEffect to run on mount
-  // useEffect(() => {
-  //   const getCredits = async () => {
-  //     if (!session?.user?.email) return;
-
-  //     const credits = await fetchCredits(session.user.email);
-  //     setCredit(credits);
-  //   };
-
-  //   getCredits();
-  // }, [session, setCredit]);
-
-  // useEffect(() => {
-  //   const fetchCredits = async () => {
-  //     const res = await fetch("/api/credits/get", {
-  //       method: "POST",
-  //       body: JSON.stringify({ email: user?.email }),
-  //     });
-
-  //     const data = await res.json();
-  //     setCredits(data.credits);
-  //   };
-
-  //   fetchCredits();
-  // }, [user?.email]);
-
-  // for display credits
-  // useEffect(() => {
-  //   const fetchCredits = async () => {
-  //     try {
-  //       const res = await fetch("/api/credits/get");
-
-  //       if (!res.ok) {
-  //         console.error("Failed to fetch credits");
-  //         return;
-  //       }
-
-  //       const data = await res.json();
-  //       setCredits(data.credits);
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //     }
-  //   };
-
-  //   fetchCredits();
-  // }, []);
 
   const handleGenerate = async () => {
     if (!userPrompt || !selectedTemplate) {
@@ -463,6 +385,8 @@ const AiPromptPage = () => {
       }),
     });
 
+    console.log("response received from /api/generate-resume", res.body);
+
     if (!res.ok) {
       const err = await res.json();
       alert(err.error || "Something went wrong");
@@ -472,6 +396,7 @@ const AiPromptPage = () => {
     }
 
     const data = await res.json();
+    console.log("Response Data:", data);
 
     // Ensure certifications is always an array of strings
     if (data.certifications && Array.isArray(data.certifications)) {
@@ -482,22 +407,15 @@ const AiPromptPage = () => {
       );
     }
 
-    // 🟡 Call to decrease credits
-    // const creditRes = await fetch("/api/credits/deduct", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ userId: session?.user?._id, amount: 1 }), // ⬅️ deduct 1 credit
-    // });
-
-    // if (!creditRes.ok) {
-    //   const creditErr = await creditRes.json();
-    //   alert("Resume sent, but failed to deduct credits: " + creditErr.error);
-    // }
+    const { totalTokenCount } = data?.tokensUsed;
 
     const creditRes = await fetch("/api/credits/deduct", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: session?.user?.email, amount: -3 }),
+      body: JSON.stringify({
+        email: session?.user?.email,
+        amount: calculateCreditFromTokens(totalTokenCount),
+      }),
     });
 
     if (!creditRes.ok) {
@@ -524,9 +442,6 @@ const AiPromptPage = () => {
 
   const getTemplateId = (image: number) => {
     setSelectedTemplate(image);
-    // setParsedData(dummyData);       // dummy data show karo
-    // setShowTemplate(true);          // template ko show karo
-    // setPromptHistory([]);           // optional: clear chat
   };
 
   const scrollToBottom = () => {
@@ -805,7 +720,7 @@ const AiPromptPage = () => {
       const res = await fetch("/api/credits/deduct", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user?.email, amount: -5 }),
+        body: JSON.stringify({ email: user?.email, amount: 5 }),
       });
 
       if (!res.ok) throw new Error("Failed to deduct credits");
