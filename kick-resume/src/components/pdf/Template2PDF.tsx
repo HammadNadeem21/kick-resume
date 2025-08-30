@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     width: "65%",
     // padding: 10,
     paddingTop: 15,
+    paddingLeft: 10,
   },
   sectionTitle: {
     fontSize: 15,
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
   },
   list: {
     marginBottom: 8,
+    marginLeft: 8,
   },
   listItem: {
     flexDirection: "row",
@@ -208,39 +210,78 @@ export default function Template2PDF({ data }: { data: any }) {
               </View>
             )}
 
-            <View style={styles.headerDivider} />
+            {data.skills && data.skills.length > 0 && (
+              <View>
+                <View style={styles.headerDivider} />
 
-            <Text style={styles.sectionTitle}>Skills</Text>
-            <View style={styles.list}>
-              {data.skills?.map((item: string, i: number) => (
-                <View key={i} style={styles.listItem}>
-                  <Text style={styles.bullet}>•</Text>
-                  <Text>{item}</Text>
+                <View
+                  style={{
+                    marginTop: 10,
+                  }}
+                >
+                  <Text style={styles.sectionTitle}>Skills</Text>
+                  <View style={styles.list}>
+                    {data.skills?.map((item: string, i: number) => (
+                      <View
+                        key={i}
+                        style={{ ...styles.listItem, width: "70%" }}
+                      >
+                        <Text style={styles.bullet}>•</Text>
+                        <Text>{item}</Text>
+                      </View>
+                    ))}
+                  </View>
                 </View>
-              ))}
-            </View>
-            <View style={styles.headerDivider} />
+              </View>
+            )}
 
-            <Text style={styles.sectionTitle}>Languages</Text>
-            <View style={styles.list}>
-              {data.languages?.map((item: string, i: number) => (
-                <View key={i} style={styles.listItem}>
-                  <Text style={styles.bullet}>•</Text>
-                  <Text>{item}</Text>
-                </View>
-              ))}
-            </View>
-            <View style={styles.headerDivider} />
+            {data.languages && data.languages.length > 0 && (
+              <View>
+                <View style={styles.headerDivider} />
 
-            <Text style={styles.sectionTitle}>Certifications</Text>
-            <View style={styles.list}>
-              {data.certifications?.map((item: string, i: number) => (
-                <View key={i} style={styles.listItem}>
-                  <Text style={styles.bullet}>•</Text>
-                  <Text>{item}</Text>
+                <View
+                  style={{
+                    marginTop: 10,
+                  }}
+                >
+                  <Text style={styles.sectionTitle}>Languages</Text>
+                  <View style={styles.list}>
+                    {data.languages?.map((item: string, i: number) => (
+                      <View
+                        key={i}
+                        style={{ ...styles.listItem, width: "70%" }}
+                      >
+                        <Text style={styles.bullet}>•</Text>
+                        <Text>{item}</Text>
+                      </View>
+                    ))}
+                  </View>
                 </View>
-              ))}
-            </View>
+              </View>
+            )}
+
+            {data.certifications && data.certifications.length > 0 && (
+              <View>
+                <View style={styles.headerDivider} />
+
+                <View
+                  style={{
+                    marginTop: 10,
+                  }}
+                >
+                  <Text style={styles.sectionTitle}>Certifications</Text>
+                  <View style={styles.list}>
+                    {data.certifications?.map((item: string, i: number) => (
+                      <View key={i} style={styles.listItem}>
+                        <Text style={styles.bullet}>•</Text>
+                        <Text>{item}</Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              </View>
+            )}
+
             {/* <View style={styles.headerDivider} /> */}
           </View>
 
