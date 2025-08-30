@@ -6,6 +6,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
+import { RiArrowDropDownLine } from "react-icons/ri";
 
 const components = [
   {
@@ -19,6 +20,7 @@ const components = [
 const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   return (
     <div className="lg:hidden block ml-auto relative">
@@ -36,7 +38,7 @@ const MobileNav = () => {
             </button>
           </div>
 
-          <ul className="">
+          <ul className="relative">
             {/* Dropdown 1: Features */}
             {/* <li className="group w-full">
               <div
@@ -185,27 +187,33 @@ const MobileNav = () => {
             </li> */}
 
             {/* Simple Link */}
-            <li className="w-full hover:text-gray-500 text-white transition-all py-1 px-3 rounded-md">
-              <Link href="/ai-resume-analyzer" className="text-lg">
-                Ai Resume Analyzer
-              </Link>
+            <li
+              className="w-full hover:text-gray-500 text-white transition-all py-1 px-3 flex items-center justify-between rounded-md cursor-pointer"
+              onClick={() => setShowDropdown((prev) => !prev)}
+            >
+              Features
+              <RiArrowDropDownLine size={20} />
             </li>
+            {showDropdown && (
+              <ul className="absolute w-full  py-1 px-3 rounded-md bg-gray-100">
+                <li className="hover:text-gray-500 text-gray-400 transition-all">
+                  <Link href="/ai-resume-analyzer">Ai Resume Analyzer</Link>
+                </li>
+                <li className="hover:text-gray-500 text-gray-400 transition-all">
+                  <Link href="/ai-resume-builder">Ai Resume Builder</Link>
+                </li>
+                <li className="hover:text-gray-500 text-gray-400 transition-all">
+                  <Link href="/job-matcher">Job Matcher</Link>
+                </li>
+                <li className="hover:text-gray-500 text-gray-400 transition-all">
+                  <Link href="/resume-job-analysisi ">Resume vs Job</Link>
+                </li>
+              </ul>
+            )}
 
             <li className="w-full hover:text-gray-500 text-white transition-all py-1 px-3 rounded-md">
-              <Link href="/ai-resume-builder" className="text-lg">
-                Ai Resume Builder
-              </Link>
-            </li>
-
-            <li className="w-full hover:text-gray-500 text-white transition-all py-1 px-3 rounded-md">
-              <Link href="/job-matcher" className="text-lg">
-                Job Matcher
-              </Link>
-            </li>
-
-            <li className="w-full hover:text-gray-500 text-white transition-all py-1 px-3 rounded-md">
-              <Link href="/resume-job-analysis" className="text-lg">
-                Resume Job Analysis
+              <Link href="/pricing" className="text-lg">
+                Pricing
               </Link>
             </li>
           </ul>

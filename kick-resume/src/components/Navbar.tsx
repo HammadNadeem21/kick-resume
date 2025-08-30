@@ -8,12 +8,13 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 import { useCredits } from "@/context/CreditsContext";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { signIn } from 'next-auth/react';
 import { usePathname, useRouter } from "next/navigation";
 import { SignUp } from "./SignUp";
 import { LogIn } from "lucide-react";
 import AuthDialog from "./LogIn";
+import { RiArrowDropDownLine } from "react-icons/ri";
 
 const Navbar = () => {
   // const [mode, setMode] = useState<'login' | 'signup' | null>(null);
@@ -56,11 +57,35 @@ const Navbar = () => {
 
   const { data: session } = useSession();
   const { credit } = useCredits();
-  const pathname = usePathname();
+  // const pathname = usePathname();
 
   const handleSignUp = () => {
     signIn();
   };
+
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLUListElement | null>(null);
+  const pathname = usePathname();
+  // Outside click listener
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (
+  //       dropdownRef.current &&
+  //       !dropdownRef.current.contains(event.target as Node)
+  //     ) {
+  //       setShowDropdown(false);
+  //     }
+  //   };
+
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    setShowDropdown(false);
+  }, [pathname]);
 
   return (
     <div className="bg-mySkyBlue/30 shadow-[0px_1px_4px_0px_rgba(0,_0,_0,_0.1)]  shadow-mySkyBlue">
@@ -76,28 +101,49 @@ const Navbar = () => {
           </Link>
 
           {/* Navbar */}
-          <nav className="lg:flex items-center justify-center gap-5  font-semibold  hidden">
+          <nav className="lg:flex  hidden relative ">
             {/* <NavigationMenuDemo /> */}
             {/* <div className="flex items-center justify-center gap-8"> */}
-            <Link
-              href="/ai-resume-analyzer"
-              className={`text-[15px] text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
-                pathname === "/ai-resume-analyzer" ? " bg-mySkyBlue" : ""
-              }`}
-            >
-              Ai Resume Analyzer
-            </Link>
+            <ul className="flex items-center justify-center gap-5  font-semibold ">
+              <li
+                className="text-[15px] flex items-center justify-center gap-1 text-gray-600 hover:bg-mySkyBlue py-1 px-3 cursor-pointer rounded-xl"
+                onClick={() => setShowDropdown((prev) => !prev)}
+              >
+                Features
+                <RiArrowDropDownLine size={20} />
+              </li>
 
-            <Link
-              href="/ai-resume-builder"
-              className={`text-[15px] text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
-                pathname === "/ai-resume-builder" ? "bg-mySkyBlue" : ""
-              }`}
-            >
-              Ai Resume Builder
-            </Link>
+              <li>
+                <Link
+                  href="/pricing"
+                  className={`text-[15px] text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
+                    pathname === "/pricing" ? "bg-mySkyBlue" : ""
+                  }`}
+                >
+                  Pricing
+                </Link>
+              </li>
+            </ul>
 
-            <Link
+            {showDropdown && (
+              <ul className="absolute transition-all duration-500 top-[40px] bg-mySkyBlue rounded-lg py-1 px-2 text-[15px] text-gray-600 flex flex-col justify-center gap-2">
+                <li className="hover:bg-gray-200/50 rounded-lg py-1 px-2">
+                  <Link href="/ai-resume-analyzer">Ai Resume Analyzer</Link>
+                </li>
+                <li className="hover:bg-gray-200/50 rounded-lg py-1 px-2">
+                  <Link href="/ai-resume-builder">Ai Resume Builder</Link>
+                </li>
+
+                <li className="hover:bg-gray-200/50 rounded-lg py-1 px-2">
+                  <Link href="/job-matcher">Job Matcher</Link>
+                </li>
+                <li className="hover:bg-gray-200/50 rounded-lg py-1 px-2">
+                  <Link href="/resume-job-analysis">Resume vs Job</Link>
+                </li>
+              </ul>
+            )}
+
+            {/* <Link
               href="/job-matcher"
               className={`text-[15px] text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
                 pathname === "/job-matcher" ? "bg-mySkyBlue" : ""
@@ -113,7 +159,7 @@ const Navbar = () => {
               }`}
             >
               Resume
-            </Link>
+            </Link> */}
             {/* </div> */}
           </nav>
 
