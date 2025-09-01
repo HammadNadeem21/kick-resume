@@ -210,58 +210,67 @@ const Template2 = ({
             )}
 
             {/* Skills */}
-            <div
-              onClick={() => handleArrayFieldClick("skills", data.skills)}
-              className="md:px-3 px-0 py-3  border-b  border-b-gray-400 cursor-pointer"
-            >
-              <h1 className="md:text-xl text-sm font-bold text-gray-700">
-                Skills
-              </h1>
-              <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
-                {data.skills.map((item: string, i: number) => (
-                  <li className="md:text-[15px] text-xs mt-1" key={i}>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {data.skills && data.skills.length > 0 && (
+              <div
+                onClick={() => handleArrayFieldClick("skills", data.skills)}
+                className="md:px-3 px-0 py-3  border-b  border-b-gray-400 cursor-pointer"
+              >
+                <h1 className="md:text-xl text-sm font-bold text-gray-700">
+                  Skills
+                </h1>
+                <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
+                  {data.skills.map((item: string, i: number) => (
+                    <li className="md:text-[15px] text-xs mt-1" key={i}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Language */}
 
-            <div
-              onClick={() => handleArrayFieldClick("languages", data.languages)}
-              className="md:px-3 px-0 py-3  border-b  border-b-gray-400 cursor-pointer"
-            >
-              <h1 className="md:text-xl text-sm font-bold text-gray-700">
-                Languages
-              </h1>
-              <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
-                {data.languages.map((item: string, i: number) => (
-                  <li className="md:text-[15px] text-xs mt-1" key={i}>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {data.languages && data.languages.length > 0 && (
+              <div
+                onClick={() =>
+                  handleArrayFieldClick("languages", data.languages)
+                }
+                className="md:px-3 px-0 py-3  border-b  border-b-gray-400 cursor-pointer"
+              >
+                <h1 className="md:text-xl text-sm font-bold text-gray-700">
+                  Languages
+                </h1>
+                <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
+                  {data.languages.map((item: string, i: number) => (
+                    <li className="md:text-[15px] text-xs mt-1" key={i}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Certification */}
-            <div
-              onClick={() =>
-                handleArrayFieldClick("certifications", data.certifications)
-              }
-              className="md:px-3 px-0 py-3 cursor-pointer"
-            >
-              <h1 className="md:text-xl text-xs font-bold text-gray-700">
-                Certifications
-              </h1>
-              <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
-                {data.certifications.map((item: string, i: number) => (
-                  <li className="md:text-[15px] text-xs mt-1" key={i}>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+
+            {data.certifications && data.certifications.length > 0 && (
+              <div
+                onClick={() =>
+                  handleArrayFieldClick("certifications", data.certifications)
+                }
+                className="md:px-3 px-0 py-3 cursor-pointer"
+              >
+                <h1 className="md:text-xl text-xs font-bold text-gray-700">
+                  Certifications
+                </h1>
+                <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
+                  {data.certifications.map((item: string, i: number) => (
+                    <li className="md:text-[15px] text-xs mt-1" key={i}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
 
@@ -280,72 +289,81 @@ const Template2 = ({
           </div>
           <div className="flex flex-col ">
             {/* Experience */}
-            <div
-              onClick={() =>
-                handleExperienceFieldClick("experience", data.experience)
-              }
-              className="md:px-5 px-2 py-3 border-b border-b-gray-400 cursor-pointer"
-            >
-              <h1 className="md:text-xl text-sm font-bold text-gray-700">
-                Work Experience
-              </h1>
+            {data.experience && data.experience.length > 0 && (
+              <div
+                onClick={() =>
+                  handleExperienceFieldClick("experience", data.experience)
+                }
+                className="md:px-1 px-2 py-3 border-b border-b-gray-400 cursor-pointer"
+              >
+                <h1 className="md:text-xl ml-2 text-sm font-bold text-gray-700">
+                  Work Experience
+                </h1>
 
-              <div className=" md:px-5 px-0 ml-5 mt-3 text-gray-700">
-                {data.experience.map((item: any, i: number) => (
-                  <div className="mt-2 mb-2" key={i}>
-                    <div className="flex items-center justify-between">
-                      <ul className="list-disc md:text-sm text-xs font-semibold">
-                        <li>{item.title}</li>
-                      </ul>
+                <div className=" md:px-4 px-0 mt-3 text-gray-700">
+                  {data.experience.map((item: any, i: number) => (
+                    <div className="mt-2 mb-2" key={i}>
+                      <div className="flex flex-col items-start gap-1">
+                        <ul className="list-disc ml-4 md:text-sm text-xs font-semibold">
+                          <li>{item.title}</li>
+                        </ul>
+                        <p className="text-sm">{item.description}</p>
 
-                      <div className="flex items-center gap-2 md:text-xs text-[7px]">
-                        <span>{`(${item.startDate}`}</span>
-                        <span>{`${item.endDate})`}</span>
+                        <div className="flex items-center gap-2 md:text-xs text-[7px] italic ml-2">
+                          <span>{`(${item.startDate}`}</span>
+                          <span>{`${item.endDate})`}</span>
+                        </div>
                       </div>
+                      {/* <p>{item.description}</p> */}
                     </div>
-                    <p>{item.description}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Projects */}
-            <div
-              className="md:px-5 px-2 py-3 cursor-pointer"
-              onClick={() => handleProjectFieldClick("projects", data.projects)}
-            >
-              <h1 className="md:text-xl text-sm font-bold text-gray-700">
-                Projects
-              </h1>
+            {data.projects && data.projects.length > 0 && (
+              <div
+                className="md:px-1 px-2 py-3 cursor-pointer"
+                onClick={() =>
+                  handleProjectFieldClick("projects", data.projects)
+                }
+              >
+                <h1 className="md:text-xl ml-2 text-sm font-bold text-gray-700">
+                  Projects
+                </h1>
 
-              <ul className="md:px-5 px-0 ml-4 mt-3 md:text-sm text-xs text-gray-700 list-disc">
-                {data.projects.map((item: any, i: number) => (
-                  <li className="mt-5 mb-5" key={i}>
-                    <h1 className="md:text-lg text-sm font-semibold">
-                      {item.name}
-                    </h1>
-                    <p className="md:text-sm text-xs">{item.description}</p>
-                    <div className="flex items-center gap-[100px] mt-3">
-                      <Link
-                        href={"/aiprompt"}
-                        className="hover:underline hover:underline-offset-2 flex items-center gap-2 md:text-sm text-xs"
-                      >
-                        <h1>GitHub</h1>
-                      </Link>
+                <ul className="md:px-4 px-0 mt-3 md:text-sm text-xs text-gray-700">
+                  {data.projects.map((item: any, i: number) => (
+                    <li className="mt-5 mb-5" key={i}>
+                      <h1 className="md:text-lg text-sm font-semibold">
+                        {item.name}
+                      </h1>
+                      <p className="md:text-sm text-xs">{item.description}</p>
+                      <div className="flex items-center gap-[100px] mt-3">
+                        <Link
+                          href={"/aiprompt"}
+                          className="hover:underline hover:underline-offset-2 flex items-center gap-2 md:text-sm text-xs"
+                        >
+                          <h1>GitHub</h1>
+                        </Link>
 
-                      <Link
-                        href={"/aiprompt"}
-                        className="hover:underline hover:underline-offset-2 flex items-center gap-2"
-                      >
-                        <div className="flex items-center justify-center gap-1">
-                          <h1 className="flex items-center gap-1">live demo</h1>
-                        </div>
-                      </Link>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                        <Link
+                          href={"/aiprompt"}
+                          className="hover:underline hover:underline-offset-2 flex items-center gap-2"
+                        >
+                          <div className="flex items-center justify-center gap-1">
+                            <h1 className="flex items-center gap-1">
+                              live demo
+                            </h1>
+                          </div>
+                        </Link>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

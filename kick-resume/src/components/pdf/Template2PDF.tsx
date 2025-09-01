@@ -113,14 +113,15 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   experienceItem: {
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "flex-start",
+    // gap: 4,
     marginBottom: 4,
     marginLeft: 0,
-    marginTop: 0,
+    marginTop: 4,
   },
   experienceTitle: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: "bold",
     marginBottom: 2,
   },
@@ -137,8 +138,9 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   projectDescription: {
-    fontSize: 11,
-    marginBottom: 3,
+    fontSize: 10,
+    lineHeight: 1.4,
+    letterSpacing: 0.2,
   },
   projectLink: {
     fontSize: 11,
@@ -150,7 +152,33 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 5,
   },
+  rightdivider: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#374151",
+    marginBottom: 4,
+    // marginTop: 4,
+    // marginVertical: 6,
+  },
+  section: {
+    marginBottom: 16,
+    marginTop: 16,
+  },
+  ExperienceItem: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginBottom: 4,
+    marginLeft: 0,
+    marginTop: 2,
+    fontSize: 12,
+    fontWeight: "bold",
+    lineHeight: 1.5,
+    color: "#374151",
+  },
 });
+
+function getBulletChar(color: string = "white") {
+  return "•";
+}
 
 export default function Template2PDF({ data }: { data: any }) {
   if (!data) return null;
@@ -272,7 +300,10 @@ export default function Template2PDF({ data }: { data: any }) {
                   <Text style={styles.sectionTitle}>Certifications</Text>
                   <View style={styles.list}>
                     {data.certifications?.map((item: string, i: number) => (
-                      <View key={i} style={styles.listItem}>
+                      <View
+                        key={i}
+                        style={{ ...styles.listItem, width: "70%" }}
+                      >
                         <Text style={styles.bullet}>•</Text>
                         <Text>{item}</Text>
                       </View>
@@ -298,12 +329,98 @@ export default function Template2PDF({ data }: { data: any }) {
                     <Text style={styles.bulletRight}>•</Text>
                     <Text style={styles.experienceTitle}>{item.title}</Text>
                   </View>
-                  <Text style={{ marginLeft: 8, fontStyle: "italic" }}>
-                    ({item.startDate} - {item.endDate})
-                  </Text>
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        lineHeight: 1.4,
+                        letterSpacing: 0.2,
+                      }}
+                    >
+                      {item.description}
+                    </Text>
+                    <Text
+                      style={{
+                        marginLeft: 8,
+                        fontStyle: "italic",
+                        fontSize: 8,
+                      }}
+                    >
+                      ({item.startDate} - {item.endDate})
+                    </Text>
+                  </View>
                 </View>
               ))}
             </View>
+            {/* {data.experience.length > 0 && <View style={styles.rightdivider} />}
+            {data.experience.length > 0 && (
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Experience</Text>
+                {data.experience?.map((item: any, i: number) => (
+                  <View
+                    key={i}
+                    style={{ marginBottom: 8, flexDirection: "column" }}
+                  >
+                    <View style={styles.ExperienceItem}>
+                      <Text style={styles.bulletRight}>
+                        {getBulletChar("#193042")}
+                      </Text>
+
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gap: 8,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: "#374151",
+                            fontSize: 10,
+                          }}
+                        >
+                          {item.companyName}
+                        </Text>
+                        <Text
+                          style={{
+                            color: "#374151",
+                            fontSize: 10,
+                            marginTop: 2,
+                            fontWeight: 500,
+                          }}
+                        >
+                          {item.title}
+                        </Text>
+                      </View>
+                    </View>
+
+                    <Text
+                      style={{
+                        lineHeight: 1.4,
+                        color: "#374151",
+                        fontSize: 11,
+                        letterSpacing: 0.2,
+                        fontWeight: 500,
+                        marginLeft: 2,
+                      }}
+                    >
+                      {item.description}
+                    </Text>
+                    <Text
+                      style={{
+                        marginLeft: 8,
+                        fontStyle: "italic",
+                        color: "#374151",
+                        fontSize: 8,
+                      }}
+                    >
+                      ({item.startDate} - {item.endDate})
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )} */}
 
             <Text style={styles.sectionTitle}>Projects</Text>
             <View style={styles.list}>
@@ -313,7 +430,9 @@ export default function Template2PDF({ data }: { data: any }) {
                   <Text style={styles.projectDescription}>
                     {item.description}
                   </Text>
-                  <View style={styles.projectLinksContainer}>
+                  <View
+                    style={{ ...styles.projectLinksContainer, fontSize: 8 }}
+                  >
                     <Link style={styles.projectLink} src={item.github}>
                       GitHub
                     </Link>
