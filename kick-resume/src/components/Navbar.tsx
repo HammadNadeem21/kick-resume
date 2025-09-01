@@ -15,6 +15,8 @@ import { SignUp } from "./SignUp";
 import { LogIn } from "lucide-react";
 import AuthDialog from "./LogIn";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { DropdownMenuRadioGroupDemo } from "./DropdownMenu";
+import { CreditCard } from "lucide-react";
 
 const Navbar = () => {
   // const [mode, setMode] = useState<'login' | 'signup' | null>(null);
@@ -105,13 +107,14 @@ const Navbar = () => {
             {/* <NavigationMenuDemo /> */}
             {/* <div className="flex items-center justify-center gap-8"> */}
             <ul className="flex items-center justify-center gap-5  font-semibold ">
-              <li
+              {/* <li
                 className="text-[15px] flex items-center justify-center gap-1 text-gray-600 hover:bg-mySkyBlue py-1 px-3 cursor-pointer rounded-xl"
                 onClick={() => setShowDropdown((prev) => !prev)}
               >
                 Features
                 <RiArrowDropDownLine size={20} />
-              </li>
+              </li> */}
+              <DropdownMenuRadioGroupDemo />
 
               <li>
                 <Link
@@ -178,7 +181,7 @@ const Navbar = () => {
               <>
                 <button
                   onClick={() => signOut()}
-                  className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue transition-all duration-300"
+                  className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-gray-500 sm:font-semibold font-bold hover:text-black hover:bg-mySkyBlue/20 transition-all duration-300"
                 >
                   Sign Out
                 </button>
@@ -197,7 +200,8 @@ const Navbar = () => {
                     </span>
                   )}
                 </div>
-                <h1 className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue transition-all duration-300">
+                <h1 className="py-1 sm:px-4 px-1 sm:text-[15px] text-[12px] rounded-xl text-white sm:font-semibold font-bold bg-mySkyBlue transition-all duration-300 flex items-center justify-center gap-1">
+                  <CreditCard className="h-4 w-4" />
                   Credits: {credit.toFixed(1)}
                 </h1>
               </>

@@ -1,12 +1,4 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { ArrowRight, LucideIcon } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 import Link from "next/link";
 
 interface ToolCardProps {
@@ -19,7 +11,7 @@ interface ToolCardProps {
 
 const ToolCard = ({ title, description, icon: Icon, link }: ToolCardProps) => {
   return (
-    <div className="bg-gray-200 flex flex-col justify-center gap-4 py-3 px-2 shadow-xl rounded-lg hover:scale-105 hover:shadow-mySkyBlue/50 transition-all duration-300 ">
+    <div className="bg-gray-200 flex flex-col justify-center gap-4 h-[250px] px-2 shadow-xl rounded-lg hover:scale-105 hover:shadow-mySkyBlue/50 transition-all duration-300 ">
       <div className="flex items-center justify-center gap-1">
         <div className="py-2 px-2 bg-mySkyBlue/30 rounded-lg">
           <Icon className="h-5 w-5" color="#55cef6" />
