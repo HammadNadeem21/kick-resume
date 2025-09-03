@@ -3,7 +3,7 @@ import React from "react";
 
 const LandingPage = () => {
   return (
-    <div className="grid lg:grid-cols-2 grid-cols-1 items-center justify-center gap-4 py-10 max-w-[1200px] mx-auto h-auto">
+    <div className="grid lg:grid-cols-2 grid-cols-1 items-center justify-center gap-4 py-10 max-w-[1600px] mx-auto h-auto">
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="md:text-5xl lg:text-6xl text-3xl font-black mb-6 tracking-tight">

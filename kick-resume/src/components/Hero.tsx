@@ -10,7 +10,7 @@ const AiResumeAnalyzeReort = dynamic(
 );
 const Hero = () => {
   return (
-    <div className="grid lg:grid-cols-2 grid-cols-1  mx-w-[1200px] mx-auto">
+    <div className="grid lg:grid-cols-2 grid-cols-1  mx-w-[1600px] mx-auto">
       <div className=" flex flex-col gap-3 items-center justify-center lg:px-[100px] px-8 py-10">
         {/* <h1 className="lg:text-4xl text-3xl font-semibold text-myPurple lg:text-left text-center">
           Let AI Score & Improve Your Resume in Seconds

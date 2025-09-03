@@ -4,7 +4,7 @@ import { pricingPlans, reviews } from "@/lib/data";
 
 const page = () => {
   return (
-    <div className="max-w-[1200px] mx-auto ">
+    <div className="max-w-[1600px] mx-auto ">
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="md:text-5xl lg:text-6xl text-3xl font-black mb-6 tracking-tight">

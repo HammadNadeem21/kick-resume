@@ -124,7 +124,7 @@ Output JSON in this structure:
   };
 
   return (
-    <div className="px-[30px] py-[60px] max-w-[1200px] mx-auto ">
+    <div className="px-[30px] py-[60px] max-w-[1600px] mx-auto ">
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-5xl lg:text-6xl font-black mb-6 tracking-tight">

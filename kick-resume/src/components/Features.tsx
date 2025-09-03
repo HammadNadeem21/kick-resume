@@ -5,7 +5,7 @@ import { featuresSection } from "@/lib/data";
 const Features = () => {
   return (
     <div className="bg-[linear-gradient(to_right,#fff,#8bcadf,#fff)] flex flex-col items-center py-20">
-      <div className="max-w-[1200px] mx-auto">
+      <div className="max-w-[1600px] mx-auto px-5">
         {/* Heading */}
         <div className=" w-[90%] mx-auto text-center">
           <h1 className="lg:text-4xl sm:text-2xl text-xl text-gray-500 font-semibold">

@@ -91,7 +91,7 @@ const Navbar = () => {
 
   return (
     <div className="bg-mySkyBlue/30 shadow-[0px_1px_4px_0px_rgba(0,_0,_0,_0.1)]  shadow-mySkyBlue">
-      <header className="  max-w-[1200px] mx-auto  body-font  ">
+      <header className="  max-w-[1600px] px-5 mx-auto  body-font  ">
         <div className="flex items-center justify-between py-5 px-4">
           {/* Logo */}
           <Link href={"/"}>

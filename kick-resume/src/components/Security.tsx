@@ -5,7 +5,7 @@ import { securitySection } from "@/lib/data";
 const Security = () => {
   return (
     <div className="bg-gradient-to-r from-blue-400 via-purple-400 to-orange-400 py-[100px] px-4 flex flex-col gap-10">
-      <div className="max-w-[1200px] mx-auto">
+      <div className="max-w-[1600px] mx-auto">
         {/* Heading */}
         <div className="w-[90%] mx-auto text-center">
           <h1 className="lg:text-4xl sm:text-2xl text-2xl text-gray-600 font-semibold">

@@ -736,7 +736,7 @@ const AiPromptPage = () => {
 
   return (
     <div
-      className="px-[30px] py-[60px] max-w-[1200px] mx-auto min-h-screen"
+      className="px-[30px] py-[60px] max-w-[1600px] mx-auto min-h-screen"
       // style={{ background: "linear-gradient(to right, #f3f4f6, #e5e7eb)" }}
     >
       <section className="py-16">

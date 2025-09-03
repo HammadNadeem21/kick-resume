@@ -35,7 +35,7 @@ const socialIcons = [
 const Footer = () => {
   return (
     <div className="bg-mySkyBlue/40 ">
-      <div className=" max-w-[1200px] mx-auto py-6  flex flex-col lg:gap-7 gap-4 px-5">
+      <div className=" max-w-[1600px] mx-auto py-6  flex flex-col lg:gap-7 gap-4 px-5">
         <div className="grid md:grid-cols-4 grid-cols-2 gap-7">
           <div className="flex flex-col justify-center gap-2">
             <Link href={"/"}>

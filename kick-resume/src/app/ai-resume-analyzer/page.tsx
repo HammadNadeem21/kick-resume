@@ -3,7 +3,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="max-w-[1200px] mx-auto h-auto flex flex-col justify-center sm:gap-5 gap-2 mt-[60px]">
+    <div className="max-w-[1600px] mx-auto h-auto flex flex-col justify-center sm:gap-5 gap-2 mt-[60px]">
       <section className="">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="md:text-5xl lg:text-6xl text-3xl font-black mb-6 tracking-tight">
