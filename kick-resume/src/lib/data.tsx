@@ -169,29 +169,29 @@ export const toolbox = [
 ];
 
 export const pricingPlans = [
+  // {
+  //   name: "Free",
+  //   description: "Perfect for getting started with basic resume optimization",
+  //   price: { monthly: 0, annual: 0 },
+  //   icon: Zap,
+  //   badge: null,
+  //   features: [
+  //     "3 resume analyses per month",
+  //     "Basic resume builder",
+  //     "Standard templates",
+  //     "Email support",
+  //     "Basic job matching",
+  //   ],
+  //   limitations: ["Limited AI insights", "Watermarked downloads"],
+  //   cta: "Get Started Free",
+  //   popular: false,
+  // },
   {
-    name: "Free",
-    description: "Perfect for getting started with basic resume optimization",
-    price: { monthly: 0, annual: 0 },
-    icon: Zap,
-    badge: null,
-    features: [
-      "3 resume analyses per month",
-      "Basic resume builder",
-      "Standard templates",
-      "Email support",
-      "Basic job matching",
-    ],
-    limitations: ["Limited AI insights", "Watermarked downloads"],
-    cta: "Get Started Free",
-    popular: false,
-  },
-  {
-    name: "Pro",
+    name: "Student (free)",
     description: "Ideal for active job seekers and career changers",
     price: { monthly: 19, annual: 15 },
     icon: Crown,
-    badge: "Most Popular",
+    // badge: "Most Popular",
     features: [
       "Unlimited resume analyses",
       "Advanced AI insights",
@@ -207,7 +207,7 @@ export const pricingPlans = [
     popular: true,
   },
   {
-    name: "Enterprise",
+    name: "Pro",
     description: "For teams and organizations scaling their hiring",
     price: { monthly: 49, annual: 39 },
     icon: Rocket,
@@ -221,8 +221,8 @@ export const pricingPlans = [
       "Dedicated account manager",
       "Advanced analytics",
       "White-label options",
-      "Custom integrations",
-      "24/7 phone support",
+      // "Custom integrations",
+      // "24/7 phone support",
     ],
     limitations: [],
     cta: "Contact Sales",

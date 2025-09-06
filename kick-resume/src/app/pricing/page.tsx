@@ -31,11 +31,11 @@ const page = () => {
 
       <section className="py-20 relative ">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="flex items-center justify-center flex-wrap gap-8">
             {pricingPlans.map((plan, index) => (
               <div
                 key={plan.name}
-                className={`bg-gray-100 px-5 py-1 rounded-xl shadow-lg relative overflow-hidden transition-premium hover:shadow-premium hover:scale-105 `}
+                className={`bg-gray-100 px-5 py-5 rounded-xl shadow-lg relative overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-200`}
               >
                 {plan.badge && (
                   <div className="absolute top-6 left-6">
@@ -49,10 +49,10 @@ const page = () => {
                   <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-button">
                     <plan.icon className="h-8 w-8 text-mySkyBlue" />
                   </div>
-                  <h1 className="text-2xl font-bold text-gray-500">
+                  <h1 className="md:text-2xl text-xl font-bold text-gray-500">
                     {plan.name}
                   </h1>
-                  <p className="text-muted-foreground text-gray-500">
+                  <p className=" text-gray-500 md:text-lg text-sm">
                     {plan.description}
                   </p>
                   <div className="pt-6">
@@ -161,7 +161,7 @@ const page = () => {
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="sm:py-10 py-2">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="md:text-5xl lg:text-6xl text-3xl font-black mb-6 tracking-tight">
             <span className="text-black">Frequently Asked</span>
@@ -182,7 +182,7 @@ const page = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20">
+      <section className="sm:py-5 py-1 mb-3">
         <div className="max-w-4xl mx-auto px-4">
           <div className="space-y-6">
             {[
