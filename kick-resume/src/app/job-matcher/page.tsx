@@ -1,4 +1,5 @@
 "use client";
+import type { PageProps } from "@react-pdf/renderer";
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -125,6 +126,7 @@ const AiPromptPage = () => {
     | "education"
     | "phone"
     | "email"
+    | "personal"
   >("string");
   const [editField, setEditField] = useState<
     "skills" | "languages" | "certifications" | null
@@ -372,6 +374,24 @@ const AiPromptPage = () => {
     }
   };
 
+
+  const [pageSize, setPageSize] = useState<PageProps["size"]>("A4");
+
+  // Personal Information field (array of { title, value })
+  const [personalInfoData, setPersonalInfoData] = useState<Array<{ title: string; value: string }>>([]);
+  const [currentPersonalField, setCurrentPersonalField] = useState<string | null>(null);
+
+    // Personal Information click
+    const handlePersonalInformationClick = (
+      fieldName: string,
+      arrayData: Array<{ title: string; value: string }>
+    ) => {
+      setPersonalInfoData(arrayData ?? []);
+      setCurrentPersonalField(fieldName);
+      setEditType("personal");
+      setShowEditor(true);
+    };
+
   const renderSelectedTemplate = () => {
     if (selectedTemplate === 1)
       return (
@@ -384,6 +404,7 @@ const AiPromptPage = () => {
           handleEducationFieldClick={handleEducationFieldClick}
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
+          handlePersonalInformationClick={handlePersonalInformationClick}
           color={color1}
         />
       );
@@ -557,17 +578,18 @@ const AiPromptPage = () => {
 
     switch (selectedTemplate) {
       case 1:
-        DocumentComponent = <Template1PDF data={resumeData} color={color1} />;
+        DocumentComponent = <Template1PDF size={pageSize} data={resumeData} color={color1} />;
         break;
       case 2:
-        DocumentComponent = <Template2PDF data={resumeData} />;
+        DocumentComponent = <Template2PDF size={pageSize} data={resumeData} />;
         break;
       case 3:
-        DocumentComponent = <Template3PDF data={resumeData} />;
+        DocumentComponent = <Template3PDF size={pageSize} data={resumeData} />;
         break;
       case 4:
         DocumentComponent = (
           <Template4PDF
+          size={pageSize}
             data={resumeData}
             imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
             imageBgColor={
@@ -580,14 +602,15 @@ const AiPromptPage = () => {
         );
         break;
       case 5:
-        DocumentComponent = <Template5PDF data={resumeData} />;
+        DocumentComponent = <Template5PDF size={pageSize} data={resumeData} />;
         break;
       case 6:
-        DocumentComponent = <Template6PDF data={resumeData} />;
+        DocumentComponent = <Template6PDF size={pageSize} data={resumeData} />;
         break;
       case 7:
         DocumentComponent = (
           <Template7PDF
+          size={pageSize}
             data={resumeData}
             imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
             imageBgColor={
@@ -600,11 +623,12 @@ const AiPromptPage = () => {
         );
         break;
       case 8:
-        DocumentComponent = <Template8PDF data={resumeData} />;
+        DocumentComponent = <Template8PDF size={pageSize} data={resumeData} />;
         break;
       case 9:
         DocumentComponent = (
           <Template9PDF
+          size={pageSize}
             data={resumeData}
             imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
             imageBgColor={
@@ -616,7 +640,7 @@ const AiPromptPage = () => {
         );
         break;
       case 10:
-        DocumentComponent = <Template10PDF data={resumeData} color={color10} />;
+        DocumentComponent = <Template10PDF size={pageSize} data={resumeData} color={color10} />;
         break;
       default:
         alert("Invalid template selected");
