@@ -11,6 +11,7 @@ interface Data {
   email: string;
   address: string;
   summary: string;
+  personalInformation: Array<{ title: string; value: string }>;
   education: {
     degree: string;
     // startDate?: string;
@@ -49,6 +50,7 @@ export default function Template1({
   handleEducationFieldClick,
   handlePhoneClickFeild,
   handleEmailFieldClick,
+  handlePersonalInformationClick,
   color,
 }: {
   data: Data;
@@ -59,8 +61,13 @@ export default function Template1({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  handlePersonalInformationClick: (
+    fieldName: string,
+    data: Array<{ title: string; value: string }>
+  ) => void;
   color: Color;
 }) {
+  console.log("jkkjk", data.personalInformation);
   return (
     <div
       style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
@@ -188,30 +195,33 @@ export default function Template1({
           {data.role}
         </h1>
 
-        <div
-          className="flex md:text-[14px] text-[10px] text-gray-700 items-center gap-1 cursor-pointer"
-          onClick={() => handlePhoneClickFeild("phone", data.phone)}
-        >
-          <h1 className="font-bold">Phone: </h1>
-          <h2 className="font-bold">{`+${data.phone}`}</h2>
-        </div>
 
-        {/* email */}
-        <div
-          className="flex gap-1 md:text-[14px] text-[10px] text-gray-700 mt-1 mb-1 cursor-pointer"
-          onClick={() => handleEmailFieldClick("email", data.email)}
-        >
-          <h1 className="font-bold">Email: </h1>
-          <h2 className="font-bold">{data.email}</h2>
-        </div>
+{/* personal information */}
+<div className="" onClick={() => handlePersonalInformationClick("personalInformation", data.personalInformation)}>
 
-        {/* Address */}
-        <div
-          className="flex items-center mb-2 gap-1 text-gray-700 md:text-[14px] text-[10px] cursor-pointer"
-          onClick={() => handleStringFeildClick("address", data.address)}
-        >
-          <h1 className="font-bold">Address: </h1>
-          <h2 className="font-bold">{data.address}</h2>
+{/* {(data.personalInformation && data.personalInformation.length === 0) && (
+  <div>
+    <h1 className="font-normal text-center text-gray-800 cursor-pointer italic">Personal Information</h1>
+  </div>
+)} */}
+
+
+        {data.personalInformation && data.personalInformation.length > 0 ? (
+          <div className="mb-2">
+            {data.personalInformation.map((item, idx) => (
+              <div key={idx} className="flex items-center gap-1 md:text-[14px] text-[10px] text-gray-700 cursor-pointer">
+                
+                <h1 className="font-bold capitalize">{item.title}:</h1>
+                <h2 className="font-medium">{item.value}</h2>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div>
+            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Personal Information</h1>
+          </div>
+        )}
+
         </div>
 
         {/* Divider */}

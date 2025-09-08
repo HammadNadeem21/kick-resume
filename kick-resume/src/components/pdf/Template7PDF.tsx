@@ -7,6 +7,7 @@ import {
   Link,
   Image,
 } from "@react-pdf/renderer";
+import type { PageProps } from "@react-pdf/renderer";
 
 const LEFT_BG = "#e9eef6";
 const RIGHT_BG = "#7b7266";
@@ -196,15 +197,17 @@ export default function Template7PDF({
   imageUrl,
   imageBgColor,
   color,
+  size,
 }: {
   data: any;
   imageUrl: string;
   imageBgColor?: string;
   color: any;
+  size: PageProps["size"];
 }) {
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size={size} style={styles.page}>
         <View style={styles.mainGrid}>
           {/* Left Column */}
           <View style={styles.leftCol}>

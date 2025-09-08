@@ -1,5 +1,6 @@
 
 import { Page, Text, View, Document, StyleSheet, Link } from "@react-pdf/renderer";
+import type { PageProps } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
     page: {
@@ -92,10 +93,10 @@ const styles = StyleSheet.create({
 });
 
 
-export default function Template5PDF({ data }: { data: any }) {
+export default function Template5PDF({ data, size }: { data: any, size: PageProps["size"] }) {
     return (
         <Document>
-            <Page size="A4" style={styles.page}>
+            <Page size={size} style={styles.page}>
                 <View style={styles.textCenter}>
                     <Text style={{ fontSize: 24, fontWeight: "bold", color: "#1f2937", marginBottom: 5 }}>{data.name}</Text>
                     <Text style={{ fontSize: 18, fontWeight: "semibold", color: "#374151", marginBottom: 10 }}>{data.role}</Text>

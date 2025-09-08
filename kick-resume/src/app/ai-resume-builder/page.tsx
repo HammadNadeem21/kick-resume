@@ -7,6 +7,7 @@ import { Briefcase, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { pdf } from "@react-pdf/renderer";
+import type { PageProps } from "@react-pdf/renderer";
 
 import Template1 from "@/components/Template1";
 import { useDropzone } from "react-dropzone";
@@ -64,6 +65,7 @@ import { useSession } from "next-auth/react";
 import { useCredits } from "@/context/CreditsContext";
 import { useAiResumeBuilder } from "@/context/AiResumeBuilder";
 import { calculateCreditFromTokens } from "../../../utils/commonHelpers";
+import { SelectButton } from "@/components/SelectButton";
 
 const AiPromptPage = () => {
   const {
@@ -131,6 +133,7 @@ const AiPromptPage = () => {
     | "education"
     | "phone"
     | "email"
+    | "personal"
   >("string");
   const [editField, setEditField] = useState<
     "skills" | "languages" | "certifications" | null
@@ -194,6 +197,10 @@ const AiPromptPage = () => {
   const [currentEducationField, setCurrentEducationField] = useState<
     string | null
   >(null);
+
+  // Personal Information field (array of { title, value })
+  const [personalInfoData, setPersonalInfoData] = useState<Array<{ title: string; value: string }>>([]);
+  const [currentPersonalField, setCurrentPersonalField] = useState<string | null>(null);
 
   const { credit, setCredit } = useCredits();
 
@@ -340,6 +347,17 @@ const AiPromptPage = () => {
     setShowEditor(true);
   };
 
+  // Personal Information click
+  const handlePersonalInformationClick = (
+    fieldName: string,
+    arrayData: Array<{ title: string; value: string }>
+  ) => {
+    setPersonalInfoData(arrayData ?? []);
+    setCurrentPersonalField(fieldName);
+    setEditType("personal");
+    setShowEditor(true);
+  };
+
   // for phone number
 
   const handlePhoneClickFeild = (fieldName: string, data: number) => {
@@ -463,6 +481,7 @@ const AiPromptPage = () => {
           handleEducationFieldClick={handleEducationFieldClick}
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
+          handlePersonalInformationClick={handlePersonalInformationClick}
           color={color1}
         />
       );
@@ -637,13 +656,13 @@ const AiPromptPage = () => {
 
     switch (selectedTemplate) {
       case 1:
-        DocumentComponent = <Template1PDF data={parsedData} color={color1} />;
+        DocumentComponent = <Template1PDF size={pageSize} data={parsedData} color={color1} />;
         break;
       case 2:
-        DocumentComponent = <Template2PDF data={parsedData} />;
+        DocumentComponent = <Template2PDF size={pageSize} data={parsedData} />;
         break;
       case 3:
-        DocumentComponent = <Template3PDF data={parsedData} />;
+        DocumentComponent = <Template3PDF size={pageSize} data={parsedData} />;
         break;
       case 4:
         DocumentComponent = (
@@ -656,14 +675,15 @@ const AiPromptPage = () => {
                 : undefined
             }
             color={color4}
+            size={pageSize}
           />
         );
         break;
       case 5:
-        DocumentComponent = <Template5PDF data={parsedData} />;
+        DocumentComponent = <Template5PDF data={parsedData} size={pageSize} />;
         break;
       case 6:
-        DocumentComponent = <Template6PDF data={parsedData} />;
+        DocumentComponent = <Template6PDF data={parsedData} size={pageSize} />;
         break;
       case 7:
         DocumentComponent = (
@@ -676,11 +696,12 @@ const AiPromptPage = () => {
                 : undefined
             }
             color={color7}
+            size={pageSize}
           />
         );
         break;
       case 8:
-        DocumentComponent = <Template8PDF data={parsedData} />;
+        DocumentComponent = <Template8PDF data={parsedData} size={pageSize} />;
         break;
       case 9:
         DocumentComponent = (
@@ -692,11 +713,12 @@ const AiPromptPage = () => {
                 ? tailwindColorMap[selectedImageBgColor]
                 : undefined
             }
+            size={pageSize}
           />
         );
         break;
       case 10:
-        DocumentComponent = <Template10PDF data={parsedData} color={color10} />;
+        DocumentComponent = <Template10PDF data={parsedData} color={color10} size={pageSize} />;
         break;
       default:
         alert("Invalid template selected");
@@ -734,6 +756,10 @@ const AiPromptPage = () => {
     }
   };
 
+  const [pageSize, setPageSize] = useState<PageProps["size"]>("A4");
+
+  // console.log("Page size", pageSize);
+
   return (
     <div
       className="px-[30px] py-[60px] max-w-[1600px] mx-auto min-h-screen"
@@ -762,13 +788,6 @@ const AiPromptPage = () => {
           </p>
         </div>
       </section>
-
-      {/* <div className="mb-8"> */}
-      {/* <h1
-          className={`text-3xl ${robot700.className} mb-4 text-purple-500 font-bold`}
-        >
-          Build Your Resume Chat-Wise
-        </h1> */}
 
       {/* Select Template */}
       <div className="grid lg:grid-cols-12 grid-cols-1  lg:h-[350px]  mb-10">
@@ -1122,20 +1141,12 @@ const AiPromptPage = () => {
             </div>
           </div>
 
-          {/* {showTemplate && parsedData && (
-            <button
-              onClick={handleDownloadPDF}
-              disabled={credit < 5}
-              className="bg-mySkyBlue/50 mt-5 hover:bg-mySkyBlue w-[100%] text-white px-5 py-1 rounded-lg disabled:opacity-50 cursor-pointer"
-            >
-              Download PDF
-            </button>
-          )} */}
+          <SelectButton onchange={setPageSize}/>
 
           {!isTemplateLoading && !hasRenderedTemplate ? (
-            <div className="w-[100%] bg-gray-200 mt-2 h-[350px] flex flex-col items-center justify-center rounded-lg">
+            <div className="w-[100%] bg-gray-200 mt-2 h-[350px] flex flex-col items-center justify-center rounded-lg px-2">
               <Briefcase size={40} className="text-gray-500" />
-              <p className="text-lg text-gray-500">
+              <p className="sm:text-lg text-sm text-gray-500 text-center  ">
                 Paste a job description to generate a tailored resume
               </p>
             </div>
@@ -1207,7 +1218,7 @@ const AiPromptPage = () => {
               </>
             )}
 
-            {/* Skills Badge UI */}
+            {/* Skills, language and certifications Badge UI */}
             {editType === "array" && (
               <>
                 <div className="flex flex-wrap gap-2 mb-4">
@@ -1577,86 +1588,86 @@ const AiPromptPage = () => {
                 </div>
               </div>
             )}
-            {/* Phone Number Editor */}
-            {/* Phone Number Editor */}
-            {editType === "email" && (
-              <div className="p-6">
-                <h2 className="text-lg font-bold mb-4 text-black">
-                  Edit Email
-                </h2>
 
-                <input
-                  type="email"
-                  className="w-full border border-gray-300 px-3 py-2 rounded mb-4 text-black"
-                  value={selectedEmail ?? ""}
-                  onChange={(e) => setSelectedEmail(e.target.value)}
-                  placeholder="Enter your Email"
-                />
+            {/* Personal Information Editor */}
+            {editType === "personal" && (
+              <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
+                <h2 className="text-lg font-bold mb-4 text-black">Edit Personal Information</h2>
 
-                <div className="flex justify-end gap-2">
-                  {/* <button
-                      className="px-4 py-2 bg-gray-300 rounded text-black"
-                      onClick={() => setShowEditor(false)}
-                    >
-                      Cancel
-                    </button> */}
+                {personalInfoData.map((row, idx) => (
+                  <div key={idx} className="mb-3 border p-1 rounded-md bg-gray-100">
+                    <div className="flex flex-col justify-center gap-2">
+                      <input
+                        type="text"
+                        className="w-full border border-gray-300 px-3 py-2 rounded text-black text-sm"
+                        placeholder="Title"
+                        value={row.title}
+                        onChange={(e) => {
+                          const updated = [...personalInfoData];
+                          updated[idx].title = e.target.value;
+                          setPersonalInfoData(updated);
+                        }}
+                      />
+                      <input
+                        type="text"
+                        className="w-full border border-gray-300 px-3 py-2 rounded text-black text-sm"
+                        placeholder="Value"
+                        value={row.value}
+                        onChange={(e) => {
+                          const updated = [...personalInfoData];
+                          updated[idx].value = e.target.value;
+                          setPersonalInfoData(updated);
+                        }}
+                      />
+                    </div>
+                    <div className="flex justify-end mt-2">
+                      <Button
+                        onClick={() => {
+                          const updated = [...personalInfoData];
+                          updated.splice(idx, 1);
+                          setPersonalInfoData(updated);
+                        }}
+                        className="bg-red-500 hover:bg-red-700 text-white w-full"
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+
+                <Button
+                  onClick={() => setPersonalInfoData([...personalInfoData, { title: "", value: "" }])}
+                  className="bg-green-600 hover:bg-green-700 text-white mt-2"
+                >
+                  + Add Item
+                </Button>
+
+                <div className="flex justify-end mt-4">
                   <button
-                    className="px-4 py-2 bg-blue-600 text-white rounded"
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
                     onClick={() => {
-                      if (emailField && selectedEmail !== null) {
+                      if (currentPersonalField) {
                         setParsedData((prev: any) => ({
                           ...prev,
-                          [emailField]: selectedEmail,
+                          [currentPersonalField]: personalInfoData,
                         }));
                       }
                       setShowEditor(false);
                     }}
                   >
-                    Add
+                    Save
                   </button>
                 </div>
               </div>
             )}
 
-            {/* Phone Editor */}
-            {editType === "phone" && (
+            {/* {(editType === "phone" || "email" || "address") && (
               <div className="p-6">
                 <h2 className="text-lg font-bold mb-4 text-black">
-                  Edit Phone Number
+                  Edit Address
                 </h2>
-
-                <input
-                  type="email"
-                  className="w-full border border-gray-300 px-3 py-2 rounded mb-4 text-black"
-                  value={selectedNumber ?? ""}
-                  onChange={(e) => setSelectedNumber(Number(e.target.value))}
-                  placeholder="Enter your number"
-                />
-
-                <div className="flex justify-end gap-2">
-                  {/* <button
-                      className="px-4 py-2 bg-gray-300 rounded text-black"
-                      onClick={() => setShowEditor(false)}
-                    >
-                      Cancel
-                    </button> */}
-                  <button
-                    className="px-4 py-2 bg-blue-600 text-white rounded"
-                    onClick={() => {
-                      if (selectedField && selectedNumber !== null) {
-                        setParsedData((prev: any) => ({
-                          ...prev,
-                          [selectedField]: selectedNumber,
-                        }));
-                      }
-                      setShowEditor(false);
-                    }}
-                  >
-                    Add
-                  </button>
-                </div>
               </div>
-            )}
+            )} */}
 
             <div className="flex justify-end mt-4">
               <button

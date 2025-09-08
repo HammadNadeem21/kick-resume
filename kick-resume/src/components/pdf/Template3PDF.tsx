@@ -1,4 +1,5 @@
 import { Page, Text, View, Document, StyleSheet, Link } from '@react-pdf/renderer';
+import type { PageProps } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   page: {
@@ -148,12 +149,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Template3PDF({ data }: { data: any }) {
+export default function Template3PDF({ data, size }: { data: any, size: PageProps["size"] }) {
   if (!data) return null;
 
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size={size} style={styles.page}>
         {/* Header Section */}
         <View style={styles.headerContainer}>
           <Text style={styles.fullName}>{data.name}</Text>

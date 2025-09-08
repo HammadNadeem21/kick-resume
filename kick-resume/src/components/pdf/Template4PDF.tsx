@@ -1,5 +1,5 @@
 import { Page, Text, View, Document, StyleSheet, Link, Image } from '@react-pdf/renderer';
-
+import type { PageProps } from "@react-pdf/renderer";
 const styles = StyleSheet.create({
   page: {
     backgroundColor: '#fff',
@@ -163,10 +163,10 @@ const styles = StyleSheet.create({
 
 
 
-export default function Template4PDF({ data, imageUrl, imageBgColor, color }: { data: any, imageUrl: string, imageBgColor?: string, color: any }) {
+export default function Template4PDF({ data, imageUrl, imageBgColor, color, size }: { data: any, imageUrl: string, imageBgColor?: string, color: any, size: PageProps["size"] }) {
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size={size} style={styles.page}>
         {/* Header */}
         <View style={{ ...styles.header, backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}>
           <View style={styles.headerLeft}>

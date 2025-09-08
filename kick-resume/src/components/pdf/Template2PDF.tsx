@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Link,
 } from "@react-pdf/renderer";
+import type { PageProps } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   page: {
@@ -180,12 +181,12 @@ function getBulletChar(color: string = "white") {
   return "•";
 }
 
-export default function Template2PDF({ data }: { data: any }) {
+export default function Template2PDF({ data, size }: { data: any, size: PageProps["size"] }) {
   if (!data) return null;
 
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size={size} style={styles.page}>
         <View style={styles.headerDivider} />
         <Text style={styles.fullName}>{data.name}</Text>
         <Text style={styles.position}>{data.role}</Text>

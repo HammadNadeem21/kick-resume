@@ -6,10 +6,11 @@ import {
   StyleSheet,
   Link,
 } from "@react-pdf/renderer";
+import type { PageProps } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   page: {
-    padding: 0,
+    // padding: 4,
     fontSize: 12,
     fontFamily: "Helvetica",
     flexDirection: "row",
@@ -121,6 +122,16 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     lineHeight: 1.2,
   },
+  bulletPersonal: {
+    fontSize: 10,
+    color: "#193042",
+    marginRight: 6,
+    marginTop: 0,
+    width: 14,
+    textAlign: "center",
+    fontWeight: 700,
+    lineHeight: 1.2,
+  },
   bulletRight: {
     fontSize: 14,
     color: "#193042",
@@ -180,13 +191,15 @@ function getBulletChar(color: string = "white") {
 export default function Template1PDF({
   data,
   color,
+  size,
 }: {
   data: any;
   color: any;
+  size: PageProps["size"];
 }) {
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size={size} style={styles.page}>
         {/* Left Side */}
         <View
           style={{
@@ -196,6 +209,7 @@ export default function Template1PDF({
         >
           <Text style={styles.name}>{data.name}</Text>
           <View style={styles.divider} />
+
           <View style={{ ...styles.section, width: "80%" }}>
             <Text style={styles.heading}>Education</Text>
             {data.education?.map((item: any, i: number) => (
@@ -243,26 +257,38 @@ export default function Template1PDF({
             </View>
           )}
         </View>
+
+
         {/* Right Side */}
         <View style={styles.right}>
           <Text style={styles.position}>{data.role}</Text>
           <View style={styles.section}>
-            {/* <Text style={styles.rightHeading}>Contact</Text> */}
-            {/* {data.phone && (
-              <Text style={styles.contact}>Phone: {data.phone}</Text>
-            )} */}
-            <Text style={styles.contact}>Phone: +{data.phone}</Text>
-            {/* {data.email && (
-              <Text style={styles.contact}>Email: {data.email}</Text>
+                      {/* Personal Information (optional) */}
+          {data.personalInformation && data.personalInformation.length > 0 && (
+            <View style={{width: "80%" }}>
+              {data.personalInformation.map((item: any, i: number) => (
+                <View
+                  key={i}
+                  style={{
+                    ...styles.listItem,
+                  }}
+                >
+                  <Text style={styles.bulletPersonal}>{getBulletChar("#193042")}</Text>
 
-            )} */}
+                  <View style={{display: "flex", flexDirection: "row", gap: 6, alignItems: "center"}}>  
+                  <Text style={{color: "#193042", fontWeight: 600}}>{item.title}:</Text>
+                  <Text style={{color: "#193042", fontWeight: 400}}>{item.value}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          )}
+ 
+            {/* <Text style={styles.contact}>Phone: +{data.phone}</Text>
+
             <Text style={styles.contact}>Email: {data.email}</Text>
-            {/* <Text style={styles.contact}>LinkedIn: {data.linkdinUrl}</Text> */}
-            {/* {data.address && (
-              <Text style={styles.contact}>Address: {data.address}</Text>
 
-            )} */}
-            <Text style={styles.contact}>Address: {data.address}</Text>
+            <Text style={styles.contact}>Address: {data.address}</Text> */}
           </View>
           <View style={styles.rightdivider} />
           <View style={styles.section}>

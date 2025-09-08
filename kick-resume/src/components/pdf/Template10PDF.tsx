@@ -1,5 +1,6 @@
 
 import { Page, Text, View, Document, StyleSheet, Link } from "@react-pdf/renderer";
+import type { PageProps } from "@react-pdf/renderer";
 
 // Helper function to split an array into N columns
 function splitIntoColumns(arr: any[], numCols: number) {
@@ -236,14 +237,14 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function Template10PDF({ data, color }: { data: any, color: any }) {
+export default function Template10PDF({ data, color, size }: { data: any, color: any, size: PageProps["size"] }) {
     // Split education and skills into columns
     const eduColumns = splitIntoColumns(data.education || [], 2);
     const skillColumns = splitIntoColumns(data.skills || [], 3);
 
     return (
         <Document>
-            <Page size="A4" style={styles.page}>
+            <Page size={size} style={styles.page}>
                 {/* Header */}
                 <View style={{ marginBottom: 8 }}>
                     <Text style={{ ...styles.name, textAlign: 'center' }}>{data.name}</Text>

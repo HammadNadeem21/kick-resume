@@ -7,6 +7,7 @@ import {
   Link,
   Image,
 } from "@react-pdf/renderer";
+import type { PageProps } from "@react-pdf/renderer";
 
 const PRIMARY_BLUE = "#004aad";
 const LIGHT_BLUE_BG = "#eef3f7"; // Approximate light blue from image
@@ -211,14 +212,16 @@ export default function Template9PDF({
   data,
   imageUrl,
   imageBgColor,
+  size,
 }: {
   data: any;
   imageUrl?: string;
   imageBgColor?: string;
+  size: PageProps["size"];
 }) {
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size={size} style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
           <View
