@@ -62,6 +62,7 @@ interface Data {
   email: string;
   address: string;
   summary: string;
+  personalInformation: Array<{ title: string; value: string }>;
   education: {
     degree: string;
     startDate?: string;
@@ -93,6 +94,7 @@ const Template2 = ({
   handleEducationFieldClick,
   handlePhoneClickFeild,
   handleEmailFieldClick,
+  handlePersonalInformationClick,
 }: {
   data: Data;
   handleStringFeildClick: (fieldName: string, value: string) => void;
@@ -102,6 +104,10 @@ const Template2 = ({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  handlePersonalInformationClick: (
+    fieldName: string,
+    data: Array<{ title: string; value: string }>
+  ) => void;
 }) => {
   return (
     <div
@@ -139,18 +145,18 @@ const Template2 = ({
               Contact
             </h1>
 
-            <div className="mt-5 flex flex-col gap-3 md:text-xs text-[10px] text-wrap">
-              {/* phone */}
-              <div
+            {/* <div className="mt-5 flex flex-col gap-3 md:text-xs text-[10px] text-wrap"> */}
+            {/* phone */}
+            {/* <div
                 className="flex gap-2 items-center cursor-pointer"
                 onClick={() => handlePhoneClickFeild("phone", data.phone)}
               >
                 <h1 className="font-bold">Phone: </h1>
                 <p>{`+${data.phone}`}</p>
-              </div>
+              </div> */}
 
-              {/* email */}
-              <div className="flex gap-2 items-center ">
+            {/* email */}
+            {/* <div className="flex gap-2 items-center ">
                 <h1 className="font-bold">Email: </h1>
                 <p
                   className="cursor-pointer"
@@ -158,10 +164,10 @@ const Template2 = ({
                 >
                   {data.email}
                 </p>
-              </div>
+              </div> */}
 
-              {/* Address */}
-              <div className="flex gap-2 items-start">
+            {/* Address */}
+            {/* <div className="flex gap-2 items-start">
                 <h1 className="font-bold">Address: </h1>
                 <p
                   className="cursor-pointer"
@@ -171,7 +177,39 @@ const Template2 = ({
                 >
                   {data.address}
                 </p>
-              </div>
+              </div> */}
+            {/* </div> */}
+
+            {/* personal information */}
+            <div
+              className=""
+              onClick={() =>
+                handlePersonalInformationClick(
+                  "personalInformation",
+                  data.personalInformation
+                )
+              }
+            >
+              {data.personalInformation &&
+              data.personalInformation.length > 0 ? (
+                <div className="mb-2 flex flex-col gap-1 mt-2">
+                  {data.personalInformation.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-start gap-1 md:text-[14px] text-[10px] text-gray-700 cursor-pointer"
+                    >
+                      <h1 className="font-bold capitalize">{item.title}:</h1>
+                      <h2 className="font-medium text-xs mt-1">{item.value}</h2>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <h1 className="font-normal text-center text-sm text-gray-400 cursor-pointer italic">
+                    Click this section and set your Personal Information
+                  </h1>
+                </div>
+              )}
             </div>
           </div>
 

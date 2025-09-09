@@ -199,8 +199,12 @@ const AiPromptPage = () => {
   >(null);
 
   // Personal Information field (array of { title, value })
-  const [personalInfoData, setPersonalInfoData] = useState<Array<{ title: string; value: string }>>([]);
-  const [currentPersonalField, setCurrentPersonalField] = useState<string | null>(null);
+  const [personalInfoData, setPersonalInfoData] = useState<
+    Array<{ title: string; value: string }>
+  >([]);
+  const [currentPersonalField, setCurrentPersonalField] = useState<
+    string | null
+  >(null);
 
   const { credit, setCredit } = useCredits();
 
@@ -496,6 +500,7 @@ const AiPromptPage = () => {
           handleEducationFieldClick={handleEducationFieldClick}
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
+          handlePersonalInformationClick={handlePersonalInformationClick}
         />
       );
     if (selectedTemplate === 3)
@@ -509,6 +514,7 @@ const AiPromptPage = () => {
           handleEducationFieldClick={handleEducationFieldClick}
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
+          handlePersonalInformationClick={handlePersonalInformationClick}
         />
       );
     if (selectedTemplate === 4)
@@ -525,6 +531,7 @@ const AiPromptPage = () => {
           imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
           imageBgColor={selectedImageBgColor}
           color={color4}
+          handlePersonalInformationClick={handlePersonalInformationClick}
         />
       );
     if (selectedTemplate === 5)
@@ -538,6 +545,7 @@ const AiPromptPage = () => {
           handleEducationFieldClick={handleEducationFieldClick}
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
+          handlePersonalInformationClick={handlePersonalInformationClick}
         />
       );
     if (selectedTemplate === 6)
@@ -551,6 +559,7 @@ const AiPromptPage = () => {
           handleEducationFieldClick={handleEducationFieldClick}
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
+          handlePersonalInformationClick={handlePersonalInformationClick}
         />
       );
     if (selectedTemplate === 7)
@@ -564,6 +573,7 @@ const AiPromptPage = () => {
           handleEducationFieldClick={handleEducationFieldClick}
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
+          handlePersonalInformationClick={handlePersonalInformationClick}
           imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
           imageBgColor={selectedImageBgColor}
           color={color7}
@@ -580,6 +590,7 @@ const AiPromptPage = () => {
           handleEducationFieldClick={handleEducationFieldClick}
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
+          handlePersonalInformationClick={handlePersonalInformationClick}
         />
       );
     if (selectedTemplate === 9)
@@ -593,6 +604,7 @@ const AiPromptPage = () => {
           handleEducationFieldClick={handleEducationFieldClick}
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
+          handlePersonalInformationClick={handlePersonalInformationClick}
           imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
           imageBgColor={selectedImageBgColor}
         />
@@ -608,6 +620,7 @@ const AiPromptPage = () => {
           handleEducationFieldClick={handleEducationFieldClick}
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
+          handlePersonalInformationClick={handlePersonalInformationClick}
           color={color10}
         />
       );
@@ -656,7 +669,9 @@ const AiPromptPage = () => {
 
     switch (selectedTemplate) {
       case 1:
-        DocumentComponent = <Template1PDF size={pageSize} data={parsedData} color={color1} />;
+        DocumentComponent = (
+          <Template1PDF size={pageSize} data={parsedData} color={color1} />
+        );
         break;
       case 2:
         DocumentComponent = <Template2PDF size={pageSize} data={parsedData} />;
@@ -718,7 +733,9 @@ const AiPromptPage = () => {
         );
         break;
       case 10:
-        DocumentComponent = <Template10PDF data={parsedData} color={color10} size={pageSize} />;
+        DocumentComponent = (
+          <Template10PDF data={parsedData} color={color10} size={pageSize} />
+        );
         break;
       default:
         alert("Invalid template selected");
@@ -1141,7 +1158,7 @@ const AiPromptPage = () => {
             </div>
           </div>
 
-          <SelectButton onchange={setPageSize}/>
+          <SelectButton onchange={setPageSize} />
 
           {!isTemplateLoading && !hasRenderedTemplate ? (
             <div className="w-[100%] bg-gray-200 mt-2 h-[350px] flex flex-col items-center justify-center rounded-lg px-2">
@@ -1592,16 +1609,22 @@ const AiPromptPage = () => {
             {/* Personal Information Editor */}
             {editType === "personal" && (
               <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                <h2 className="text-lg font-bold mb-4 text-black">Edit Personal Information</h2>
+                <h2 className="text-lg font-bold mb-4 text-black">
+                  Edit Personal Information
+                </h2>
 
                 {personalInfoData.map((row, idx) => (
-                  <div key={idx} className="mb-3 border p-1 rounded-md bg-gray-100">
+                  <div
+                    key={idx}
+                    className="mb-3 border p-1 rounded-md bg-gray-100"
+                  >
                     <div className="flex flex-col justify-center gap-2">
                       <input
                         type="text"
                         className="w-full border border-gray-300 px-3 py-2 rounded text-black text-sm"
                         placeholder="Title"
                         value={row.title}
+                        required
                         onChange={(e) => {
                           const updated = [...personalInfoData];
                           updated[idx].title = e.target.value;
@@ -1613,6 +1636,7 @@ const AiPromptPage = () => {
                         className="w-full border border-gray-300 px-3 py-2 rounded text-black text-sm"
                         placeholder="Value"
                         value={row.value}
+                        required
                         onChange={(e) => {
                           const updated = [...personalInfoData];
                           updated[idx].value = e.target.value;
@@ -1636,13 +1660,18 @@ const AiPromptPage = () => {
                 ))}
 
                 <Button
-                  onClick={() => setPersonalInfoData([...personalInfoData, { title: "", value: "" }])}
+                  onClick={() =>
+                    setPersonalInfoData([
+                      ...personalInfoData,
+                      { title: "", value: "" },
+                    ])
+                  }
                   className="bg-green-600 hover:bg-green-700 text-white mt-2"
                 >
                   + Add Item
                 </Button>
 
-                <div className="flex justify-end mt-4">
+                <div className="flex justify-between mt-4">
                   <button
                     className="bg-myDarkBlue text-white px-4 py-2 rounded"
                     onClick={() => {
@@ -1656,6 +1685,12 @@ const AiPromptPage = () => {
                     }}
                   >
                     Save
+                  </button>
+                  <button
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                    onClick={() => setShowEditor(false)}
+                  >
+                    Close
                   </button>
                 </div>
               </div>

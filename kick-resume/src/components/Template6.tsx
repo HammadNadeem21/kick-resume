@@ -8,6 +8,7 @@ interface Data {
   email: string;
   address: string;
   summary: string;
+  personalInformation: Array<{ title: string; value: string }>;
   education: {
     degree: string;
     startDate?: string;
@@ -39,6 +40,7 @@ const Template6 = ({
   handleEducationFieldClick,
   handlePhoneClickFeild,
   handleEmailFieldClick,
+  handlePersonalInformationClick,
 }: {
   data: Data;
   handleStringFeildClick: (fieldName: string, value: string) => void;
@@ -48,6 +50,10 @@ const Template6 = ({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  handlePersonalInformationClick: (
+    fieldName: string,
+    data: Array<{ title: string; value: string }>
+  ) => void;
 }) => {
   return (
     <div className="bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7 max-w-[794px] mx-auto">
@@ -67,41 +73,37 @@ const Template6 = ({
           </h2>
         </div>
 
-        <div className="flex md:flex-row flex-col md:gap-20  gap-5 text-gray-500 md:text-sm text-xs w-full">
-          <div
-            className="flex gap-2 md:items-center items-start cursor-pointer"
-            onClick={() => handleEmailFieldClick("email", data.email)}
-          >
-            <h1 className="font-bold">Email: </h1>
-            <p>{data.email}</p>
-          </div>
-
-          <div
-            className="flex gap-2 items-center cursor-pointer"
-            onClick={() => handlePhoneClickFeild("phone", data.phone)}
-          >
-            <h1 className="font-bold">Phone: </h1>
-            <p>{`+${data.phone}`}</p>
-          </div>
-
-          <div
-            className="flex gap-2 items-center text-gray-500 md:text-sm text-xs cursor-pointer"
-            onClick={() => handleStringFeildClick("address", data.address)}
-          >
-            <h1 className="font-bold">Address: </h1>
-            <p>{data.address}</p>
-          </div>
-        </div>
-        {/* <div className="flex gap-2 items-center text-gray-500 md:text-sm text-xs cursor-pointer"
-                    onClick={() => handleStringFeildClick('address', data.address)}
+        {/* personal information */}
+        <div
+          className=""
+          onClick={() =>
+            handlePersonalInformationClick(
+              "personalInformation",
+              data.personalInformation
+            )
+          }
+        >
+          {data.personalInformation && data.personalInformation.length > 0 ? (
+            <div className="mb-2 flex items-center justify-between flex-wrap gap-3 mt-2">
+              {data.personalInformation.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-start gap-1 md:text-[14px] text-[10px] text-gray-500 cursor-pointer"
                 >
-                    <h1 className='font-bold'>Address: </h1>
-                    <p>{data.address}</p>
-                </div> */}
+                  <h1 className="font-bold capitalize">{item.title}:</h1>
+                  <h2 className="font-medium text-xs mt-1">{item.value}</h2>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div>
+              <h1 className="font-normal text-center text-sm text-gray-500  cursor-pointer italic">
+                Click this section and set your Personal Information
+              </h1>
+            </div>
+          )}
+        </div>
       </div>
-
-      {/* Divider */}
-      {/* <div className="h-[2px] w-full bg-gray-400 mt-3 mb-3"></div> */}
 
       {/* Summary */}
       <div

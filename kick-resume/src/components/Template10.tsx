@@ -8,6 +8,7 @@ interface Data {
   email: string;
   address: string;
   summary: string;
+  personalInformation: Array<{ title: string; value: string }>;
   education: {
     degree: string;
     startDate?: string;
@@ -45,6 +46,7 @@ const Template10 = ({
   handleEducationFieldClick,
   handlePhoneClickFeild,
   handleEmailFieldClick,
+  handlePersonalInformationClick,
   color,
 }: {
   data: Data;
@@ -55,6 +57,10 @@ const Template10 = ({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  handlePersonalInformationClick: (
+    fieldName: string,
+    data: Array<{ title: string; value: string }>
+  ) => void;
   color: Color;
 }) => {
   return (
@@ -75,7 +81,7 @@ const Template10 = ({
           </h2>
         </div>
 
-        <div className="flex items-center justify-between text-black md:text-sm text-xs w-full">
+        {/* <div className="flex items-center justify-between text-black md:text-sm text-xs w-full">
           <div
             className="flex gap-2 md:items-center items-start cursor-pointer"
             onClick={() => handlePhoneClickFeild("phone", data.phone)}
@@ -99,6 +105,37 @@ const Template10 = ({
             <h1 className="font-bold">Location: </h1>
             <p>{data.address}</p>
           </div>
+        </div> */}
+
+        {/* personal information */}
+        <div
+          className="w-full"
+          onClick={() =>
+            handlePersonalInformationClick(
+              "personalInformation",
+              data.personalInformation
+            )
+          }
+        >
+          {data.personalInformation && data.personalInformation.length > 0 ? (
+            <div className="mb-2 flex items-center justify-between flex-wrap gap-3 mt-2">
+              {data.personalInformation.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-start gap-1 md:text-[14px] text-[10px] text-black cursor-pointer"
+                >
+                  <h1 className="font-bold capitalize">{item.title}:</h1>
+                  <h2 className="font-medium text-xs mt-1">{item.value}</h2>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="">
+              <h1 className="font-normal text-center text-sm text-black mx-auto  cursor-pointer italic">
+                Click this section and set your Personal Information
+              </h1>
+            </div>
+          )}
         </div>
       </div>
 

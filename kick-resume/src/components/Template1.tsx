@@ -195,33 +195,35 @@ export default function Template1({
           {data.role}
         </h1>
 
-
-{/* personal information */}
-<div className="" onClick={() => handlePersonalInformationClick("personalInformation", data.personalInformation)}>
-
-{/* {(data.personalInformation && data.personalInformation.length === 0) && (
-  <div>
-    <h1 className="font-normal text-center text-gray-800 cursor-pointer italic">Personal Information</h1>
-  </div>
-)} */}
-
-
-        {data.personalInformation && data.personalInformation.length > 0 ? (
-          <div className="mb-2">
-            {data.personalInformation.map((item, idx) => (
-              <div key={idx} className="flex items-center gap-1 md:text-[14px] text-[10px] text-gray-700 cursor-pointer">
-                
-                <h1 className="font-bold capitalize">{item.title}:</h1>
-                <h2 className="font-medium">{item.value}</h2>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div>
-            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Personal Information</h1>
-          </div>
-        )}
-
+        {/* personal information */}
+        <div
+          className=""
+          onClick={() =>
+            handlePersonalInformationClick(
+              "personalInformation",
+              data.personalInformation
+            )
+          }
+        >
+          {data.personalInformation && data.personalInformation.length > 0 ? (
+            <div className="mb-2">
+              {data.personalInformation.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-1 md:text-[14px] text-[10px] text-gray-700 cursor-pointer"
+                >
+                  <h1 className="font-bold capitalize">{item.title}:</h1>
+                  <h2 className="font-medium">{item.value}</h2>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div>
+              <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                Personal Information
+              </h1>
+            </div>
+          )}
         </div>
 
         {/* Divider */}

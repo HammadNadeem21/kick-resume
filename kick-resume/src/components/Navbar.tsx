@@ -215,7 +215,7 @@ const Navbar = () => {
                   Log In
                 </button> */}
                 <button className="py-1 sm:px-4 px-2 sm:text-[15px] text-[12px] rounded-lg text-white sm:font-semibold font-bold bg-mySkyBlue transition-all duration-300">
-                  <Link href="/auth/login">logIn</Link>
+                  <Link href="/auth/login">LogIn</Link>
                 </button>
 
                 {/* <button

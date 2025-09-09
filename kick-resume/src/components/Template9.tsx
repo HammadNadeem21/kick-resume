@@ -9,6 +9,7 @@ interface Data {
   email: string;
   address: string;
   summary: string;
+  personalInformation: Array<{ title: string; value: string }>;
   education: {
     degree: string;
     startDate?: string;
@@ -48,6 +49,7 @@ const Template9 = ({
   handleEmailFieldClick,
   imageUrl,
   imageBgColor,
+  handlePersonalInformationClick,
 }: {
   data: Data;
   handleStringFeildClick: (fieldName: string, value: string) => void;
@@ -57,6 +59,10 @@ const Template9 = ({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  handlePersonalInformationClick: (
+    fieldName: string,
+    data: Array<{ title: string; value: string }>
+  ) => void;
   imageUrl?: string;
   imageBgColor?: string;
   selectedTheme?: any; // Add selectedTheme prop type here
@@ -97,7 +103,7 @@ const Template9 = ({
             </h2>
           </div>
 
-          <div className="grid grid-cols-3 mt-2 text-xs text-black">
+          {/* <div className="grid grid-cols-3 mt-2 text-xs text-black">
             <div
               className="border-r-2 border-[#004aad] h-10 flex items-center justify-center cursor-pointer"
               onClick={() => handleEmailFieldClick("email", data.email)}
@@ -116,6 +122,37 @@ const Template9 = ({
             >
               {data.address !== "" ? data.address : "Address"}
             </div>
+          </div> */}
+
+          {/* personal information */}
+          <div
+            className=""
+            onClick={() =>
+              handlePersonalInformationClick(
+                "personalInformation",
+                data.personalInformation
+              )
+            }
+          >
+            {data.personalInformation && data.personalInformation.length > 0 ? (
+              <div className="mb-2 flex items-center justify-between flex-wrap gap-1 mt-2">
+                {data.personalInformation.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-start gap-1 md:text-[14px] text-[10px] text-gray-600 cursor-pointer"
+                  >
+                    <h1 className="font-bold capitalize">{item.title}:</h1>
+                    <h2 className="font-medium text-xs mt-1">{item.value}</h2>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div>
+                <h1 className="font-normal text-center text-sm text-gray-600 mt-4   cursor-pointer italic">
+                  Click this section and set your Personal Information
+                </h1>
+              </div>
+            )}
           </div>
         </div>
       </div>

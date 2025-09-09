@@ -9,6 +9,7 @@ interface Data {
   email: string;
   address: string;
   summary: string;
+  personalInformation: Array<{ title: string; value: string }>;
   education: {
     degree: string;
     startDate?: string;
@@ -46,6 +47,7 @@ const Template4 = ({
   handleEducationFieldClick,
   handlePhoneClickFeild,
   handleEmailFieldClick,
+  handlePersonalInformationClick,
   imageUrl,
   imageBgColor,
   selectedTheme, // Add selectedTheme prop here
@@ -59,6 +61,10 @@ const Template4 = ({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  handlePersonalInformationClick: (
+    fieldName: string,
+    data: Array<{ title: string; value: string }>
+  ) => void;
   imageUrl?: string;
   imageBgColor?: string;
   selectedTheme?: any; // Add selectedTheme prop type here
@@ -88,7 +94,7 @@ const Template4 = ({
             </h2>
           </div>
 
-          <div className="w-[70%]">
+          {/* <div className="w-[70%]">
             <div className="flex justify-between">
               <div
                 className="flex gap-2 items-center cursor-pointer text-white"
@@ -114,6 +120,37 @@ const Template4 = ({
               <h1 className="font-bold">Address: </h1>
               <p>{data.address}</p>
             </div>
+          </div> */}
+
+          {/* personal information */}
+          <div
+            className="w-[70%]"
+            onClick={() =>
+              handlePersonalInformationClick(
+                "personalInformation",
+                data.personalInformation
+              )
+            }
+          >
+            {data.personalInformation && data.personalInformation.length > 0 ? (
+              <div className="mb-2 flex items-center justify-between flex-wrap gap-3 mt-2">
+                {data.personalInformation.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-start gap-1 md:text-[14px] text-[10px] text-white cursor-pointer"
+                  >
+                    <h1 className="font-bold capitalize">{item.title}:</h1>
+                    <h2 className="font-medium text-xs mt-1">{item.value}</h2>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div>
+                <h1 className="font-normal text-center text-sm text-white mt-6 cursor-pointer italic">
+                  Click this section and set your Personal Information
+                </h1>
+              </div>
+            )}
           </div>
         </div>
 
