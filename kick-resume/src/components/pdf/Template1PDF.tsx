@@ -258,32 +258,56 @@ export default function Template1PDF({
           )}
         </View>
 
-
         {/* Right Side */}
         <View style={styles.right}>
           <Text style={styles.position}>{data.role}</Text>
           <View style={styles.section}>
-                      {/* Personal Information (optional) */}
-          {data.personalInformation && data.personalInformation.length > 0 && (
-            <View style={{width: "80%" }}>
-              {data.personalInformation.map((item: any, i: number) => (
-                <View
-                  key={i}
-                  style={{
-                    ...styles.listItem,
-                  }}
-                >
-                  <Text style={styles.bulletPersonal}>{getBulletChar("#193042")}</Text>
+            {/* Personal Information (optional) */}
+            {data.personalInformation &&
+              data.personalInformation.length > 0 && (
+                <View style={{ width: "80%" }}>
+                  {data.personalInformation.map((item: any, i: number) => (
+                    <View
+                      key={i}
+                      style={{
+                        ...styles.listItem,
+                      }}
+                    >
+                      {/* <Text style={styles.bulletPersonal}>{getBulletChar("#193042")}</Text> */}
 
-                  <View style={{display: "flex", flexDirection: "row", gap: 6, alignItems: "center"}}>  
-                  <Text style={{color: "#193042", fontWeight: 600}}>{item.title}:</Text>
-                  <Text style={{color: "#193042", fontWeight: 400}}>{item.value}</Text>
-                  </View>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          gap: 6,
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: "#193042",
+                            fontWeight: 600,
+                            fontSize: 10,
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          {item.title}:
+                        </Text>
+                        <Text
+                          style={{
+                            color: "#193042",
+                            fontWeight: 400,
+                            fontSize: 8,
+                          }}
+                        >
+                          {item.value}
+                        </Text>
+                      </View>
+                    </View>
+                  ))}
                 </View>
-              ))}
-            </View>
-          )}
- 
+              )}
+
             {/* <Text style={styles.contact}>Phone: +{data.phone}</Text>
 
             <Text style={styles.contact}>Email: {data.email}</Text>

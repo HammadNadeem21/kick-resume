@@ -75,13 +75,13 @@ export default function Template1({
     >
       {/* left-side */}
       <div
-        className=" md:px-3 px-1"
+        className="md:px-3 px-2"
         style={{
           backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
         }}
       >
         <h1
-          className={`md:text-2xl text-lg mb-5 font-semibold text-center mt-5 text-white`}
+          className={`md:text-2xl sm:text-xl text-sm mb-5 font-semibold text-center mt-5 text-white`}
           onClick={() => handleStringFeildClick("name", data.name)}
         >
           {data.name}
@@ -107,9 +107,11 @@ export default function Template1({
               Education
             </h1>
 
-            <ul className="list-disc text-white md:text-sm text-xs px-5 flex flex-col gap-3">
+            <ul className="list-disc text-white md:text-sm text-xs  ml-5 flex flex-col gap-3">
               {data.education.map((item: any, i: number) => (
-                <li key={i}>{item.degree}</li>
+                <li key={i} className="md:text-sm sm:text-[11px] text-[10px]">
+                  {item.degree}
+                </li>
               ))}
             </ul>
           </div>
@@ -130,7 +132,7 @@ export default function Template1({
               Skills
             </h1>
 
-            <ul className="list-disc text-white md:text-sm text-xs px-5 flex flex-col gap-3">
+            <ul className="list-disc text-white md:text-sm sm:text-[11px] text-[10px] ml-5 flex flex-col gap-3">
               {data.skills.map((item: any, i: number) => (
                 <li key={i}>{item}</li>
               ))}
@@ -153,7 +155,7 @@ export default function Template1({
               Languages
             </h1>
 
-            <ul className="list-disc text-white md:text-sm text-xs px-5 flex flex-col gap-3">
+            <ul className="list-disc text-white md:text-sm sm:text-[11px] text-[10px] ml-5 flex flex-col gap-3">
               {data.languages.map((item: any, i: number) => (
                 <li key={i}>{item}</li>
               ))}
@@ -178,7 +180,7 @@ export default function Template1({
               Certifications
             </h1>
 
-            <ul className="list-disc text-white md:text-sm text-xs  px-5 flex flex-col gap-3">
+            <ul className="list-disc text-white md:text-sm sm:text-[11px] text-[10px] ml-5 flex flex-col gap-3">
               {data.certifications.map((item: any, i: number) => (
                 <li key={i}>{item}</li>
               ))}
@@ -187,9 +189,9 @@ export default function Template1({
         )}
       </div>
       {/* Right-side */}
-      <div className="py-3 md:px-5 px-2 flex flex-col gap-2">
+      <div className="py-3 sm:px-5 px-3  flex flex-col gap-2">
         <h1
-          className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-gray-700`}
+          className={`md:text-xl sm:text-lg text-sm mb-2 text-left mt-5 font-bold text-gray-700`}
           onClick={() => handleStringFeildClick("role", data.role)}
         >
           {data.role}
@@ -206,14 +208,18 @@ export default function Template1({
           }
         >
           {data.personalInformation && data.personalInformation.length > 0 ? (
-            <div className="mb-2">
+            <div className="">
               {data.personalInformation.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-1 md:text-[14px] text-[10px] text-gray-700 cursor-pointer"
+                  className="flex items-center gap-1  text-gray-700 cursor-pointer"
                 >
-                  <h1 className="font-bold capitalize">{item.title}:</h1>
-                  <h2 className="font-medium">{item.value}</h2>
+                  <h1 className="font-bold capitalize md:text-[14px] sm:text-sm text-xs">
+                    {item.title}:
+                  </h1>
+                  <h2 className="font-normal md:text-xs sm:text-xs text-[10px]">
+                    {item.value}
+                  </h2>
                 </div>
               ))}
             </div>
@@ -235,11 +241,11 @@ export default function Template1({
           className="cursor-pointer"
         >
           <h1
-            className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-gray-700`}
+            className={`md:text-xl text-sm  text-left  font-bold text-gray-700`}
           >
             Summary
           </h1>
-          <p className="text-gray-700 md:text-[15px] text-xs leading-6">
+          <p className="text-gray-700 md:text-[15px] sm:text-[11px] text-[10px] md:leading-6 sm:leading-4 leading-3">
             {data.summary}
           </p>
         </div>
@@ -258,23 +264,27 @@ export default function Template1({
             className="cursor-pointer"
           >
             <h1
-              className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-gray-700`}
+              className={`md:text-xl text-sm  text-left  font-bold text-gray-700`}
             >
               Experience
             </h1>
 
-            <div className=" px-5 mt-3 text-gray-700">
+            <div className=" sm:px-5 ml-5 mt-3 text-gray-700">
               {data.experience.map((item: any, i: number) => (
                 <div key={i} className={`flex flex-col justify-between`}>
-                  <ul className="mt-3 list-disc  md:text-[15px] text-xs flex gap-5">
-                    <li className=" font-bold">{item.companyName}</li>
-                    <h1 className="font-bold md:text-xs text-[10px]">
+                  <ul className=" list-disc   flex items-center sm:gap-5 gap-2">
+                    <li className=" font-bold md:text-[15px] sm:text-xs text-[10px]">
+                      {item.companyName}
+                    </li>
+                    <h1 className="font-bold md:text-xs sm:text-[10px] text-[8px] sm:mt-0 mt-[3px]">
                       {item.title}
                     </h1>
                   </ul>
-                  <p>{item.description}</p>
+                  <p className=" md:text-[15px] sm:text-[11px] text-[10px] md:leading-6 sm:leading-4 leading-3">
+                    {item.description}
+                  </p>
 
-                  <div className="flex items-center gap-2 md:text-xs text-[7px] italic">
+                  <div className="flex items-center gap-2 md:text-xs text-[8px] italic">
                     <span>{`(${item.startDate}`}</span>
                     <span>
                       {item.endDate === "Currently working"
@@ -301,18 +311,18 @@ export default function Template1({
             className="cursor-pointer"
           >
             <h1
-              className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-gray-700`}
+              className={`md:text-xl text-sm text-left  font-bold text-gray-700`}
             >
               Projects
             </h1>
             <ul className=" px-5 mt-3 text-gray-700 list-disc">
               {data.projects.map((item: any, i: number) => (
-                <li className="mt-5 mb-5" key={i}>
-                  <h1 className="md:text-lg text-xs md:font-medium font-bold">
-                    {item.name}
-                  </h1>
-                  <p className="md:text-sm text-xs">{item.description}</p>
-                  <div className="flex items-center gap-[100px] mt-3 md:text-sm text-xs">
+                <li className="mt-2 md:text-lg sm:text-xs text-[10px]" key={i}>
+                  <h1 className=" md:font-medium font-bold">{item.name}</h1>
+                  <p className="md:text-[15px] sm:text-[11px] text-[10px] md:leading-6 sm:leading-4 leading-3">
+                    {item.description}
+                  </p>
+                  <div className="flex items-center justify-between md:text-sm sm:text-[10px] text-[8px]">
                     <Link
                       href="/aiprompt"
                       className="hover:underline hover:underline-offset-2 flex items-center gap-2"

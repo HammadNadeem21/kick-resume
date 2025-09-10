@@ -1202,8 +1202,8 @@ const AiPromptPage = () => {
           ) : (
             showTemplate &&
             parsedData && (
-              <div>
-                <div className="mt-5">{renderSelectedTemplate()}</div>
+              <div className=" flex items-center justify-center">
+                <div className="mt-5 mx-auto">{renderSelectedTemplate()}</div>
               </div>
             )
           )}

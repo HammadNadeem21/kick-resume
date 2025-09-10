@@ -680,7 +680,7 @@ const AiPromptPage = () => {
       const res = await fetch("/api/credits/deduct", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user?.email, amount: -5 }),
+        body: JSON.stringify({ email: user?.email, amount: 5 }),
       });
 
       if (!res.ok) throw new Error("Failed to deduct credits");
