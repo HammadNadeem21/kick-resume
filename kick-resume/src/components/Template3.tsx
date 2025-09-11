@@ -1,3 +1,4 @@
+import moment from "moment";
 import Link from "next/link";
 import React from "react";
 
@@ -29,6 +30,8 @@ interface Data {
     github?: string;
     live?: string;
   }[];
+  customSection: Array<{ title: string; value: string[] }>;
+  customSection2: Array<{ title: string; value: string[] }>;
 }
 
 const Template3 = ({
@@ -38,9 +41,10 @@ const Template3 = ({
   handleExperienceFieldClick,
   handleProjectFieldClick,
   handleEducationFieldClick,
-  handlePhoneClickFeild,
-  handleEmailFieldClick,
+
   handlePersonalInformationClick,
+  handleCustomSectionClick,
+  handleCustomSection2Click,
 }: {
   data: Data;
   handleStringFeildClick: (fieldName: string, value: string) => void;
@@ -53,6 +57,14 @@ const Template3 = ({
   handlePersonalInformationClick: (
     fieldName: string,
     data: Array<{ title: string; value: string }>
+  ) => void;
+  handleCustomSectionClick: (
+    fieldName: string,
+    data: Array<{ title: string; value: string[] }>
+  ) => void;
+  handleCustomSection2Click: (
+    fieldName: string,
+    data: Array<{ title: string; value: string[] }>
   ) => void;
 }) => {
   return (
@@ -153,8 +165,19 @@ const Template3 = ({
                     {item.description}
                   </p>
                   <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
-                    <span>{`(${item.startDate}`}</span>
-                    <span>{`${item.endDate})`}</span>
+                    <span>
+                      {`( ${moment(item.startDate).format("MMM YYYY")} - 
+                    
+                    ${
+                      item.endDate === "Currently working"
+                        ? "Currently working"
+                        : moment(item.endDate).isValid()
+                        ? moment(item.endDate).format("MMM YYYY")
+                        : ""
+                    }
+                      )
+                    `}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -202,6 +225,44 @@ const Template3 = ({
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Custom Section */}
+          <div
+            className={`cursor-pointer`}
+            onClick={() =>
+              handleCustomSection2Click("customSection2", data.customSection2)
+            }
+          >
+            {data.customSection2 && data.customSection2.length > 0 ? (
+              <div className="">
+                {data.customSection2 && data.customSection2.length < 1 ? (
+                  <></>
+                ) : (
+                  <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+                )}
+                {data.customSection2.map((item, idx) => (
+                  <div key={idx} className="md:px-2 px-1 py-[2px]">
+                    <h1 className="md:text-xl text-lg font-bold text-gray-800 capitalize">
+                      {item.title}
+                    </h1>
+                    <ul className="list-disc md:text-sm text-xs font-medium">
+                      {item.value.map((item: any, i: number) => (
+                        <li key={i} className="ml-7">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div>
+                <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                  Click here and add custom section
+                </h1>
+              </div>
+            )}
           </div>
         </div>
 
@@ -293,6 +354,48 @@ const Template3 = ({
                 <li key={i}>{item}</li>
               ))}
             </ul>
+          </div>
+
+          {/* Custom Section */}
+          <div
+            className=""
+            onClick={() =>
+              handleCustomSectionClick("customSection", data.customSection)
+            }
+          >
+            {data.customSection && data.customSection.length > 0 ? (
+              <div className="">
+                {data.customSection && data.customSection.length < 1 ? (
+                  <></>
+                ) : (
+                  <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+                )}
+                <div className="mt-8 mb-8 cursor-pointer">
+                  {data.customSection.map((item, idx) => (
+                    <div key={idx} className=" cursor-pointer">
+                      <h1
+                        className={`text-[15px] font-bold mb-2 text-left mt-5 text-gray-800`}
+                      >
+                        {item.title}
+                      </h1>
+                      <ul className="list-disc text-black px-5 flex flex-col gap-2 md:text-sm text-xs">
+                        {item.value.map((item: any, i: number) => (
+                          <li key={i} className="capitalize">
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div>
+                <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                  Click here and add custom section
+                </h1>
+              </div>
+            )}
           </div>
         </div>
       </div>

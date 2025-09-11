@@ -40,6 +40,7 @@ import Template9PDF from "@/components/pdf/Template9PDF";
 import Template10 from "@/components/Template10";
 import Template10PDF from "@/components/pdf/Template10PDF";
 import { CarouselSize } from "@/components/Carousel";
+import { DatePicker } from "@/components/DatePicker";
 // import user from "../../../models/user"; // Remove this line
 const robot700 = Roboto({
   subsets: ["latin"],
@@ -66,6 +67,7 @@ import { useCredits } from "@/context/CreditsContext";
 import { useAiResumeBuilder } from "@/context/AiResumeBuilder";
 import { calculateCreditFromTokens } from "../../../utils/commonHelpers";
 import { SelectButton } from "@/components/SelectButton";
+import CustomSection from "@/components/CustomSection/CustomSection";
 
 const AiPromptPage = () => {
   const {
@@ -105,24 +107,6 @@ const AiPromptPage = () => {
     setColor10,
   } = useAiResumeBuilder();
 
-  // const [userPrompt, setUserPrompt] = useState<string>("");
-  // const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
-  // for generating Resume
-
-  // const [parsedData, setParsedData] = useState<any>(null);
-
-  // const [imageFile, setImageFile] = useState<File | null>(null);
-  // const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  // const [processedUrl, setProcessedUrl] = useState<string | null>(null);
-  // const { parsedData,
-  //   setParsedData,
-  //   imageFile,
-  //   setImageFile,
-  //   previewUrl,
-  //   setPreviewUrl,
-  //   processedUrl,
-  //   setProcessedUrl, } = useAiResumeBuilder();
-
   const [showEditor, setShowEditor] = useState(false);
 
   const [editType, setEditType] = useState<
@@ -134,6 +118,8 @@ const AiPromptPage = () => {
     | "phone"
     | "email"
     | "personal"
+    | "customSection"
+    | "customSection2"
   >("string");
   const [editField, setEditField] = useState<
     "skills" | "languages" | "certifications" | null
@@ -198,13 +184,29 @@ const AiPromptPage = () => {
     string | null
   >(null);
 
-  // Personal Information field (array of { title, value })
+  // Custom Section field (array of { title, value })
   const [personalInfoData, setPersonalInfoData] = useState<
     Array<{ title: string; value: string }>
   >([]);
   const [currentPersonalField, setCurrentPersonalField] = useState<
     string | null
   >(null);
+
+  // Custom Section 2 field (array of { title, value })
+  const [customSectionData, setCustomSectionData] = useState<
+    Array<{ title: string; value: string[] }>
+  >([]);
+  const [currentcustomField, setCurrentCustomField] = useState<string | null>(
+    null
+  );
+
+  // Personal Information field (array of { title, value })
+  const [customSection2Data, setCustomSection2Data] = useState<
+    Array<{ title: string; value: string[] }>
+  >([]);
+  const [currentcustom2Field, setCurrentCustom2Field] = useState<string | null>(
+    null
+  );
 
   const { credit, setCredit } = useCredits();
 
@@ -362,6 +364,28 @@ const AiPromptPage = () => {
     setShowEditor(true);
   };
 
+  // Custom Section click
+  const handleCustomFieldClick = (
+    fieldName: string,
+    arrayData: Array<{ title: string; value: string[] }>
+  ) => {
+    setCustomSectionData(arrayData ?? []);
+    setCurrentCustomField(fieldName);
+    setEditType("customSection");
+    setShowEditor(true);
+  };
+
+  // Custom Section click
+  const handleCustom2FieldClick = (
+    fieldName: string,
+    arrayData: Array<{ title: string; value: string[] }>
+  ) => {
+    setCustomSection2Data(arrayData ?? []);
+    setCurrentCustom2Field(fieldName);
+    setEditType("customSection2");
+    setShowEditor(true);
+  };
+
   // for phone number
 
   const handlePhoneClickFeild = (fieldName: string, data: number) => {
@@ -486,6 +510,8 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSectionClick={handleCustomFieldClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
           color={color1}
         />
       );
@@ -501,6 +527,8 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSectionClick={handleCustomFieldClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
         />
       );
     if (selectedTemplate === 3)
@@ -515,6 +543,8 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSectionClick={handleCustomFieldClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
         />
       );
     if (selectedTemplate === 4)
@@ -660,10 +690,10 @@ const AiPromptPage = () => {
   const handleDownloadPDF = async () => {
     if (!parsedData || !selectedTemplate) return;
 
-    if (credit < 5) {
-      alert("Not enough credits.");
-      return;
-    }
+    // if (credit < 5) {
+    //   alert("Not enough credits.");
+    //   return;
+    // }
 
     let DocumentComponent;
 
@@ -1064,7 +1094,7 @@ const AiPromptPage = () => {
                 }
                 className=" p-3 w-[100%]  text-gray-500 resize-none focus:outline-none bg-transparent"
                 rows={3}
-                disabled={credit < 3} // Disable if no credits
+                // disabled={credit < 3} // Disable if no credits
               />
               <button
                 className="w-[100%] border border-[#a9adb5]  text-gray-800 mt-2 px-4 py-2 rounded-xl flex items-center justify-center gap-1"
@@ -1149,7 +1179,7 @@ const AiPromptPage = () => {
               {/* {showTemplate && parsedData && ( */}
               <button
                 onClick={handleDownloadPDF}
-                disabled={credit < 5}
+                // disabled={credit < 5}
                 className="bg-mySkyBlue/50 mt-5 hover:bg-mySkyBlue text-white md:text-lg sm:text-sm text-[12px] font-bold sm:px-5 px-3 sm:py-2 py-1 rounded-lg disabled:opacity-50 cursor-pointer"
               >
                 Download PDF
@@ -1296,6 +1326,17 @@ const AiPromptPage = () => {
                       placeholder="Title"
                       className="w-full p-2 mb-2 border text-black"
                     />
+                    <input
+                      type="text"
+                      value={exp.companyName || ""}
+                      onChange={(e) => {
+                        const updated = [...experienceData];
+                        updated[index].companyName = e.target.value;
+                        setExperienceData(updated);
+                      }}
+                      placeholder="Company Name"
+                      className="w-full p-2 mb-2 border text-black"
+                    />
                     <textarea
                       value={exp.description}
                       onChange={(e) => {
@@ -1307,30 +1348,40 @@ const AiPromptPage = () => {
                       className="w-full p-2 mb-2 border text-black"
                     />
                     <div className="grid grid-cols-2 gap-2 mb-2">
-                      <input
-                        type="text"
-                        value={exp.startDate}
-                        onChange={(e) => {
-                          const updated = [...experienceData];
-                          updated[index].startDate = e.target.value;
-                          setExperienceData(updated);
-                        }}
-                        placeholder="Start Date"
-                        className=" p-2 border text-black"
-                      />
-                      <input
-                        type="text"
+                      <DatePicker
+                        label="Start Date"
+                        id={`start-${index}`}
                         value={
-                          exp.endDate === "Currently working" ? "" : exp.endDate
+                          exp.startDate ? new Date(exp.startDate) : undefined
                         }
-                        onChange={(e) => {
+                        onChange={(date) => {
                           const updated = [...experienceData];
-                          updated[index].endDate = e.target.value;
+                          updated[index].startDate = date
+                            ? date.toISOString()
+                            : "";
                           setExperienceData(updated);
                         }}
-                        placeholder="End Date"
-                        className="p-2 border text-black"
+                        className=""
+                        buttonClassName="p-2 border text-black"
+                      />
+                      <DatePicker
+                        label="End Date"
+                        id={`end-${index}`}
+                        value={
+                          exp.endDate && exp.endDate !== "Currently working"
+                            ? new Date(exp.endDate)
+                            : undefined
+                        }
+                        onChange={(date) => {
+                          const updated = [...experienceData];
+                          updated[index].endDate = date
+                            ? date.toISOString()
+                            : "";
+                          setExperienceData(updated);
+                        }}
                         disabled={exp.endDate === "Currently working"}
+                        className=""
+                        buttonClassName="p-2 border text-black disabled:opacity-50"
                       />
                       {/* current employer */}
                       <div className="flex items-center gap-2">
@@ -1363,7 +1414,7 @@ const AiPromptPage = () => {
                         updated.splice(index, 1);
                         setExperienceData(updated);
                       }}
-                      className="bg-red-600 text-white"
+                      className="bg-red-500 hover:bg-red-700 text-white"
                     >
                       Remove
                     </Button>
@@ -1377,6 +1428,7 @@ const AiPromptPage = () => {
                       ...experienceData,
                       {
                         title: "",
+                        company: "",
                         description: "",
                         startDate: "",
                         endDate: "",
@@ -1384,12 +1436,12 @@ const AiPromptPage = () => {
                     ];
                     setExperienceData(updated);
                   }}
-                  className="bg-green-600 text-white mt-4"
+                  className="bg-green-500 hover:bg-green-700 text-white mt-4"
                 >
                   + Add Experience
                 </Button>
 
-                <div className="flex justify-end mt-4">
+                <div className="flex justify-between mt-4">
                   <button
                     className="bg-myDarkBlue text-white px-4 py-2 rounded"
                     onClick={() => {
@@ -1401,6 +1453,13 @@ const AiPromptPage = () => {
                     }}
                   >
                     Save
+                  </button>
+
+                  <button
+                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
+                    onClick={() => setShowEditor(false)}
+                  >
+                    Close
                   </button>
                 </div>
               </div>
@@ -1594,9 +1653,7 @@ const AiPromptPage = () => {
                         ...prev,
                         [currentEducationField as string]: educationData,
                       }));
-                      // setCurrentEducationField(null);
-                      // setCurrentProjectField(null);
-                      // setCurrentExperienceField(null)
+
                       setShowEditor(false);
                     }}
                   >
@@ -1696,13 +1753,27 @@ const AiPromptPage = () => {
               </div>
             )}
 
-            {/* {(editType === "phone" || "email" || "address") && (
-              <div className="p-6">
-                <h2 className="text-lg font-bold mb-4 text-black">
-                  Edit Address
-                </h2>
-              </div>
-            )} */}
+            {/* Custom Section */}
+            {editType === "customSection" && (
+              <CustomSection
+                customSectionData={customSectionData}
+                setCustomSectionData={setCustomSectionData}
+                currentcustomField="customSection"
+                setParsedData={setParsedData}
+                setShowEditor={setShowEditor}
+              />
+            )}
+
+            {/* Custom Section 2 */}
+            {editType === "customSection2" && (
+              <CustomSection
+                customSectionData={customSection2Data}
+                setCustomSectionData={setCustomSection2Data}
+                currentcustomField="customSection2"
+                setParsedData={setParsedData}
+                setShowEditor={setShowEditor}
+              />
+            )}
 
             <div className="flex justify-end mt-4">
               <button

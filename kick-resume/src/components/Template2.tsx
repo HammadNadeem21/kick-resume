@@ -1,5 +1,7 @@
 import Link from "next/link";
 import React from "react";
+import CustomSection from "./CustomSection/CustomSection";
+import moment from "moment";
 
 const educationData = [
   { degree: "Matric ( Science )" },
@@ -83,6 +85,8 @@ interface Data {
     github?: string;
     live?: string;
   }[];
+  customSection: Array<{ title: string; value: string[] }>;
+  customSection2: Array<{ title: string; value: string[] }>;
 }
 
 const Template2 = ({
@@ -95,6 +99,8 @@ const Template2 = ({
   handlePhoneClickFeild,
   handleEmailFieldClick,
   handlePersonalInformationClick,
+  handleCustomSectionClick,
+  handleCustomSection2Click,
 }: {
   data: Data;
   handleStringFeildClick: (fieldName: string, value: string) => void;
@@ -107,6 +113,14 @@ const Template2 = ({
   handlePersonalInformationClick: (
     fieldName: string,
     data: Array<{ title: string; value: string }>
+  ) => void;
+  handleCustomSectionClick: (
+    fieldName: string,
+    data: Array<{ title: string; value: string[] }>
+  ) => void;
+  handleCustomSection2Click: (
+    fieldName: string,
+    data: Array<{ title: string; value: string[] }>
   ) => void;
 }) => {
   return (
@@ -144,41 +158,6 @@ const Template2 = ({
             <h1 className="md:text-xl text-sm font-bold text-gray-700">
               Contact
             </h1>
-
-            {/* <div className="mt-5 flex flex-col gap-3 md:text-xs text-[10px] text-wrap"> */}
-            {/* phone */}
-            {/* <div
-                className="flex gap-2 items-center cursor-pointer"
-                onClick={() => handlePhoneClickFeild("phone", data.phone)}
-              >
-                <h1 className="font-bold">Phone: </h1>
-                <p>{`+${data.phone}`}</p>
-              </div> */}
-
-            {/* email */}
-            {/* <div className="flex gap-2 items-center ">
-                <h1 className="font-bold">Email: </h1>
-                <p
-                  className="cursor-pointer"
-                  onClick={() => handleEmailFieldClick("email", data.email)}
-                >
-                  {data.email}
-                </p>
-              </div> */}
-
-            {/* Address */}
-            {/* <div className="flex gap-2 items-start">
-                <h1 className="font-bold">Address: </h1>
-                <p
-                  className="cursor-pointer"
-                  onClick={() =>
-                    handleStringFeildClick("address", data.address)
-                  }
-                >
-                  {data.address}
-                </p>
-              </div> */}
-            {/* </div> */}
 
             {/* personal information */}
             <div
@@ -295,7 +274,11 @@ const Template2 = ({
                 onClick={() =>
                   handleArrayFieldClick("certifications", data.certifications)
                 }
-                className="md:px-3 px-0 py-3 cursor-pointer"
+                className={`md:px-3 px-0 py-3 cursor-pointer ${
+                  data.customSection && data.customSection.length > 0
+                    ? "border-b  border-b-gray-400"
+                    : "border-none"
+                }`}
               >
                 <h1 className="md:text-xl text-xs font-bold text-gray-700">
                   Certifications
@@ -309,6 +292,46 @@ const Template2 = ({
                 </ul>
               </div>
             )}
+
+            {/* Custom Section */}
+            <div
+              className="md:px-3 px-0 py-3 cursor-pointer"
+              onClick={() =>
+                handleCustomSectionClick("customSection", data.customSection)
+              }
+            >
+              {data.customSection && data.customSection.length > 0 ? (
+                <div className="">
+                  {data.customSection.map((item, idx) => (
+                    <div key={idx}>
+                      <div key={idx} className=" cursor-pointer">
+                        <h1
+                          className={`md:text-xl text-xs font-bold text-gray-700`}
+                        >
+                          {item.title}
+                        </h1>
+                        <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
+                          {item.value.map((item: any, i: number) => (
+                            <li
+                              key={i}
+                              className="capitalize md:text-[15px] text-xs mt-1"
+                            >
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                    Click here and add custom section
+                  </h1>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -348,11 +371,20 @@ const Template2 = ({
                         <p className="text-sm">{item.description}</p>
 
                         <div className="flex items-center gap-2 md:text-xs text-[7px] italic ml-2">
-                          <span>{`(${item.startDate}`}</span>
-                          <span>{`${item.endDate})`}</span>
+                          <span>{`(${moment(item.startDate).format(
+                            "MMM YYYY"
+                          )}`}</span>
+                          <span>
+                            {" "}
+                            {item.endDate === "Currently working"
+                              ? "Currently working"
+                              : moment(item.endDate).isValid()
+                              ? moment(item.endDate).format("MMM YYYY")
+                              : ""}
+                            {")"}
+                          </span>
                         </div>
                       </div>
-                      {/* <p>{item.description}</p> */}
                     </div>
                   ))}
                 </div>
@@ -362,7 +394,11 @@ const Template2 = ({
             {/* Projects */}
             {data.projects && data.projects.length > 0 && (
               <div
-                className="md:px-1 px-2 py-3 cursor-pointer"
+                className={`md:px-1 px-2 py-3 cursor-pointer ${
+                  data.customSection2 && data.customSection2.length > 0
+                    ? "border-b border-b-gray-400"
+                    : "border-none"
+                }`}
                 onClick={() =>
                   handleProjectFieldClick("projects", data.projects)
                 }
@@ -402,13 +438,42 @@ const Template2 = ({
                 </ul>
               </div>
             )}
+
+            {/* Custom Section */}
+            <div
+              className={`md:px-1 px-2 py-3 cursor-pointer`}
+              onClick={() =>
+                handleCustomSection2Click("customSection2", data.customSection2)
+              }
+            >
+              {data.customSection2 && data.customSection2.length > 0 ? (
+                <div className="">
+                  {data.customSection2.map((item, idx) => (
+                    <div key={idx} className="mt-2">
+                      <h1 className="md:text-xl ml-2 text-sm font-bold text-gray-700 capitalize">
+                        {item.title}
+                      </h1>
+                      <ul className="list-disc ml-8 md:text-[15px] sm:text-[11px] text-[10px] md:leading-6 sm:leading-4 leading-3">
+                        {item.value.map((item: any, i: number) => (
+                          <li key={i} className="md:text-sm text-xs">
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                    Click here and add custom section
+                  </h1>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-
-      {/* <h2 className="font-semibold mt-4 mb-1">Summary</h2>
-      <p>{resumeData.summary}</p> */}
-      {/* Baaki fields bhi dikhana ho to yahan add karo */}
     </div>
   );
 };

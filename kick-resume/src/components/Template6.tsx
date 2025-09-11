@@ -1,3 +1,4 @@
+import moment from "moment";
 import Link from "next/link";
 import React from "react";
 
@@ -143,8 +144,13 @@ const Template6 = ({
                 </div>
 
                 <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
-                  <span>{`(${item.startDate}`}</span>
-                  <span>{`${item.endDate})`}</span>
+                  <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${
+                    item.endDate === "Currently working"
+                      ? "Currently working"
+                      : moment(item.endDate).isValid()
+                      ? moment(item.endDate).format("MMM YYYY")
+                      : ""
+                  })`}</span>
                 </div>
               </div>
 
