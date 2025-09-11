@@ -62,6 +62,7 @@ const templateData = [
 import { useSession } from "next-auth/react";
 import { useCredits } from "@/context/CreditsContext";
 import { JobMatcherProvider, useJobMatcher } from "@/context/JobMatcherContext";
+import CustomSection from "@/components/CustomSection/CustomSection";
 
 const AiPromptPage = () => {
   const {
@@ -116,6 +117,22 @@ const AiPromptPage = () => {
   // const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   // const [processedUrl, setProcessedUrl] = useState<string | null>(null);
 
+  // Custom Section field (array of { title, value })
+  const [customSectionData, setCustomSectionData] = useState<
+    Array<{ title: string; value: string[] }>
+  >([]);
+  const [currentcustomField, setCurrentCustomField] = useState<string | null>(
+    null
+  );
+
+  // Custom Section 2 field (array of { title, value })
+  const [customSection2Data, setCustomSection2Data] = useState<
+    Array<{ title: string; value: string[] }>
+  >([]);
+  const [currentcustom2Field, setCurrentCustom2Field] = useState<string | null>(
+    null
+  );
+
   const [showEditor, setShowEditor] = useState(false);
 
   const [editType, setEditType] = useState<
@@ -127,6 +144,8 @@ const AiPromptPage = () => {
     | "phone"
     | "email"
     | "personal"
+    | "customSection"
+    | "customSection2"
   >("string");
   const [editField, setEditField] = useState<
     "skills" | "languages" | "certifications" | null
@@ -395,6 +414,28 @@ const AiPromptPage = () => {
     setShowEditor(true);
   };
 
+  // Custom Section click
+  const handleCustomFieldClick = (
+    fieldName: string,
+    arrayData: Array<{ title: string; value: string[] }>
+  ) => {
+    setCustomSectionData(arrayData ?? []);
+    setCurrentCustomField(fieldName);
+    setEditType("customSection");
+    setShowEditor(true);
+  };
+
+  // Custom Section click
+  const handleCustom2FieldClick = (
+    fieldName: string,
+    arrayData: Array<{ title: string; value: string[] }>
+  ) => {
+    setCustomSection2Data(arrayData ?? []);
+    setCurrentCustom2Field(fieldName);
+    setEditType("customSection2");
+    setShowEditor(true);
+  };
+
   const renderSelectedTemplate = () => {
     if (selectedTemplate === 1)
       return (
@@ -408,6 +449,8 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSectionClick={handleCustomFieldClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
           color={color1}
         />
       );
@@ -423,6 +466,8 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSectionClick={handleCustomFieldClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
         />
       );
     if (selectedTemplate === 3)
@@ -437,6 +482,8 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSectionClick={handleCustomFieldClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
         />
       );
     if (selectedTemplate === 4)
@@ -1609,6 +1656,27 @@ const AiPromptPage = () => {
                   </button>
                 </div>
               </div>
+            )}
+
+            {editType === "customSection" && (
+              <CustomSection
+                customSectionData={customSectionData}
+                setCustomSectionData={setCustomSectionData}
+                currentcustomField="customSection"
+                setParsedData={setResumeData}
+                setShowEditor={setShowEditor}
+              />
+            )}
+
+            {/* Custom Section 2 */}
+            {editType === "customSection2" && (
+              <CustomSection
+                customSectionData={customSection2Data}
+                setCustomSectionData={setCustomSection2Data}
+                currentcustomField="customSection2"
+                setParsedData={setResumeData}
+                setShowEditor={setShowEditor}
+              />
             )}
 
             <div className="flex justify-end mt-4">
