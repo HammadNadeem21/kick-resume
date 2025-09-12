@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   position: {
     fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 8,
+    marginBottom: 16,
     color: "#374151",
   },
   contact: {
@@ -261,59 +261,51 @@ export default function Template1PDF({
         {/* Right Side */}
         <View style={styles.right}>
           <Text style={styles.position}>{data.role}</Text>
-          <View style={styles.section}>
-            {/* Personal Information (optional) */}
-            {data.personalInformation &&
-              data.personalInformation.length > 0 && (
-                <View style={{ width: "80%" }}>
-                  {data.personalInformation.map((item: any, i: number) => (
+
+          {data.personalInformation && data.personalInformation.length > 0 && (
+            <View style={styles.section}>
+              <View style={{ width: "80%" }}>
+                {data.personalInformation.map((item: any, i: number) => (
+                  <View
+                    key={i}
+                    style={{
+                      ...styles.listItem,
+                    }}
+                  >
                     <View
-                      key={i}
                       style={{
-                        ...styles.listItem,
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 6,
+                        alignItems: "center",
                       }}
                     >
-                      {/* <Text style={styles.bulletPersonal}>{getBulletChar("#193042")}</Text> */}
-
-                      <View
+                      <Text
                         style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          gap: 6,
-                          alignItems: "center",
+                          color: "#193042",
+                          fontWeight: 600,
+                          fontSize: 10,
+                          textTransform: "capitalize",
                         }}
                       >
-                        <Text
-                          style={{
-                            color: "#193042",
-                            fontWeight: 600,
-                            fontSize: 10,
-                            textTransform: "capitalize",
-                          }}
-                        >
-                          {item.title}:
-                        </Text>
-                        <Text
-                          style={{
-                            color: "#193042",
-                            fontWeight: 400,
-                            fontSize: 8,
-                          }}
-                        >
-                          {item.value}
-                        </Text>
-                      </View>
+                        {item.title}:
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#193042",
+                          fontWeight: 400,
+                          fontSize: 8,
+                        }}
+                      >
+                        {item.value}
+                      </Text>
                     </View>
-                  ))}
-                </View>
-              )}
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
 
-            {/* <Text style={styles.contact}>Phone: +{data.phone}</Text>
-
-            <Text style={styles.contact}>Email: {data.email}</Text>
-
-            <Text style={styles.contact}>Address: {data.address}</Text> */}
-          </View>
           <View style={styles.rightdivider} />
           <View style={styles.section}>
             <Text style={styles.rightHeading}>Summary</Text>

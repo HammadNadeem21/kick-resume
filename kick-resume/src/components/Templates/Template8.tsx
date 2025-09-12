@@ -1,3 +1,4 @@
+import moment from "moment";
 import Link from "next/link";
 import React from "react";
 
@@ -29,15 +30,10 @@ interface Data {
     github?: string;
     live?: string;
   }[];
+  customSection2: Array<{ title: string; value: string[] }>;
 }
 
-interface Color {
-  r: number;
-  g: number;
-  b: number;
-}
-
-const Template10 = ({
+const Template8 = ({
   data,
   handleStringFeildClick,
   handleArrayFieldClick,
@@ -47,7 +43,8 @@ const Template10 = ({
   handlePhoneClickFeild,
   handleEmailFieldClick,
   handlePersonalInformationClick,
-  color,
+  handleCustomSection2Click,
+  isLegal,
 }: {
   data: Data;
   handleStringFeildClick: (fieldName: string, value: string) => void;
@@ -57,59 +54,41 @@ const Template10 = ({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  isLegal: boolean;
   handlePersonalInformationClick: (
     fieldName: string,
     data: Array<{ title: string; value: string }>
   ) => void;
-  color: Color;
+  handleCustomSection2Click: (
+    fieldName: string,
+    data: Array<{ title: string; value: string[] }>
+  ) => void;
 }) => {
   return (
-    <div className="bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7 max-w-[794px] mx-auto">
+    <div
+      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7 mx-auto ${
+        isLegal ? "max-w-[794px]" : "max-w-[842px]"
+      }`}
+    >
       <div className="flex flex-col gap-2 items-start justify-center w-full">
-        <div className="text-center w-full">
+        <div className="text-center">
           <h1
-            className="lg:text-4xl md:text-3xl text-2xl font-bold text-gray-800 cursor-pointer text-center"
+            className="lg:text-4xl md:text-3xl text-2xl font-bold text-black cursor-pointer text-left"
             onClick={() => handleStringFeildClick("name", data.name)}
           >
             {data.name}
           </h1>
           <h2
-            className=" text-center cursor-pointer md:text-xl text-lg text-black font-bold"
+            className=" text-left cursor-pointer md:text-xl text-lg text-black"
             onClick={() => handleStringFeildClick("role", data.role)}
           >
             {data.role}
           </h2>
         </div>
 
-        {/* <div className="flex items-center justify-between text-black md:text-sm text-xs w-full">
-          <div
-            className="flex gap-2 md:items-center items-start cursor-pointer"
-            onClick={() => handlePhoneClickFeild("phone", data.phone)}
-          >
-            <h1 className="font-bold">Phone: </h1>
-            <p>{`+${data.phone}`}</p>
-          </div>
-
-          <div
-            className="flex gap-2 items-center cursor-pointer"
-            onClick={() => handleEmailFieldClick("email", data.email)}
-          >
-            <h1 className="font-bold">Email: </h1>
-            <p>{data.email}</p>
-          </div>
-
-          <div
-            className="flex gap-2 items-center text-black md:text-sm text-xs cursor-pointer"
-            onClick={() => handleStringFeildClick("address", data.address)}
-          >
-            <h1 className="font-bold">Location: </h1>
-            <p>{data.address}</p>
-          </div>
-        </div> */}
-
         {/* personal information */}
         <div
-          className="w-full"
+          className=""
           onClick={() =>
             handlePersonalInformationClick(
               "personalInformation",
@@ -130,8 +109,8 @@ const Template10 = ({
               ))}
             </div>
           ) : (
-            <div className="">
-              <h1 className="font-normal text-center text-sm text-black mx-auto  cursor-pointer italic">
+            <div>
+              <h1 className="font-normal text-center text-sm text-black  cursor-pointer italic">
                 Click this section and set your Personal Information
               </h1>
             </div>
@@ -144,71 +123,26 @@ const Template10 = ({
         className="cursor-pointer mt-4"
         onClick={() => handleStringFeildClick("summary", data.summary)}
       >
-        <h1
-          className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
-          style={{
-            backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`,
-            color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
-          }}
-        >
+        <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
           Summary
         </h1>
 
         <p className="text-black mt-2 md:text-sm text-xs">{data.summary}</p>
       </div>
 
-      {/* Skills */}
-      {data.skills.length > 0 && (
-        <div
-          className="cursor-pointer mt-4"
-          onClick={() => handleArrayFieldClick("skills", data.skills)}
-        >
-          <h1
-            className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
-            style={{
-              backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`,
-              color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
-            }}
-          >
-            technical skills
-          </h1>
-
-          <ul
-            className="px-0 mt-3 text-black    ml-5
-md:text-sm
-    sm:text-xs
-    text-[10px]
-    grid grid-cols-3
-  "
-          >
-            {data.skills.map((item, index) => (
-              <li key={index} className="list-disc">
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
       {/* Experience */}
-      {data.experience.length > 0 && (
+      {data.experience && data.experience.length > 0 && (
         <div
           className="cursor-pointer mt-4"
           onClick={() =>
             handleExperienceFieldClick("experience", data.experience)
           }
         >
-          <h1
-            className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
-            style={{
-              backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`,
-              color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
-            }}
-          >
+          <h1 className="md:text-xl text-lg font-bold text-black uppercase text-left">
             Experience
           </h1>
 
-          <div className=" md:px-5 px-0  mt-3 text-black grid grid-cols-2 gap-6">
+          <div className=" md:px-5 px-0  mt-3 text-black">
             {data.experience.map((item: any, i: number) => (
               <div key={i} className="flex flex-col mt-3">
                 <div className="flex justify-between">
@@ -218,8 +152,13 @@ md:text-sm
                   </div>
 
                   <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
-                    <span>{`(${item.startDate}`}</span>
-                    <span>{`${item.endDate})`}</span>
+                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${
+                      item.endDate === "Currently working"
+                        ? "Currently working"
+                        : moment(item.endDate).isValid()
+                        ? moment(item.endDate).format("MMM YYYY")
+                        : ""
+                    })`}</span>
                   </div>
                 </div>
 
@@ -231,19 +170,13 @@ md:text-sm
       )}
 
       {/* Education */}
-      {data.education.length > 0 && (
+      {data.education && data.education.length > 0 && (
         <div
           className="cursor-pointer mt-4"
           onClick={() => handleEducationFieldClick("education", data.education)}
         >
-          <h1
-            className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
-            style={{
-              backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`,
-              color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
-            }}
-          >
-            education
+          <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
+            Education
           </h1>
 
           <div className="md:px-4 px-0 ml-5 mt-3 text-black grid sm:grid-cols-2 grid-cols-1 gap-2">
@@ -264,69 +197,68 @@ md:text-sm
         </div>
       )}
 
-      {/* Certifications */}
-      {data.languages.length > 0 && data.certifications.length > 0 && (
-        <div className=" mt-4">
-          <h1
-            className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
-            style={{
-              backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`,
-              color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
-            }}
-          >
-            additional information
+      {/* Skills */}
+      {data.skills && data.skills.length > 0 && (
+        <div
+          className="cursor-pointer mt-4"
+          onClick={() => handleArrayFieldClick("skills", data.skills)}
+        >
+          <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
+            Skills
           </h1>
 
-          <div className="md:px-4 px-0 text-black md:text-sm text-xs mt-1 grid grid-cols-2 gap-3">
-            {data.languages.length > 0 && (
-              <div
-                className="font-bold cursor-pointer mt-2"
-                onClick={() =>
-                  handleArrayFieldClick("languages", data.languages)
-                }
-              >
-                Languages:
-                <ul className="list-disc ml-5 font-normal">
-                  {data.languages.map((lang: string, i: number) => (
-                    <li key={i}>{lang}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {data.certifications.length > 0 && (
-              <div
-                className="font-bold cursor-pointer"
-                onClick={() =>
-                  handleArrayFieldClick("certifications", data.certifications)
-                }
-              >
-                Certifications:
-                <ul className="list-disc ml-5 font-normal">
-                  {data.certifications.map((cert: string, i: number) => (
-                    <li key={i}>{cert}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+          <div className="px-0 mt-3 text-black ml-5 md:text-sm sm:text-xs text-[10px]">
+            <p className="">{data.skills.join(", ")}</p>
           </div>
         </div>
       )}
 
+      {/* Certifications */}
+      {data.certifications && data.certifications.length > 0 && (
+        <div
+          className=" cursor-pointer mt-4"
+          onClick={() =>
+            handleArrayFieldClick("certifications", data.certifications)
+          }
+        >
+          <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
+            Certifications
+          </h1>
+
+          <ul className="list-disc md:px-4 px-0 ml-5 text-black grid sm:grid-cols-2 grid-cols-1 gap-2 md:text-sm text-xs mt-1">
+            {data.certifications.map((item: any, i: number) => (
+              <li key={i}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Languages */}
+      {data.languages && data.languages.length > 0 && (
+        <div
+          className=" cursor-pointer mt-4"
+          onClick={() => handleArrayFieldClick("languages", data.languages)}
+        >
+          <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
+            Languages
+          </h1>
+
+          <ul className="list-disc md:px-4 px-0 ml-5 text-black grid sm:grid-cols-3 grid-cols-1 gap-2 md:text-sm text-xs mt-1">
+            {data.languages.map((item: any, i: number) => (
+              <li key={i}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {/* Project */}
-      {data.projects.length > 0 && (
+      {data.projects && data.projects.length > 0 && (
         <div
           className="cursor-pointer mt-4"
           onClick={() => handleProjectFieldClick("projects", data.projects)}
         >
-          <h1
-            className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
-            style={{
-              backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`,
-              color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
-            }}
-          >
-            projects
+          <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
+            Projects
           </h1>
 
           <ul className="md:px-5 px-0 ml-3 mt-3 text-black list-disc md:text-lg text-sm">
@@ -358,8 +290,50 @@ md:text-sm
           </ul>
         </div>
       )}
+
+      {/* Custom Section */}
+      {data.customSection2 && data.customSection2.length > 0 ? (
+        <div
+          className={`cursor-pointer`}
+          onClick={() =>
+            handleCustomSection2Click("customSection2", data.customSection2)
+          }
+        >
+          {data.customSection2.map((item, idx) => (
+            <div key={idx} className="cursor-pointe mt-4 ">
+              {/* {data.customSection2 && data.customSection2.length < 1 ? (
+                <></>
+              ) : (
+                <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
+              )} */}
+
+              <h1 className="md:text-xl text-lg text-left font-bold text-gray-800 capitalize">
+                {item.title}
+              </h1>
+              <ul className="list-disc md:text-sm text-xs flex flex-col justify-center gap-2 md:px-4 px-0 ml-5 mt-3 text-black">
+                {item.value.map((item: any, i: number) => (
+                  <li key={i} className="">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div
+          className="mt-5"
+          onClick={() =>
+            handleCustomSection2Click("customSection2", data.customSection2)
+          }
+        >
+          <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+            Click here and add custom section
+          </h1>
+        </div>
+      )}
     </div>
   );
 };
 
-export default Template10;
+export default Template8;

@@ -56,6 +56,7 @@ export default function Template1({
   handlePersonalInformationClick,
   handleCustomSectionClick,
   handleCustomSection2Click,
+  isLegal,
   color,
 }: {
   data: Data;
@@ -66,6 +67,7 @@ export default function Template1({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  isLegal: boolean;
   handlePersonalInformationClick: (
     fieldName: string,
     data: Array<{ title: string; value: string }>
@@ -84,7 +86,7 @@ export default function Template1({
   return (
     <div
       style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
-      className="bg-myWhite grid grid-cols-[35%,65%] text-gray-700 max-w-[794px] shadow-lg shadow-mySkyBlue"
+      className={`bg-myWhite grid grid-cols-[35%,65%] text-gray-700 shadow-lg shadow-mySkyBlue ${isLegal ? "max-w-[794px]" : "max-w-[842px]"}`}
     >
       {/* left-side */}
       <div
@@ -202,6 +204,7 @@ export default function Template1({
         )}
 
         {/* Custom Section */}
+
         <div
           className="mt-5"
           onClick={() =>
@@ -407,47 +410,45 @@ export default function Template1({
         )}
 
         {/* Custom Section */}
-        <div
-          className=""
-          onClick={() =>
-            handleCustomSection2Click("customSection2", data.customSection2)
-          }
-        >
-          {data.customSection2 && data.customSection2.length > 0 ? (
-            <div className="">
-              {data.customSection2.map((item, idx) => (
-                <div className="" key={idx}>
-                  {data.customSection.length < 1 ? (
-                    <></>
-                  ) : (
-                    <div className="h-[1px] w-full bg-gray-700 mt-3"></div>
-                  )}
-                  <div className="mt-5 mb-5 cursor-pointer">
-                    <h1 className="md:text-xl text-sm text-left  font-bold text-gray-700 capitalize">
-                      {item.title}
-                    </h1>
-                    <ul className="list-disc md:text-[15px] sm:text-[11px] text-[10px] md:leading-6 sm:leading-4 leading-3">
-                      {item.value.map((item: any, i: number) => (
-                        <li
-                          key={i}
-                          className="ml-5 md:text-[15px] sm:text-[11px] text-[10px]"
-                        >
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+        {data.customSection2 && data.customSection2.length > 0 ? (
+          <div
+            className=""
+            onClick={() =>
+              handleCustomSection2Click("customSection2", data.customSection2)
+            }
+          >
+            {data.customSection2.map((item, idx) => (
+              <div className="" key={idx}>
+                {data.customSection.length < 1 ? (
+                  <></>
+                ) : (
+                  <div className="h-[1px] w-full bg-gray-700 mt-3"></div>
+                )}
+                <div className="mt-5 mb-5 cursor-pointer">
+                  <h1 className="md:text-xl text-sm text-left  font-bold text-gray-700 capitalize">
+                    {item.title}
+                  </h1>
+                  <ul className="list-disc md:text-[15px] sm:text-[11px] text-[10px] md:leading-6 sm:leading-4 leading-3">
+                    {item.value.map((item: any, i: number) => (
+                      <li
+                        key={i}
+                        className="ml-5 md:text-[15px] sm:text-[11px] text-[10px]"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div>
-              <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
-                Click here and add custom section
-              </h1>
-            </div>
-          )}
-        </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div>
+            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+              Click here and add custom section
+            </h1>
+          </div>
+        )}
       </div>
     </div>
   );

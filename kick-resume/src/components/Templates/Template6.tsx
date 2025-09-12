@@ -1,3 +1,4 @@
+import moment from "moment";
 import Link from "next/link";
 import React from "react";
 
@@ -29,9 +30,11 @@ interface Data {
     github?: string;
     live?: string;
   }[];
+  customSection: Array<{ title: string; value: string[] }>;
+  customSection2: Array<{ title: string; value: string[] }>;
 }
 
-const Template8 = ({
+const Template6 = ({
   data,
   handleStringFeildClick,
   handleArrayFieldClick,
@@ -41,6 +44,9 @@ const Template8 = ({
   handlePhoneClickFeild,
   handleEmailFieldClick,
   handlePersonalInformationClick,
+  handleCustomSectionClick,
+  handleCustomSection2Click,
+  isLegal,
 }: {
   data: Data;
   handleStringFeildClick: (fieldName: string, value: string) => void;
@@ -50,23 +56,36 @@ const Template8 = ({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  isLegal: boolean;
   handlePersonalInformationClick: (
     fieldName: string,
     data: Array<{ title: string; value: string }>
   ) => void;
+  handleCustomSectionClick: (
+    fieldName: string,
+    data: Array<{ title: string; value: string[] }>
+  ) => void;
+  handleCustomSection2Click: (
+    fieldName: string,
+    data: Array<{ title: string; value: string[] }>
+  ) => void;
 }) => {
   return (
-    <div className="bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7 max-w-[794px] mx-auto">
+    <div
+      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7 mx-auto ${
+        isLegal ? "max-w-[794px]" : "max-w-[842px]"
+      }`}
+    >
       <div className="flex flex-col gap-2 items-start justify-center w-full">
         <div className="text-center">
           <h1
-            className="lg:text-4xl md:text-3xl text-2xl font-bold text-black cursor-pointer text-left"
+            className="lg:text-4xl md:text-3xl text-2xl font-bold text-gray-800 cursor-pointer text-left"
             onClick={() => handleStringFeildClick("name", data.name)}
           >
             {data.name}
           </h1>
           <h2
-            className=" text-left cursor-pointer md:text-xl text-lg text-black"
+            className=" text-left cursor-pointer md:text-xl text-lg md:font-bold font-semibold text-blue-500"
             onClick={() => handleStringFeildClick("role", data.role)}
           >
             {data.role}
@@ -88,7 +107,7 @@ const Template8 = ({
               {data.personalInformation.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex items-start gap-1 md:text-[14px] text-[10px] text-black cursor-pointer"
+                  className="flex items-start gap-1 md:text-[14px] text-[10px] text-gray-500 cursor-pointer"
                 >
                   <h1 className="font-bold capitalize">{item.title}:</h1>
                   <h2 className="font-medium text-xs mt-1">{item.value}</h2>
@@ -97,7 +116,7 @@ const Template8 = ({
             </div>
           ) : (
             <div>
-              <h1 className="font-normal text-center text-sm text-black  cursor-pointer italic">
+              <h1 className="font-normal text-center text-sm text-gray-500  cursor-pointer italic">
                 Click this section and set your Personal Information
               </h1>
             </div>
@@ -107,40 +126,52 @@ const Template8 = ({
 
       {/* Summary */}
       <div
-        className="cursor-pointer mt-4"
+        className="cursor-pointer mt-2"
         onClick={() => handleStringFeildClick("summary", data.summary)}
       >
-        <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
+        <h1 className="md:text-xl text-lg text-left font-bold text-gray-800">
           Summary
         </h1>
 
         <p className="text-black mt-2 md:text-sm text-xs">{data.summary}</p>
       </div>
 
+      {/* Divider */}
+      {data.experience && data.experience.length > 0 && (
+        <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
+      )}
+
       {/* Experience */}
-      {data.experience.length > 0 && (
+      {data.experience && data.experience.length > 0 && (
         <div
-          className="cursor-pointer mt-4"
+          className="cursor-pointer"
           onClick={() =>
             handleExperienceFieldClick("experience", data.experience)
           }
         >
-          <h1 className="md:text-xl text-lg font-bold text-black uppercase text-left">
+          <h1 className="md:text-xl text-lg font-bold text-gray-800 text-left">
             Experience
           </h1>
 
-          <div className=" md:px-5 px-0  mt-3 text-black">
+          <div className=" md:px-5 px-0 ml-3 mt-3 text-black">
             {data.experience.map((item: any, i: number) => (
               <div key={i} className="flex flex-col mt-3">
                 <div className="flex justify-between">
                   <div className="md:text-[16px] text-sm flex flex-col gap-1 justify-center">
-                    <h1 className="font-bold text-black">{item.title}</h1>
-                    <h2 className="font-medium">{item.companyName}</h2>
+                    <h1 className="font-bold text-blue-500">
+                      {item.companyName}
+                    </h1>
+                    <h2 className="">{item.title}</h2>
                   </div>
 
                   <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
-                    <span>{`(${item.startDate}`}</span>
-                    <span>{`${item.endDate})`}</span>
+                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${
+                      item.endDate === "Currently working"
+                        ? "Currently working"
+                        : moment(item.endDate).isValid()
+                        ? moment(item.endDate).format("MMM YYYY")
+                        : ""
+                    })`}</span>
                   </div>
                 </div>
 
@@ -151,13 +182,18 @@ const Template8 = ({
         </div>
       )}
 
+      {/* Divider */}
+      {data.education && data.education.length > 0 && (
+        <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
+      )}
+
       {/* Education */}
-      {data.education.length > 0 && (
+      {data.education && data.education.length > 0 && (
         <div
-          className="cursor-pointer mt-4"
+          className="cursor-pointer"
           onClick={() => handleEducationFieldClick("education", data.education)}
         >
-          <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
+          <h1 className="md:text-xl text-lg text-left font-bold text-gray-800">
             Education
           </h1>
 
@@ -167,7 +203,7 @@ const Template8 = ({
                 <ul className="list-disc md:text-sm text-xs flex items-center gap-2">
                   <li>{item.degree}</li>
                   {item.startDate && item.endDate && (
-                    <div className="flex text-[10px] text-black gap-2">
+                    <div className="flex text-xs text-blue-500 gap-2">
                       <p>{`(${item.startDate}`}</p>
                       <p>{`${item.endDate})`}</p>
                     </div>
@@ -179,31 +215,44 @@ const Template8 = ({
         </div>
       )}
 
+      {/* Divider */}
+      {data.skills && data.skills.length > 0 && (
+        <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
+      )}
+
       {/* Skills */}
-      {data.skills.length > 0 && (
+      {data.skills && data.skills.length > 0 && (
         <div
-          className="cursor-pointer mt-4"
+          className="cursor-pointer"
           onClick={() => handleArrayFieldClick("skills", data.skills)}
         >
-          <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
+          <h1 className="md:text-xl text-lg text-left font-bold text-gray-800">
             Skills
           </h1>
-
-          <div className="px-0 mt-3 text-black ml-5 md:text-sm sm:text-xs text-[10px]">
-            <p className="">{data.skills.join(", ")}</p>
+          <div className="list-disc px-0 mt-3 text-black flex flex-wrap ml-5 lg:gap-4 sm:gap-2 md:text-sm sm:text-xs text-[10px] gap-1">
+            {data.skills.map((item: string, i: number) => (
+              <p className="underline underline-offset-[3px]" key={i}>
+                {item}
+              </p>
+            ))}
           </div>
         </div>
       )}
 
+      {/* Divider */}
+      {data.certifications && data.certifications.length > 0 && (
+        <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
+      )}
+
       {/* Certifications */}
-      {data.certifications.length > 0 && (
+      {data.certifications && data.certifications.length > 0 && (
         <div
-          className=" cursor-pointer mt-4"
+          className=" cursor-pointer"
           onClick={() =>
             handleArrayFieldClick("certifications", data.certifications)
           }
         >
-          <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
+          <h1 className="md:text-xl text-lg text-left font-bold text-gray-800">
             Certifications
           </h1>
 
@@ -215,31 +264,18 @@ const Template8 = ({
         </div>
       )}
 
-      {/* Languages */}
-      {data.languages.length > 0 && (
-        <div
-          className=" cursor-pointer mt-4"
-          onClick={() => handleArrayFieldClick("languages", data.languages)}
-        >
-          <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
-            Languages
-          </h1>
-
-          <ul className="list-disc md:px-4 px-0 ml-5 text-black grid sm:grid-cols-3 grid-cols-1 gap-2 md:text-sm text-xs mt-1">
-            {data.languages.map((item: any, i: number) => (
-              <li key={i}>{item}</li>
-            ))}
-          </ul>
-        </div>
+      {/* Divider */}
+      {data.projects && data.projects.length > 0 && (
+        <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
       )}
 
       {/* Project */}
-      {data.projects.length > 0 && (
+      {data.projects && data.projects.length > 0 && (
         <div
-          className="cursor-pointer mt-4"
+          className="cursor-pointer"
           onClick={() => handleProjectFieldClick("projects", data.projects)}
         >
-          <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
+          <h1 className="md:text-xl text-lg text-left font-bold text-gray-800">
             Projects
           </h1>
 
@@ -251,7 +287,7 @@ const Template8 = ({
                 </h1>
                 <p className="md:text-sm text-xs ">{item.description}</p>
                 {item.github && item.live && (
-                  <div className="flex items-center md:gap-[100px] gap-[70px] mt-1 md:text-sm text-xs text-black">
+                  <div className="flex items-center md:gap-[100px] gap-[70px] mt-1 md:text-sm text-xs text-blue-500">
                     <Link
                       href={"#"}
                       className="hover:underline hover:underline-offset-2 flex items-center gap-2"
@@ -272,8 +308,50 @@ const Template8 = ({
           </ul>
         </div>
       )}
+
+      {/* Custom Section */}
+      {data.customSection2 && data.customSection2.length > 0 ? (
+        <div
+          className={`cursor-pointer`}
+          onClick={() =>
+            handleCustomSection2Click("customSection2", data.customSection2)
+          }
+        >
+          {data.customSection2.map((item, idx) => (
+            <div key={idx} className="cursor-pointer">
+              {data.customSection2 && data.customSection2.length < 1 ? (
+                <></>
+              ) : (
+                <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
+              )}
+
+              <h1 className="md:text-xl text-lg text-left font-bold text-gray-800 capitalize">
+                {item.title}
+              </h1>
+              <ul className="list-disc md:px-4 px-0 ml-5 text-black grid sm:grid-cols-2 grid-cols-1 gap-2 md:text-sm text-xs mt-1">
+                {item.value.map((item: any, i: number) => (
+                  <li key={i} className="">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div
+          className="mt-5"
+          onClick={() =>
+            handleCustomSection2Click("customSection2", data.customSection2)
+          }
+        >
+          <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+            Click here and add custom section
+          </h1>
+        </div>
+      )}
     </div>
   );
 };
 
-export default Template8;
+export default Template6;

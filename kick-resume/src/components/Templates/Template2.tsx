@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import CustomSection from "./CustomSection/CustomSection";
+import CustomSection from "../CustomSection/CustomSection";
 import moment from "moment";
 
 const educationData = [
@@ -96,11 +96,11 @@ const Template2 = ({
   handleExperienceFieldClick,
   handleProjectFieldClick,
   handleEducationFieldClick,
-  handlePhoneClickFeild,
-  handleEmailFieldClick,
+
   handlePersonalInformationClick,
   handleCustomSectionClick,
   handleCustomSection2Click,
+  isLegal,
 }: {
   data: Data;
   handleStringFeildClick: (fieldName: string, value: string) => void;
@@ -110,6 +110,7 @@ const Template2 = ({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  isLegal: boolean;
   handlePersonalInformationClick: (
     fieldName: string,
     data: Array<{ title: string; value: string }>
@@ -126,7 +127,9 @@ const Template2 = ({
   return (
     <div
       style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
-      className="bg-myWhite md:px-5 px-2 py-5 text-gray-700 max-w-[794px] mx-auto shadow-lg shadow-mySkyBlue"
+      className={`bg-myWhite md:px-5 px-2 py-5 text-gray-700 mx-auto shadow-lg shadow-mySkyBlue ${
+        isLegal ? "max-w-[794px]" : "max-w-[842px]"
+      }`}
     >
       {/* Divider */}
       <div className="h-[1px] w-full bg-gray-400"></div>
@@ -205,7 +208,7 @@ const Template2 = ({
                 <h1 className="md:text-xl text-sm font-bold text-gray-700">
                   Education
                 </h1>
-                <div className="md:px-3 px-0 ml-3 mt-3 text-gray-700  md:text-[15px] text-[10px]">
+                <div className="md:px-3 px-0 ml-2 mt-3 text-gray-700  md:text-[15px] text-[10px]">
                   {data.education.map((item: any, i: number) => (
                     <div
                       key={i}
@@ -214,12 +217,6 @@ const Template2 = ({
                       <ul className="list-disc ">
                         <li>{item.degree}</li>
                       </ul>
-                      {/* {(item.startDate && item.endDate) && (
-
-                    <p className="text-gray-500 md:text-sm text-[8px] text-right">
-                      ({item.startYear} - {item.endYear})
-                    </p>
-                  )} */}
                     </div>
                   ))}
                 </div>
@@ -235,7 +232,7 @@ const Template2 = ({
                 <h1 className="md:text-xl text-sm font-bold text-gray-700">
                   Skills
                 </h1>
-                <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
+                <ul className="list-disc md:px-5 px-0 mt-3 text-gray-700">
                   {data.skills.map((item: string, i: number) => (
                     <li className="md:text-[15px] text-xs mt-1" key={i}>
                       {item}
@@ -257,7 +254,7 @@ const Template2 = ({
                 <h1 className="md:text-xl text-sm font-bold text-gray-700">
                   Languages
                 </h1>
-                <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
+                <ul className="list-disc md:px-5 px-0 mt-3 text-gray-700">
                   {data.languages.map((item: string, i: number) => (
                     <li className="md:text-[15px] text-xs mt-1" key={i}>
                       {item}
@@ -283,7 +280,7 @@ const Template2 = ({
                 <h1 className="md:text-xl text-xs font-bold text-gray-700">
                   Certifications
                 </h1>
-                <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
+                <ul className="list-disc md:px-5 px-0 mt-3 text-gray-700">
                   {data.certifications.map((item: string, i: number) => (
                     <li className="md:text-[15px] text-xs mt-1" key={i}>
                       {item}
@@ -310,7 +307,7 @@ const Template2 = ({
                         >
                           {item.title}
                         </h1>
-                        <ul className="list-disc md:px-5 px-0 ml-3 mt-3 text-gray-700">
+                        <ul className="list-disc md:px-5 px-0 mt-3 text-gray-700">
                           {item.value.map((item: any, i: number) => (
                             <li
                               key={i}

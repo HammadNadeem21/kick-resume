@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { Briefcase } from "lucide-react";
 import { pdf } from "@react-pdf/renderer";
 import { motion, AnimatePresence } from "framer-motion";
-import Template1 from "@/components/Template1";
+import Template1 from "@/components/Templates/Template1";
 import { useDropzone } from "react-dropzone";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import Template1PDF from "@/components/pdf/Template1PDF";
@@ -15,27 +15,27 @@ import Template2PDF from "@/components/pdf/Template2PDF";
 import Template3PDF from "@/components/pdf/Template3PDF";
 
 import { IoSend } from "react-icons/io5";
-import Template2 from "@/components/Template2";
-import Template3 from "@/components/Template3";
-import Template4 from "@/components/Template4";
+import Template2 from "@/components/Templates/Template2";
+import Template3 from "@/components/Templates/Template3";
+import Template4 from "@/components/Templates/Template4";
 import Template4PDF from "@/components/pdf/Template4PDF";
 
 import { RgbColorPicker } from "react-colorful";
 
 import { TiTick } from "react-icons/ti";
-import Template5 from "@/components/Template5";
+import Template5 from "@/components/Templates/Template5";
 import Template5PDF from "@/components/pdf/Template5PDF";
 
 import { Roboto } from "next/font/google";
-import Template6 from "@/components/Template6";
+import Template6 from "@/components/Templates/Template6";
 import Template6PDF from "@/components/pdf/Template6PDF";
-import Template7 from "@/components/Template7";
+import Template7 from "@/components/Templates/Template7";
 import Template7PDF from "@/components/pdf/Template7PDF";
-import Template8 from "@/components/Template8";
+import Template8 from "@/components/Templates/Template8";
 import Template8PDF from "@/components/pdf/Template8PDF";
-import Template9 from "@/components/Template9";
+import Template9 from "@/components/Templates/Template9";
 import Template9PDF from "@/components/pdf/Template9PDF";
-import Template10 from "@/components/Template10";
+import Template10 from "@/components/Templates/Template10";
 import Template10PDF from "@/components/pdf/Template10PDF";
 import { CarouselSize } from "@/components/Carousel";
 // import user from "../../../models/user"; // Remove this line
@@ -452,6 +452,7 @@ const AiPromptPage = () => {
           handleCustomSectionClick={handleCustomFieldClick}
           handleCustomSection2Click={handleCustom2FieldClick}
           color={color1}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 2)
@@ -467,6 +468,7 @@ const AiPromptPage = () => {
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
           handleCustomSectionClick={handleCustomFieldClick}
+          isLegal={pageSize === "A4"}
           handleCustomSection2Click={handleCustom2FieldClick}
         />
       );
@@ -484,6 +486,7 @@ const AiPromptPage = () => {
           handlePersonalInformationClick={handlePersonalInformationClick}
           handleCustomSectionClick={handleCustomFieldClick}
           handleCustomSection2Click={handleCustom2FieldClick}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 4)
@@ -495,10 +498,13 @@ const AiPromptPage = () => {
           handleExperienceFieldClick={handleExperienceFieldClick}
           handleProjectFieldClick={handleProjectFieldClick}
           handleEducationFieldClick={handleEducationFieldClick}
-          handlePhoneClickFeild={handlePhoneClickFeild}
-          handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSectionClick={handleCustomFieldClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
+          handleEmailFieldClick={handleEmailClickFeild}
+          handlePhoneClickFeild={handlePhoneClickFeild}
           imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
+          isLegal={pageSize === "A4"}
           imageBgColor={selectedImageBgColor}
           color={color4}
         />
@@ -512,9 +518,9 @@ const AiPromptPage = () => {
           handleExperienceFieldClick={handleExperienceFieldClick}
           handleProjectFieldClick={handleProjectFieldClick}
           handleEducationFieldClick={handleEducationFieldClick}
-          handlePhoneClickFeild={handlePhoneClickFeild}
-          handleEmailFieldClick={handleEmailClickFeild}
+          handleCustomSection2Click={handleCustom2FieldClick}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 6)
@@ -529,6 +535,9 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSectionClick={handleCustomFieldClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 7)
@@ -543,9 +552,12 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSectionClick={handleCustomFieldClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
           imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
           imageBgColor={selectedImageBgColor}
           color={color7}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 8)
@@ -560,6 +572,8 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 9)
@@ -574,8 +588,10 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
           imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
           imageBgColor={selectedImageBgColor}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 10)
@@ -590,6 +606,8 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
+          isLegal={pageSize === "A4"}
           color={color10}
         />
       );

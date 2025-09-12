@@ -41,7 +41,7 @@ const Template3 = ({
   handleExperienceFieldClick,
   handleProjectFieldClick,
   handleEducationFieldClick,
-
+  isLegal,
   handlePersonalInformationClick,
   handleCustomSectionClick,
   handleCustomSection2Click,
@@ -54,6 +54,7 @@ const Template3 = ({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  isLegal: boolean;
   handlePersonalInformationClick: (
     fieldName: string,
     data: Array<{ title: string; value: string }>
@@ -68,8 +69,12 @@ const Template3 = ({
   ) => void;
 }) => {
   return (
-    <div className="bg-myWhite px-7 py-7 shadow-lg shadow-mySkyBlue">
-      <div className="flex flex-col gap-3 max-w-[794px]">
+    <div
+      className={`bg-myWhite px-7 py-7 shadow-lg shadow-mySkyBlue ${
+        isLegal ? "max-w-[794px]" : "max-w-[842px]"
+      }`}
+    >
+      <div className={`flex flex-col gap-3   `}>
         <h1
           className="lg:text-4xl md:text-3xl text-2xl font-bold text-black cursor-pointer"
           onClick={() => handleStringFeildClick("name", data.name)}
@@ -185,47 +190,51 @@ const Template3 = ({
           </div>
 
           {/* Divider */}
-          <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+          {data.projects && data.projects.length > 0 && (
+            <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+          )}
 
           {/* Project */}
-          <div
-            className="cursor-pointer"
-            onClick={() => handleProjectFieldClick("projects", data.projects)}
-          >
-            <div className="md:px-2 px-1 py-[2px]">
-              <h1 className="md:text-xl text-lg font-bold text-gray-800">
-                Projects
-              </h1>
+          {data.projects && data.projects.length > 0 && (
+            <div
+              className="cursor-pointer"
+              onClick={() => handleProjectFieldClick("projects", data.projects)}
+            >
+              <div className="md:px-2 px-1 py-[2px]">
+                <h1 className="md:text-xl text-lg font-bold text-gray-800">
+                  Projects
+                </h1>
+              </div>
+
+              <ul className="md:px-5 px-0 ml-3 mt-3 text-black list-disc md:text-lg text-sm font-semibold">
+                {data.projects.map((item: any, i: number) => (
+                  <li className="mt-5 mb-5" key={i}>
+                    <h1 className="md:text-lg text-sm font-semibold">
+                      {item.name}
+                    </h1>
+                    <p className="md:text-sm text-xs font-medium">
+                      {item.description}
+                    </p>
+                    <div className="flex items-center md:gap-[100px] gap-[70px] mt-3 md:text-sm text-xs">
+                      <Link
+                        href={"#"}
+                        className="hover:underline hover:underline-offset-2 flex items-center gap-2"
+                      >
+                        <h1>GitHub</h1>
+                      </Link>
+
+                      <Link
+                        href={"#"}
+                        className="hover:underline hover:underline-offset-2 flex items-center gap-2"
+                      >
+                        <h1 className="flex items-center gap-1">live demo</h1>
+                      </Link>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            <ul className="md:px-5 px-0 ml-3 mt-3 text-black list-disc md:text-lg text-sm font-semibold">
-              {data.projects.map((item: any, i: number) => (
-                <li className="mt-5 mb-5" key={i}>
-                  <h1 className="md:text-lg text-sm font-semibold">
-                    {item.name}
-                  </h1>
-                  <p className="md:text-sm text-xs font-medium">
-                    {item.description}
-                  </p>
-                  <div className="flex items-center md:gap-[100px] gap-[70px] mt-3 md:text-sm text-xs">
-                    <Link
-                      href={"#"}
-                      className="hover:underline hover:underline-offset-2 flex items-center gap-2"
-                    >
-                      <h1>GitHub</h1>
-                    </Link>
-
-                    <Link
-                      href={"#"}
-                      className="hover:underline hover:underline-offset-2 flex items-center gap-2"
-                    >
-                      <h1 className="flex items-center gap-1">live demo</h1>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+          )}
 
           {/* Custom Section */}
           <div
@@ -269,134 +278,149 @@ const Template3 = ({
         {/* right-side */}
         <div className=" px-1 py-[3px]">
           {/* Education */}
-          <div
-            className="cursor-pointer"
-            onClick={() =>
-              handleEducationFieldClick("education", data.education)
-            }
-          >
-            <div className="md:px-2 px-1 py-[2px]">
-              <h1 className="text-sm font-bold text-black">Education</h1>
+
+          {data.education && data.education.length > 0 && (
+            <div
+              className="cursor-pointer"
+              onClick={() =>
+                handleEducationFieldClick("education", data.education)
+              }
+            >
+              <div className="md:px-2 px-1 py-[2px]">
+                <h1 className="text-sm font-bold text-black">Education</h1>
+              </div>
+              <div className="md:px-4 px-0 ml-5 mt-3 text-black flex flex-col gap-3">
+                {data.education.map((item: any, i: number) => (
+                  <div key={i} className=" items-center justify-between ">
+                    <ul className="list-disc md:text-sm text-xs">
+                      <li>{item.degree}</li>
+                    </ul>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="md:px-4 px-0 ml-5 mt-3 text-black flex flex-col gap-3">
-              {data.education.map((item: any, i: number) => (
-                <div key={i} className=" items-center justify-between ">
-                  <ul className="list-disc md:text-sm text-xs">
-                    <li>{item.degree}</li>
-                  </ul>
-                  {/* <p className="text-gray-500 md:text-sm text-[9px] text-right">
-                    ({item.startYear} - {item.endYear})
-                  </p> */}
-                </div>
-              ))}
-            </div>
-          </div>
+          )}
 
           {/* Divider */}
-          <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+          {data.skills && data.skills.length > 0 && (
+            <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+          )}
 
           {/* Skills */}
-          <div
-            className="cursor-pointer"
-            onClick={() => handleArrayFieldClick("skills", data.skills)}
-          >
-            <div className="md:px-2 px-1 py-[2px]">
-              <h1 className="text-[15px] font-bold text-black">Skills</h1>
+          {data.skills && data.skills.length > 0 && (
+            <div
+              className="cursor-pointer"
+              onClick={() => handleArrayFieldClick("skills", data.skills)}
+            >
+              <div className="md:px-2 px-1 py-[2px]">
+                <h1 className="text-[15px] font-bold text-black">Skills</h1>
+              </div>
+              <ul className="list-disc md:px-4 px-0 ml-5 mt-3 text-black flex flex-col gap-2 md:text-sm text-xs">
+                {data.skills.map((item: string, i: number) => (
+                  <li className="" key={i}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="list-disc md:px-4 px-0 ml-5 mt-3 text-black flex flex-col gap-2 md:text-sm text-xs">
-              {data.skills.map((item: string, i: number) => (
-                <li className="" key={i}>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
+          )}
 
           {/* Divider */}
-          <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+          {data.languages && data.languages.length > 0 && (
+            <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+          )}
 
           {/* Languages */}
-          <div
-            className="mt-8 mb-8 cursor-pointer"
-            onClick={() => handleArrayFieldClick("languages", data.languages)}
-          >
-            <h1
-              className={`text-[15px] font-bold  mb-2 text-left mt-5  text-gray-800`}
+          {data.languages && data.languages.length > 0 && (
+            <div
+              className="mt-8 mb-8 cursor-pointer"
+              onClick={() => handleArrayFieldClick("languages", data.languages)}
             >
-              Languages
-            </h1>
+              <h1
+                className={`text-[15px] font-bold  mb-2 text-left mt-5  text-gray-800`}
+              >
+                Languages
+              </h1>
 
-            <ul className="list-disc text-black px-5 flex flex-col gap-2 md:text-sm text-xs">
-              {data.languages.map((item: any, i: number) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-          </div>
+              <ul className="list-disc text-black px-5 flex flex-col gap-2 md:text-sm text-xs">
+                {data.languages.map((item: any, i: number) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Divider */}
-          <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+          {data.certifications && data.certifications.length > 0 && (
+            <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+          )}
 
           {/* Certifications */}
-          <div
-            className="mt-8 mb-8 cursor-pointer"
-            onClick={() =>
-              handleArrayFieldClick("certifications", data.certifications)
-            }
-          >
-            <h1
-              className={`text-[15px] font-bold mb-2 text-left mt-5 text-gray-800`}
+          {data.certifications && data.certifications.length > 0 && (
+            <div
+              className="mt-8 mb-8 cursor-pointer"
+              onClick={() =>
+                handleArrayFieldClick("certifications", data.certifications)
+              }
             >
-              Certifications
-            </h1>
+              <h1
+                className={`text-[15px] font-bold mb-2 text-left mt-5 text-gray-800`}
+              >
+                Certifications
+              </h1>
 
-            <ul className="list-disc text-black px-5 flex flex-col gap-2 md:text-sm text-xs">
-              {data.certifications.map((item: any, i: number) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-          </div>
+              <ul className="list-disc text-black px-5 flex flex-col gap-2 md:text-sm text-xs">
+                {data.certifications.map((item: any, i: number) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Custom Section */}
-          <div
-            className=""
-            onClick={() =>
-              handleCustomSectionClick("customSection", data.customSection)
-            }
-          >
-            {data.customSection && data.customSection.length > 0 ? (
-              <div className="">
-                {data.customSection && data.customSection.length < 1 ? (
-                  <></>
-                ) : (
-                  <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
-                )}
-                <div className="mt-8 mb-8 cursor-pointer">
-                  {data.customSection.map((item, idx) => (
-                    <div key={idx} className=" cursor-pointer">
-                      <h1
-                        className={`text-[15px] font-bold mb-2 text-left mt-5 text-gray-800`}
-                      >
-                        {item.title}
-                      </h1>
-                      <ul className="list-disc text-black px-5 flex flex-col gap-2 md:text-sm text-xs">
-                        {item.value.map((item: any, i: number) => (
-                          <li key={i} className="capitalize">
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
+
+          {data.customSection && data.customSection.length > 0 ? (
+            <div
+              className=""
+              onClick={() =>
+                handleCustomSectionClick("customSection", data.customSection)
+              }
+            >
+              {data.customSection && data.customSection.length < 1 ? (
+                <></>
+              ) : (
+                <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+              )}
+              <div className="mt-8 mb-8 cursor-pointer">
+                {data.customSection.map((item, idx) => (
+                  <div key={idx} className=" cursor-pointer">
+                    <h1
+                      className={`text-[15px] font-bold mb-2 text-left mt-5 text-gray-800 capitalize`}
+                    >
+                      {item.title}
+                    </h1>
+                    <ul className="list-disc text-black px-5 flex flex-col gap-2 md:text-sm text-xs">
+                      {item.value.map((item: any, i: number) => (
+                        <li key={i} className="capitalize">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
-            ) : (
-              <div>
-                <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
-                  Click here and add custom section
-                </h1>
-              </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div
+              onClick={() =>
+                handleCustomSectionClick("customSection", data.customSection)
+              }
+            >
+              <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                Click here and add custom section
+              </h1>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -31,6 +31,8 @@ interface Data {
     github?: string;
     live?: string;
   }[];
+  customSection: Array<{ title: string; value: string[] }>;
+  customSection2: Array<{ title: string; value: string[] }>;
 }
 
 interface Color {
@@ -46,13 +48,14 @@ const Template7 = ({
   handleExperienceFieldClick,
   handleProjectFieldClick,
   handleEducationFieldClick,
-  handlePhoneClickFeild,
-  handleEmailFieldClick,
   handlePersonalInformationClick,
+  handleCustomSectionClick,
+  handleCustomSection2Click,
   imageUrl,
   imageBgColor,
   selectedTheme, // Add selectedTheme prop here
   color,
+  isLegal,
 }: {
   data: Data;
   handleStringFeildClick: (fieldName: string, value: string) => void;
@@ -62,9 +65,18 @@ const Template7 = ({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  isLegal: boolean;
   handlePersonalInformationClick: (
     fieldName: string,
     data: Array<{ title: string; value: string }>
+  ) => void;
+  handleCustomSectionClick: (
+    fieldName: string,
+    data: Array<{ title: string; value: string[] }>
+  ) => void;
+  handleCustomSection2Click: (
+    fieldName: string,
+    data: Array<{ title: string; value: string[] }>
   ) => void;
   imageUrl?: string;
   imageBgColor?: string;
@@ -72,7 +84,11 @@ const Template7 = ({
   color: Color;
 }) => {
   return (
-    <div className="bg-myWhite grid grid-cols-[65%,35%] text-gray-700  max-w-[794px] mx-auto shadow-lg shadow-mySkyBlue">
+    <div
+      className={`bg-myWhite grid grid-cols-[65%,35%] text-gray-700  mx-auto shadow-lg shadow-mySkyBlue ${
+        isLegal ? "max-w-[794px]" : "max-w-[842px]"
+      }`}
+    >
       {/* Right-side */}
       <div className="py-3 md:px-5 px-2 flex flex-col gap-2">
         <h1
@@ -138,12 +154,12 @@ const Template7 = ({
         </div>
 
         {/* Divider */}
-        {data.experience.length > 0 && (
+        {data.experience && data.experience.length > 0 && (
           <div className="h-[1px] w-full bg-gray-700 mt-3"></div>
         )}
 
         {/* Experience */}
-        {data.experience.length > 0 && (
+        {data.experience && data.experience.length > 0 && (
           <div
             onClick={() =>
               handleExperienceFieldClick("experience", data.experience)
@@ -183,12 +199,12 @@ const Template7 = ({
         )}
 
         {/* Divider */}
-        {data.projects.length > 0 && (
+        {data.projects && data.projects.length > 0 && (
           <div className="h-[1px] w-full bg-gray-700 mt-5"></div>
         )}
 
         {/* Projects */}
-        {data.projects.length > 0 && (
+        {data.projects && data.projects.length > 0 && (
           <div
             onClick={() => handleProjectFieldClick("projects", data.projects)}
             className="cursor-pointer"
@@ -227,6 +243,51 @@ const Template7 = ({
             </ul>
           </div>
         )}
+
+        {/* Custom Section */}
+        {data.customSection2 && data.customSection2.length > 0 ? (
+          <div
+            className=""
+            onClick={() =>
+              handleCustomSection2Click("customSection2", data.customSection2)
+            }
+          >
+            {data.customSection2.map((item, idx) => (
+              <div className="" key={idx}>
+                {data.customSection.length < 1 ? (
+                  <></>
+                ) : (
+                  <div className="h-[1px] w-full bg-gray-700 mt-5"></div>
+                )}
+                <div className="mt-5 mb-5 cursor-pointer">
+                  <h1 className="md:text-xl text-sm text-left  font-bold text-gray-700 capitalize">
+                    {item.title}
+                  </h1>
+                  <ul className="mt-3 list-disc  md:text-[15px] text-xs flex flex-col justify-center gap-2">
+                    {item.value.map((item: any, i: number) => (
+                      <li
+                        key={i}
+                        className="ml-5 md:text-[15px] sm:text-[11px] text-[10px]"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            onClick={() =>
+              handleCustomSection2Click("customSection2", data.customSection2)
+            }
+          >
+            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+              Click here and add custom section
+            </h1>
+          </div>
+        )}
       </div>
 
       {/* left-side */}
@@ -250,14 +311,8 @@ const Template7 = ({
           />
         </div>
 
-        {/* Divider */}
-        {/* {data.education.length > 0 && (
-  <div className="h-[1px] w-full mt-2 bg-white"></div>
-
-)} */}
-
         {/* Education */}
-        {data.education.length > 0 && (
+        {data.education && data.education.length > 0 && (
           <div
             className="mt-8 mb-8 sm:ml-0 ml-1 cursor-pointer"
             onClick={() =>
@@ -277,12 +332,12 @@ const Template7 = ({
         )}
 
         {/* Divider */}
-        {data.skills.length > 0 && (
+        {data.skills && data.skills.length > 0 && (
           <div className="h-[1px] w-full bg-white mt-5"></div>
         )}
 
         {/* Skills */}
-        {data.skills.length > 0 && (
+        {data.skills && data.skills.length > 0 && (
           <div
             className="mt-8 mb-8 sm:ml-0 ml-1 cursor-pointer"
             onClick={() => handleArrayFieldClick("skills", data.skills)}
@@ -300,12 +355,12 @@ const Template7 = ({
         )}
 
         {/* Divider */}
-        {data.languages.length > 0 && (
+        {data.languages && data.languages.length > 0 && (
           <div className="h-[1px] w-full bg-white mt-5"></div>
         )}
 
         {/* languages */}
-        {data.languages.length > 0 && (
+        {data.languages && data.languages.length > 0 && (
           <div
             className="mt-8 mb-8 sm:ml-0 ml-1 cursor-pointer"
             onClick={() => handleArrayFieldClick("languages", data.languages)}
@@ -323,12 +378,12 @@ const Template7 = ({
         )}
 
         {/* Divider */}
-        {data.certifications.length > 0 && (
+        {data.certifications && data.certifications.length > 0 && (
           <div className="h-[1px] w-full bg-white mt-5"></div>
         )}
 
         {/* Certifications */}
-        {data.certifications.length > 0 && (
+        {data.certifications && data.certifications.length > 0 && (
           <div
             className="mt-8 mb-8 sm:ml-0 ml-1 cursor-pointer"
             onClick={() =>
@@ -346,6 +401,49 @@ const Template7 = ({
             </ul>
           </div>
         )}
+
+        {/* Custom Section */}
+
+        <div
+          className="mt-5"
+          onClick={() =>
+            handleCustomSectionClick("customSection", data.customSection)
+          }
+        >
+          {data.customSection && data.customSection.length > 0 ? (
+            <div className="">
+              {data.customSection.map((item, idx) => (
+                <div key={idx}>
+                  {data.customSection.length < 1 ? (
+                    <></>
+                  ) : (
+                    <div className="h-[1px] w-full bg-white mt-5"></div>
+                  )}
+                  <div key={idx} className="mt-5 mb-5 cursor-pointer">
+                    <h1
+                      className={`md:text-xl text-sm mb-2 text-left mt-5 text-white capitalize`}
+                    >
+                      {item.title}
+                    </h1>
+                    <ul className="list-disc text-white md:text-sm text-xs  px-5 flex flex-col gap-3">
+                      {item.value.map((item: any, i: number) => (
+                        <li key={i} className="capitalize">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div>
+              <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                Click here and add custom section
+              </h1>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

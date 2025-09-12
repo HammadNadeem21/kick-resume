@@ -1,52 +1,51 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
+
+// icons
 import { Briefcase, Sparkles } from "lucide-react";
+import { IoSend } from "react-icons/io5";
+
+// for motion library
 import { motion, AnimatePresence } from "framer-motion";
 
+// For PDf
 import { pdf } from "@react-pdf/renderer";
 import type { PageProps } from "@react-pdf/renderer";
 
-import Template1 from "@/components/Template1";
+// for imge uploader
 import { useDropzone } from "react-dropzone";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+
+// Templates
+import Template1 from "@/components/Templates/Template1";
+import Template2 from "@/components/Templates/Template2";
+import Template3 from "@/components/Templates/Template3";
+import Template4 from "@/components/Templates/Template4";
+import Template5 from "@/components/Templates/Template5";
+import Template6 from "@/components/Templates/Template6";
+import Template7 from "@/components/Templates/Template7";
+import Template8 from "@/components/Templates/Template8";
+import Template9 from "@/components/Templates/Template9";
+import Template10 from "@/components/Templates/Template10";
+
+// Templates PDF
 import Template1PDF from "@/components/pdf/Template1PDF";
 import Template2PDF from "@/components/pdf/Template2PDF";
 import Template3PDF from "@/components/pdf/Template3PDF";
-
-import { IoSend } from "react-icons/io5";
-import Template2 from "@/components/Template2";
-import Template3 from "@/components/Template3";
-import Template4 from "@/components/Template4";
 import Template4PDF from "@/components/pdf/Template4PDF";
-
-import { RgbColorPicker } from "react-colorful";
-
-import { TiTick } from "react-icons/ti";
-import Template5 from "@/components/Template5";
 import Template5PDF from "@/components/pdf/Template5PDF";
-
-import { Roboto } from "next/font/google";
-import Template6 from "@/components/Template6";
 import Template6PDF from "@/components/pdf/Template6PDF";
-import Template7 from "@/components/Template7";
 import Template7PDF from "@/components/pdf/Template7PDF";
-import Template8 from "@/components/Template8";
 import Template8PDF from "@/components/pdf/Template8PDF";
-import Template9 from "@/components/Template9";
 import Template9PDF from "@/components/pdf/Template9PDF";
-import Template10 from "@/components/Template10";
 import Template10PDF from "@/components/pdf/Template10PDF";
+
+// other components
+import { Button } from "@/components/ui/button";
+import { RgbColorPicker } from "react-colorful";
 import { CarouselSize } from "@/components/Carousel";
 import { DatePicker } from "@/components/DatePicker";
-// import user from "../../../models/user"; // Remove this line
-const robot700 = Roboto({
-  subsets: ["latin"],
-  weight: ["700"],
-  display: "swap",
-});
 
 const templateData = [
   { image: "/templates/template1.png", name: "Template 1", id: 1 },
@@ -70,6 +69,7 @@ import { SelectButton } from "@/components/SelectButton";
 import CustomSection from "@/components/CustomSection/CustomSection";
 
 const AiPromptPage = () => {
+  // Context State
   const {
     parsedData,
     setParsedData,
@@ -107,8 +107,8 @@ const AiPromptPage = () => {
     setColor10,
   } = useAiResumeBuilder();
 
+  // for editor
   const [showEditor, setShowEditor] = useState(false);
-
   const [editType, setEditType] = useState<
     | "string"
     | "array"
@@ -121,9 +121,7 @@ const AiPromptPage = () => {
     | "customSection"
     | "customSection2"
   >("string");
-  const [editField, setEditField] = useState<
-    "skills" | "languages" | "certifications" | null
-  >(null);
+
   const [inputData, setInputData] = useState<string | string[] | number>([]);
   const [newItem, setNewItem] = useState("");
   const [currentStringField, setCurrentStringField] = useState<string | null>(
@@ -212,58 +210,6 @@ const AiPromptPage = () => {
 
   const { data: session } = useSession();
   const user = session?.user;
-
-  const handleGenerate = async () => {
-    if (!userPrompt || !selectedTemplate) {
-      alert("Please write a prompt and select a template!");
-      return;
-    }
-
-    try {
-      setIsChatLoading(true);
-      const res = await fetch("/api/generate-resume", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prompt: userPrompt,
-          existingResume: parsedData || {}, // ✅ ye zaroor hona chahiye
-        }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        alert(err.error || "Something went wrong");
-        setIsChatLoading(false);
-        return;
-      }
-
-      const data = await res.json();
-
-      // Ensure certifications is always an array of strings
-      if (data.certifications && Array.isArray(data.certifications)) {
-        data.certifications = data.certifications.map((item: any) =>
-          typeof item === "string"
-            ? item
-            : [item.name, item.authority, item.date].filter(Boolean).join(" - ")
-        );
-      }
-
-      // ✅ Add both user and AI messages to chat
-      setPromptHistory((prev) => [
-        ...prev,
-        { type: "user", message: userPrompt },
-        { type: "ai", message: "✅ Resume created successfully!" },
-      ]);
-
-      setParsedData(data);
-      setShowTemplate(true);
-      setUserPrompt(""); // Clear field
-      setIsChatLoading(false);
-    } catch (error) {
-      setIsChatLoading(false);
-      console.log("Error", error);
-    }
-  };
 
   const onDrop = async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -512,6 +458,7 @@ const AiPromptPage = () => {
           handlePersonalInformationClick={handlePersonalInformationClick}
           handleCustomSectionClick={handleCustomFieldClick}
           handleCustomSection2Click={handleCustom2FieldClick}
+          isLegal={pageSize === "A4"}
           color={color1}
         />
       );
@@ -529,6 +476,7 @@ const AiPromptPage = () => {
           handlePersonalInformationClick={handlePersonalInformationClick}
           handleCustomSectionClick={handleCustomFieldClick}
           handleCustomSection2Click={handleCustom2FieldClick}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 3)
@@ -545,6 +493,7 @@ const AiPromptPage = () => {
           handlePersonalInformationClick={handlePersonalInformationClick}
           handleCustomSectionClick={handleCustomFieldClick}
           handleCustomSection2Click={handleCustom2FieldClick}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 4)
@@ -556,12 +505,15 @@ const AiPromptPage = () => {
           handleExperienceFieldClick={handleExperienceFieldClick}
           handleProjectFieldClick={handleProjectFieldClick}
           handleEducationFieldClick={handleEducationFieldClick}
-          handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
+          handlePhoneClickFeild={handlePhoneClickFeild}
+          handleCustomSectionClick={handleCustomFieldClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
           imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
           imageBgColor={selectedImageBgColor}
           color={color4}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 5)
@@ -573,9 +525,9 @@ const AiPromptPage = () => {
           handleExperienceFieldClick={handleExperienceFieldClick}
           handleProjectFieldClick={handleProjectFieldClick}
           handleEducationFieldClick={handleEducationFieldClick}
-          handlePhoneClickFeild={handlePhoneClickFeild}
-          handleEmailFieldClick={handleEmailClickFeild}
+          handleCustomSection2Click={handleCustom2FieldClick}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 6)
@@ -590,6 +542,9 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSectionClick={handleCustomFieldClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 7)
@@ -604,9 +559,12 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSectionClick={handleCustomFieldClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
           imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
           imageBgColor={selectedImageBgColor}
           color={color7}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 8)
@@ -621,6 +579,8 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 9)
@@ -635,8 +595,10 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
           imageUrl={selectedProcessedImage ?? previewUrl ?? "/dummy.jpg"}
           imageBgColor={selectedImageBgColor}
+          isLegal={pageSize === "A4"}
         />
       );
     if (selectedTemplate === 10)
@@ -651,7 +613,9 @@ const AiPromptPage = () => {
           handlePhoneClickFeild={handlePhoneClickFeild}
           handleEmailFieldClick={handleEmailClickFeild}
           handlePersonalInformationClick={handlePersonalInformationClick}
+          handleCustomSection2Click={handleCustom2FieldClick}
           color={color10}
+          isLegal={pageSize === "A4"}
         />
       );
 
@@ -805,7 +769,7 @@ const AiPromptPage = () => {
 
   const [pageSize, setPageSize] = useState<PageProps["size"]>("A4");
 
-  // console.log("Page size", pageSize);
+  console.log("Page size", pageSize);
 
   return (
     <div

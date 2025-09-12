@@ -31,6 +31,8 @@ interface Data {
     github?: string;
     live?: string;
   }[];
+  customSection: Array<{ title: string; value: string[] }>;
+  customSection2: Array<{ title: string; value: string[] }>;
 }
 
 interface Color {
@@ -49,10 +51,13 @@ const Template4 = ({
   handlePhoneClickFeild,
   handleEmailFieldClick,
   handlePersonalInformationClick,
+  handleCustomSectionClick,
+  handleCustomSection2Click,
   imageUrl,
   imageBgColor,
   selectedTheme, // Add selectedTheme prop here
   color,
+  isLegal,
 }: {
   data: Data;
   handleStringFeildClick: (fieldName: string, value: string) => void;
@@ -62,6 +67,7 @@ const Template4 = ({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  isLegal: boolean;
   handlePersonalInformationClick: (
     fieldName: string,
     data: Array<{ title: string; value: string }>
@@ -70,9 +76,21 @@ const Template4 = ({
   imageBgColor?: string;
   selectedTheme?: any; // Add selectedTheme prop type here
   color: Color;
+  handleCustomSectionClick: (
+    fieldName: string,
+    data: Array<{ title: string; value: string[] }>
+  ) => void;
+  handleCustomSection2Click: (
+    fieldName: string,
+    data: Array<{ title: string; value: string[] }>
+  ) => void;
 }) => {
   return (
-    <div className="bg-myWhite mx-auto shadow-lg shadow-mySkyBlue max-w-[794px]">
+    <div
+      className={`bg-myWhite mx-auto shadow-lg shadow-mySkyBlue ${
+        isLegal ? "max-w-[794px]" : "max-w-[842px]"
+      }`}
+    >
       <div
         className="grid grid-cols-[70%,30%] gap-3 w-[100%] px-5 py-5"
         style={{
@@ -94,34 +112,6 @@ const Template4 = ({
               {data.role}
             </h2>
           </div>
-
-          {/* <div className="w-[70%]">
-            <div className="flex justify-between">
-              <div
-                className="flex gap-2 items-center cursor-pointer text-white"
-                onClick={() => handleEmailFieldClick("email", data.email)}
-              >
-                <h1 className="font-bold">Email: </h1>
-                <p>{data.email}</p>
-              </div>
-
-              <div
-                className="flex gap-2 items-center cursor-pointer text-white"
-                onClick={() => handlePhoneClickFeild("phone", data.phone)}
-              >
-                <h1 className="font-bold">Phone: </h1>
-                <p>{`+${data.phone}`}</p>
-              </div>
-            </div>
-            <div
-              className="flex gap-2 items-center md:text-sm text-xs text-white cursor-pointer mt-1"
-              style={{ color: selectedTheme?.headerText }}
-              onClick={() => handleStringFeildClick("address", data.address)}
-            >
-              <h1 className="font-bold">Address: </h1>
-              <p>{data.address}</p>
-            </div>
-          </div> */}
 
           {/* personal information */}
           <div
@@ -235,40 +225,6 @@ const Template4 = ({
             </div>
           </div>
 
-          {/* Divider */}
-          {/* <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div> */}
-
-          {/* Experience */}
-          {/* <div className='cursor-pointer'
-                        onClick={() => handleExperienceFieldClick('experience', data.experience)}
-                    >
-                        <div className="md:px-2 px-1 py-[2px]">
-                            <h1 className="md:text-xl text-lg font-bold text-gray-800">Experience</h1>
-                        </div>
-
-                        <div className=" md:px-5 px-0 ml-3 mt-3 text-black">
-                            {data.experience.map((item: any, i: number) => (
-                                <div key={i} className="flex flex-col">
-                                    <ul className="list-disc md:text-sm text-xs flex items-center gap-5">
-                                        <li className='font-bold'>{item.companyName}</li>
-                                        <h1 className='md:text-xs text-[10px] font-semibold'>{item.title}</h1>
-                                    </ul>
-
-                                    <p className="md:text-sm text-xs font-medium">
-                                        {item.description}
-                                    </p>
-                                    <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
-                                        <span>{`(${item.startDate}`}</span>
-                                        <span>{`${item.endDate})`}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div> */}
-
-          {/* Divider */}
-          {/* <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div> */}
-
           {/* Project */}
           <div
             className="cursor-pointer mt-4"
@@ -326,6 +282,56 @@ const Template4 = ({
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Custom Section */}
+          <div
+            className={`cursor-pointer`}
+            onClick={() =>
+              handleCustomSection2Click("customSection2", data.customSection2)
+            }
+          >
+            {data.customSection2 && data.customSection2.length > 0 ? (
+              <div className="">
+                {/* {data.customSection2 && data.customSection2.length < 1 ? (
+                  <></>
+                ) : (
+                  <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+                )} */}
+                {data.customSection2.map((item, idx) => (
+                  <div key={idx} className="cursor-pointer mt-4">
+                    <div
+                      className="md:px-2 px-1 py-[2px] border-b-2 "
+                      style={{
+                        borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+                      }}
+                    >
+                      <h1
+                        className="md:text-xl text-lg font-bold capitalize"
+                        style={{
+                          color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+                        }}
+                      >
+                        {item.title}
+                      </h1>
+                    </div>
+                    <ul className="md:text-sm text-xs font-medium text-gray-800 list-disc flex flex-col justify-center gap-1 mt-3">
+                      {item.value.map((item: any, i: number) => (
+                        <li key={i} className="ml-8">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div>
+                <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                  Click here and add custom section
+                </h1>
+              </div>
+            )}
           </div>
         </div>
 
@@ -467,25 +473,8 @@ const Template4 = ({
             </div>
           </div>
 
-          {/* Divider */}
-          {/* <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div> */}
-
           {/* Certifications */}
-          {/* <div className="mt-8 mb-8 cursor-pointer"
-                        onClick={() => handleArrayFieldClick('certifications', data.certifications)}
-                    >
-                        <h1
-                            className={`text-[15px] font-bold mb-2 text-left mt-5 text-gray-800`}
-                        >
-                            Certifications
-                        </h1>
 
-                        <ul className="list-disc text-black px-5 flex flex-col gap-2 md:text-sm text-xs">
-                            {data.certifications.map((item: any, i: number) => (
-                                <li key={i}>{item}</li>
-                            ))}
-                        </ul>
-                    </div> */}
           <div
             className="mt-4 cursor-pointer"
             onClick={() =>
@@ -555,6 +544,56 @@ const Template4 = ({
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Custom Section */}
+          <div
+            className={`cursor-pointer`}
+            onClick={() =>
+              handleCustomSectionClick("customSection", data.customSection)
+            }
+          >
+            {data.customSection && data.customSection.length > 0 ? (
+              <div className="">
+                {/* {data.customSection2 && data.customSection2.length < 1 ? (
+                  <></>
+                ) : (
+                  <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+                )} */}
+                {data.customSection.map((item, idx) => (
+                  <div key={idx} className="cursor-pointer mt-4">
+                    <div
+                      className="md:px-2 px-1 py-[2px] border-b-2"
+                      style={{
+                        borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+                      }}
+                    >
+                      <h1
+                        className="md:text-xl text-lg font-bold capitalize"
+                        style={{
+                          color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+                        }}
+                      >
+                        {item.title}
+                      </h1>
+                    </div>
+                    <ul className="list-disc md:text-sm text-xs text-gray-800 flex flex-col justify-center gap-2 mt-3">
+                      {item.value.map((item: any, i: number) => (
+                        <li key={i} className="ml-10">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div>
+                <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                  Click here and add custom section
+                </h1>
+              </div>
+            )}
           </div>
         </div>
       </div>

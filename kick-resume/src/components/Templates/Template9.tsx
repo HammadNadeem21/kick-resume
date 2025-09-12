@@ -1,3 +1,4 @@
+import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -30,6 +31,7 @@ interface Data {
     github?: string;
     live?: string;
   }[];
+  customSection2: Array<{ title: string; value: string[] }>;
 }
 
 interface Color {
@@ -50,6 +52,8 @@ const Template9 = ({
   imageUrl,
   imageBgColor,
   handlePersonalInformationClick,
+  handleCustomSection2Click,
+  isLegal,
 }: {
   data: Data;
   handleStringFeildClick: (fieldName: string, value: string) => void;
@@ -59,16 +63,25 @@ const Template9 = ({
   handleEducationFieldClick: (fieldName: string, data: any[]) => void;
   handlePhoneClickFeild: (feildName: string, data: number) => void;
   handleEmailFieldClick: (fieldName: string, data: string) => void;
+  isLegal: boolean;
   handlePersonalInformationClick: (
     fieldName: string,
     data: Array<{ title: string; value: string }>
+  ) => void;
+  handleCustomSection2Click: (
+    fieldName: string,
+    data: Array<{ title: string; value: string[] }>
   ) => void;
   imageUrl?: string;
   imageBgColor?: string;
   selectedTheme?: any; // Add selectedTheme prop type here
 }) => {
   return (
-    <div className="bg-myWhite max-w-[794px] mx-auto shadow-lg shadow-mySkyBlue px-[60px]">
+    <div
+      className={`bg-myWhite mx-auto shadow-lg shadow-mySkyBlue px-[60px] pb-7 ${
+        isLegal ? "max-w-[794px]" : "max-w-[842px]"
+      }`}
+    >
       <div
         className="grid grid-cols-[30%,70%] gap-3 w-[100%]  py-5"
         //  style={{ backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}
@@ -102,27 +115,6 @@ const Template9 = ({
               {data.role}
             </h2>
           </div>
-
-          {/* <div className="grid grid-cols-3 mt-2 text-xs text-black">
-            <div
-              className="border-r-2 border-[#004aad] h-10 flex items-center justify-center cursor-pointer"
-              onClick={() => handleEmailFieldClick("email", data.email)}
-            >
-              {data.email !== "" ? data.email : "Email"}
-            </div>
-            <div
-              className="border-r-2 border-[#004aad] h-10 flex items-center justify-center cursor-pointer"
-              onClick={() => handlePhoneClickFeild("phone", data.phone)}
-            >
-              {data.phone && data.phone !== 0 ? `+${data.phone}` : "Phone"}
-            </div>
-            <div
-              className=" h-10 flex items-center justify-center text-center   cursor-pointer"
-              onClick={() => handleStringFeildClick("address", data.address)}
-            >
-              {data.address !== "" ? data.address : "Address"}
-            </div>
-          </div> */}
 
           {/* personal information */}
           <div
@@ -177,7 +169,7 @@ const Template9 = ({
       </p>
 
       {/* Education */}
-      {data.education.length > 0 && (
+      {data.education && data.education.length > 0 && (
         <div>
           <div className=" grid grid-cols-[auto,1fr] gap-10 mt-6">
             <div className="text-[#004aad] text-lg font-bold uppercase">
@@ -209,7 +201,7 @@ const Template9 = ({
       )}
 
       {/* Experience */}
-      {data.experience.length > 0 && (
+      {data.experience && data.experience.length > 0 && (
         <div>
           <div className=" grid grid-cols-[auto,1fr] gap-10 mt-6">
             <div className="text-[#004aad] text-lg font-bold uppercase">
@@ -233,8 +225,13 @@ const Template9 = ({
                     <li className="">{`${item.title} | ${item.companyName}`}</li>
 
                     <div className="flex justify-start items-center gap-4 md:text-[10px] text-[7px]">
-                      <span>{`(${item.startDate}`}</span>
-                      <span>{`${item.endDate})`}</span>
+                      <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${
+                        item.endDate === "Currently working"
+                          ? "Currently working"
+                          : moment(item.endDate).isValid()
+                          ? moment(item.endDate).format("MMM YYYY")
+                          : ""
+                      })`}</span>
                     </div>
                   </ul>
                   {/* <h1 className='md:text-xs text-[10px] font-bold text-gray-500'>{item.companyName}</h1>s */}
@@ -250,10 +247,11 @@ const Template9 = ({
       )}
 
       {/* Skills & Certification */}
+
       <div className="grid grid-cols-2 gap-5">
         {/* Tech Stack */}
 
-        {data.skills.length > 0 && (
+        {data.skills && data.skills.length > 0 && (
           <div className="">
             <div className=" grid grid-cols-[auto,1fr] gap-5 mt-6">
               <div className="text-[#004aad] text-lg font-bold uppercase">
@@ -278,7 +276,7 @@ const Template9 = ({
         )}
 
         {/* certifications */}
-        {data.certifications.length > 0 && (
+        {data.certifications && data.certifications.length > 0 && (
           <div
             className=" cursor-pointer"
             onClick={() =>
@@ -311,7 +309,7 @@ const Template9 = ({
       </div>
 
       {/* Project */}
-      {data.projects.length > 0 && (
+      {data.projects && data.projects.length > 0 && (
         <div>
           <div className=" grid grid-cols-[auto,1fr] gap-10 mt-6">
             <div className="text-[#004aad] text-lg font-bold uppercase">
@@ -353,6 +351,53 @@ const Template9 = ({
               ))}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Custom Section */}
+      {data.customSection2 && data.customSection2.length > 0 ? (
+        <div
+          className={`cursor-pointer`}
+          onClick={() =>
+            handleCustomSection2Click("customSection2", data.customSection2)
+          }
+        >
+          {data.customSection2.map((item, idx) => (
+            <div key={idx} className="cursor-pointe mt-4">
+              {/* {data.customSection2 && data.customSection2.length < 1 ? (
+                <></>
+              ) : (
+                <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
+              )} */}
+
+              <div className=" grid grid-cols-[auto,1fr] gap-10 mt-6">
+                <div className="text-[#004aad] text-lg font-bold uppercase">
+                  {item.title}
+                </div>
+                <div className=" flex flex-col justify-center">
+                  <div className="h-[2px] bg-[#004aad]"></div>
+                </div>
+              </div>
+              <ul className="list-disc md:text-sm text-xs flex flex-col justify-center gap-2 md:px-0 px-0 ml-1 mt-3 text-black">
+                {item.value.map((item: any, i: number) => (
+                  <li key={i} className="">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div
+          className="mt-5"
+          onClick={() =>
+            handleCustomSection2Click("customSection2", data.customSection2)
+          }
+        >
+          <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+            Click here and add custom section
+          </h1>
         </div>
       )}
     </div>
