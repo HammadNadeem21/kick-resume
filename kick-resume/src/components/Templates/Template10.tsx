@@ -74,9 +74,8 @@ const Template10 = ({
 }) => {
   return (
     <div
-      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7  mx-auto ${
-        isLegal ? "max-w-[794px]" : "max-w-[842px]"
-      }`}
+      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7  mx-auto ${isLegal ? "max-w-[794px]" : "max-w-[842px]"
+        }`}
     >
       <div className="flex flex-col gap-2 items-start justify-center w-full">
         <div className="text-center w-full">
@@ -94,31 +93,7 @@ const Template10 = ({
           </h2>
         </div>
 
-        {/* <div className="flex items-center justify-between text-black md:text-sm text-xs w-full">
-          <div
-            className="flex gap-2 md:items-center items-start cursor-pointer"
-            onClick={() => handlePhoneClickFeild("phone", data.phone)}
-          >
-            <h1 className="font-bold">Phone: </h1>
-            <p>{`+${data.phone}`}</p>
-          </div>
 
-          <div
-            className="flex gap-2 items-center cursor-pointer"
-            onClick={() => handleEmailFieldClick("email", data.email)}
-          >
-            <h1 className="font-bold">Email: </h1>
-            <p>{data.email}</p>
-          </div>
-
-          <div
-            className="flex gap-2 items-center text-black md:text-sm text-xs cursor-pointer"
-            onClick={() => handleStringFeildClick("address", data.address)}
-          >
-            <h1 className="font-bold">Location: </h1>
-            <p>{data.address}</p>
-          </div>
-        </div> */}
 
         {/* personal information */}
         <div
@@ -204,23 +179,24 @@ md:text-sm
       )}
 
       {/* Experience */}
-      {data.experience && data.experience.length > 0 && (
-        <div
-          className="cursor-pointer mt-4"
-          onClick={() =>
-            handleExperienceFieldClick("experience", data.experience)
-          }
-        >
-          <h1
-            className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
-            style={{
-              backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`,
-              color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
-            }}
-          >
-            Experience
-          </h1>
 
+      <div
+        className="cursor-pointer mt-4"
+        onClick={() =>
+          handleExperienceFieldClick("experience", data.experience)
+        }
+      >
+        <h1
+          className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
+          style={{
+            backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`,
+            color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+          }}
+        >
+          Experience
+        </h1>
+
+        {data.experience && data.experience.length > 0 ? (
           <div className=" md:px-5 px-0  mt-3 text-black grid grid-cols-2 gap-6">
             {data.experience.map((item: any, i: number) => (
               <div key={i} className="flex flex-col mt-3">
@@ -231,13 +207,12 @@ md:text-sm
                   </div>
 
                   <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
-                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${
-                      item.endDate === "Currently working"
-                        ? "Currently working"
-                        : moment(item.endDate).isValid()
+                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${item.endDate === "Currently working"
+                      ? "Currently working"
+                      : moment(item.endDate).isValid()
                         ? moment(item.endDate).format("MMM YYYY")
                         : ""
-                    })`}</span>
+                      })`}</span>
                   </div>
                 </div>
 
@@ -245,8 +220,20 @@ md:text-sm
               </div>
             ))}
           </div>
-        </div>
-      )}
+        ) : (<div
+          className="mb-5 mt-5"
+          onClick={() =>
+            handleExperienceFieldClick("experience", data.experience)
+          }
+        >
+          <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+            Click here to add experience
+          </h1>
+        </div>)}
+
+
+      </div>
+
 
       {/* Education */}
       {data.education && data.education.length > 0 && (
@@ -332,21 +319,22 @@ md:text-sm
       )}
 
       {/* Project */}
-      {data.projects && data.projects.length > 0 && (
-        <div
-          className="cursor-pointer mt-4"
-          onClick={() => handleProjectFieldClick("projects", data.projects)}
-        >
-          <h1
-            className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
-            style={{
-              backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`,
-              color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
-            }}
-          >
-            projects
-          </h1>
 
+      <div
+        className="cursor-pointer mt-4"
+        onClick={() => handleProjectFieldClick("projects", data.projects)}
+      >
+        <h1
+          className=" py-[2px] rounded-full px-3 italic md:text-xl text-lg text-left font-bold  uppercase"
+          style={{
+            backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`,
+            color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+          }}
+        >
+          projects
+        </h1>
+
+        {data.projects && data.projects.length > 0 ? (
           <ul className="md:px-5 px-0 ml-3 mt-3 text-black list-disc md:text-lg text-sm">
             {data.projects.map((item: any, i: number) => (
               <li className="mt-5 mb-5" key={i}>
@@ -374,8 +362,18 @@ md:text-sm
               </li>
             ))}
           </ul>
-        </div>
-      )}
+        ) : (
+          <div className="mb-5 mt-5"
+            onClick={() => handleProjectFieldClick("projects", data.projects)}
+          >
+            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects
+
+            </h1>
+          </div>
+        )}
+
+      </div>
+
 
       {/* Custom Section */}
       {data.customSection2 && data.customSection2.length > 0 ? (

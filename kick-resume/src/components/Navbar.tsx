@@ -68,22 +68,7 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLUListElement | null>(null);
   const pathname = usePathname();
-  // Outside click listener
-  // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     if (
-  //       dropdownRef.current &&
-  //       !dropdownRef.current.contains(event.target as Node)
-  //     ) {
-  //       setShowDropdown(false);
-  //     }
-  //   };
 
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
 
   useEffect(() => {
     setShowDropdown(false);
@@ -104,31 +89,23 @@ const Navbar = () => {
 
           {/* Navbar */}
           <nav className="lg:flex  hidden relative ">
-            {/* <NavigationMenuDemo /> */}
-            {/* <div className="flex items-center justify-center gap-8"> */}
+
             <ul className="flex items-center justify-center gap-5  font-semibold ">
-              {/* <li
-                className="text-[15px] flex items-center justify-center gap-1 text-gray-600 hover:bg-mySkyBlue py-1 px-3 cursor-pointer rounded-xl"
-                onClick={() => setShowDropdown((prev) => !prev)}
-              >
-                Features
-                <RiArrowDropDownLine size={20} />
-              </li> */}
+
               <DropdownMenuRadioGroupDemo />
 
               <li>
                 <Link
                   href="/pricing"
-                  className={`text-[15px] text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
-                    pathname === "/pricing" ? "bg-mySkyBlue" : ""
-                  }`}
+                  className={`text-[15px] text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${pathname === "/pricing" ? "bg-mySkyBlue" : ""
+                    }`}
                 >
                   Pricing
                 </Link>
               </li>
             </ul>
 
-            {showDropdown && (
+            {/* {showDropdown && (
               <ul className="absolute transition-all duration-500 top-[40px] bg-mySkyBlue rounded-lg py-1 px-2 text-[15px] text-gray-600 flex flex-col justify-center gap-2">
                 <li className="hover:bg-gray-200/50 rounded-lg py-1 px-2">
                   <Link href="/ai-resume-analyzer">Ai Resume Analyzer</Link>
@@ -143,8 +120,11 @@ const Navbar = () => {
                 <li className="hover:bg-gray-200/50 rounded-lg py-1 px-2">
                   <Link href="/resume-job-analysis">Resume vs Job</Link>
                 </li>
+                <li className="hover:bg-gray-200/50 rounded-lg py-1 px-2">
+                  <Link href="/resume-job-analysis">Resume vs Job</Link>
+                </li>
               </ul>
-            )}
+            )} */}
 
             {/* <Link
               href="/job-matcher"

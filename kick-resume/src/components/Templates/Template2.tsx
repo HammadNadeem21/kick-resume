@@ -347,18 +347,24 @@ const Template2 = ({
           </div>
           <div className="flex flex-col ">
             {/* Experience */}
-            {data.experience && data.experience.length > 0 && (
-              <div
-                onClick={() =>
-                  handleExperienceFieldClick("experience", data.experience)
-                }
-                className="md:px-1 px-2 py-3 border-b border-b-gray-400 cursor-pointer"
-              >
-                <h1 className="md:text-xl ml-2 text-sm font-bold text-gray-700">
-                  Work Experience
-                </h1>
 
-                <div className=" md:px-4 px-0 mt-3 text-gray-700">
+            <div
+              onClick={() =>
+                handleExperienceFieldClick("experience", data.experience)
+              }
+              className="md:px-1 px-2 py-3 border-b border-b-gray-400 cursor-pointer"
+            >
+              <h1 className="md:text-xl ml-2 text-sm font-bold text-gray-700">
+                Work Experience
+              </h1>
+
+              {data.experience && data.experience.length > 0 ? (
+                <div
+                  className=" md:px-4 px-0 mt-3 text-gray-700"
+                  onClick={() =>
+                    handleExperienceFieldClick("experience", data.experience)
+                  }
+                >
                   {data.experience.map((item: any, i: number) => (
                     <div className="mt-2 mb-2" key={i}>
                       <div className="flex flex-col items-start gap-1">
@@ -385,26 +391,41 @@ const Template2 = ({
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div
+                  className="mb-5 mt-5"
+                  onClick={() =>
+                    handleExperienceFieldClick("experience", data.experience)
+                  }
+                >
+                  <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                    Click here to add experience
+                  </h1>
+                </div>
+              )}
+            </div>
 
             {/* Projects */}
-            {data.projects && data.projects.length > 0 && (
-              <div
-                className={`md:px-1 px-2 py-3 cursor-pointer ${
-                  data.customSection2 && data.customSection2.length > 0
-                    ? "border-b border-b-gray-400"
-                    : "border-none"
-                }`}
-                onClick={() =>
-                  handleProjectFieldClick("projects", data.projects)
-                }
-              >
-                <h1 className="md:text-xl ml-2 text-sm font-bold text-gray-700">
-                  Projects
-                </h1>
 
-                <ul className="md:px-4 px-0 mt-3 md:text-sm text-xs text-gray-700">
+            <div
+              className={`md:px-1 px-2 py-3 cursor-pointer ${
+                data.customSection2 && data.customSection2.length > 0
+                  ? "border-b border-b-gray-400"
+                  : "border-none"
+              }`}
+              onClick={() => handleProjectFieldClick("projects", data.projects)}
+            >
+              <h1 className="md:text-xl ml-2 text-sm font-bold text-gray-700">
+                Projects
+              </h1>
+
+              {data.projects && data.projects.length > 0 ? (
+                <ul
+                  className="md:px-4 px-0 mt-3 md:text-sm text-xs text-gray-700"
+                  onClick={() =>
+                    handleProjectFieldClick("projects", data.projects)
+                  }
+                >
                   {data.projects.map((item: any, i: number) => (
                     <li className="mt-5 mb-5" key={i}>
                       <h1 className="md:text-lg text-sm font-semibold">
@@ -433,8 +454,19 @@ const Template2 = ({
                     </li>
                   ))}
                 </ul>
-              </div>
-            )}
+              ) : (
+                <div
+                  className="mb-5 mt-5"
+                  onClick={() =>
+                    handleProjectFieldClick("projects", data.projects)
+                  }
+                >
+                  <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                    Click here to add projects
+                  </h1>
+                </div>
+              )}
+            </div>
 
             {/* Custom Section */}
             <div

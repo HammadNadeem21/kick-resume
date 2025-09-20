@@ -156,46 +156,62 @@ const Template3 = ({
               </h1>
             </div>
 
-            <div className=" md:px-5 px-0 ml-3 mt-3 text-black">
-              {data.experience.map((item: any, i: number) => (
-                <div key={i} className="flex flex-col">
-                  <ul className="list-disc md:text-sm text-xs flex items-center gap-5">
-                    <li className="font-bold">{item.companyName}</li>
-                    <h1 className="md:text-xs text-[10px] font-semibold">
-                      {item.title}
-                    </h1>
-                  </ul>
+{data.experience && data.experience.length > 0 ? (
+   <div className=" md:px-5 px-0 ml-3 mt-3 text-black"
+   onClick={() =>
+    handleExperienceFieldClick("experience", data.experience)
+  }
+   >
+   {data.experience.map((item: any, i: number) => (
+     <div key={i} className="flex flex-col">
+       <ul className="list-disc md:text-sm text-xs flex items-center gap-5">
+         <li className="font-bold">{item.companyName}</li>
+         <h1 className="md:text-xs text-[10px] font-semibold">
+           {item.title}
+         </h1>
+       </ul>
 
-                  <p className="md:text-sm text-xs font-medium">
-                    {item.description}
-                  </p>
-                  <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
-                    <span>
-                      {`( ${moment(item.startDate).format("MMM YYYY")} - 
-                    
-                    ${
-                      item.endDate === "Currently working"
-                        ? "Currently working"
-                        : moment(item.endDate).isValid()
-                        ? moment(item.endDate).format("MMM YYYY")
-                        : ""
-                    }
-                      )
-                    `}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
+       <p className="md:text-sm text-xs font-medium">
+         {item.description}
+       </p>
+       <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
+         <span>
+           {`( ${moment(item.startDate).format("MMM YYYY")} - 
+         
+         ${
+           item.endDate === "Currently working"
+             ? "Currently working"
+             : moment(item.endDate).isValid()
+             ? moment(item.endDate).format("MMM YYYY")
+             : ""
+         }
+           )
+         `}
+         </span>
+       </div>
+     </div>
+   ))}
+ </div>
+):(
+  <div 
+  className="mb-5 mt-5"
+  onClick={() =>
+    handleExperienceFieldClick("experience", data.experience)
+  }
+  >
+    <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add experience</h1>
+  </div>
+)}
+           
           </div>
 
           {/* Divider */}
-          {data.projects && data.projects.length > 0 && (
+          
             <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
-          )}
+         
 
           {/* Project */}
-          {data.projects && data.projects.length > 0 && (
+          
             <div
               className="cursor-pointer"
               onClick={() => handleProjectFieldClick("projects", data.projects)}
@@ -206,7 +222,10 @@ const Template3 = ({
                 </h1>
               </div>
 
-              <ul className="md:px-5 px-0 ml-3 mt-3 text-black list-disc md:text-lg text-sm font-semibold">
+{data.projects && data.projects.length > 0 ? (
+  <ul className="md:px-5 px-0 ml-3 mt-3 text-black list-disc md:text-lg text-sm font-semibold"
+  onClick={() => handleProjectFieldClick("projects", data.projects)}
+  >
                 {data.projects.map((item: any, i: number) => (
                   <li className="mt-5 mb-5" key={i}>
                     <h1 className="md:text-lg text-sm font-semibold">
@@ -233,8 +252,16 @@ const Template3 = ({
                   </li>
                 ))}
               </ul>
+):(
+  <div className="mb-5 mt-5"
+  onClick={() => handleProjectFieldClick("projects", data.projects)}
+  >
+    <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects</h1>
+  </div>
+)}
+              
             </div>
-          )}
+        
 
           {/* Custom Section */}
           <div

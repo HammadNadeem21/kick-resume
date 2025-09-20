@@ -87,9 +87,8 @@ const Template4 = ({
 }) => {
   return (
     <div
-      className={`bg-myWhite mx-auto shadow-lg shadow-mySkyBlue ${
-        isLegal ? "max-w-[794px]" : "max-w-[842px]"
-      }`}
+      className={`bg-myWhite mx-auto shadow-lg shadow-mySkyBlue ${isLegal ? "max-w-[794px]" : "max-w-[842px]"
+        }`}
     >
       <div
         className="grid grid-cols-[70%,30%] gap-3 w-[100%] px-5 py-5"
@@ -146,9 +145,8 @@ const Template4 = ({
         </div>
 
         <div
-          className={`flex justify-end items-center h-[150px] w-[150px] mt-4 rounded-full overflow-hidden ${
-            imageBgColor || "bg-gray-300"
-          }`}
+          className={`flex justify-end items-center h-[150px] w-[150px] mt-4 rounded-full overflow-hidden ${imageBgColor || "bg-gray-300"
+            }`}
         >
           <Image
             src={imageUrl ?? "/dummy.jpg"}
@@ -187,42 +185,53 @@ const Template4 = ({
               </h1>
             </div>
 
-            <div className=" md:px-5 px-0 ml-3 mt-3 text-black">
-              {data.experience.map((item: any, i: number) => (
-                <div key={i} className="flex flex-col mt-3">
-                  <div className="flex flex-col gap-[2px]">
-                    <ul className="list-disc md:text-sm text-xs flex items-center gap-5">
-                      <li
-                        className="font-bold"
-                        style={{
-                          color: `rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`,
-                        }}
-                      >
-                        {item.title}
-                      </li>
-                    </ul>
-                    <h1 className="md:text-xs text-[10px] font-bold text-gray-500">
-                      {item.companyName}
-                    </h1>
+            {data.experience && data.experience.length > 0 ? (
+              <div className=" md:px-5 px-0 ml-3 mt-3 text-black">
+                {data.experience.map((item: any, i: number) => (
+                  <div key={i} className="flex flex-col mt-3">
+                    <div className="flex flex-col gap-[2px]">
+                      <ul className="list-disc md:text-sm text-xs flex items-center gap-5">
+                        <li
+                          className="font-bold"
+                          style={{
+                            color: `rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`,
+                          }}
+                        >
+                          {item.title}
+                        </li>
+                      </ul>
+                      <h1 className="md:text-xs text-[10px] font-bold text-gray-500">
+                        {item.companyName}
+                      </h1>
 
-                    <div className="flex justify-start items-center gap-4 md:text-[10px] text-[7px]">
-                      <span>{`( ${moment(item.startDate).format(
-                        "MMM YYYY"
-                      )} - ${
-                        item.endDate === "Currently working"
-                          ? "Currently working"
-                          : moment(item.endDate).isValid()
-                          ? moment(item.endDate).format("MMM YYYY")
-                          : ""
-                      } )`}</span>
+                      <div className="flex justify-start items-center gap-4 md:text-[10px] text-[7px]">
+                        <span>{`( ${moment(item.startDate).format(
+                          "MMM YYYY"
+                        )} - ${item.endDate === "Currently working"
+                            ? "Currently working"
+                            : moment(item.endDate).isValid()
+                              ? moment(item.endDate).format("MMM YYYY")
+                              : ""
+                          } )`}</span>
+                      </div>
+                      <p className="md:text-xs text-[10px] text-gray-800">
+                        {item.description}
+                      </p>
                     </div>
-                    <p className="md:text-xs text-[10px] text-gray-800">
-                      {item.description}
-                    </p>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div
+                className="mb-5 mt-5"
+                onClick={() =>
+                  handleExperienceFieldClick("experience", data.experience)
+                }
+              >
+                <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add experience</h1>
+              </div>
+            )}
+
           </div>
 
           {/* Project */}
@@ -244,44 +253,54 @@ const Template4 = ({
               </h1>
             </div>
 
-            <ul className="md:px-5 px-0 ml-3 mt-2 list-disc md:text-lg text-sm font-semibold">
-              {data.projects.map((item: any, i: number) => (
-                <li
-                  className="mt-5 mb-5"
-                  key={i}
-                  style={{
-                    color: `rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`,
-                  }}
-                >
-                  <h1
-                    className=" md:text-sm text-xs font-bold"
+            {data.projects && data.projects.length > 0 ? (
+              <ul className="md:px-5 px-0 ml-3 mt-2 list-disc md:text-lg text-sm font-semibold">
+                {data.projects.map((item: any, i: number) => (
+                  <li
+                    className="mt-5 mb-5"
+                    key={i}
                     style={{
                       color: `rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`,
                     }}
                   >
-                    {item.name}
-                  </h1>
-                  <p className="md:text-xs text-[10px] font-medium text-gray-800">
-                    {item.description}
-                  </p>
-                  <div className="flex items-center md:gap-[100px] gap-[70px] mt-1 text-gray-800 md:text-sm text-xs">
-                    <Link
-                      href={"#"}
-                      className="hover:underline hover:underline-offset-2 flex items-center gap-2"
+                    <h1
+                      className=" md:text-sm text-xs font-bold"
+                      style={{
+                        color: `rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`,
+                      }}
                     >
-                      <h1>GitHub</h1>
-                    </Link>
+                      {item.name}
+                    </h1>
+                    <p className="md:text-xs text-[10px] font-medium text-gray-800">
+                      {item.description}
+                    </p>
+                    <div className="flex items-center md:gap-[100px] gap-[70px] mt-1 text-gray-800 md:text-sm text-xs">
+                      <Link
+                        href={"#"}
+                        className="hover:underline hover:underline-offset-2 flex items-center gap-2"
+                      >
+                        <h1>GitHub</h1>
+                      </Link>
 
-                    <Link
-                      href={"#"}
-                      className="hover:underline hover:underline-offset-2 flex items-center gap-2"
-                    >
-                      <h1 className="flex items-center gap-1">live demo</h1>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                      <Link
+                        href={"#"}
+                        className="hover:underline hover:underline-offset-2 flex items-center gap-2"
+                      >
+                        <h1 className="flex items-center gap-1">live demo</h1>
+                      </Link>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="mb-5 mt-5"
+                onClick={() => handleProjectFieldClick("projects", data.projects)}
+              >
+                <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects</h1>
+              </div>
+            )}
+
+
           </div>
 
           {/* Custom Section */}

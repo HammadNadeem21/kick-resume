@@ -66,9 +66,8 @@ const Template8 = ({
 }) => {
   return (
     <div
-      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7 mx-auto ${
-        isLegal ? "max-w-[794px]" : "max-w-[842px]"
-      }`}
+      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7 mx-auto ${isLegal ? "max-w-[794px]" : "max-w-[842px]"
+        }`}
     >
       <div className="flex flex-col gap-2 items-start justify-center w-full">
         <div className="text-center">
@@ -131,17 +130,18 @@ const Template8 = ({
       </div>
 
       {/* Experience */}
-      {data.experience && data.experience.length > 0 && (
-        <div
-          className="cursor-pointer mt-4"
-          onClick={() =>
-            handleExperienceFieldClick("experience", data.experience)
-          }
-        >
-          <h1 className="md:text-xl text-lg font-bold text-black uppercase text-left">
-            Experience
-          </h1>
 
+      <div
+        className="cursor-pointer mt-4"
+        onClick={() =>
+          handleExperienceFieldClick("experience", data.experience)
+        }
+      >
+        <h1 className="md:text-xl text-lg font-bold text-black uppercase text-left">
+          Experience
+        </h1>
+
+        {data.experience && data.experience.length > 0 ? (
           <div className=" md:px-5 px-0  mt-3 text-black">
             {data.experience.map((item: any, i: number) => (
               <div key={i} className="flex flex-col mt-3">
@@ -152,13 +152,12 @@ const Template8 = ({
                   </div>
 
                   <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
-                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${
-                      item.endDate === "Currently working"
-                        ? "Currently working"
-                        : moment(item.endDate).isValid()
+                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${item.endDate === "Currently working"
+                      ? "Currently working"
+                      : moment(item.endDate).isValid()
                         ? moment(item.endDate).format("MMM YYYY")
                         : ""
-                    })`}</span>
+                      })`}</span>
                   </div>
                 </div>
 
@@ -166,8 +165,21 @@ const Template8 = ({
               </div>
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <div
+            className="mb-5 mt-5"
+            onClick={() =>
+              handleExperienceFieldClick("experience", data.experience)
+            }
+          >
+            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+              Click here to add experience
+            </h1>
+          </div>
+        )}
+
+      </div>
+
 
       {/* Education */}
       {data.education && data.education.length > 0 && (
@@ -252,15 +264,16 @@ const Template8 = ({
       )}
 
       {/* Project */}
-      {data.projects && data.projects.length > 0 && (
-        <div
-          className="cursor-pointer mt-4"
-          onClick={() => handleProjectFieldClick("projects", data.projects)}
-        >
-          <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
-            Projects
-          </h1>
 
+      <div
+        className="cursor-pointer mt-4"
+        onClick={() => handleProjectFieldClick("projects", data.projects)}
+      >
+        <h1 className="md:text-xl text-lg text-left font-bold text-black uppercase">
+          Projects
+        </h1>
+
+        {data.projects && data.projects.length > 0 ? (
           <ul className="md:px-5 px-0 ml-3 mt-3 text-black list-disc md:text-lg text-sm">
             {data.projects.map((item: any, i: number) => (
               <li className="mt-5 mb-5" key={i}>
@@ -288,51 +301,66 @@ const Template8 = ({
               </li>
             ))}
           </ul>
-        </div>
-      )}
+
+        ) : (
+          <div
+            onClick={() => handleProjectFieldClick("projects", data.projects)}
+          >
+            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects
+
+            </h1>
+          </div>
+
+        )}
+
+
+      </div>
+
 
       {/* Custom Section */}
-      {data.customSection2 && data.customSection2.length > 0 ? (
-        <div
-          className={`cursor-pointer`}
-          onClick={() =>
-            handleCustomSection2Click("customSection2", data.customSection2)
-          }
-        >
-          {data.customSection2.map((item, idx) => (
-            <div key={idx} className="cursor-pointe mt-4 ">
-              {/* {data.customSection2 && data.customSection2.length < 1 ? (
+      {
+        data.customSection2 && data.customSection2.length > 0 ? (
+          <div
+            className={`cursor-pointer`}
+            onClick={() =>
+              handleCustomSection2Click("customSection2", data.customSection2)
+            }
+          >
+            {data.customSection2.map((item, idx) => (
+              <div key={idx} className="cursor-pointe mt-4 ">
+                {/* {data.customSection2 && data.customSection2.length < 1 ? (
                 <></>
               ) : (
                 <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
               )} */}
 
-              <h1 className="md:text-xl text-lg text-left font-bold text-gray-800 capitalize">
-                {item.title}
-              </h1>
-              <ul className="list-disc md:text-sm text-xs flex flex-col justify-center gap-2 md:px-4 px-0 ml-5 mt-3 text-black">
-                {item.value.map((item: any, i: number) => (
-                  <li key={i} className="">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div
-          className="mt-5"
-          onClick={() =>
-            handleCustomSection2Click("customSection2", data.customSection2)
-          }
-        >
-          <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
-            Click here and add custom section
-          </h1>
-        </div>
-      )}
-    </div>
+                <h1 className="md:text-xl text-lg text-left font-bold text-gray-800 capitalize">
+                  {item.title}
+                </h1>
+                <ul className="list-disc md:text-sm text-xs flex flex-col justify-center gap-2 md:px-4 px-0 ml-5 mt-3 text-black">
+                  {item.value.map((item: any, i: number) => (
+                    <li key={i} className="">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            className="mt-5"
+            onClick={() =>
+              handleCustomSection2Click("customSection2", data.customSection2)
+            }
+          >
+            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+              Click here and add custom section
+            </h1>
+          </div>
+        )
+      }
+    </div >
   );
 };
 

@@ -78,18 +78,16 @@ const Template9 = ({
 }) => {
   return (
     <div
-      className={`bg-myWhite mx-auto shadow-lg shadow-mySkyBlue px-[60px] pb-7 ${
-        isLegal ? "max-w-[794px]" : "max-w-[842px]"
-      }`}
+      className={`bg-myWhite mx-auto shadow-lg shadow-mySkyBlue px-[60px] pb-7 ${isLegal ? "max-w-[794px]" : "max-w-[842px]"
+        }`}
     >
       <div
         className="grid grid-cols-[30%,70%] gap-3 w-[100%]  py-5"
-        //  style={{ backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}
+      //  style={{ backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}
       >
         <div
-          className={`flex justify-end items-center h-[180px] w-[180px] mt-4 rounded-full overflow-hidden ${
-            imageBgColor || "bg-gray-300"
-          }`}
+          className={`flex justify-end items-center h-[180px] w-[180px] mt-4 rounded-full overflow-hidden ${imageBgColor || "bg-gray-300"
+            }`}
         >
           <Image
             src={imageUrl ?? "/dummy.jpg"}
@@ -201,16 +199,17 @@ const Template9 = ({
       )}
 
       {/* Experience */}
-      {data.experience && data.experience.length > 0 && (
-        <div>
-          <div className=" grid grid-cols-[auto,1fr] gap-10 mt-6">
-            <div className="text-[#004aad] text-lg font-bold uppercase">
-              Work Experience
-            </div>
-            <div className=" flex flex-col justify-center">
-              <div className="h-[2px] bg-[#004aad]"></div>
-            </div>
+
+      <div>
+        <div className=" grid grid-cols-[auto,1fr] gap-10 mt-6">
+          <div className="text-[#004aad] text-lg font-bold uppercase">
+            Work Experience
           </div>
+          <div className=" flex flex-col justify-center">
+            <div className="h-[2px] bg-[#004aad]"></div>
+          </div>
+        </div>
+        {data.experience && data.experience.length > 0 ? (
           <div className=" mt-3 text-black">
             {data.experience.map((item: any, i: number) => (
               <div
@@ -225,13 +224,12 @@ const Template9 = ({
                     <li className="">{`${item.title} | ${item.companyName}`}</li>
 
                     <div className="flex justify-start items-center gap-4 md:text-[10px] text-[7px]">
-                      <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${
-                        item.endDate === "Currently working"
-                          ? "Currently working"
-                          : moment(item.endDate).isValid()
+                      <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${item.endDate === "Currently working"
+                        ? "Currently working"
+                        : moment(item.endDate).isValid()
                           ? moment(item.endDate).format("MMM YYYY")
                           : ""
-                      })`}</span>
+                        })`}</span>
                     </div>
                   </ul>
                   {/* <h1 className='md:text-xs text-[10px] font-bold text-gray-500'>{item.companyName}</h1>s */}
@@ -243,8 +241,21 @@ const Template9 = ({
               </div>
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <div
+            className="mb-5 mt-5"
+            onClick={() =>
+              handleExperienceFieldClick("experience", data.experience)
+            }
+          >
+            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+              Click here to add experience
+            </h1>
+          </div>
+        )}
+
+      </div>
+
 
       {/* Skills & Certification */}
 
@@ -309,50 +320,60 @@ const Template9 = ({
       </div>
 
       {/* Project */}
-      {data.projects && data.projects.length > 0 && (
-        <div>
-          <div className=" grid grid-cols-[auto,1fr] gap-10 mt-6">
-            <div className="text-[#004aad] text-lg font-bold uppercase">
-              Projects
-            </div>
-            <div className=" flex flex-col justify-center">
-              <div className="h-[2px] bg-[#004aad]"></div>
-            </div>
-          </div>
-          <div
-            className="cursor-pointer"
-            onClick={() => handleProjectFieldClick("projects", data.projects)}
-          >
-            <div className=" grid grid-cols-2 gap-5">
-              {data.projects.map((item: any, i: number) => (
-                <div className="mt-5 mb-5" key={i}>
-                  <li className=" md:text-sm text-xs font-bold text-black list-disc">
-                    {item.name}
-                  </li>
-                  <p className="md:text-xs text-[10px] font-medium text-gray-800">
-                    {item.description}
-                  </p>
-                  <div className="flex items-center md:gap-[100px] gap-[70px] mt-1 text-gray-800 md:text-sm text-xs">
-                    <Link
-                      href={"#"}
-                      className="hover:underline hover:underline-offset-2 flex items-center gap-2"
-                    >
-                      <h1>GitHub</h1>
-                    </Link>
 
-                    <Link
-                      href={"#"}
-                      className="hover:underline hover:underline-offset-2 flex items-center gap-2"
-                    >
-                      <h1 className="flex items-center gap-1">live demo</h1>
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
+      <div>
+        <div className=" grid grid-cols-[auto,1fr] gap-10 mt-6">
+          <div className="text-[#004aad] text-lg font-bold uppercase">
+            Projects
+          </div>
+          <div className=" flex flex-col justify-center">
+            <div className="h-[2px] bg-[#004aad]"></div>
           </div>
         </div>
-      )}
+        <div
+          className="cursor-pointer"
+          onClick={() => handleProjectFieldClick("projects", data.projects)}
+        >
+          {data.projects && data.projects.length > 0 ? (<div className=" grid grid-cols-2 gap-5">
+            {data.projects.map((item: any, i: number) => (
+              <div className="mt-5 mb-5" key={i}>
+                <li className=" md:text-sm text-xs font-bold text-black list-disc">
+                  {item.name}
+                </li>
+                <p className="md:text-xs text-[10px] font-medium text-gray-800">
+                  {item.description}
+                </p>
+                <div className="flex items-center md:gap-[100px] gap-[70px] mt-1 text-gray-800 md:text-sm text-xs">
+                  <Link
+                    href={"#"}
+                    className="hover:underline hover:underline-offset-2 flex items-center gap-2"
+                  >
+                    <h1>GitHub</h1>
+                  </Link>
+
+                  <Link
+                    href={"#"}
+                    className="hover:underline hover:underline-offset-2 flex items-center gap-2"
+                  >
+                    <h1 className="flex items-center gap-1">live demo</h1>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+          ) : (
+            <div className="mb-5 mt-5"
+              onClick={() => handleProjectFieldClick("projects", data.projects)}
+            >
+              <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects
+
+              </h1>
+            </div>
+          )}
+
+        </div>
+      </div>
+
 
       {/* Custom Section */}
       {data.customSection2 && data.customSection2.length > 0 ? (

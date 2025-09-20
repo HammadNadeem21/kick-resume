@@ -85,9 +85,8 @@ const Template7 = ({
 }) => {
   return (
     <div
-      className={`bg-myWhite grid grid-cols-[65%,35%] text-gray-700  mx-auto shadow-lg shadow-mySkyBlue ${
-        isLegal ? "max-w-[794px]" : "max-w-[842px]"
-      }`}
+      className={`bg-myWhite grid grid-cols-[65%,35%] text-gray-700  mx-auto shadow-lg shadow-mySkyBlue ${isLegal ? "max-w-[794px]" : "max-w-[842px]"
+        }`}
     >
       {/* Right-side */}
       <div className="py-3 md:px-5 px-2 flex flex-col gap-2">
@@ -154,24 +153,25 @@ const Template7 = ({
         </div>
 
         {/* Divider */}
-        {data.experience && data.experience.length > 0 && (
-          <div className="h-[1px] w-full bg-gray-700 mt-3"></div>
-        )}
+
+        <div className="h-[1px] w-full bg-gray-700 mt-3"></div>
+
 
         {/* Experience */}
-        {data.experience && data.experience.length > 0 && (
-          <div
-            onClick={() =>
-              handleExperienceFieldClick("experience", data.experience)
-            }
-            className="cursor-pointer"
-          >
-            <h1
-              className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-gray-700`}
-            >
-              Experience
-            </h1>
 
+        <div
+          onClick={() =>
+            handleExperienceFieldClick("experience", data.experience)
+          }
+          className="cursor-pointer"
+        >
+          <h1
+            className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-gray-700`}
+          >
+            Experience
+          </h1>
+
+          {data.experience && data.experience.length > 0 ? (
             <div className=" px-5 mt-3 text-gray-700">
               {data.experience.map((item: any, i: number) => (
                 <div key={i} className={`flex flex-col justify-between`}>
@@ -184,36 +184,49 @@ const Template7 = ({
                   <p>{item.description}</p>
 
                   <div className="flex items-center gap-2 md:text-xs text-[7px]">
-                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${
-                      item.endDate === "Currently working"
-                        ? "Currently working"
-                        : moment(item.endDate).isValid()
+                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${item.endDate === "Currently working"
+                      ? "Currently working"
+                      : moment(item.endDate).isValid()
                         ? moment(item.endDate).format("MMM YYYY")
                         : ""
-                    })`}</span>
+                      })`}</span>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          ) : (
+            <div
+              className="mb-5 mt-5"
+              onClick={() =>
+                handleExperienceFieldClick("experience", data.experience)
+              }
+            >
+              <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                Click here to add experience
+              </h1>
+            </div>
+          )}
+
+        </div>
+
 
         {/* Divider */}
-        {data.projects && data.projects.length > 0 && (
-          <div className="h-[1px] w-full bg-gray-700 mt-5"></div>
-        )}
+
+        <div className="h-[1px] w-full bg-gray-700 mt-5"></div>
+
 
         {/* Projects */}
-        {data.projects && data.projects.length > 0 && (
-          <div
-            onClick={() => handleProjectFieldClick("projects", data.projects)}
-            className="cursor-pointer"
+
+        <div
+          onClick={() => handleProjectFieldClick("projects", data.projects)}
+          className="cursor-pointer"
+        >
+          <h1
+            className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-gray-700`}
           >
-            <h1
-              className={`md:text-xl text-sm mb-2 text-left mt-5 font-bold text-gray-700`}
-            >
-              Projects
-            </h1>
+            Projects
+          </h1>
+          {data.projects && data.projects.length > 0 ? (
             <ul className=" px-5 mt-3 text-gray-700 list-disc">
               {data.projects.map((item: any, i: number) => (
                 <li className="mt-5 mb-5" key={i}>
@@ -241,8 +254,18 @@ const Template7 = ({
                 </li>
               ))}
             </ul>
-          </div>
-        )}
+          ) : (
+            <div className="mb-5 mt-5"
+              onClick={() => handleProjectFieldClick("projects", data.projects)}
+            >
+              <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects
+
+              </h1>
+            </div>
+          )}
+
+        </div>
+
 
         {/* Custom Section */}
         {data.customSection2 && data.customSection2.length > 0 ? (
@@ -298,9 +321,8 @@ const Template7 = ({
         }}
       >
         <div
-          className={`flex justify-center items-center sm:ml-[65px] ml-[25px] mb-2 sm:h-[150px] sm:w-[150px] h-[90px] w-[90px] mt-4 rounded-full overflow-hidden ${
-            imageBgColor || "bg-gray-300"
-          }`}
+          className={`flex justify-center items-center sm:ml-[65px] ml-[25px] mb-2 sm:h-[150px] sm:w-[150px] h-[90px] w-[90px] mt-4 rounded-full overflow-hidden ${imageBgColor || "bg-gray-300"
+            }`}
         >
           <Image
             src={imageUrl ?? "/dummy.jpg"}

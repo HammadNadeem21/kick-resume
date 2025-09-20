@@ -72,9 +72,8 @@ const Template6 = ({
 }) => {
   return (
     <div
-      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7 mx-auto ${
-        isLegal ? "max-w-[794px]" : "max-w-[842px]"
-      }`}
+      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7 mx-auto ${isLegal ? "max-w-[794px]" : "max-w-[842px]"
+        }`}
     >
       <div className="flex flex-col gap-2 items-start justify-center w-full">
         <div className="text-center">
@@ -137,22 +136,23 @@ const Template6 = ({
       </div>
 
       {/* Divider */}
-      {data.experience && data.experience.length > 0 && (
-        <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
-      )}
+
+      <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
+
 
       {/* Experience */}
-      {data.experience && data.experience.length > 0 && (
-        <div
-          className="cursor-pointer"
-          onClick={() =>
-            handleExperienceFieldClick("experience", data.experience)
-          }
-        >
-          <h1 className="md:text-xl text-lg font-bold text-gray-800 text-left">
-            Experience
-          </h1>
 
+      <div
+        className="cursor-pointer"
+        onClick={() =>
+          handleExperienceFieldClick("experience", data.experience)
+        }
+      >
+        <h1 className="md:text-xl text-lg font-bold text-gray-800 text-left">
+          Experience
+        </h1>
+
+        {data.experience && data.experience.length > 0 ? (
           <div className=" md:px-5 px-0 ml-3 mt-3 text-black">
             {data.experience.map((item: any, i: number) => (
               <div key={i} className="flex flex-col mt-3">
@@ -165,13 +165,12 @@ const Template6 = ({
                   </div>
 
                   <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
-                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${
-                      item.endDate === "Currently working"
-                        ? "Currently working"
-                        : moment(item.endDate).isValid()
+                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${item.endDate === "Currently working"
+                      ? "Currently working"
+                      : moment(item.endDate).isValid()
                         ? moment(item.endDate).format("MMM YYYY")
                         : ""
-                    })`}</span>
+                      })`}</span>
                   </div>
                 </div>
 
@@ -179,8 +178,21 @@ const Template6 = ({
               </div>
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <div
+            className="mb-5 mt-5"
+            onClick={() =>
+              handleExperienceFieldClick("experience", data.experience)
+            }
+          >
+            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+              Click here to add experience
+            </h1>
+          </div>
+        )}
+
+      </div>
+
 
       {/* Divider */}
       {data.education && data.education.length > 0 && (
@@ -265,20 +277,20 @@ const Template6 = ({
       )}
 
       {/* Divider */}
-      {data.projects && data.projects.length > 0 && (
-        <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
-      )}
+
+      <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
+
 
       {/* Project */}
-      {data.projects && data.projects.length > 0 && (
-        <div
-          className="cursor-pointer"
-          onClick={() => handleProjectFieldClick("projects", data.projects)}
-        >
-          <h1 className="md:text-xl text-lg text-left font-bold text-gray-800">
-            Projects
-          </h1>
+      <div
+        className="cursor-pointer"
+        onClick={() => handleProjectFieldClick("projects", data.projects)}
+      >
+        <h1 className="md:text-xl text-lg text-left font-bold text-gray-800">
+          Projects
+        </h1>
 
+        {data.projects && data.projects.length > 0 ? (
           <ul className="md:px-5 px-0 ml-3 mt-3 text-black list-disc md:text-lg text-sm">
             {data.projects.map((item: any, i: number) => (
               <li className="mt-5 mb-5" key={i}>
@@ -306,8 +318,16 @@ const Template6 = ({
               </li>
             ))}
           </ul>
-        </div>
-      )}
+        ) : (
+          <div className="mb-5 mt-5"
+            onClick={() => handleProjectFieldClick("projects", data.projects)}
+          >
+            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects</h1>
+          </div>
+        )}
+
+      </div>
+
 
       {/* Custom Section */}
       {data.customSection2 && data.customSection2.length > 0 ? (

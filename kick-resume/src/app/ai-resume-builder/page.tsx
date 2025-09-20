@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
 // icons
@@ -67,6 +67,8 @@ import { useAiResumeBuilder } from "@/context/AiResumeBuilder";
 import { calculateCreditFromTokens } from "../../../utils/commonHelpers";
 import { SelectButton } from "@/components/SelectButton";
 import CustomSection from "@/components/CustomSection/CustomSection";
+import { ColorPickerDropdown } from "@/components/ColorPicker";
+import { se } from "date-fns/locale";
 
 const AiPromptPage = () => {
   // Context State
@@ -1088,12 +1090,30 @@ const AiPromptPage = () => {
                   selectedTemplate === 1 ||
                   selectedTemplate === 7 ||
                   selectedTemplate === 10) && (
-                  <button
-                    className="bg-mySkyBlue/50 hover:bg-mySkyBlue md:text-lg sm:text-sm text-[12px] font-bold text-white sm:px-5 px-3 sm:py-2 py-1 rounded-lg"
-                    onClick={() => setShowColorPicker((prev) => !prev)}
-                  >
-                    Choose Color
-                  </button>
+                  <div className="flex items-center justify-center gap-2">
+                    <div
+                      className={`h-[25px] w-[25px] border border-white cursor-pointerff rounded-md`}
+                      onClick={() => setShowColorPicker((prev) => !prev)}
+                      style={{
+                        backgroundColor:
+                          selectedTemplate === 1
+                            ? `rgb(${color1.r}, ${color1.g}, ${color1.b})`
+                            : selectedTemplate === 4
+                            ? `rgb(${color4.r}, ${color4.g}, ${color4.b})`
+                            : selectedTemplate === 7
+                            ? `rgb(${color1.r}, ${color1.g}, ${color1.b})`
+                            : selectedTemplate === 10
+                            ? `rgb(${color10.r}, ${color10.g}, ${color10.b})`
+                            : "transparent",
+                      }}
+                    ></div>
+                    <button
+                      className="bg-mySkyBlue/50 hover:bg-mySkyBlue md:text-lg sm:text-sm text-[12px] font-bold text-white sm:px-5 px-3 sm:py-2 py-1 rounded-lg"
+                      onClick={() => setShowColorPicker((prev) => !prev)}
+                    >
+                      Choose Color
+                    </button>
+                  </div>
                 )}
 
                 <AnimatePresence>
@@ -1102,42 +1122,22 @@ const AiPromptPage = () => {
                       selectedTemplate === 1 ||
                       selectedTemplate === 7 ||
                       selectedTemplate === 10) && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }} // shuru main halka upar aur hidden
-                        animate={{ opacity: 1, y: 0 }} // show hote waqt neeche slide + fade in
-                        exit={{ opacity: 0, y: -10 }} // hide hote waqt upar slide + fade out
-                        transition={{ duration: 0.3 }}
-                        className="absolute top-[30px]  w-60 rounded-xl p-4"
-                      >
-                        {/* <ColorPicker/> */}
-                        <RgbColorPicker
-                          color={
-                            selectedTemplate === 1
-                              ? color1
-                              : selectedTemplate === 4
-                              ? color4
-                              : selectedTemplate === 7
-                              ? color7
-                              : selectedTemplate === 10
-                              ? color10
-                              : color1 // fallback
-                          }
-                          onChange={
-                            selectedTemplate === 1
-                              ? setColor1
-                              : selectedTemplate === 4
-                              ? setColor4
-                              : selectedTemplate === 7
-                              ? setColor7
-                              : selectedTemplate === 10
-                              ? setColor10
-                              : setColor1 // fallback
-                          }
-                        />
-                        {/* <div className="value">{JSON.stringify(color)}</div> */}
-                      </motion.div>
+                      <ColorPickerDropdown
+                        selectedTemplate={selectedTemplate}
+                        color1={color1}
+                        setColor1={setColor1}
+                        color4={color4}
+                        setColor4={setColor4}
+                        color7={color7}
+                        setColor7={setColor7}
+                        color10={color10}
+                        setColor10={setColor10}
+                        setShowColorPicker={setShowColorPicker}
+                      />
                     )}
                 </AnimatePresence>
+
+                {/* <h1>{color10}</h1> */}
               </div>
 
               {/* {showTemplate && parsedData && ( */}
@@ -1755,5 +1755,87 @@ const AiPromptPage = () => {
     </div>
   );
 };
+
+// interface ColorPickerDropdownProps {
+//   selectedTemplate: number;
+//   color1: any;
+//   setColor1: any;
+//   color4: any;
+//   setColor4: any;
+//   color7: any;
+//   setColor7: any;
+//   color10: any;
+//   setColor10: any;
+//   setShowColorPicker: React.Dispatch<React.SetStateAction<boolean>>;
+// }
+
+// const ColorPickerDropdown: React.FC<ColorPickerDropdownProps> = ({
+//   selectedTemplate,
+//   color1,
+//   setColor1,
+//   color4,
+//   setColor4,
+//   color7,
+//   setColor7,
+//   color10,
+//   setColor10,
+//   setShowColorPicker,
+// }) => {
+//   const colorPickerRef = useRef<HTMLDivElement>(null);
+
+//   useEffect(() => {
+//     const handleClickOutside = (event: MouseEvent) => {
+//       if (
+//         colorPickerRef.current &&
+//         !colorPickerRef.current.contains(event.target as Node)
+//       ) {
+//         setShowColorPicker(false);
+//       }
+//     };
+
+//     document.addEventListener("mousedown", handleClickOutside);
+//     return () => {
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     };
+//   }, [setShowColorPicker]);
+
+//   return (
+//     <motion.div
+//       ref={colorPickerRef}
+//       initial={{ opacity: 0, y: -10 }} // shuru main halka upar aur hidden
+//       animate={{ opacity: 1, y: 0 }} // show hote waqt neeche slide + fade in
+//       exit={{ opacity: 0, y: -10 }} // hide hote waqt upar slide + fade out
+//       transition={{ duration: 0.3 }}
+//       className="absolute top-[30px]  w-60 rounded-xl p-4"
+//     >
+//       {/* <ColorPicker/> */}
+//       <RgbColorPicker
+//         color={
+//           selectedTemplate === 1
+//             ? color1
+//             : selectedTemplate === 4
+//               ? color4
+//               : selectedTemplate === 7
+//                 ? color7
+//                 : selectedTemplate === 10
+//                   ? color10
+//                   : color1 // fallback
+//         }
+//         onChange={
+//           selectedTemplate === 1
+//             ? setColor1
+//             : selectedTemplate === 4
+//               ? setColor4
+//               : selectedTemplate === 7
+//                 ? setColor7
+//                 : selectedTemplate === 10
+//                   ? setColor10
+//                   : setColor1 // fallback
+//         }
+//       />
+//       {/* <div className="value">{JSON.stringify(color)}</div> */}
+//     </motion.div>
+//   );
+// };
 
 export default AiPromptPage;

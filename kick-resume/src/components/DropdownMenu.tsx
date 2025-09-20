@@ -51,6 +51,11 @@ export function DropdownMenuRadioGroupDemo() {
             Resume vs Job
           </DropdownMenuRadioItem>
         </Link>
+        <Link href="/ai-resume-screener">
+          <DropdownMenuRadioItem value="right">
+            Ai Resume Screener
+          </DropdownMenuRadioItem>
+        </Link>
 
         {/* </DropdownMenuRadioGroup> */}
       </DropdownMenuContent>

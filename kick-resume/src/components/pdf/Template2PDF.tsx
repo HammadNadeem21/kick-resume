@@ -72,9 +72,11 @@ const styles = StyleSheet.create({
   },
   summaryText: {
     marginBottom: 10,
+    marginTop: 4,
     fontSize: 11,
     lineHeight: 1.4,
     letterSpacing: 0.2,
+    fontWeight: "300",
   },
   list: {
     marginBottom: 8,
@@ -181,7 +183,13 @@ function getBulletChar(color: string = "white") {
   return "•";
 }
 
-export default function Template2PDF({ data, size }: { data: any, size: PageProps["size"] }) {
+export default function Template2PDF({
+  data,
+  size,
+}: {
+  data: any;
+  size: PageProps["size"];
+}) {
   if (!data) return null;
 
   return (
@@ -195,21 +203,26 @@ export default function Template2PDF({ data, size }: { data: any, size: PageProp
         <View style={styles.gridContainer}>
           {/* Left Column */}
           <View style={styles.leftColumn}>
-            <Text style={styles.sectionTitle}>Contact</Text>
-            <View style={{ marginBottom: 15 }}>
+            {data.persnolInfoSection && data.persnolInfoSection.length > 0 && (
+              <View>
+                <Text style={styles.sectionTitle}>Contact</Text>
+                {data.persnolInfoSection.map((item: any, i: number) => (
+                  <View key={i} style={styles.contactItem}>
+                    <Text style={styles.contactText}>{item.title}</Text>
+                    <Text>{item.value}</Text>
+                  </View>
+                ))}
+                {/* <View style={{ marginBottom: 15 }}>
+            
               <View style={styles.contactItem}>
-                {/* <Text>📞</Text> */}
-                <Text style={styles.contactText}>Phone: +{data.phone}</Text>
-              </View>
-              <View style={styles.contactItem}>
-                {/* <Text>📧</Text> */}
                 <Text style={styles.contactText}>Email: {data.email}</Text>
               </View>
               <View style={styles.contactItem}>
-                {/* <Text>📍</Text> */}
                 <Text style={styles.contactText}>Address: {data.address}</Text>
               </View>
-            </View>
+            </View> */}
+              </View>
+            )}
 
             {data.education && data.education.length > 0 && (
               <View>
@@ -319,8 +332,10 @@ export default function Template2PDF({ data, size }: { data: any, size: PageProp
 
           {/* Right Column */}
           <View style={styles.rightColumn}>
-            <Text style={styles.sectionTitle}>Profile Summary</Text>
-            <Text style={styles.summaryText}>{data.summary}</Text>
+            <View style={{ paddingHorizontal: 4 }}>
+              <Text style={styles.sectionTitle}>Profile Summary</Text>
+              <Text style={styles.summaryText}>{data.summary}</Text>
+            </View>
 
             <Text style={styles.sectionTitle}>Work Experience</Text>
             <View style={styles.list}>
@@ -353,75 +368,6 @@ export default function Template2PDF({ data, size }: { data: any, size: PageProp
                 </View>
               ))}
             </View>
-            {/* {data.experience.length > 0 && <View style={styles.rightdivider} />}
-            {data.experience.length > 0 && (
-              <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Experience</Text>
-                {data.experience?.map((item: any, i: number) => (
-                  <View
-                    key={i}
-                    style={{ marginBottom: 8, flexDirection: "column" }}
-                  >
-                    <View style={styles.ExperienceItem}>
-                      <Text style={styles.bulletRight}>
-                        {getBulletChar("#193042")}
-                      </Text>
-
-                      <View
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                          gap: 8,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            color: "#374151",
-                            fontSize: 10,
-                          }}
-                        >
-                          {item.companyName}
-                        </Text>
-                        <Text
-                          style={{
-                            color: "#374151",
-                            fontSize: 10,
-                            marginTop: 2,
-                            fontWeight: 500,
-                          }}
-                        >
-                          {item.title}
-                        </Text>
-                      </View>
-                    </View>
-
-                    <Text
-                      style={{
-                        lineHeight: 1.4,
-                        color: "#374151",
-                        fontSize: 11,
-                        letterSpacing: 0.2,
-                        fontWeight: 500,
-                        marginLeft: 2,
-                      }}
-                    >
-                      {item.description}
-                    </Text>
-                    <Text
-                      style={{
-                        marginLeft: 8,
-                        fontStyle: "italic",
-                        color: "#374151",
-                        fontSize: 8,
-                      }}
-                    >
-                      ({item.startDate} - {item.endDate})
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            )} */}
 
             <Text style={styles.sectionTitle}>Projects</Text>
             <View style={styles.list}>

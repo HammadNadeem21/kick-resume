@@ -238,7 +238,11 @@ export default function Template1({
               ))}
             </div>
           ) : (
-            <div>
+            <div className="mt-[50px] mb-[50px]"
+            onClick={() =>
+              handleCustomSectionClick("customSection", data.customSection)
+            }
+            >
               <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
                 Click here and add custom section
               </h1>
@@ -309,16 +313,14 @@ export default function Template1({
         </div>
 
         {/* Divider */}
-        {data.experience.length > 0 && (
+       
           <div className="h-[1px] w-full bg-gray-700 mt-3"></div>
-        )}
+       
 
         {/* Experience */}
-        {data.experience.length > 0 && (
+        
           <div
-            onClick={() =>
-              handleExperienceFieldClick("experience", data.experience)
-            }
+            
             className="cursor-pointer"
           >
             <h1
@@ -327,7 +329,13 @@ export default function Template1({
               Experience
             </h1>
 
-            <div className=" ml-5 mt-3 flex flex-col justify-center gap-3 text-gray-700">
+            {data.experience && data.experience.length > 0 
+            ? (
+<div className=" ml-5 mt-3 flex flex-col justify-center gap-3 text-gray-700"
+onClick={() =>
+  handleExperienceFieldClick("experience", data.experience)
+}
+>
               {data.experience.map((item: any, i: number) => (
                 <div key={i} className={`flex flex-col justify-between`}>
                   <ul className=" list-disc   flex items-center sm:gap-5 gap-2">
@@ -358,18 +366,31 @@ export default function Template1({
                 </div>
               ))}
             </div>
+            )
+          :(
+            <div 
+            onClick={() =>
+              handleExperienceFieldClick("experience", data.experience)
+            }
+            >
+              <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add experience</h1>
+            </div>
+          )
+          }
+
+            
           </div>
-        )}
+        
 
         {/* Divider */}
-        {data.projects.length > 0 && (
+        
           <div className="h-[1px] w-full bg-gray-700 mt-3"></div>
-        )}
+      
 
         {/* Projects */}
-        {data.projects.length > 0 && (
+        
           <div
-            onClick={() => handleProjectFieldClick("projects", data.projects)}
+            
             className="cursor-pointer"
           >
             <h1
@@ -377,7 +398,11 @@ export default function Template1({
             >
               Projects
             </h1>
-            <ul className=" px-5 mt-3 text-gray-700 list-disc">
+            {data.projects && data.projects.length > 0 
+            ? (
+              <ul className=" px-5 mt-3 text-gray-700 list-disc"
+              onClick={() => handleProjectFieldClick("projects", data.projects)}
+              >
               {data.projects.map((item: any, i: number) => (
                 <li className="mt-2 md:text-lg sm:text-xs text-[10px]" key={i}>
                   <h1 className=" font-bold md:text-[15px] sm:text-xs text-[10px]">
@@ -406,8 +431,18 @@ export default function Template1({
                 </li>
               ))}
             </ul>
+            )
+          :(
+            <div className="mb-10"
+            onClick={() => handleProjectFieldClick("projects", data.projects)}
+            >
+              <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects</h1>
+            </div>
+          )
+          }
+           
           </div>
-        )}
+        
 
         {/* Custom Section */}
         {data.customSection2 && data.customSection2.length > 0 ? (
@@ -443,7 +478,12 @@ export default function Template1({
             ))}
           </div>
         ) : (
-          <div>
+          <div  
+          className="mt-[70px]"
+          onClick={() =>
+            handleCustomSection2Click("customSection2", data.customSection2)
+          }
+          >
             <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
               Click here and add custom section
             </h1>

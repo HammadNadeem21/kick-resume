@@ -7,6 +7,7 @@ import {
   Link,
 } from "@react-pdf/renderer";
 import type { PageProps } from "@react-pdf/renderer";
+import moment from "moment";
 
 const styles = StyleSheet.create({
   page: {
@@ -52,27 +53,31 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     marginTop: 16,
   },
+  experienceSection: {
+    marginBottom: 10,
+    marginTop: 16,
+  },
+  persnolInfoSection: {
+    marginBottom: 16,
+    marginTop: 6,
+  },
   divider: {
     borderBottomWidth: 1,
     borderBottomColor: "#fff",
-    // marginTop: 4,
-    // marginVertical: 6,
   },
   rightdivider: {
     borderBottomWidth: 1,
     borderBottomColor: "#374151",
     marginBottom: 4,
-    // marginTop: 4,
-    // marginVertical: 6,
   },
   listItem: {
     flexDirection: "row",
-    alignItems: "flex-start",
+    alignItems: "center",
     // marginBottom: 4,
     marginLeft: 0,
     marginTop: 2,
-    fontSize: 10,
-    fontWeight: 600,
+    fontSize: 12,
+    fontWeight: 500,
   },
   skillslistItem: {
     flexDirection: "row",
@@ -80,8 +85,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     marginLeft: 0,
     marginTop: 2,
-    fontSize: 11,
-    fontWeight: 600,
+    fontSize: 12,
+    fontWeight: 500,
   },
   languagelistItem: {
     flexDirection: "row",
@@ -89,8 +94,8 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     marginLeft: 0,
     marginTop: 2,
-    fontSize: 10,
-    fontWeight: 600,
+    fontSize: 12,
+    fontWeight: 500,
   },
   certificationlistItem: {
     flexDirection: "row",
@@ -98,18 +103,18 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     marginLeft: 0,
     marginTop: 2,
-    fontSize: 10,
-    fontWeight: 600,
+    fontSize: 12,
+    fontWeight: 500,
   },
   ExperienceItem: {
     flexDirection: "row",
     alignItems: "flex-start",
-    marginBottom: 4,
+    // marginBottom: 4,
     marginLeft: 0,
     marginTop: 2,
     fontSize: 12,
     fontWeight: "bold",
-    lineHeight: 1.5,
+    // lineHeight: 1.5,
     color: "#374151",
   },
   bullet: {
@@ -152,7 +157,7 @@ const styles = StyleSheet.create({
   position: {
     fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 16,
+    marginBottom: 10,
     color: "#374151",
   },
   contact: {
@@ -169,16 +174,16 @@ const styles = StyleSheet.create({
   },
   projectLink: {
     fontSize: 10,
-    // color: "#666",
-    // textDecoration: "underline",
+
     marginRight: 15,
     textDecoration: "none",
     color: "#374151",
   },
   projectLinksContainer: {
-    marginVertical: 8,
+    marginLeft: 20,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     gap: 20,
     marginTop: 5,
   },
@@ -256,6 +261,32 @@ export default function Template1PDF({
               ))}
             </View>
           )}
+
+          {data.customSection && data.customSection.length > 0 && (
+            <View>
+              {data.customSection?.map((item: any, i: number) => (
+                <View key={i}>
+                  <View style={styles.divider} />
+                  <View style={{ ...styles.section, width: "80%" }}>
+                    <Text
+                      style={{ ...styles.heading, textTransform: "capitalize" }}
+                    >
+                      {item.title}
+                    </Text>
+
+                    {item.value.map((item: any, i: number) => (
+                      <View key={i} style={styles.certificationlistItem}>
+                        <Text style={styles.bullet}>{getBulletChar()}</Text>
+                        <Text style={{ textTransform: "capitalize" }}>
+                          {item}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              ))}
+            </View>
+          )}
         </View>
 
         {/* Right Side */}
@@ -263,7 +294,7 @@ export default function Template1PDF({
           <Text style={styles.position}>{data.role}</Text>
 
           {data.personalInformation && data.personalInformation.length > 0 && (
-            <View style={styles.section}>
+            <View style={styles.persnolInfoSection}>
               <View style={{ width: "80%" }}>
                 {data.personalInformation.map((item: any, i: number) => (
                   <View
@@ -294,7 +325,7 @@ export default function Template1PDF({
                         style={{
                           color: "#193042",
                           fontWeight: 400,
-                          fontSize: 8,
+                          fontSize: 10,
                         }}
                       >
                         {item.value}
@@ -309,27 +340,33 @@ export default function Template1PDF({
           <View style={styles.rightdivider} />
           <View style={styles.section}>
             <Text style={styles.rightHeading}>Summary</Text>
-            <Text
-              style={{
-                lineHeight: 1.5,
-                color: "#374151",
-                fontSize: 12,
-                letterSpacing: 0.2,
-                fontWeight: 500,
-              }}
-            >
-              {data.summary}
-            </Text>
+
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              {data.summary.split(" ").map((word: string, i: number) => (
+                <Text
+                  key={i}
+                  style={{
+                    lineHeight: 1.5,
+                    color: "#374151",
+                    fontSize: 11,
+                    fontWeight: 400,
+                    marginRight: 4,
+                  }}
+                >
+                  {word}
+                </Text>
+              ))}
+            </View>
           </View>
 
           {data.experience.length > 0 && <View style={styles.rightdivider} />}
           {data.experience.length > 0 && (
-            <View style={styles.section}>
+            <View style={styles.experienceSection}>
               <Text style={styles.rightHeading}>Experience</Text>
               {data.experience?.map((item: any, i: number) => (
                 <View
                   key={i}
-                  style={{ marginBottom: 8, flexDirection: "column" }}
+                  style={{ marginBottom: 0, flexDirection: "column" }}
                 >
                   <View style={styles.ExperienceItem}>
                     <Text style={styles.bulletRight}>
@@ -367,24 +404,33 @@ export default function Template1PDF({
 
                   <Text
                     style={{
-                      lineHeight: 1.5,
+                      lineHeight: 1.2,
                       color: "#374151",
-                      fontSize: 12,
-                      // letterSpacing: 0.2,
-                      fontWeight: 500,
+                      fontSize: 11,
+                      fontWeight: 400,
+                      marginLeft: 20,
                     }}
                   >
                     {item.description}
                   </Text>
                   <Text
                     style={{
-                      marginLeft: 8,
+                      marginLeft: 20,
                       fontStyle: "italic",
                       color: "#374151",
                       fontSize: 8,
                     }}
                   >
-                    ({item.startDate} - {item.endDate})
+                    {`
+                    (${moment(item.startDate).format("MMM YYYY")} - ${
+                      item.endDate === "Currently Working"
+                        ? "Currently Working"
+                        : moment(item.endDate).isValid()
+                        ? moment(item.endDate).format("MMM YYYY")
+                        : ""
+                    })
+                    
+                    `}
                   </Text>
                 </View>
               ))}
@@ -409,16 +455,15 @@ export default function Template1PDF({
                   </View>
                   <Text
                     style={{
-                      lineHeight: 1.5,
+                      lineHeight: 1.2,
                       color: "#374151",
-                      fontSize: 12,
-                      // letterSpacing: 0.2,
-                      fontWeight: 500,
+                      fontSize: 11,
+                      fontWeight: 400,
+                      marginLeft: 20,
                     }}
                   >
                     {item.description}
                   </Text>
-                  {/* <Text>GitHub: {item.github}</Text> */}
                   <View style={styles.projectLinksContainer}>
                     <Link style={styles.projectLink} src={item.github}>
                       GitHub
@@ -427,7 +472,44 @@ export default function Template1PDF({
                       Live Demo
                     </Link>
                   </View>
-                  {/* <Text>Live: {item.live}</Text> */}
+                </View>
+              ))}
+            </View>
+          )}
+
+          {data.customSection2 && data.customSection2.length > 0 && (
+            <View>
+              {data.customSection2.map((item: any, i: number) => (
+                <View key={i}>
+                  <View style={styles.rightdivider} />
+                  <View style={styles.section}>
+                    <Text
+                      style={{
+                        ...styles.rightHeading,
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {item.title}
+                    </Text>
+                    {item.value.map((item: any, i: number) => (
+                      <View style={styles.listItem} key={i}>
+                        <Text style={styles.bulletRight}>
+                          {getBulletChar("#193042")}
+                        </Text>
+                        <Text
+                          style={{
+                            lineHeight: 1.2,
+                            color: "#374151",
+                            fontSize: 11,
+                            // letterSpacing: 0.2,
+                            fontWeight: 400,
+                          }}
+                        >
+                          {item}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
                 </View>
               ))}
             </View>
