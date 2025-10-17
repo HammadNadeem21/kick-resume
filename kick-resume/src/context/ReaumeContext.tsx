@@ -1,13 +1,19 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 interface ResumeContextType {
   suggestions: string | null;
   score: number | null;
   overall: string | null;
-  keywords: string | null;
-  formatting: string | null;
-  education: string | null;
-  experience: string | null;
+  keywords: string[];
+  formatting: string[];
+  education: string[];
+  experience: string[];
   keywordsScore: number | null;
   formattingScore: number | null;
   educationScore: number | null;
@@ -19,10 +25,10 @@ interface ResumeContextType {
   setSuggestions: (val: string | null) => void;
   setScore: (val: number | null) => void;
   setOverall: (val: string | null) => void;
-  setKeywords: (val: string | null) => void;
-  setFormatting: (val: string | null) => void;
-  setEducation: (val: string | null) => void;
-  setExperience: (val: string | null) => void;
+  setKeywords: (val: string[]) => void;
+  setFormatting: (val: string[]) => void;
+  setEducation: (val: string[]) => void;
+  setExperience: (val: string[]) => void;
   setKeywordsScore: (val: number | null) => void;
   setFormattingScore: (val: number | null) => void;
   setEducationScore: (val: number | null) => void;
@@ -39,10 +45,10 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
   const [suggestions, setSuggestions] = useState<string | null>(null);
   const [score, setScore] = useState<number | null>(null);
   const [overall, setOverall] = useState<string | null>(null);
-  const [keywords, setKeywords] = useState<string | null>(null);
-  const [formatting, setFormatting] = useState<string | null>(null);
-  const [education, setEducation] = useState<string | null>(null);
-  const [experience, setExperience] = useState<string | null>(null);
+  const [keywords, setKeywords] = useState<string[]>([]);
+  const [formatting, setFormatting] = useState<string[]>([]);
+  const [education, setEducation] = useState<string[]>([]);
+  const [experience, setExperience] = useState<string[]>([]);
   const [keywordsScore, setKeywordsScore] = useState<number | null>(null);
   const [formattingScore, setFormattingScore] = useState<number | null>(null);
   const [educationScore, setEducationScore] = useState<number | null>(null);
@@ -103,8 +109,7 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
 
 export const useResumeContext = () => {
   const context = useContext(ResumeContext);
-  if (!context) throw new Error('useResumeContext must be used inside ResumeProvider');
+  if (!context)
+    throw new Error("useResumeContext must be used inside ResumeProvider");
   return context;
 };
-
-

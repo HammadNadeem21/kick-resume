@@ -70,6 +70,7 @@ const Template3 = ({
 }) => {
   return (
     <div
+      style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
       className={`bg-myWhite px-7 py-7 shadow-lg shadow-mySkyBlue ${
         isLegal ? "max-w-[794px]" : "max-w-[842px]"
       }`}
@@ -156,27 +157,28 @@ const Template3 = ({
               </h1>
             </div>
 
-{data.experience && data.experience.length > 0 ? (
-   <div className=" md:px-5 px-0 ml-3 mt-3 text-black"
-   onClick={() =>
-    handleExperienceFieldClick("experience", data.experience)
-  }
-   >
-   {data.experience.map((item: any, i: number) => (
-     <div key={i} className="flex flex-col">
-       <ul className="list-disc md:text-sm text-xs flex items-center gap-5">
-         <li className="font-bold">{item.companyName}</li>
-         <h1 className="md:text-xs text-[10px] font-semibold">
-           {item.title}
-         </h1>
-       </ul>
+            {data.experience && data.experience.length > 0 ? (
+              <div
+                className=" md:px-5 px-0 ml-3 mt-3 text-black"
+                onClick={() =>
+                  handleExperienceFieldClick("experience", data.experience)
+                }
+              >
+                {data.experience.map((item: any, i: number) => (
+                  <div key={i} className="flex flex-col">
+                    <ul className="list-disc md:text-sm text-xs flex items-center gap-5">
+                      <li className="font-bold">{item.companyName}</li>
+                      <h1 className="md:text-xs text-[10px] font-semibold">
+                        {item.title}
+                      </h1>
+                    </ul>
 
-       <p className="md:text-sm text-xs font-medium">
-         {item.description}
-       </p>
-       <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
-         <span>
-           {`( ${moment(item.startDate).format("MMM YYYY")} - 
+                    <p className="md:text-sm text-xs font-medium">
+                      {item.description}
+                    </p>
+                    <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
+                      <span>
+                        {`( ${moment(item.startDate).format("MMM YYYY")} - 
          
          ${
            item.endDate === "Currently working"
@@ -187,45 +189,48 @@ const Template3 = ({
          }
            )
          `}
-         </span>
-       </div>
-     </div>
-   ))}
- </div>
-):(
-  <div 
-  className="mb-5 mt-5"
-  onClick={() =>
-    handleExperienceFieldClick("experience", data.experience)
-  }
-  >
-    <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add experience</h1>
-  </div>
-)}
-           
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div
+                className="mb-5 mt-5"
+                onClick={() =>
+                  handleExperienceFieldClick("experience", data.experience)
+                }
+              >
+                <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                  Click here to add experience
+                </h1>
+              </div>
+            )}
           </div>
 
           {/* Divider */}
-          
-            <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
-         
+
+          <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
 
           {/* Project */}
-          
-            <div
-              className="cursor-pointer"
-              onClick={() => handleProjectFieldClick("projects", data.projects)}
-            >
-              <div className="md:px-2 px-1 py-[2px]">
-                <h1 className="md:text-xl text-lg font-bold text-gray-800">
-                  Projects
-                </h1>
-              </div>
 
-{data.projects && data.projects.length > 0 ? (
-  <ul className="md:px-5 px-0 ml-3 mt-3 text-black list-disc md:text-lg text-sm font-semibold"
-  onClick={() => handleProjectFieldClick("projects", data.projects)}
-  >
+          <div
+            className="cursor-pointer"
+            onClick={() => handleProjectFieldClick("projects", data.projects)}
+          >
+            <div className="md:px-2 px-1 py-[2px]">
+              <h1 className="md:text-xl text-lg font-bold text-gray-800">
+                Projects
+              </h1>
+            </div>
+
+            {data.projects && data.projects.length > 0 ? (
+              <ul
+                className="md:px-5 px-0 ml-3 mt-3 text-black list-disc md:text-lg text-sm font-semibold"
+                onClick={() =>
+                  handleProjectFieldClick("projects", data.projects)
+                }
+              >
                 {data.projects.map((item: any, i: number) => (
                   <li className="mt-5 mb-5" key={i}>
                     <h1 className="md:text-lg text-sm font-semibold">
@@ -252,16 +257,19 @@ const Template3 = ({
                   </li>
                 ))}
               </ul>
-):(
-  <div className="mb-5 mt-5"
-  onClick={() => handleProjectFieldClick("projects", data.projects)}
-  >
-    <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects</h1>
-  </div>
-)}
-              
-            </div>
-        
+            ) : (
+              <div
+                className="mb-5 mt-5"
+                onClick={() =>
+                  handleProjectFieldClick("projects", data.projects)
+                }
+              >
+                <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                  Click here to add projects
+                </h1>
+              </div>
+            )}
+          </div>
 
           {/* Custom Section */}
           <div
@@ -272,23 +280,22 @@ const Template3 = ({
           >
             {data.customSection2 && data.customSection2.length > 0 ? (
               <div className="">
-                {data.customSection2 && data.customSection2.length < 1 ? (
-                  <></>
-                ) : (
-                  <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
-                )}
                 {data.customSection2.map((item, idx) => (
-                  <div key={idx} className="md:px-2 px-1 py-[2px]">
-                    <h1 className="md:text-xl text-lg font-bold text-gray-800 capitalize">
-                      {item.title}
-                    </h1>
-                    <ul className="list-disc md:text-sm text-xs font-medium">
-                      {item.value.map((item: any, i: number) => (
-                        <li key={i} className="ml-7">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="" key={idx}>
+                    <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+
+                    <div key={idx} className="md:px-2 px-1 py-[2px]">
+                      <h1 className="md:text-xl text-lg font-bold text-gray-800 capitalize">
+                        {item.title}
+                      </h1>
+                      <ul className="list-disc md:text-sm text-xs font-medium">
+                        {item.value.map((item: any, i: number) => (
+                          <li key={i} className="ml-7">
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -360,18 +367,20 @@ const Template3 = ({
           {/* Languages */}
           {data.languages && data.languages.length > 0 && (
             <div
-              className="mt-8 mb-8 cursor-pointer"
+              className="cursor-pointer"
               onClick={() => handleArrayFieldClick("languages", data.languages)}
             >
               <h1
-                className={`text-[15px] font-bold  mb-2 text-left mt-5  text-gray-800`}
+                className={`text-[15px] font-bold  mb-2 text-left mt-5  text-black`}
               >
                 Languages
               </h1>
 
-              <ul className="list-disc text-black px-5 flex flex-col gap-2 md:text-sm text-xs">
-                {data.languages.map((item: any, i: number) => (
-                  <li key={i}>{item}</li>
+              <ul className="list-disc md:px-4 px-0 ml-5 mt-3 text-black flex flex-col gap-2 md:text-sm text-xs">
+                {data.languages.map((item: string, i: number) => (
+                  <li className="" key={i}>
+                    {item}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -385,20 +394,22 @@ const Template3 = ({
           {/* Certifications */}
           {data.certifications && data.certifications.length > 0 && (
             <div
-              className="mt-8 mb-8 cursor-pointer"
+              className=" cursor-pointer"
               onClick={() =>
                 handleArrayFieldClick("certifications", data.certifications)
               }
             >
               <h1
-                className={`text-[15px] font-bold mb-2 text-left mt-5 text-gray-800`}
+                className={`text-[15px] font-bold mb-2 text-left mt-5 text-black`}
               >
                 Certifications
               </h1>
 
-              <ul className="list-disc text-black px-5 flex flex-col gap-2 md:text-sm text-xs">
-                {data.certifications.map((item: any, i: number) => (
-                  <li key={i}>{item}</li>
+              <ul className="list-disc md:px-4 px-0 ml-5 mt-3 text-black flex flex-col gap-2 md:text-sm text-xs">
+                {data.certifications.map((item: string, i: number) => (
+                  <li className="" key={i}>
+                    {item}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -413,22 +424,19 @@ const Template3 = ({
                 handleCustomSectionClick("customSection", data.customSection)
               }
             >
-              {data.customSection && data.customSection.length < 1 ? (
-                <></>
-              ) : (
-                <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
-              )}
               <div className="mt-8 mb-8 cursor-pointer">
                 {data.customSection.map((item, idx) => (
                   <div key={idx} className=" cursor-pointer">
+                    <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
+
                     <h1
-                      className={`text-[15px] font-bold mb-2 text-left mt-5 text-gray-800 capitalize`}
+                      className={`text-[15px] font-bold mb-2 text-left mt-5 text-black capitalize`}
                     >
                       {item.title}
                     </h1>
-                    <ul className="list-disc text-black px-5 flex flex-col gap-2 md:text-sm text-xs">
-                      {item.value.map((item: any, i: number) => (
-                        <li key={i} className="capitalize">
+                    <ul className="list-disc md:px-4 px-0 ml-5 mt-3 text-black flex flex-col gap-2 md:text-sm text-xs">
+                      {item.value.map((item: string, i: number) => (
+                        <li className="" key={i}>
                           {item}
                         </li>
                       ))}

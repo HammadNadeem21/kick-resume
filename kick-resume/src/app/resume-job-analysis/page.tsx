@@ -41,22 +41,117 @@ const Page = () => {
     return text;
   };
 
+  // const onDrop = useCallback((acceptedFiles: File[]) => {
+  //   const file = acceptedFiles[0];
+  //   if (file && file.type === "application/pdf") {
+  //     setPdfFile(file);
+  //     setFileName(file.name);
+  //     setFile(file.name);
+  //   } else {
+  //     alert("Please upload a PDF file only.");
+  //   }
+  // }, []);
+
+  // const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  //   onDrop,
+  //   accept: { "application/pdf": [] },
+  //   multiple: false,
+  // });
+
+  //   const handleAnalyze = async () => {
+  //     if (!jobDescription || !pdfFile) {
+  //       alert("Please enter job description and upload resume!");
+  //       return;
+  //     }
+
+  //     setLoading(true);
+  //     setAnalysisResult(null);
+
+  //     try {
+  //       const resumeText = await extractTextFromPDF(pdfFile);
+
+  //       const model = genAi.getGenerativeModel({ model: "gemini-2.0-flash" });
+  //       const prompt = `
+  // Compare the following resume with the given job description. 
+  // Provide:
+  // 1. Compatibility score out of 100.
+  // 2. Skills match percentage (0–100).
+  // 3. Education match: Return "Matched" if the user's education aligns with the job description requirements, otherwise return "Not Matched".  
+  // 4. Experience match: Return "Matched" if the user's work experience aligns with the job description requirements, otherwise return "Not Matched".
+
+  // 5. Missing keywords/skills.
+  // 6. Specific detailed suggestions to improve the resume to match the job.
+
+  // Job Description:
+  // ${jobDescription}
+
+  // Resume:
+  // ${resumeText}
+
+  // Output JSON in this structure:
+  // {
+  //   "score": number,
+  //   "skillsMatch": number,
+  //   "educationMatch": "...",
+  //   "experienceMatch": "...",
+  //   "missingSkills": ["..."],
+  //   "suggestions": [
+  //   {
+  //   "heading": "...",
+  //   "content": "...."  
+  //   }
+  //   ]
+  // }
+  //       `;
+
+  //       const result = await model.generateContent(prompt);
+  //       const text = await result.response.text();
+  //       const match = text.match(/\{[\s\S]*\}/);
+  //       const jsonData = match ? JSON.parse(match[0]) : null;
+  //       console.log("AI Response:", jsonData);
+
+  //       if (!jsonData) {
+  //         throw new Error("Invalid AI response");
+  //       }
+
+  //       setAnalysisResult(jsonData);
+  //       console.log("AI Response:", jsonData);
+
+  //     } catch (error) {
+  //       console.error("Error analyzing:", error);
+  //       alert("Something went wrong");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
-    if (file && file.type === "application/pdf") {
+    if (
+      file &&
+      (file.type === "application/pdf" ||
+        file.type ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+    ) {
       setPdfFile(file);
       setFileName(file.name);
-      setFile(file.name);
     } else {
-      alert("Please upload a PDF file only.");
+      alert("Only PDF and DOCX files are accepted.");
     }
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "application/pdf": [] },
+    accept: {
+      "application/pdf": [".pdf"],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [".docx"],
+    },
     multiple: false,
   });
+
+
+
 
   const handleAnalyze = async () => {
     if (!jobDescription || !pdfFile) {
@@ -67,55 +162,21 @@ const Page = () => {
     setLoading(true);
     setAnalysisResult(null);
 
+    const formData = new FormData();
+    formData.append("resume", pdfFile);
+    formData.append("jobDescription", jobDescription);
     try {
-      const resumeText = await extractTextFromPDF(pdfFile);
+      const response = await fetch(process.env.NEXT_PUBLIC_FLASK_RESUME_JOB_ANALYSIS_API_URL || "http://127.0.0.1:5000/api/resumeJobAnalysis", {
+        method: "POST",
+        body: formData,
+      });
 
-      const model = genAi.getGenerativeModel({ model: "gemini-2.0-flash" });
-      const prompt = `
-Compare the following resume with the given job description. 
-Provide:
-1. Compatibility score out of 100.
-2. Skills match percentage (0–100).
-3. Education match: Return "Matched" if the user's education aligns with the job description requirements, otherwise return "Not Matched".  
-4. Experience match: Return "Matched" if the user's work experience aligns with the job description requirements, otherwise return "Not Matched".
-
-5. Missing keywords/skills.
-6. Specific detailed suggestions to improve the resume to match the job.
-
-Job Description:
-${jobDescription}
-
-Resume:
-${resumeText}
-
-Output JSON in this structure:
-{
-  "score": number,
-  "skillsMatch": number,
-  "educationMatch": "...",
-  "experienceMatch": "...",
-  "missingSkills": ["..."],
-  "suggestions": [
-  {
-  "heading": "...",
-  "content": "...."  
-  }
-  ]
-}
-      `;
-
-      const result = await model.generateContent(prompt);
-      const text = await result.response.text();
-      const match = text.match(/\{[\s\S]*\}/);
-      const jsonData = match ? JSON.parse(match[0]) : null;
-      console.log("AI Response:", jsonData);
-
-      if (!jsonData) {
-        throw new Error("Invalid AI response");
-      }
-
-      setAnalysisResult(jsonData);
-    } catch (error) {
+      const data = await response.json();
+      console.log("AI Response:", data.result[0]);
+      setAnalysisResult(data.result);
+      // console.log("AI Response:", analysisResult);
+    }
+    catch (error) {
       console.error("Error analyzing:", error);
       alert("Something went wrong");
     } finally {
@@ -161,7 +222,9 @@ Output JSON in this structure:
                 Upload your resume and paste the job description
               </p>
             </div>
-            <div
+
+            {/* File Uploader */}
+            {/* <div
               {...getRootProps()}
               className=" w-[100%] h-[250px] mt-5 border-2 border-dashed border-mySkyBlue rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer bg-white hover:bg-mySkyBlue/10 transition-all"
             >
@@ -186,26 +249,49 @@ Output JSON in this structure:
                   Uploaded: {fileName}
                 </div>
               )}
+            </div> */}
+
+            <div
+              {...getRootProps()}
+              className=" w-[100%] h-[250px] border-2 border-dashed border-mySkyBlue rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer bg-white hover:bg-mySkyBlue/10 transition-all"
+            >
+              <div className="py-3 px-3 mb-2 flex items-center justify-center bg-mySkyBlue/30 rounded-lg">
+                <LuUpload size={25} className="text-mySkyBlue" />
+              </div>
+              <input {...getInputProps()} />
+              {isDragActive ? (
+                <p className="text-mySkyBlue">Drop the PDF or DOC/DOCX here ...</p>
+              ) : (
+                <>
+                  <p className="text-mySkyBlue font-semibold">
+                    Drag & drop your PDF or DOC/DOCX resume here, or click to select
+                  </p>
+                  <p className="text-gray-500 text-sm mt-2">
+                    Only PDF and DOC/DOCX files are accepted
+                  </p>
+                </>
+              )}
             </div>
-            {file && (
+            {pdfFile && (
               <div className="border border-mySkyBlue bg-mySkyBlue/20 mt-5 rounded-lg py-3 px-3 flex items-center justify-between">
                 <div className="flex items-center justify-center gap-2">
                   <FaFileAlt size={20} className="text-mySkyBlue" />
-                  <span className="ml-2 text-gray-500">{file}</span>
+                  {/* <span className="ml-2 text-gray-500">{file}</span> */}
                 </div>
                 {/* Remove Button */}
                 <button
                   onClick={() => {
                     setPdfFile(null);
                     setFileName("");
-                    setFile("");
                   }}
-                  className="text-gray-500"
+                  className="text-gray-500 mt-2 hover:text-red-500"
                 >
-                  Remove
+                  {`Remove file.`}
                 </button>
               </div>
             )}
+
+
           </div>
 
           {/* Job Description Textarea */}
@@ -257,73 +343,73 @@ Output JSON in this structure:
                       Analysis Score
                     </p>
                     <SectionScoreChart
-                      score={analysisResult.score}
+                      score={analysisResult.compatibility_score}
                       textColor="#4b5563"
                     />
                   </div>
 
                   <div className="flex flex-col justify-center gap-1">
-                    {analysisResult.skillsMatch && (
+                    {analysisResult.skills_match_percentage && (
                       <div className="sm:text-lg text-sm font-semibold text-mySkyBlue">
-                        {analysisResult.skillsMatch > 80 ? (
+                        {analysisResult.skills_match_percentage > 80 ? (
                           <h1 className="flex items-center gap-1">
                             Skills Matched:{" "}
                             <span className="py-1 px-2 rounded-xl bg-green-600 text-white sm:text-sm text-xs">
-                              {analysisResult.skillsMatch}%
+                              {analysisResult.skills_match_percentage}%
                             </span>
                           </h1>
-                        ) : analysisResult.skillsMatch > 60 ? (
+                        ) : analysisResult.skills_match_percentage > 60 ? (
                           <h1 className="flex items-center gap-1">
                             Skills Matched:
                             <span className="py-1 px-2 rounded-xl bg-orange-600 text-white sm:text-sm text-xs">
-                              {analysisResult.skillsMatch}%
+                              {analysisResult.skills_match_percentage}%
                             </span>
                           </h1>
                         ) : (
                           <h1 className="flex items-center gap-1">
                             Skills Matched:
                             <span className="py-1 px-2 rounded-xl bg-red-600 text-white sm:text-sm text-xs">
-                              {analysisResult.skillsMatch}%
+                              {analysisResult.skills_match_percentage}%
                             </span>
                           </h1>
                         )}
                       </div>
                     )}
 
-                    {analysisResult.educationMatch && (
+                    {analysisResult.education_match && (
                       <div className="sm:text-lg text-sm font-semibold text-mySkyBlue">
-                        {analysisResult.educationMatch === "Matched" ? (
+                        {analysisResult.education_match === "Matched" ? (
                           <h1 className="flex items-center gap-1">
                             Education Matched:{" "}
                             <span className="py-1 px-2 rounded-xl bg-green-600 text-white sm:text-sm text-xs">
-                              {analysisResult.educationMatch}
+                              {analysisResult.education_match}
                             </span>
                           </h1>
                         ) : (
                           <h1 className="flex items-center gap-1">
                             Education Matched:{" "}
                             <span className="py-1 px-2 rounded-xl bg-red-600 text-white sm:text-sm text-xs">
-                              {analysisResult.educationMatch}
+                              {analysisResult.education_match}
                             </span>
                           </h1>
                         )}
                       </div>
                     )}
 
-                    {analysisResult.experienceMatch && (
+                    {analysisResult.experience_match && (
                       <div className="sm:text-lg text-sm font-semibold text-mySkyBlue">
-                        {analysisResult.experienceMatch === "Matched" ? (
+                        {analysisResult.experience_match === "Matched" ? (
                           <h1 className="flex items-center gap-1">
                             Experience Matched:{" "}
                             <span className="py-1 px-2 rounded-xl bg-green-600 text-white sm:text-sm text-xs">
-                              {analysisResult.experienceMatch}
+                              {analysisResult.experience_match}
                             </span>
                           </h1>
                         ) : (
                           <h1 className="flex items-center gap-1">
                             Experience Matched:{" "}
                             <span className="py-1 px-2 rounded-xl bg-red-600 text-white sm:text-sm text-xs">
-                              {analysisResult.experienceMatch}
+                              {analysisResult.experience_match}
                             </span>
                           </h1>
                         )}
@@ -354,7 +440,7 @@ Output JSON in this structure:
                   </p>
 
                   <p className="sm:text-lg text-sm text-[#4b5563]">
-                    {analysisResult.missingSkills?.join(", ") || "None"}
+                    {analysisResult.missing_keywords_skills?.join(", ") || "None"}
                   </p>
                 </div>
               </div>

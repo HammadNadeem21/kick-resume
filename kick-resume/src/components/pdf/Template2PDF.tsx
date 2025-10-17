@@ -7,13 +7,14 @@ import {
   Link,
 } from "@react-pdf/renderer";
 import type { PageProps } from "@react-pdf/renderer";
+import moment from "moment";
 
 const styles = StyleSheet.create({
   page: {
     backgroundColor: "#eef5ff",
     fontSize: 12,
     fontFamily: "Helvetica",
-    padding: 20,
+    padding: 16,
     color: "#374151", // Default text color
   },
   headerDivider: {
@@ -21,6 +22,12 @@ const styles = StyleSheet.create({
     borderBottomColor: "#9ca3af",
     // marginBottom: 10,
     marginTop: 10,
+  },
+  topDivider: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#9ca3af",
+    marginBottom: 10,
+    // marginTop: 4,
   },
   fullName: {
     fontSize: 34,
@@ -43,7 +50,7 @@ const styles = StyleSheet.create({
   leftColumn: {
     width: "35%",
     borderRightWidth: 1,
-    borderRightColor: "#374151",
+    borderRightColor: "#9ca3af",
     // padding: 10,
     paddingTop: 15,
   },
@@ -51,7 +58,7 @@ const styles = StyleSheet.create({
     width: "65%",
     // padding: 10,
     paddingTop: 15,
-    paddingLeft: 10,
+    // paddingLeft: 10,
   },
   sectionTitle: {
     fontSize: 15,
@@ -62,10 +69,8 @@ const styles = StyleSheet.create({
   contactItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 5,
-    marginTop: 5,
-    fontSize: 10,
-    fontWeight: "bold",
+    marginBottom: 3,
+    marginTop: 3,
   },
   contactText: {
     marginLeft: 5,
@@ -88,7 +93,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   bullet: {
-    fontSize: 10,
+    fontSize: 14,
     marginRight: 6,
     marginTop: 1,
   },
@@ -148,7 +153,7 @@ const styles = StyleSheet.create({
   projectLink: {
     fontSize: 11,
     color: "#666",
-    textDecoration: "underline",
+    textDecoration: "none",
     marginRight: 15,
   },
   projectLinksContainer: {
@@ -195,7 +200,7 @@ export default function Template2PDF({
   return (
     <Document>
       <Page size={size} style={styles.page}>
-        <View style={styles.headerDivider} />
+        <View style={styles.topDivider} />
         <Text style={styles.fullName}>{data.name}</Text>
         <Text style={styles.position}>{data.role}</Text>
         <View style={styles.headerDivider} />
@@ -203,16 +208,34 @@ export default function Template2PDF({
         <View style={styles.gridContainer}>
           {/* Left Column */}
           <View style={styles.leftColumn}>
-            {data.persnolInfoSection && data.persnolInfoSection.length > 0 && (
-              <View>
-                <Text style={styles.sectionTitle}>Contact</Text>
-                {data.persnolInfoSection.map((item: any, i: number) => (
-                  <View key={i} style={styles.contactItem}>
-                    <Text style={styles.contactText}>{item.title}</Text>
-                    <Text>{item.value}</Text>
-                  </View>
-                ))}
-                {/* <View style={{ marginBottom: 15 }}>
+            {data.personalInformation &&
+              data.personalInformation.length > 0 && (
+                <View>
+                  <Text style={styles.sectionTitle}>Contact</Text>
+                  {data.personalInformation.map((item: any, i: number) => (
+                    <View key={i} style={styles.contactItem}>
+                      <Text
+                        style={{
+                          ...styles.contactText,
+                          fontWeight: "bold",
+                          fontSize: 10,
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {item.title}:{" "}
+                      </Text>
+                      <Text
+                        style={{
+                          ...styles.contactText,
+                          fontWeight: "normal",
+                          fontSize: 10,
+                        }}
+                      >
+                        {item.value}
+                      </Text>
+                    </View>
+                  ))}
+                  {/* <View style={{ marginBottom: 15 }}>
             
               <View style={styles.contactItem}>
                 <Text style={styles.contactText}>Email: {data.email}</Text>
@@ -221,8 +244,8 @@ export default function Template2PDF({
                 <Text style={styles.contactText}>Address: {data.address}</Text>
               </View>
             </View> */}
-              </View>
-            )}
+                </View>
+              )}
 
             {data.education && data.education.length > 0 && (
               <View>
@@ -327,69 +350,154 @@ export default function Template2PDF({
               </View>
             )}
 
+            {data.customSection && data.customSection.length > 0 && (
+              <View>
+                {data.customSection?.map((item: any, i: number) => (
+                  <View key={i}>
+                    <View style={styles.headerDivider} />
+
+                    <View
+                      style={{
+                        marginTop: 10,
+                      }}
+                    >
+                      <Text style={styles.sectionTitle}>{item.title}</Text>
+                      <View style={styles.list}>
+                        {item.value.map((item: any, i: number) => (
+                          <View
+                            key={i}
+                            style={{ ...styles.listItem, width: "70%" }}
+                          >
+                            <Text style={styles.bullet}>•</Text>
+                            <Text style={{ textTransform: "capitalize" }}>
+                              {item}
+                            </Text>
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            )}
+
             {/* <View style={styles.headerDivider} /> */}
           </View>
 
           {/* Right Column */}
           <View style={styles.rightColumn}>
-            <View style={{ paddingHorizontal: 4 }}>
+            <View style={{ marginLeft: 8 }}>
               <Text style={styles.sectionTitle}>Profile Summary</Text>
               <Text style={styles.summaryText}>{data.summary}</Text>
             </View>
 
-            <Text style={styles.sectionTitle}>Work Experience</Text>
-            <View style={styles.list}>
-              {data.experience?.map((item: any, i: number) => (
-                <View key={i} style={styles.experienceItem}>
-                  <View style={styles.listItem}>
-                    <Text style={styles.bulletRight}>•</Text>
-                    <Text style={styles.experienceTitle}>{item.title}</Text>
-                  </View>
-                  <View>
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        lineHeight: 1.4,
-                        letterSpacing: 0.2,
-                      }}
-                    >
-                      {item.description}
-                    </Text>
-                    <Text
-                      style={{
-                        marginLeft: 8,
-                        fontStyle: "italic",
-                        fontSize: 8,
-                      }}
-                    >
-                      ({item.startDate} - {item.endDate})
-                    </Text>
-                  </View>
-                </View>
-              ))}
-            </View>
+            {data.experience && data.experience.length > 0 && (
+              <View style={styles.headerDivider} />
+            )}
 
-            <Text style={styles.sectionTitle}>Projects</Text>
-            <View style={styles.list}>
-              {data.projects?.map((item: any, i: number) => (
-                <View key={i} style={styles.projectItem}>
-                  <Text style={styles.projectTitle}>{item.name}</Text>
-                  <Text style={styles.projectDescription}>
-                    {item.description}
-                  </Text>
-                  <View
-                    style={{ ...styles.projectLinksContainer, fontSize: 8 }}
-                  >
-                    <Link style={styles.projectLink} src={item.github}>
-                      GitHub
-                    </Link>
-                    <Link style={styles.projectLink} src={item.live}>
-                      Live Demo
-                    </Link>
-                  </View>
+            {data.experience && data.experience.length > 0 && (
+              <View style={{ marginLeft: 8, marginTop: 8 }}>
+                <Text style={styles.sectionTitle}>Work Experience</Text>
+                <View style={styles.list}>
+                  {data.experience?.map((item: any, i: number) => (
+                    <View key={i} style={styles.experienceItem}>
+                      <View style={styles.listItem}>
+                        <Text style={styles.bulletRight}>•</Text>
+                        <Text style={styles.experienceTitle}>{item.title}</Text>
+                      </View>
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: 10,
+                            lineHeight: 1.4,
+                            letterSpacing: 0.2,
+                          }}
+                        >
+                          {item.description}
+                        </Text>
+                        {item.startDate && item.endDate && (
+                          <Text
+                            style={{
+                              marginLeft: 8,
+                              fontStyle: "italic",
+                              fontSize: 8,
+                            }}
+                          >
+                            {`(${moment(item.startDate).format("MMM YYYY")} - ${
+                              item.endDate === "Currently Working"
+                                ? "Currently Working"
+                                : moment(item.endDate).isValid()
+                                ? moment(item.endDate).format("MMM YYYY")
+                                : ""
+                            })`}
+                          </Text>
+                        )}
+                      </View>
+                    </View>
+                  ))}
                 </View>
-              ))}
-            </View>
+              </View>
+            )}
+
+            {data.projects && data.projects.length && (
+              <View style={styles.headerDivider} />
+            )}
+
+            {data.projects && data.projects.length > 0 && (
+              <View style={{ marginLeft: 8, marginTop: 8 }}>
+                <Text style={styles.sectionTitle}>Projects</Text>
+                <View style={styles.list}>
+                  {data.projects?.map((item: any, i: number) => (
+                    <View key={i} style={styles.projectItem}>
+                      <Text style={styles.projectTitle}>{item.name}</Text>
+                      <Text style={styles.projectDescription}>
+                        {item.description}
+                      </Text>
+                      <View
+                        style={{ ...styles.projectLinksContainer, fontSize: 8 }}
+                      >
+                        <Link style={styles.projectLink} src={item.github}>
+                          GitHub
+                        </Link>
+                        <Link style={styles.projectLink} src={item.live}>
+                          Live Demo
+                        </Link>
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            )}
+
+            {data.customSection2 && data.customSection2.length > 0 && (
+              <View>
+                {data.customSection2.map((item: any, i: number) => (
+                  <View key={i}>
+                    <View style={styles.headerDivider} />
+
+                    <View style={{ marginLeft: 8, marginTop: 8 }}>
+                      <Text style={styles.sectionTitle}>Projects</Text>
+                      {item.value.map((item: any, i: number) => (
+                        <View
+                          key={i}
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "flex-start",
+                            // gap: 2,
+                          }}
+                        >
+                          <Text style={styles.bulletRight}>•</Text>
+                          <Text style={styles.projectDescription}>{item}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                ))}
+              </View>
+            )}
+
             {/* <View style={styles.headerDivider} /> */}
           </View>
         </View>

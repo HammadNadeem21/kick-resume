@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import CustomSection from "../CustomSection/CustomSection";
+import CustomSection from "../Editors/CustomSection/CustomSection";
 import moment from "moment";
 
 const educationData = [
@@ -127,7 +127,7 @@ const Template2 = ({
   return (
     <div
       style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
-      className={`bg-myWhite md:px-5 px-2 py-5 text-gray-700 mx-auto shadow-lg shadow-mySkyBlue ${
+      className={`bg-myWhite page-break-lines md:px-5 px-2 py-5 text-gray-700 mx-auto shadow-lg shadow-mySkyBlue ${
         isLegal ? "max-w-[794px]" : "max-w-[842px]"
       }`}
     >
@@ -178,10 +178,12 @@ const Template2 = ({
                   {data.personalInformation.map((item, idx) => (
                     <div
                       key={idx}
-                      className="flex items-start gap-1 md:text-[14px] text-[10px] text-gray-700 cursor-pointer"
+                      className="flex items-center gap-1 md:text-[14px]  sm:text-[10px] text-[8px] text-gray-700 cursor-pointer"
                     >
                       <h1 className="font-bold capitalize">{item.title}:</h1>
-                      <h2 className="font-medium text-xs mt-1">{item.value}</h2>
+                      <h2 className="font-medium md:text-xs sm:text-[10px] text-[8px] sm:mt-1 mt-0 break-words w-[90%]">
+                        {item.value}
+                      </h2>
                     </div>
                   ))}
                 </div>
@@ -212,7 +214,7 @@ const Template2 = ({
                   {data.education.map((item: any, i: number) => (
                     <div
                       key={i}
-                      className="grid grid-cols-[1fr,auto] items-center justify-between "
+                      className="grid grid-cols-[1fr,auto] items-center justify-between sm:ml-0 ml-1"
                     >
                       <ul className="list-disc ">
                         <li>{item.degree}</li>
@@ -232,13 +234,19 @@ const Template2 = ({
                 <h1 className="md:text-xl text-sm font-bold text-gray-700">
                   Skills
                 </h1>
-                <ul className="list-disc md:px-5 px-0 mt-3 text-gray-700">
-                  {data.skills.map((item: string, i: number) => (
-                    <li className="md:text-[15px] text-xs mt-1" key={i}>
-                      {item}
-                    </li>
+
+                <div className="md:px-3 px-0 ml-2 mt-3 text-gray-700  md:text-[15px] text-[10px]">
+                  {data.skills.map((item: any, i: number) => (
+                    <div
+                      key={i}
+                      className="grid grid-cols-[1fr,auto] items-center justify-between sm:ml-0 ml-1"
+                    >
+                      <ul className="list-disc ">
+                        <li>{item}</li>
+                      </ul>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
 
@@ -254,13 +262,19 @@ const Template2 = ({
                 <h1 className="md:text-xl text-sm font-bold text-gray-700">
                   Languages
                 </h1>
-                <ul className="list-disc md:px-5 px-0 mt-3 text-gray-700">
-                  {data.languages.map((item: string, i: number) => (
-                    <li className="md:text-[15px] text-xs mt-1" key={i}>
-                      {item}
-                    </li>
+
+                <div className="md:px-3 px-0 ml-2 mt-3 text-gray-700  md:text-[15px] text-[10px]">
+                  {data.skills.map((item: any, i: number) => (
+                    <div
+                      key={i}
+                      className="grid grid-cols-[1fr,auto] items-center justify-between sm:ml-0 ml-1"
+                    >
+                      <ul className="list-disc ">
+                        <li>{item}</li>
+                      </ul>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
 
@@ -273,26 +287,32 @@ const Template2 = ({
                 }
                 className={`md:px-3 px-0 py-3 cursor-pointer ${
                   data.customSection && data.customSection.length > 0
-                    ? "border-b  border-b-gray-400"
+                    ? "border-none"
                     : "border-none"
                 }`}
               >
                 <h1 className="md:text-xl text-xs font-bold text-gray-700">
                   Certifications
                 </h1>
-                <ul className="list-disc md:px-5 px-0 mt-3 text-gray-700">
-                  {data.certifications.map((item: string, i: number) => (
-                    <li className="md:text-[15px] text-xs mt-1" key={i}>
-                      {item}
-                    </li>
+
+                <div className="md:px-3 px-0 ml-2 mt-3 text-gray-700  md:text-[15px] text-[10px]">
+                  {data.skills.map((item: any, i: number) => (
+                    <div
+                      key={i}
+                      className="grid grid-cols-[1fr,auto] items-center justify-between sm:ml-0 ml-1"
+                    >
+                      <ul className="list-disc ">
+                        <li>{item}</li>
+                      </ul>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
 
             {/* Custom Section */}
             <div
-              className="md:px-3 px-0 py-3 cursor-pointer"
+              className="md:px-3 px-0  cursor-pointer"
               onClick={() =>
                 handleCustomSectionClick("customSection", data.customSection)
               }
@@ -300,23 +320,26 @@ const Template2 = ({
               {data.customSection && data.customSection.length > 0 ? (
                 <div className="">
                   {data.customSection.map((item, idx) => (
-                    <div key={idx}>
+                    <div key={idx} className="border-t  border-t-gray-400 py-3">
                       <div key={idx} className=" cursor-pointer">
                         <h1
                           className={`md:text-xl text-xs font-bold text-gray-700`}
                         >
                           {item.title}
                         </h1>
-                        <ul className="list-disc md:px-5 px-0 mt-3 text-gray-700">
-                          {item.value.map((item: any, i: number) => (
-                            <li
+
+                        <div className="md:px-3 px-0 ml-2 mt-3 text-gray-700  md:text-[15px] text-[10px]">
+                          {data.skills.map((item: any, i: number) => (
+                            <div
                               key={i}
-                              className="capitalize md:text-[15px] text-xs mt-1"
+                              className="grid grid-cols-[1fr,auto] items-center justify-between sm:ml-0 ml-1"
                             >
-                              {item}
-                            </li>
+                              <ul className="list-disc ">
+                                <li>{item}</li>
+                              </ul>
+                            </div>
                           ))}
-                        </ul>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -339,7 +362,7 @@ const Template2 = ({
               Profile Summary
             </h1>
             <p
-              className="mt-3 text-gray-700  md:text-[15px] text-xs leading-5 cursor-pointer"
+              className="mt-3 text-gray-700  md:text-[15px] sm:text-xs text-[10px] sm:leading-5 leading-3 cursor-pointer"
               onClick={() => handleStringFeildClick("summary", data.summary)}
             >
               {data.summary}
@@ -352,15 +375,15 @@ const Template2 = ({
               onClick={() =>
                 handleExperienceFieldClick("experience", data.experience)
               }
-              className="md:px-1 px-2 py-3 border-b border-b-gray-400 cursor-pointer"
+              className="md:px-5 px-2 py-3 border-b border-b-gray-400 cursor-pointer"
             >
-              <h1 className="md:text-xl ml-2 text-sm font-bold text-gray-700">
+              <h1 className="md:text-xl text-sm font-bold text-gray-700">
                 Work Experience
               </h1>
 
               {data.experience && data.experience.length > 0 ? (
                 <div
-                  className=" md:px-4 px-0 mt-3 text-gray-700"
+                  className=" md:px-0 px-0 mt-3 text-gray-700"
                   onClick={() =>
                     handleExperienceFieldClick("experience", data.experience)
                   }
@@ -368,25 +391,29 @@ const Template2 = ({
                   {data.experience.map((item: any, i: number) => (
                     <div className="mt-2 mb-2" key={i}>
                       <div className="flex flex-col items-start gap-1">
-                        <ul className="list-disc ml-4 md:text-sm text-xs font-semibold">
+                        <ul className="list-disc ml-4 md:text-sm sm:text-xs text-[11px] font-semibold">
                           <li>{item.title}</li>
                         </ul>
-                        <p className="text-sm">{item.description}</p>
+                        <p className="sm:text-sm text-[10px] sm:leading-5 leading-3">
+                          {item.description}
+                        </p>
 
-                        <div className="flex items-center gap-2 md:text-xs text-[7px] italic ml-2">
-                          <span>{`(${moment(item.startDate).format(
-                            "MMM YYYY"
-                          )}`}</span>
-                          <span>
-                            {" "}
-                            {item.endDate === "Currently working"
-                              ? "Currently working"
-                              : moment(item.endDate).isValid()
-                              ? moment(item.endDate).format("MMM YYYY")
-                              : ""}
-                            {")"}
-                          </span>
-                        </div>
+                        {item.startDate && item.endDate && (
+                          <div className="flex items-center gap-2 md:text-xs text-[8px] italic ml-2">
+                            <span>{`(${moment(item.startDate).format(
+                              "MMM YYYY"
+                            )}`}</span>
+                            <span>
+                              {" "}
+                              {item.endDate === "Currently Working"
+                                ? "Currently Working"
+                                : moment(item.endDate).isValid()
+                                ? moment(item.endDate).format("MMM YYYY")
+                                : ""}
+                              {")"}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -408,14 +435,14 @@ const Template2 = ({
             {/* Projects */}
 
             <div
-              className={`md:px-1 px-2 py-3 cursor-pointer ${
+              className={`md:px-5 px-2 py-3 cursor-pointer ${
                 data.customSection2 && data.customSection2.length > 0
                   ? "border-b border-b-gray-400"
                   : "border-none"
               }`}
               onClick={() => handleProjectFieldClick("projects", data.projects)}
             >
-              <h1 className="md:text-xl ml-2 text-sm font-bold text-gray-700">
+              <h1 className="md:text-xl text-sm font-bold text-gray-700">
                 Projects
               </h1>
 
@@ -427,11 +454,13 @@ const Template2 = ({
                   }
                 >
                   {data.projects.map((item: any, i: number) => (
-                    <li className="mt-5 mb-5" key={i}>
-                      <h1 className="md:text-lg text-sm font-semibold">
+                    <li className="mt-2 mb-5" key={i}>
+                      <h1 className="md:text-lg sm:text-sm text-xs font-semibold">
                         {item.name}
                       </h1>
-                      <p className="md:text-sm text-xs">{item.description}</p>
+                      <p className="sm:text-sm text-[10px] sm:leading-5 leading-3">
+                        {item.description}
+                      </p>
                       <div className="flex items-center gap-[100px] mt-3">
                         <Link
                           href={"/aiprompt"}
@@ -470,7 +499,7 @@ const Template2 = ({
 
             {/* Custom Section */}
             <div
-              className={`md:px-1 px-2 py-3 cursor-pointer`}
+              className={`md:px-5 px-2 py-3 cursor-pointer`}
               onClick={() =>
                 handleCustomSection2Click("customSection2", data.customSection2)
               }
@@ -479,12 +508,15 @@ const Template2 = ({
                 <div className="">
                   {data.customSection2.map((item, idx) => (
                     <div key={idx} className="mt-2">
-                      <h1 className="md:text-xl ml-2 text-sm font-bold text-gray-700 capitalize">
+                      <h1 className="md:text-xl text-sm font-bold text-gray-700 capitalize">
                         {item.title}
                       </h1>
-                      <ul className="list-disc ml-8 md:text-[15px] sm:text-[11px] text-[10px] md:leading-6 sm:leading-4 leading-3">
+                      <ul className="list-disc ml-5 mt-1 md:text-[15px] sm:text-[11px] text-[10px] md:leading-6 sm:leading-4 leading-3">
                         {item.value.map((item: any, i: number) => (
-                          <li key={i} className="md:text-sm text-xs">
+                          <li
+                            key={i}
+                            className="sm:text-sm text-[10px] sm:leading-5 leading-3"
+                          >
                             {item}
                           </li>
                         ))}

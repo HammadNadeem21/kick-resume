@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        mlg: "1280px",
+      },
       colors: {
         primaryColor: "#022c3a",
         myWhite: "#EEF5FF",

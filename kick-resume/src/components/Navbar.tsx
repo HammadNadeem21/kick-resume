@@ -69,7 +69,6 @@ const Navbar = () => {
   const dropdownRef = useRef<HTMLUListElement | null>(null);
   const pathname = usePathname();
 
-
   useEffect(() => {
     setShowDropdown(false);
   }, [pathname]);
@@ -78,73 +77,34 @@ const Navbar = () => {
     <div className="bg-mySkyBlue/30 shadow-[0px_1px_4px_0px_rgba(0,_0,_0,_0.1)]  shadow-mySkyBlue">
       <header className="  max-w-[1600px] px-5 mx-auto  body-font  ">
         <div className="flex items-center justify-between py-5 px-4">
-          {/* Logo */}
-          <Link href={"/"}>
-            <div className=" h-10 sm:w-[180px] w-auto flex items-center">
-              <h1 className="sm:text-xl text-lg font-extrabold bg-gradient-to-r from-blue-400 via-purple-400 to-orange-400 bg-clip-text text-transparent">
-                AI Resume{" "}
-              </h1>
-            </div>
-          </Link>
-
-          {/* Navbar */}
-          <nav className="lg:flex  hidden relative ">
-
-            <ul className="flex items-center justify-center gap-5  font-semibold ">
-
-              <DropdownMenuRadioGroupDemo />
-
-              <li>
-                <Link
-                  href="/pricing"
-                  className={`text-[15px] text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${pathname === "/pricing" ? "bg-mySkyBlue" : ""
-                    }`}
-                >
-                  Pricing
-                </Link>
-              </li>
-            </ul>
-
-            {/* {showDropdown && (
-              <ul className="absolute transition-all duration-500 top-[40px] bg-mySkyBlue rounded-lg py-1 px-2 text-[15px] text-gray-600 flex flex-col justify-center gap-2">
-                <li className="hover:bg-gray-200/50 rounded-lg py-1 px-2">
-                  <Link href="/ai-resume-analyzer">Ai Resume Analyzer</Link>
-                </li>
-                <li className="hover:bg-gray-200/50 rounded-lg py-1 px-2">
-                  <Link href="/ai-resume-builder">Ai Resume Builder</Link>
-                </li>
-
-                <li className="hover:bg-gray-200/50 rounded-lg py-1 px-2">
-                  <Link href="/job-matcher">Job Matcher</Link>
-                </li>
-                <li className="hover:bg-gray-200/50 rounded-lg py-1 px-2">
-                  <Link href="/resume-job-analysis">Resume vs Job</Link>
-                </li>
-                <li className="hover:bg-gray-200/50 rounded-lg py-1 px-2">
-                  <Link href="/resume-job-analysis">Resume vs Job</Link>
-                </li>
-              </ul>
-            )} */}
-
-            {/* <Link
-              href="/job-matcher"
-              className={`text-[15px] text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
-                pathname === "/job-matcher" ? "bg-mySkyBlue" : ""
-              }`}
-            >
-              Job
+          <div className="flex items-center justify-center gap-10">
+            {/* Logo */}
+            <Link href={"/"}>
+              <div className=" h-10 sm:w-[180px] w-auto flex items-center">
+                <h1 className="sm:text-xl text-lg font-extrabold bg-gradient-to-r from-blue-400 via-purple-400 to-orange-400 bg-clip-text text-transparent">
+                  AI Resume{" "}
+                </h1>
+              </div>
             </Link>
 
-            <Link
-              href="/resume-job-analysis"
-              className={`text-[15px] text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
-                pathname === "/resume-job-analysis" ? "bg-mySkyBlue" : ""
-              }`}
-            >
-              Resume
-            </Link> */}
-            {/* </div> */}
-          </nav>
+            {/* Navbar */}
+            <nav className="lg:flex  hidden relative">
+              <ul className="flex items-center justify-center gap-5  font-semibold ">
+                <DropdownMenuRadioGroupDemo />
+
+                <li>
+                  <Link
+                    href="/pricing"
+                    className={`text-lg text-gray-600 hover:bg-mySkyBlue py-1 px-3 rounded-xl ${
+                      pathname === "/pricing" ? "bg-mySkyBlue" : ""
+                    }`}
+                  >
+                    Pricing
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+          </div>
 
           <div className="flex items-center  sm:gap-4 gap-2 ">
             {/* <button className=" py-1 px-4 focus:outline-none  rounded-lg text-base mt-4 md:mt-0 text-myWhite border border-myWhite hover:bg-myWhite hover:text-primaryColor transition-all duration-300">

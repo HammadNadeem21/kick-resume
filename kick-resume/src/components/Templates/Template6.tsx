@@ -72,8 +72,10 @@ const Template6 = ({
 }) => {
   return (
     <div
-      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7 mx-auto ${isLegal ? "max-w-[794px]" : "max-w-[842px]"
-        }`}
+      style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7 mx-auto ${
+        isLegal ? "max-w-[794px]" : "max-w-[842px]"
+      }`}
     >
       <div className="flex flex-col gap-2 items-start justify-center w-full">
         <div className="text-center">
@@ -139,7 +141,6 @@ const Template6 = ({
 
       <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
 
-
       {/* Experience */}
 
       <div
@@ -157,24 +158,27 @@ const Template6 = ({
             {data.experience.map((item: any, i: number) => (
               <div key={i} className="flex flex-col mt-3">
                 <div className="flex justify-between">
-                  <div className="md:text-[16px] text-sm flex flex-col gap-1 justify-center">
+                  <div className="md:text-[16px] text-sm flex flex-col gap-[3px] justify-center">
                     <h1 className="font-bold text-blue-500">
                       {item.companyName}
                     </h1>
-                    <h2 className="">{item.title}</h2>
+                    <h2 className="md:text-sm">{item.title}</h2>
                   </div>
 
                   <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
-                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${item.endDate === "Currently working"
-                      ? "Currently working"
-                      : moment(item.endDate).isValid()
+                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${
+                      item.endDate === "Currently working"
+                        ? "Currently working"
+                        : moment(item.endDate).isValid()
                         ? moment(item.endDate).format("MMM YYYY")
                         : ""
-                      })`}</span>
+                    })`}</span>
                   </div>
                 </div>
 
-                <li className="md:text-sm text-xs mt-1">{item.description}</li>
+                <li className="md:text-xs text-xs mt-1 ml-[18px]">
+                  {item.description}
+                </li>
               </div>
             ))}
           </div>
@@ -190,9 +194,7 @@ const Template6 = ({
             </h1>
           </div>
         )}
-
       </div>
-
 
       {/* Divider */}
       {data.education && data.education.length > 0 && (
@@ -280,7 +282,6 @@ const Template6 = ({
 
       <div className="h-[3px] w-full bg-black mt-3 mb-3"></div>
 
-
       {/* Project */}
       <div
         className="cursor-pointer"
@@ -297,7 +298,7 @@ const Template6 = ({
                 <h1 className="md:text-[16px] text-sm font-semibold">
                   {item.name}
                 </h1>
-                <p className="md:text-sm text-xs ">{item.description}</p>
+                <p className="md:text-xs text-xs ">{item.description}</p>
                 {item.github && item.live && (
                   <div className="flex items-center md:gap-[100px] gap-[70px] mt-1 md:text-sm text-xs text-blue-500">
                     <Link
@@ -319,15 +320,16 @@ const Template6 = ({
             ))}
           </ul>
         ) : (
-          <div className="mb-5 mt-5"
+          <div
+            className="mb-5 mt-5"
             onClick={() => handleProjectFieldClick("projects", data.projects)}
           >
-            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects</h1>
+            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+              Click here to add projects
+            </h1>
           </div>
         )}
-
       </div>
-
 
       {/* Custom Section */}
       {data.customSection2 && data.customSection2.length > 0 ? (

@@ -64,8 +64,10 @@ const Template5 = ({
 }) => {
   return (
     <div
-      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7  mx-auto ${isLegal ? "max-w-[794px]" : "max-w-[842px]"
-        }`}
+      style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7  mx-auto ${
+        isLegal ? "max-w-[794px]" : "max-w-[842px]"
+      }`}
     >
       <div className="flex flex-col gap-2 md:items-center items-start justify-center">
         <div className="text-center">
@@ -157,12 +159,13 @@ const Template5 = ({
                   </div>
 
                   <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
-                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${item.endDate === "Currently working"
-                      ? "Currently working"
-                      : moment(item.endDate).isValid()
+                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${
+                      item.endDate === "Currently working"
+                        ? "Currently working"
+                        : moment(item.endDate).isValid()
                         ? moment(item.endDate).format("MMM YYYY")
                         : ""
-                      })`}</span>
+                    })`}</span>
                     {/* <span>{`${item.endDate})`}</span> */}
                   </div>
                 </div>
@@ -264,7 +267,6 @@ const Template5 = ({
 
       <div className="h-[2px] w-full bg-gray-400 mt-3 mb-3"></div>
 
-
       {/* Project */}
 
       <div
@@ -276,7 +278,7 @@ const Template5 = ({
         </h1>
 
         {data.projects && data.projects.length > 0 ? (
-          < ul className="md:px-5 px-0 ml-3 mt-3 text-black list-disc md:text-lg text-sm">
+          <ul className="md:px-5 px-0 ml-3 mt-3 text-black list-disc md:text-lg text-sm">
             {data.projects.map((item: any, i: number) => (
               <li className="mt-5 mb-5" key={i}>
                 <h1 className="md:text-[16px] text-sm font-semibold">
@@ -302,60 +304,59 @@ const Template5 = ({
             ))}
           </ul>
         ) : (
-          <div className="mb-5 mt-5"
+          <div
+            className="mb-5 mt-5"
             onClick={() => handleProjectFieldClick("projects", data.projects)}
           >
-            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects</h1>
-          </div>
-        )}
-
-      </div>
-
-
-      {/* Custom Section */}
-      {
-        data.customSection2 && data.customSection2.length > 0 ? (
-          <div
-            className={`cursor-pointer`}
-            onClick={() =>
-              handleCustomSection2Click("customSection2", data.customSection2)
-            }
-          >
-            {data.customSection2.map((item, idx) => (
-              <div key={idx} className="cursor-pointer">
-                {data.customSection2 && data.customSection2.length < 1 ? (
-                  <></>
-                ) : (
-                  <div className="h-[2px] w-full bg-gray-400 mt-3 mb-3"></div>
-                )}
-
-                <h1 className="md:text-xl text-lg text-center font-bold text-gray-800 capitalize">
-                  {item.title}
-                </h1>
-                <ul className="md:px-5 px-0 ml-3 mt-2 text-black list-disc">
-                  {item.value.map((item: any, i: number) => (
-                    <li key={i} className="md:text-sm text-xs ">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div
-            className="mt-5"
-            onClick={() =>
-              handleCustomSection2Click("customSection2", data.customSection2)
-            }
-          >
             <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
-              Click here and add custom section
+              Click here to add projects
             </h1>
           </div>
-        )
-      }
-    </div >
+        )}
+      </div>
+
+      {/* Custom Section */}
+      {data.customSection2 && data.customSection2.length > 0 ? (
+        <div
+          className={`cursor-pointer`}
+          onClick={() =>
+            handleCustomSection2Click("customSection2", data.customSection2)
+          }
+        >
+          {data.customSection2.map((item, idx) => (
+            <div key={idx} className="cursor-pointer">
+              {data.customSection2 && data.customSection2.length < 1 ? (
+                <></>
+              ) : (
+                <div className="h-[2px] w-full bg-gray-400 mt-3 mb-3"></div>
+              )}
+
+              <h1 className="md:text-xl text-lg text-center font-bold text-gray-800 capitalize">
+                {item.title}
+              </h1>
+              <ul className="md:px-5 px-0 ml-3 mt-2 text-black list-disc">
+                {item.value.map((item: any, i: number) => (
+                  <li key={i} className="md:text-sm text-xs ">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div
+          className="mt-5"
+          onClick={() =>
+            handleCustomSection2Click("customSection2", data.customSection2)
+          }
+        >
+          <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+            Click here and add custom section
+          </h1>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -61,3 +61,13 @@ input[type="number"]::-webkit-outer-spin-button {
     transform: scale(0.5);
   }
 }
+
+/* .page-break-lines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 1122px,
+    black 1122px,
+    black 1123px
+  );
+} */

@@ -87,8 +87,10 @@ const Template4 = ({
 }) => {
   return (
     <div
-      className={`bg-myWhite mx-auto shadow-lg shadow-mySkyBlue ${isLegal ? "max-w-[794px]" : "max-w-[842px]"
-        }`}
+      style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+      className={`bg-myWhite mx-auto shadow-lg shadow-mySkyBlue ${
+        isLegal ? "max-w-[794px]" : "max-w-[842px]"
+      }`}
     >
       <div
         className="grid grid-cols-[70%,30%] gap-3 w-[100%] px-5 py-5"
@@ -114,7 +116,7 @@ const Template4 = ({
 
           {/* personal information */}
           <div
-            className="w-[70%]"
+            className="w-[100%] "
             onClick={() =>
               handlePersonalInformationClick(
                 "personalInformation",
@@ -123,7 +125,7 @@ const Template4 = ({
             }
           >
             {data.personalInformation && data.personalInformation.length > 0 ? (
-              <div className="mb-2 flex items-center justify-between flex-wrap gap-3 mt-2">
+              <div className="mb-2 flex items-start justify-between flex-wrap gap-x-[70px]  mt-2">
                 {data.personalInformation.map((item, idx) => (
                   <div
                     key={idx}
@@ -145,8 +147,9 @@ const Template4 = ({
         </div>
 
         <div
-          className={`flex justify-end items-center h-[150px] w-[150px] mt-4 rounded-full overflow-hidden ${imageBgColor || "bg-gray-300"
-            }`}
+          className={`flex justify-end items-center ml-[60px] h-[150px] w-[150px] mt-4 rounded-full overflow-hidden ${
+            imageBgColor || "bg-gray-300"
+          }`}
         >
           <Image
             src={imageUrl ?? "/dummy.jpg"}
@@ -207,12 +210,13 @@ const Template4 = ({
                       <div className="flex justify-start items-center gap-4 md:text-[10px] text-[7px]">
                         <span>{`( ${moment(item.startDate).format(
                           "MMM YYYY"
-                        )} - ${item.endDate === "Currently working"
-                            ? "Currently working"
+                        )} - ${
+                          item.endDate === "Currently Working"
+                            ? "Currently Working"
                             : moment(item.endDate).isValid()
-                              ? moment(item.endDate).format("MMM YYYY")
-                              : ""
-                          } )`}</span>
+                            ? moment(item.endDate).format("MMM YYYY")
+                            : ""
+                        } )`}</span>
                       </div>
                       <p className="md:text-xs text-[10px] text-gray-800">
                         {item.description}
@@ -228,10 +232,11 @@ const Template4 = ({
                   handleExperienceFieldClick("experience", data.experience)
                 }
               >
-                <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add experience</h1>
+                <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                  Click here to add experience
+                </h1>
               </div>
             )}
-
           </div>
 
           {/* Project */}
@@ -274,7 +279,7 @@ const Template4 = ({
                     <p className="md:text-xs text-[10px] font-medium text-gray-800">
                       {item.description}
                     </p>
-                    <div className="flex items-center md:gap-[100px] gap-[70px] mt-1 text-gray-800 md:text-sm text-xs">
+                    <div className="flex items-center md:gap-[100px] gap-[70px] mt-1 text-gray-800 md:text-sm text-xs font-normal">
                       <Link
                         href={"#"}
                         className="hover:underline hover:underline-offset-2 flex items-center gap-2"
@@ -293,14 +298,17 @@ const Template4 = ({
                 ))}
               </ul>
             ) : (
-              <div className="mb-5 mt-5"
-                onClick={() => handleProjectFieldClick("projects", data.projects)}
+              <div
+                className="mb-5 mt-5"
+                onClick={() =>
+                  handleProjectFieldClick("projects", data.projects)
+                }
               >
-                <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects</h1>
+                <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                  Click here to add projects
+                </h1>
               </div>
             )}
-
-
           </div>
 
           {/* Custom Section */}
@@ -312,11 +320,6 @@ const Template4 = ({
           >
             {data.customSection2 && data.customSection2.length > 0 ? (
               <div className="">
-                {/* {data.customSection2 && data.customSection2.length < 1 ? (
-                  <></>
-                ) : (
-                  <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
-                )} */}
                 {data.customSection2.map((item, idx) => (
                   <div key={idx} className="cursor-pointer mt-4">
                     <div
@@ -374,196 +377,167 @@ const Template4 = ({
                 Summary
               </h1>
             </div>
-            {/* <div className="md:px-4 px-0 ml-5 mt-3 text-black flex flex-col gap-3">
-                            {data.education.map((item: any, i: number) => (
-                                <div
-                                    key={i}
-                                    className=" items-center justify-between "
-                                >
-                                    <ul className="list-disc md:text-sm text-xs">
-                                        <li>{item.degree}</li>
-                                    </ul>
-                                    <p className="text-gray-500 md:text-sm text-[9px] text-right">
-                    ({item.startYear} - {item.endYear})
-                  </p>
-                                </div>
-                            ))}
-                        </div> */}
+
             <p className="text-gray-800 md:text-sm text-xs mt-2 leading-relaxed">
               {data.summary}
             </p>
           </div>
 
           {/* Education */}
-          {/* Education */}
-          <div
-            className="cursor-pointer mt-4"
-            onClick={() =>
-              handleEducationFieldClick("education", data.education)
-            }
-          >
+          {data.education && data.education.length > 0 && (
             <div
-              className=" mt-[1px] px-1 border-b-2"
-              style={{
-                borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
-              }}
+              className="cursor-pointer mt-4"
+              onClick={() =>
+                handleEducationFieldClick("education", data.education)
+              }
             >
-              <h1
-                className="md:text-xl text-lg font-bold"
-                style={{ color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}
+              <div
+                className=" mt-[1px] px-1 border-b-2"
+                style={{
+                  borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+                }}
               >
-                Education
-              </h1>
-            </div>
-            <div className="md:px-4 px-0 ml-5 mt-3 flex flex-col gap-1">
-              {data.education.map((item: any, i: number) => (
-                <div
-                  key={i}
-                  className=" items-center justify-between text-gray-800"
+                <h1
+                  className="md:text-xl text-lg font-bold"
+                  style={{
+                    color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+                  }}
                 >
-                  <ul className="list-disc md:text-sm text-xs text-gray-800">
-                    <li>{item.degree}</li>
-                  </ul>
-                  {/* <p className="text-gray-500 md:text-sm text-[9px] text-right">
-                                        ({item.startYear} - {item.endYear})
-                                    </p> */}
-                </div>
-              ))}
+                  Education
+                </h1>
+              </div>
+              <div className="md:px-4 px-0 ml-5 mt-3 flex flex-col gap-1">
+                {data.education.map((item: any, i: number) => (
+                  <div
+                    key={i}
+                    className=" items-center justify-between text-gray-800"
+                  >
+                    <ul className="list-disc md:text-sm text-xs text-gray-800">
+                      <li>{item.degree}</li>
+                    </ul>
+                  </div>
+                ))}
+              </div>
             </div>
-            {/* <p className='text-gray-800 md:text-xs text-[10px] mt-2'>{data.summary}</p> */}
-          </div>
-
-          {/* Divider */}
-          {/* <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div> */}
-
-          {/* Skills */}
-          {/* <div className='cursor-pointer'
-                        onClick={() => handleArrayFieldClick('skills', data.skills)}
-                    >
-                        <div className="md:px-2 px-1 py-[2px]">
-                            <h1 className="text-[15px] font-bold text-black">Skills</h1>
-                        </div>
-                        <ul className="list-disc md:px-4 px-0 ml-5 mt-3 text-black flex flex-col gap-2 md:text-sm text-xs">
-                            {data.skills.map((item: string, i: number) => (
-                                <li className="" key={i}>
-                                    {item}
-                                </li>
-                            ))}
-                        </ul>
-                    </div> */}
-
-          {/* Divider */}
-          {/* <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div> */}
+          )}
 
           {/* Languages */}
 
-          <div
-            className="mt-4 cursor-pointer"
-            onClick={() => handleArrayFieldClick("languages", data.languages)}
-          >
+          {data.languages && data.languages.length > 0 && (
             <div
-              className="mt-[1px] px-1 border-b-2"
-              style={{
-                borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
-              }}
+              className="mt-4 cursor-pointer"
+              onClick={() => handleArrayFieldClick("languages", data.languages)}
             >
-              <h1
-                className={`md:text-xl text-lg font-bold`}
-                style={{ color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}
+              <div
+                className="mt-[1px] px-1 border-b-2"
+                style={{
+                  borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+                }}
               >
-                Languages
-              </h1>
-            </div>
-
-            <div className="md:px-4 px-0 ml-5 mt-3 flex flex-col gap-1">
-              {data.languages.map((item: any, i: number) => (
-                <div
-                  key={i}
-                  className=" items-center justify-between text-gray-800"
-                >
-                  <ul className="list-disc md:text-sm text-xs text-gray-800">
-                    <li>{item}</li>
-                  </ul>
-                  {/* <p className="text-gray-500 md:text-sm text-[9px] text-right">
-                                        ({item.startYear} - {item.endYear})
-                                    </p> */}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Certifications */}
-
-          <div
-            className="mt-4 cursor-pointer"
-            onClick={() =>
-              handleArrayFieldClick("certifications", data.certifications)
-            }
-          >
-            <div
-              className="mt-[1px] px-1 border-b-2"
-              style={{
-                borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
-              }}
-            >
-              <h1
-                className={`md:text-xl text-lg font-bold `}
-                style={{ color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}
-              >
-                Certifications
-              </h1>
-            </div>
-
-            <div className="md:px-4 px-0 ml-5 mt-3 flex flex-col gap-1">
-              {data.certifications.map((item: any, i: number) => (
-                <div
-                  key={i}
-                  className=" items-center justify-between text-gray-800"
-                >
-                  <ul className="list-disc md:text-sm text-xs text-gray-800">
-                    <li>{item}</li>
-                  </ul>
-                  {/* <p className="text-gray-500 md:text-sm text-[9px] text-right">
-                                        ({item.startYear} - {item.endYear})
-                                    </p> */}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Tech Stack */}
-          <div
-            className="cursor-pointer mt-4"
-            onClick={() => handleArrayFieldClick("skills", data.skills)}
-          >
-            <div
-              className="md:px-2 px-1 py-[2px] border-b-2"
-              style={{
-                borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
-              }}
-            >
-              <h1
-                className="md:text-xl text-lg font-bold "
-                style={{ color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)` }}
-              >
-                Tech Stack
-              </h1>
-            </div>
-
-            <div className="mt-3 flex gap-2 flex-wrap">
-              {data.skills.map((item: string, index: number) => (
-                <div
-                  className=" rounded-full px-2 py-1"
-                  key={index}
+                <h1
+                  className={`md:text-xl text-lg font-bold`}
                   style={{
-                    backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`,
+                    color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
                   }}
                 >
-                  <h1 className="md:text-sm text-xs">{item}</h1>
-                </div>
-              ))}
+                  Languages
+                </h1>
+              </div>
+
+              <div className="md:px-4 px-0 ml-5 mt-3 flex flex-col gap-1">
+                {data.languages.map((item: any, i: number) => (
+                  <div
+                    key={i}
+                    className=" items-center justify-between text-gray-800"
+                  >
+                    <ul className="list-disc md:text-sm text-xs text-gray-800">
+                      <li>{item}</li>
+                    </ul>
+                    {/* <p className="text-gray-500 md:text-sm text-[9px] text-right">
+                                        ({item.startYear} - {item.endYear})
+                                    </p> */}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* Certifications */}
+          {data.certifications && data.certifications.length > 0 && (
+            <div
+              className="mt-4 cursor-pointer"
+              onClick={() =>
+                handleArrayFieldClick("certifications", data.certifications)
+              }
+            >
+              <div
+                className="mt-[1px] px-1 border-b-2"
+                style={{
+                  borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+                }}
+              >
+                <h1
+                  className={`md:text-xl text-lg font-bold `}
+                  style={{
+                    color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+                  }}
+                >
+                  Certifications
+                </h1>
+              </div>
+
+              <div className="md:px-4 px-0 ml-5 mt-3 flex flex-col gap-1">
+                {data.certifications.map((item: any, i: number) => (
+                  <div
+                    key={i}
+                    className=" items-center justify-between text-gray-800"
+                  >
+                    <ul className="list-disc md:text-sm text-xs text-gray-800">
+                      <li>{item}</li>
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Tech Stack */}
+          {data.skills && data.skills.length > 0 && (
+            <div
+              className="cursor-pointer mt-4"
+              onClick={() => handleArrayFieldClick("skills", data.skills)}
+            >
+              <div
+                className="md:px-2 px-1 py-[2px] border-b-2"
+                style={{
+                  borderBottomColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+                }}
+              >
+                <h1
+                  className="md:text-xl text-lg font-bold "
+                  style={{
+                    color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+                  }}
+                >
+                  Tech Stack
+                </h1>
+              </div>
+
+              <div className="mt-3 flex gap-2 flex-wrap">
+                {data.skills.map((item: string, index: number) => (
+                  <div
+                    className=" rounded-full px-2 py-1"
+                    key={index}
+                    style={{
+                      backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`,
+                    }}
+                  >
+                    <h1 className="md:text-sm text-xs text-white">{item}</h1>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Custom Section */}
           <div
@@ -574,11 +548,6 @@ const Template4 = ({
           >
             {data.customSection && data.customSection.length > 0 ? (
               <div className="">
-                {/* {data.customSection2 && data.customSection2.length < 1 ? (
-                  <></>
-                ) : (
-                  <div className="h-[2px] w-full bg-gray-400 mt-5 mb-5"></div>
-                )} */}
                 {data.customSection.map((item, idx) => (
                   <div key={idx} className="cursor-pointer mt-4">
                     <div

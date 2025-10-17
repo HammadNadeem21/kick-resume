@@ -6,6 +6,7 @@ import Image from "next/image";
 // icons
 import { Briefcase, Sparkles } from "lucide-react";
 import { IoSend } from "react-icons/io5";
+import { IoMdArrowDropleftCircle } from "react-icons/io";
 
 // for motion library
 import { motion, AnimatePresence } from "framer-motion";
@@ -66,9 +67,13 @@ import { useCredits } from "@/context/CreditsContext";
 import { useAiResumeBuilder } from "@/context/AiResumeBuilder";
 import { calculateCreditFromTokens } from "../../../utils/commonHelpers";
 import { SelectButton } from "@/components/SelectButton";
-import CustomSection from "@/components/CustomSection/CustomSection";
+import CustomSection from "@/components/Editors/CustomSection/CustomSection";
 import { ColorPickerDropdown } from "@/components/ColorPicker";
 import { se } from "date-fns/locale";
+import PersonalInformationEditor from "@/components/Editors/PersonalInformation/PersonalInformationEditor";
+import EducationEditor from "@/components/Editors/Education/EducationEditor";
+import ProjectEditor from "@/components/Editors/ProjectEditor/ProjectEditor";
+import ExperienceEditor from "@/components/Editors/ExperienceEditor/ExperienceEditor";
 
 const AiPromptPage = () => {
   // Context State
@@ -444,6 +449,8 @@ const AiPromptPage = () => {
       container.scrollTop = container.scrollHeight;
     }
   };
+  const [height, setHeight] = useState(0);
+  console.log("height of template 1", height);
 
   const renderSelectedTemplate = () => {
     if (selectedTemplate === 1)
@@ -462,6 +469,7 @@ const AiPromptPage = () => {
           handleCustomSection2Click={handleCustom2FieldClick}
           isLegal={pageSize === "A4"}
           color={color1}
+          onHeightChange={setHeight}
         />
       );
     if (selectedTemplate === 2)
@@ -656,10 +664,10 @@ const AiPromptPage = () => {
   const handleDownloadPDF = async () => {
     if (!parsedData || !selectedTemplate) return;
 
-    if (credit < 5) {
-      alert("Not enough credits.");
-      return;
-    }
+    // if (credit < 5) {
+    //   alert("Not enough credits.");
+    //   return;
+    // }
 
     let DocumentComponent;
 
@@ -772,6 +780,40 @@ const AiPromptPage = () => {
   const [pageSize, setPageSize] = useState<PageProps["size"]>("A4");
 
   console.log("Page size", pageSize);
+
+  const boxRef = useRef<HTMLDivElement>(null);
+  // useEffect(() => {
+  //   const react = boxRef.current?.getBoundingClientRect();
+  //   const height = react?.height;
+  //   console.log("height of box", height);
+  // });
+
+  const [showPageBreak, setShowPageBreak] = useState(false);
+
+  useEffect(() => {
+    if (!boxRef.current) return;
+    const element = boxRef.current;
+
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const height = entry.contentRect.height;
+        console.log("Height", height);
+
+        if (height > 1150) {
+          setShowPageBreak(true);
+        } else {
+          setShowPageBreak(false);
+        }
+      }
+    });
+
+    observer.observe(element);
+
+    return () => {
+      observer.unobserve(element);
+    };
+  }, []);
+  console.log("height", showPageBreak);
 
   return (
     <div
@@ -932,8 +974,8 @@ const AiPromptPage = () => {
         </div>
       </div>
 
-      <div className="py-8 grid lg:grid-cols-12 grid-cols-1 lg:gap-[40px] gap-0">
-        <div className="lg:col-span-4 col-span-1">
+      <div className="py-8 grid lg:grid-cols-[28%,72%] grid-cols-1 lg:gap-[20px] gap-0">
+        <div className=" col-span-1">
           {/* Chat Box */}
 
           <div className="bg-gray-100 mt-3  py-2 sm:px-3 px-2 mb-2 rounded-xl flex flex-col gap-4">
@@ -1060,7 +1102,7 @@ const AiPromptPage = () => {
                 }
                 className=" p-3 w-[100%]  text-gray-500 resize-none focus:outline-none bg-transparent"
                 rows={3}
-                disabled={credit < 3} // Disable if no credits
+                // disabled={credit < 3} // Disable if no credits
               />
               <button
                 className="w-[100%] border border-[#a9adb5]  text-gray-800 mt-2 px-4 py-2 rounded-xl flex items-center justify-center gap-1"
@@ -1072,7 +1114,7 @@ const AiPromptPage = () => {
           </div>
         </div>
 
-        <div className="lg:col-span-8 col-span-1 lg:mt-0 mt-10">
+        <div className=" col-span-1 lg:mt-0 mt-10">
           <div className="flex sm:flex-row flex-col sm:items-center justify-between items-start ">
             <div className="text-left">
               <h2 className="md:text-3xl text-xl font-bold mb-4 text-mySkyBlue">
@@ -1092,7 +1134,7 @@ const AiPromptPage = () => {
                   selectedTemplate === 10) && (
                   <div className="flex items-center justify-center gap-2">
                     <div
-                      className={`h-[25px] w-[25px] border border-white cursor-pointerff rounded-md`}
+                      className={`h-[25px] w-[25px] border cursor-pointer border-white cursor-pointerff rounded-md`}
                       onClick={() => setShowColorPicker((prev) => !prev)}
                       style={{
                         backgroundColor:
@@ -1108,7 +1150,7 @@ const AiPromptPage = () => {
                       }}
                     ></div>
                     <button
-                      className="bg-mySkyBlue/50 hover:bg-mySkyBlue md:text-lg sm:text-sm text-[12px] font-bold text-white sm:px-5 px-3 sm:py-2 py-1 rounded-lg"
+                      className="bg-mySkyBlue hover:shadow-xl md:text-lg sm:text-sm text-[12px] font-bold text-white sm:px-5 px-3 sm:py-2 py-1 rounded-lg"
                       onClick={() => setShowColorPicker((prev) => !prev)}
                     >
                       Choose Color
@@ -1143,8 +1185,8 @@ const AiPromptPage = () => {
               {/* {showTemplate && parsedData && ( */}
               <button
                 onClick={handleDownloadPDF}
-                disabled={credit < 5}
-                className="bg-mySkyBlue/50 mt-5 hover:bg-mySkyBlue text-white md:text-lg sm:text-sm text-[12px] font-bold sm:px-5 px-3 sm:py-2 py-1 rounded-lg disabled:opacity-50 cursor-pointer"
+                // disabled={credit < 5}
+                className="bg-mySkyBlue hover:shadow-xl md:text-lg sm:text-sm text-[12px] font-bold text-white sm:px-5 px-3 sm:py-2 py-1 rounded-lg"
               >
                 Download PDF
               </button>
@@ -1152,7 +1194,18 @@ const AiPromptPage = () => {
             </div>
           </div>
 
-          <SelectButton onchange={setPageSize} />
+          <div className="flex items-center justify-between">
+            <div>
+              <SelectButton onchange={setPageSize} />
+            </div>
+
+            {height > 1150 && (
+              <p className="text-red-500 text-sm">
+                *Content exceeds one page. Consider reducing text or switching
+                to Legal size.*
+              </p>
+            )}
+          </div>
 
           {!isTemplateLoading && !hasRenderedTemplate ? (
             <div className="w-[100%] bg-gray-200 mt-2 h-[350px] flex flex-col items-center justify-center rounded-lg px-2">
@@ -1196,8 +1249,22 @@ const AiPromptPage = () => {
           ) : (
             showTemplate &&
             parsedData && (
-              <div className=" flex items-center justify-center">
-                <div className="mt-5 mx-auto">{renderSelectedTemplate()}</div>
+              <div
+                ref={boxRef}
+                className="relative flex items-center justify-between"
+              >
+                <div className="mt-5">{renderSelectedTemplate()}</div>
+                {showPageBreak && (
+                  <div
+                    className=" absolute w-full flex items-center justify-end text-[12px] text-gray-600 mlg:-left-1 left-0"
+                    style={{ top: "1100px" }} // exactly 1123px pe line
+                  >
+                    <div className="md:flex items-center hidden">
+                      <IoMdArrowDropleftCircle className="mr-1" />
+                      <span className="hidden mlg:block">Page Break</span>
+                    </div>
+                  </div>
+                )}
               </div>
             )
           )}
@@ -1269,452 +1336,47 @@ const AiPromptPage = () => {
 
             {/* Experience */}
             {editType === "experience" && (
-              <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                <h2 className="text-lg font-bold mb-4 text-black">
-                  Edit Experience
-                </h2>
-
-                {experienceData.map((exp, index) => (
-                  <div
-                    key={index}
-                    className="mb-6 border p-3 rounded-md bg-gray-100"
-                  >
-                    <input
-                      type="text"
-                      value={exp.title}
-                      onChange={(e) => {
-                        const updated = [...experienceData];
-                        updated[index].title = e.target.value;
-                        setExperienceData(updated);
-                      }}
-                      placeholder="Title"
-                      className="w-full p-2 mb-2 border text-black"
-                    />
-                    <input
-                      type="text"
-                      value={exp.companyName || ""}
-                      onChange={(e) => {
-                        const updated = [...experienceData];
-                        updated[index].companyName = e.target.value;
-                        setExperienceData(updated);
-                      }}
-                      placeholder="Company Name"
-                      className="w-full p-2 mb-2 border text-black"
-                    />
-                    <textarea
-                      value={exp.description}
-                      onChange={(e) => {
-                        const updated = [...experienceData];
-                        updated[index].description = e.target.value;
-                        setExperienceData(updated);
-                      }}
-                      placeholder="Description"
-                      className="w-full p-2 mb-2 border text-black"
-                    />
-                    <div className="grid grid-cols-2 gap-2 mb-2">
-                      <DatePicker
-                        label="Start Date"
-                        id={`start-${index}`}
-                        value={
-                          exp.startDate ? new Date(exp.startDate) : undefined
-                        }
-                        onChange={(date) => {
-                          const updated = [...experienceData];
-                          updated[index].startDate = date
-                            ? date.toISOString()
-                            : "";
-                          setExperienceData(updated);
-                        }}
-                        className=""
-                        buttonClassName="p-2 border text-black"
-                      />
-                      <DatePicker
-                        label="End Date"
-                        id={`end-${index}`}
-                        value={
-                          exp.endDate && exp.endDate !== "Currently working"
-                            ? new Date(exp.endDate)
-                            : undefined
-                        }
-                        onChange={(date) => {
-                          const updated = [...experienceData];
-                          updated[index].endDate = date
-                            ? date.toISOString()
-                            : "";
-                          setExperienceData(updated);
-                        }}
-                        disabled={exp.endDate === "Currently working"}
-                        className=""
-                        buttonClassName="p-2 border text-black disabled:opacity-50"
-                      />
-                      {/* current employer */}
-                      <div className="flex items-center gap-2">
-                        <label
-                          htmlFor={`currentEmployer-${index}`}
-                          className="text-black"
-                        >
-                          Current Employer
-                        </label>
-                        <input
-                          type="checkbox"
-                          id={`currentEmployer-${index}`}
-                          checked={exp.endDate === "Currently working"}
-                          onChange={(e) => {
-                            const updated = [...experienceData];
-                            if (e.target.checked) {
-                              updated[index].endDate = "Currently working";
-                            } else {
-                              updated[index].endDate = "";
-                            }
-                            setExperienceData(updated);
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    <Button
-                      onClick={() => {
-                        const updated = [...experienceData];
-                        updated.splice(index, 1);
-                        setExperienceData(updated);
-                      }}
-                      className="bg-red-500 hover:bg-red-700 text-white"
-                    >
-                      Remove
-                    </Button>
-                  </div>
-                ))}
-
-                {/* Add new experience */}
-                <Button
-                  onClick={() => {
-                    const updated = [
-                      ...experienceData,
-                      {
-                        title: "",
-                        company: "",
-                        description: "",
-                        startDate: "",
-                        endDate: "",
-                      },
-                    ];
-                    setExperienceData(updated);
-                  }}
-                  className="bg-green-500 hover:bg-green-700 text-white mt-4"
-                >
-                  + Add Experience
-                </Button>
-
-                <div className="flex justify-between mt-4">
-                  <button
-                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                    onClick={() => {
-                      setParsedData((prev: any) => ({
-                        ...prev,
-                        [currentExperienceField as string]: experienceData,
-                      }));
-                      setShowEditor(false);
-                    }}
-                  >
-                    Save
-                  </button>
-
-                  <button
-                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                    onClick={() => setShowEditor(false)}
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
+              <ExperienceEditor
+                currentExperienceField={currentExperienceField as string}
+                experienceData={experienceData}
+                setExperienceData={setExperienceData}
+                setParsedData={setParsedData}
+                setShowEditor={setShowEditor}
+              />
             )}
 
             {/* Project */}
+
             {editType === "projects" && (
-              <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                <h2 className="text-lg font-bold mb-4 text-black">
-                  Edit Projects
-                </h2>
-
-                {projectData.map((proj, index) => (
-                  <div
-                    key={index}
-                    className="mb-6 border p-3 rounded-md bg-gray-100"
-                  >
-                    <input
-                      type="text"
-                      value={proj.name}
-                      onChange={(e) => {
-                        const updated = [...projectData];
-                        updated[index].name = e.target.value;
-                        setProjectData(updated);
-                      }}
-                      placeholder="Project Name"
-                      className="w-full p-2 mb-2 border text-black"
-                    />
-                    <textarea
-                      value={proj.description}
-                      onChange={(e) => {
-                        const updated = [...projectData];
-                        updated[index].description = e.target.value;
-                        setProjectData(updated);
-                      }}
-                      placeholder="Description"
-                      className="w-full p-2 mb-2 border text-black"
-                    />
-                    <input
-                      type="text"
-                      value={proj.github}
-                      onChange={(e) => {
-                        const updated = [...projectData];
-                        updated[index].github = e.target.value;
-                        setProjectData(updated);
-                      }}
-                      placeholder="GitHub Link"
-                      className="w-full p-2 mb-2 border text-black"
-                    />
-                    <input
-                      type="text"
-                      value={proj.live}
-                      onChange={(e) => {
-                        const updated = [...projectData];
-                        updated[index].live = e.target.value;
-                        setProjectData(updated);
-                      }}
-                      placeholder="Live Link"
-                      className="w-full p-2 mb-2 border text-black"
-                    />
-                    <Button
-                      onClick={() => {
-                        const updated = [...projectData];
-                        updated.splice(index, 1);
-                        setProjectData(updated);
-                      }}
-                      className="bg-red-600 text-white"
-                    >
-                      Remove
-                    </Button>
-                  </div>
-                ))}
-
-                <Button
-                  onClick={() => {
-                    const updated = [
-                      ...projectData,
-                      {
-                        name: "",
-                        description: "",
-                        github: "",
-                        live: "",
-                      },
-                    ];
-                    setProjectData(updated);
-                  }}
-                  className="bg-green-600 text-white mt-4"
-                >
-                  + Add Project
-                </Button>
-
-                <div className="flex justify-end mt-4">
-                  <button
-                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                    onClick={() => {
-                      setParsedData((prev: any) => ({
-                        ...prev,
-                        [currentProjectField as string]: projectData,
-                      }));
-                      setShowEditor(false);
-                    }}
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
+              <ProjectEditor
+                currentProjectField={currentProjectField as string}
+                projectData={projectData}
+                setProjectData={setProjectData}
+                setParsedData={setParsedData}
+                setShowEditor={setShowEditor}
+              />
             )}
 
             {/* Education */}
             {editType === "education" && (
-              <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                <h2 className="text-lg font-bold mb-4 text-black">
-                  Edit Education
-                </h2>
-
-                {educationData.map((edu, index) => (
-                  <div
-                    key={index}
-                    className="mb-6 border p-3 rounded-md bg-gray-100"
-                  >
-                    <input
-                      type="text"
-                      value={edu.degree}
-                      onChange={(e) => {
-                        const updated = [...educationData];
-                        updated[index].degree = e.target.value;
-                        setEducationData(updated);
-                      }}
-                      placeholder="Degree"
-                      className="w-full p-2 mb-2 border text-black"
-                    />
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={edu.startDate}
-                        onChange={(e) => {
-                          const updated = [...educationData];
-                          updated[index].startDate = e.target.value;
-                          setEducationData(updated);
-                        }}
-                        placeholder="Start Date"
-                        className="flex-1 p-2 mb-2 border text-black"
-                      />
-                      <input
-                        type="text"
-                        value={edu.endDate}
-                        onChange={(e) => {
-                          const updated = [...educationData];
-                          updated[index].endDate = e.target.value;
-                          setEducationData(updated);
-                        }}
-                        placeholder="End Date"
-                        className="flex-1 p-2 mb-2 border text-black"
-                      />
-                    </div>
-                    <Button
-                      onClick={() => {
-                        const updated = [...educationData];
-                        updated.splice(index, 1);
-                        setEducationData(updated);
-                      }}
-                      className="bg-red-600 text-white"
-                    >
-                      Remove
-                    </Button>
-                  </div>
-                ))}
-
-                <Button
-                  onClick={() => {
-                    const updated = [
-                      ...educationData,
-                      {
-                        degree: "",
-                        startDate: "",
-                        endDate: "",
-                      },
-                    ];
-                    setEducationData(updated);
-                  }}
-                  className="bg-green-600 text-white mt-4"
-                >
-                  + Add Education
-                </Button>
-
-                <div className="flex justify-end mt-4">
-                  <button
-                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                    onClick={() => {
-                      setParsedData((prev: any) => ({
-                        ...prev,
-                        [currentEducationField as string]: educationData,
-                      }));
-
-                      setShowEditor(false);
-                    }}
-                  >
-                    Save & Close
-                  </button>
-                </div>
-              </div>
+              <EducationEditor
+                currentEducationField={currentEducationField as string}
+                educationData={educationData}
+                setEducationData={setEducationData}
+                setParsedData={setParsedData}
+                setShowEditor={setShowEditor}
+              />
             )}
 
             {/* Personal Information Editor */}
             {editType === "personal" && (
-              <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                <h2 className="text-lg font-bold mb-4 text-black">
-                  Edit Personal Information
-                </h2>
-
-                {personalInfoData.map((row, idx) => (
-                  <div
-                    key={idx}
-                    className="mb-3 border p-1 rounded-md bg-gray-100"
-                  >
-                    <div className="flex flex-col justify-center gap-2">
-                      <input
-                        type="text"
-                        className="w-full border border-gray-300 px-3 py-2 rounded text-black text-sm"
-                        placeholder="Title"
-                        value={row.title}
-                        required
-                        onChange={(e) => {
-                          const updated = [...personalInfoData];
-                          updated[idx].title = e.target.value;
-                          setPersonalInfoData(updated);
-                        }}
-                      />
-                      <input
-                        type="text"
-                        className="w-full border border-gray-300 px-3 py-2 rounded text-black text-sm"
-                        placeholder="Value"
-                        value={row.value}
-                        required
-                        onChange={(e) => {
-                          const updated = [...personalInfoData];
-                          updated[idx].value = e.target.value;
-                          setPersonalInfoData(updated);
-                        }}
-                      />
-                    </div>
-                    <div className="flex justify-end mt-2">
-                      <Button
-                        onClick={() => {
-                          const updated = [...personalInfoData];
-                          updated.splice(idx, 1);
-                          setPersonalInfoData(updated);
-                        }}
-                        className="bg-red-500 hover:bg-red-700 text-white w-full"
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-
-                <Button
-                  onClick={() =>
-                    setPersonalInfoData([
-                      ...personalInfoData,
-                      { title: "", value: "" },
-                    ])
-                  }
-                  className="bg-green-600 hover:bg-green-700 text-white mt-2"
-                >
-                  + Add Item
-                </Button>
-
-                <div className="flex justify-between mt-4">
-                  <button
-                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                    onClick={() => {
-                      if (currentPersonalField) {
-                        setParsedData((prev: any) => ({
-                          ...prev,
-                          [currentPersonalField]: personalInfoData,
-                        }));
-                      }
-                      setShowEditor(false);
-                    }}
-                  >
-                    Save
-                  </button>
-                  <button
-                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                    onClick={() => setShowEditor(false)}
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
+              <PersonalInformationEditor
+                currentPersonalField={currentPersonalField as string}
+                personalInfoData={personalInfoData}
+                setParsedData={setParsedData}
+                setPersonalInfoData={setPersonalInfoData}
+                setShowEditor={setShowEditor}
+              />
             )}
 
             {/* Custom Section */}
@@ -1750,92 +1412,8 @@ const AiPromptPage = () => {
           </div>
         </div>
       )}
-
-      {/* Download Button */}
     </div>
   );
 };
-
-// interface ColorPickerDropdownProps {
-//   selectedTemplate: number;
-//   color1: any;
-//   setColor1: any;
-//   color4: any;
-//   setColor4: any;
-//   color7: any;
-//   setColor7: any;
-//   color10: any;
-//   setColor10: any;
-//   setShowColorPicker: React.Dispatch<React.SetStateAction<boolean>>;
-// }
-
-// const ColorPickerDropdown: React.FC<ColorPickerDropdownProps> = ({
-//   selectedTemplate,
-//   color1,
-//   setColor1,
-//   color4,
-//   setColor4,
-//   color7,
-//   setColor7,
-//   color10,
-//   setColor10,
-//   setShowColorPicker,
-// }) => {
-//   const colorPickerRef = useRef<HTMLDivElement>(null);
-
-//   useEffect(() => {
-//     const handleClickOutside = (event: MouseEvent) => {
-//       if (
-//         colorPickerRef.current &&
-//         !colorPickerRef.current.contains(event.target as Node)
-//       ) {
-//         setShowColorPicker(false);
-//       }
-//     };
-
-//     document.addEventListener("mousedown", handleClickOutside);
-//     return () => {
-//       document.removeEventListener("mousedown", handleClickOutside);
-//     };
-//   }, [setShowColorPicker]);
-
-//   return (
-//     <motion.div
-//       ref={colorPickerRef}
-//       initial={{ opacity: 0, y: -10 }} // shuru main halka upar aur hidden
-//       animate={{ opacity: 1, y: 0 }} // show hote waqt neeche slide + fade in
-//       exit={{ opacity: 0, y: -10 }} // hide hote waqt upar slide + fade out
-//       transition={{ duration: 0.3 }}
-//       className="absolute top-[30px]  w-60 rounded-xl p-4"
-//     >
-//       {/* <ColorPicker/> */}
-//       <RgbColorPicker
-//         color={
-//           selectedTemplate === 1
-//             ? color1
-//             : selectedTemplate === 4
-//               ? color4
-//               : selectedTemplate === 7
-//                 ? color7
-//                 : selectedTemplate === 10
-//                   ? color10
-//                   : color1 // fallback
-//         }
-//         onChange={
-//           selectedTemplate === 1
-//             ? setColor1
-//             : selectedTemplate === 4
-//               ? setColor4
-//               : selectedTemplate === 7
-//                 ? setColor7
-//                 : selectedTemplate === 10
-//                   ? setColor10
-//                   : setColor1 // fallback
-//         }
-//       />
-//       {/* <div className="value">{JSON.stringify(color)}</div> */}
-//     </motion.div>
-//   );
-// };
 
 export default AiPromptPage;

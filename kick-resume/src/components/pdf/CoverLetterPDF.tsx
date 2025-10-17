@@ -8,9 +8,9 @@ const styles = StyleSheet.create({
     fontFamily: "Helvetica",
   },
   title: {
-    fontSize: 20,
+    fontSize: 14,
     marginBottom: 10,
-    fontWeight: "bold",
+    fontWeight: 500,
     color: "#1e293b",
   },
   content: {

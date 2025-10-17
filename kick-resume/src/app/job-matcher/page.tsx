@@ -62,7 +62,10 @@ const templateData = [
 import { useSession } from "next-auth/react";
 import { useCredits } from "@/context/CreditsContext";
 import { JobMatcherProvider, useJobMatcher } from "@/context/JobMatcherContext";
-import CustomSection from "@/components/CustomSection/CustomSection";
+import CustomSection from "@/components/Editors/CustomSection/CustomSection";
+import { ColorPickerDropdown } from "@/components/ColorPicker";
+import { SelectButton } from "@/components/SelectButton";
+import PersonalInformationEditor from "@/components/Editors/PersonalInformation/PersonalInformationEditor";
 
 const AiPromptPage = () => {
   const {
@@ -436,6 +439,9 @@ const AiPromptPage = () => {
     setShowEditor(true);
   };
 
+  const [height, setHeight] = useState(0);
+  console.log("height of template 1", height);
+
   const renderSelectedTemplate = () => {
     if (selectedTemplate === 1)
       return (
@@ -453,6 +459,7 @@ const AiPromptPage = () => {
           handleCustomSection2Click={handleCustom2FieldClick}
           color={color1}
           isLegal={pageSize === "A4"}
+          onHeightChange={setHeight}
         />
       );
     if (selectedTemplate === 2)
@@ -646,10 +653,10 @@ const AiPromptPage = () => {
   const handleDownloadPDF = async () => {
     if (!resumeData || !selectedTemplate) return;
 
-    if (credit < 5) {
-      alert("Not enough credits.");
-      return;
-    }
+    // if (credit < 5) {
+    //   alert("Not enough credits.");
+    //   return;
+    // }
 
     let DocumentComponent;
 
@@ -918,7 +925,7 @@ const AiPromptPage = () => {
         </div>
       </div>
 
-      <div className="py-8 px-4 grid lg:grid-cols-12 grid-cols-1 gap-[40px]">
+      <div className="py-8 px-4 grid lg:grid-cols-12 grid-cols-1 gap-[20px]">
         <div className="col-span-4">
           <div className="text-center lg:text-left mb-5">
             <h2 className="text-3xl font-bold mb-4 text-mySkyBlue">
@@ -979,12 +986,30 @@ const AiPromptPage = () => {
                   selectedTemplate === 1 ||
                   selectedTemplate === 7 ||
                   selectedTemplate === 10) && (
-                  <button
-                    className="bg-mySkyBlue/50 hover:bg-mySkyBlue font-bold text-white px-5 py-2 rounded-lg"
-                    onClick={() => setShowColorPicker((prev) => !prev)}
-                  >
-                    Choose Color
-                  </button>
+                  <div className="flex items-center justify-center gap-2">
+                    <div
+                      className={`h-[25px] w-[25px] border cursor-pointer border-white cursor-pointerff rounded-md`}
+                      onClick={() => setShowColorPicker((prev) => !prev)}
+                      style={{
+                        backgroundColor:
+                          selectedTemplate === 1
+                            ? `rgb(${color1.r}, ${color1.g}, ${color1.b})`
+                            : selectedTemplate === 4
+                            ? `rgb(${color4.r}, ${color4.g}, ${color4.b})`
+                            : selectedTemplate === 7
+                            ? `rgb(${color1.r}, ${color1.g}, ${color1.b})`
+                            : selectedTemplate === 10
+                            ? `rgb(${color10.r}, ${color10.g}, ${color10.b})`
+                            : "transparent",
+                      }}
+                    ></div>
+                    <button
+                      className="bg-mySkyBlue hover:shadow-xl md:text-lg sm:text-sm text-[12px] font-bold text-white sm:px-5 px-3 sm:py-2 py-1 rounded-lg"
+                      onClick={() => setShowColorPicker((prev) => !prev)}
+                    >
+                      Choose Color
+                    </button>
+                  </div>
                 )}
 
                 <AnimatePresence>
@@ -993,55 +1018,36 @@ const AiPromptPage = () => {
                       selectedTemplate === 1 ||
                       selectedTemplate === 7 ||
                       selectedTemplate === 10) && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }} // shuru main halka upar aur hidden
-                        animate={{ opacity: 1, y: 0 }} // show hote waqt neeche slide + fade in
-                        exit={{ opacity: 0, y: -10 }} // hide hote waqt upar slide + fade out
-                        transition={{ duration: 0.3 }}
-                        className="absolute top-[30px]  w-60 rounded-xl p-4"
-                      >
-                        {/* <ColorPicker/> */}
-                        <RgbColorPicker
-                          color={
-                            selectedTemplate === 1
-                              ? color1
-                              : selectedTemplate === 4
-                              ? color4
-                              : selectedTemplate === 7
-                              ? color7
-                              : selectedTemplate === 10
-                              ? color10
-                              : color1 // fallback
-                          }
-                          onChange={
-                            selectedTemplate === 1
-                              ? setColor1
-                              : selectedTemplate === 4
-                              ? setColor4
-                              : selectedTemplate === 7
-                              ? setColor7
-                              : selectedTemplate === 10
-                              ? setColor10
-                              : setColor1 // fallback
-                          }
-                        />
-                        {/* <div className="value">{JSON.stringify(color)}</div> */}
-                      </motion.div>
+                      <ColorPickerDropdown
+                        selectedTemplate={selectedTemplate}
+                        color1={color1}
+                        setColor1={setColor1}
+                        color4={color4}
+                        setColor4={setColor4}
+                        color7={color7}
+                        setColor7={setColor7}
+                        color10={color10}
+                        setColor10={setColor10}
+                        setShowColorPicker={setShowColorPicker}
+                      />
                     )}
                 </AnimatePresence>
+
+                {/* <h1>{color10}</h1> */}
               </div>
 
               {/* {showTemplate && parsedData && ( */}
               <button
                 onClick={handleDownloadPDF}
-                disabled={credit < 5}
-                className="bg-mySkyBlue/50 mt-5 hover:bg-mySkyBlue text-white font-bold px-5 py-2 rounded-lg disabled:opacity-50 cursor-pointer"
+                // disabled={credit < 5}
+                className="bg-mySkyBlue hover:shadow-xl md:text-lg sm:text-sm text-[12px] font-bold text-white sm:px-5 px-3 sm:py-2 py-1 rounded-lg"
               >
                 Download PDF
               </button>
               {/* )} */}
             </div>
           </div>
+          <SelectButton onchange={setPageSize} />
 
           {!isTemplateLoading && !hasRenderedTemplate ? (
             <div className="w-[100%] bg-gray-200 mt-2 h-[350px] flex flex-col items-center justify-center rounded-lg">
@@ -1085,8 +1091,8 @@ const AiPromptPage = () => {
           ) : (
             showTemplate &&
             resumeData && (
-              <div>
-                <div className="mt-5">{renderSelectedTemplate()}</div>
+              <div className=" flex items-center justify-center">
+                <div className="mt-5 mx-auto">{renderSelectedTemplate()}</div>
               </div>
             )
           )}
@@ -1588,92 +1594,13 @@ const AiPromptPage = () => {
 
             {/* Personal Information Editor */}
             {editType === "personal" && (
-              <div className="fixed top-0 right-0 h-full w-[450px] bg-myWhite shadow-lg z-50 p-6 overflow-y-auto">
-                <h2 className="text-lg font-bold mb-4 text-black">
-                  Edit Personal Information
-                </h2>
-
-                {personalInfoData.map((row, idx) => (
-                  <div
-                    key={idx}
-                    className="mb-3 border p-1 rounded-md bg-gray-100"
-                  >
-                    <div className="flex flex-col justify-center gap-2">
-                      <input
-                        type="text"
-                        className="w-full border border-gray-300 px-3 py-2 rounded text-black text-sm"
-                        placeholder="Title"
-                        value={row.title}
-                        required
-                        onChange={(e) => {
-                          const updated = [...personalInfoData];
-                          updated[idx].title = e.target.value;
-                          setPersonalInfoData(updated);
-                        }}
-                      />
-                      <input
-                        type="text"
-                        className="w-full border border-gray-300 px-3 py-2 rounded text-black text-sm"
-                        placeholder="Value"
-                        value={row.value}
-                        required
-                        onChange={(e) => {
-                          const updated = [...personalInfoData];
-                          updated[idx].value = e.target.value;
-                          setPersonalInfoData(updated);
-                        }}
-                      />
-                    </div>
-                    <div className="flex justify-end mt-2">
-                      <Button
-                        onClick={() => {
-                          const updated = [...personalInfoData];
-                          updated.splice(idx, 1);
-                          setPersonalInfoData(updated);
-                        }}
-                        className="bg-red-500 hover:bg-red-700 text-white w-full"
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-
-                <Button
-                  onClick={() =>
-                    setPersonalInfoData([
-                      ...personalInfoData,
-                      { title: "", value: "" },
-                    ])
-                  }
-                  className="bg-green-600 hover:bg-green-700 text-white mt-2"
-                >
-                  + Add Item
-                </Button>
-
-                <div className="flex justify-between mt-4">
-                  <button
-                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                    onClick={() => {
-                      if (currentPersonalField) {
-                        setResumeData((prev: any) => ({
-                          ...prev,
-                          [currentPersonalField]: personalInfoData,
-                        }));
-                      }
-                      setShowEditor(false);
-                    }}
-                  >
-                    Save
-                  </button>
-                  <button
-                    className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                    onClick={() => setShowEditor(false)}
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
+              <PersonalInformationEditor
+                currentPersonalField={currentPersonalField as string}
+                personalInfoData={personalInfoData}
+                setParsedData={setResumeData}
+                setPersonalInfoData={setPersonalInfoData}
+                setShowEditor={setShowEditor}
+              />
             )}
 
             {editType === "customSection" && (

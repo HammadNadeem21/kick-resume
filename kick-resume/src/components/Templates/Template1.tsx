@@ -4,6 +4,7 @@
 import { useResumeDataContext } from "@/context/ResumeBuilderData";
 import Link from "next/link";
 import moment from "moment";
+import { useRef, useEffect, useState } from "react";
 
 interface Data {
   name: string;
@@ -38,6 +39,10 @@ interface Data {
   customSection2: Array<{ title: string; value: string[] }>;
 }
 
+interface DynamicData {
+  data: Data;
+}
+
 interface Color {
   r: number;
   g: number;
@@ -58,6 +63,7 @@ export default function Template1({
   handleCustomSection2Click,
   isLegal,
   color,
+  onHeightChange,
 }: {
   data: Data;
   handleStringFeildClick: (fieldName: string, value: string) => void;
@@ -81,12 +87,44 @@ export default function Template1({
     data: Array<{ title: string; value: string[] }>
   ) => void;
   color: Color;
+  onHeightChange: (h: number) => void;
 }) {
-  console.log("jkkjk", data.personalInformation);
+  // Remove the incorrect useEffect and pagination logic since 'data' is not iterable here.
+
+  const boxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // if (boxRef.current) {
+    //   const react = boxRef.current.getBoundingClientRect();
+    //   onHeightChange(react.height);
+    // }
+
+    if (!boxRef.current) return;
+
+    const element = boxRef.current;
+
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        if (entry.target === boxRef.current) {
+          const newHeight = entry.contentRect.height;
+          onHeightChange(newHeight);
+        }
+      }
+    });
+
+    observer.observe(element);
+
+    return () => {
+      observer.unobserve(element);
+    };
+  }, [onHeightChange]);
+
   return (
     <div
+      ref={boxRef}
       style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
-      className={`bg-myWhite grid grid-cols-[35%,65%] text-gray-700 shadow-lg shadow-mySkyBlue ${isLegal ? "max-w-[794px]" : "max-w-[842px]"}`}
+      className={`page-break-lines bg-myWhite grid grid-cols-[35%,65%]  text-gray-700 shadow-lg shadow-mySkyBlue ${isLegal ? "max-w-[794px]" : "max-w-[842px]"
+        }`}
     >
       {/* left-side */}
       <div
@@ -238,10 +276,11 @@ export default function Template1({
               ))}
             </div>
           ) : (
-            <div className="mt-[50px] mb-[50px]"
-            onClick={() =>
-              handleCustomSectionClick("customSection", data.customSection)
-            }
+            <div
+              className="mt-[50px] mb-[50px]"
+              onClick={() =>
+                handleCustomSectionClick("customSection", data.customSection)
+              }
             >
               <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
                 Click here and add custom section
@@ -313,29 +352,25 @@ export default function Template1({
         </div>
 
         {/* Divider */}
-       
-          <div className="h-[1px] w-full bg-gray-700 mt-3"></div>
-       
+
+        <div className="h-[1px] w-full bg-gray-700 mt-3"></div>
 
         {/* Experience */}
-        
-          <div
-            
-            className="cursor-pointer"
-          >
-            <h1
-              className={`md:text-xl text-sm  text-left  font-bold text-gray-700`}
-            >
-              Experience
-            </h1>
 
-            {data.experience && data.experience.length > 0 
-            ? (
-<div className=" ml-5 mt-3 flex flex-col justify-center gap-3 text-gray-700"
-onClick={() =>
-  handleExperienceFieldClick("experience", data.experience)
-}
->
+        <div className="cursor-pointer">
+          <h1
+            className={`md:text-xl text-sm  text-left  font-bold text-gray-700`}
+          >
+            Experience
+          </h1>
+
+          {data.experience && data.experience.length > 0 ? (
+            <div
+              className=" ml-5 mt-3 flex flex-col justify-center gap-5 text-gray-700"
+              onClick={() =>
+                handleExperienceFieldClick("experience", data.experience)
+              }
+            >
               {data.experience.map((item: any, i: number) => (
                 <div key={i} className={`flex flex-col justify-between`}>
                   <ul className=" list-disc   flex items-center sm:gap-5 gap-2">
@@ -350,59 +385,55 @@ onClick={() =>
                     {item.description}
                   </p>
 
-                  <div className="flex items-center gap-2 md:text-xs text-[8px] italic">
-                    <span>{`(${moment(item.startDate).format(
-                      "MMM YYYY"
-                    )}`}</span>
-                    <span>
-                      {item.endDate === "Currently working"
-                        ? "Currently working"
-                        : moment(item.endDate).isValid()
-                        ? moment(item.endDate).format("MMM YYYY")
-                        : ""}
-                      {")"}
-                    </span>
-                  </div>
+                  {(item.startDate && item.endDate) && (
+                    <div className="flex items-center gap-2 md:text-xs text-[8px] italic">
+                      <span>{`(${moment(item.startDate).format(
+                        "MMM YYYY"
+                      )}`}</span>
+                      <span>
+                        {item.endDate === "Currently Working"
+                          ? "Currently Working"
+                          : moment(item.endDate).isValid()
+                            ? moment(item.endDate).format("MMM YYYY")
+                            : ""}
+                        {")"}
+                      </span>
+                    </div>
+                  )}
+
                 </div>
               ))}
             </div>
-            )
-          :(
-            <div 
-            onClick={() =>
-              handleExperienceFieldClick("experience", data.experience)
-            }
+          ) : (
+            <div
+              onClick={() =>
+                handleExperienceFieldClick("experience", data.experience)
+              }
             >
-              <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add experience</h1>
+              <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                Click here to add experience
+              </h1>
             </div>
-          )
-          }
-
-            
-          </div>
-        
+          )}
+        </div>
 
         {/* Divider */}
-        
-          <div className="h-[1px] w-full bg-gray-700 mt-3"></div>
-      
+
+        <div className="h-[1px] w-full bg-gray-700 mt-3"></div>
 
         {/* Projects */}
-        
-          <div
-            
-            className="cursor-pointer"
+
+        <div className="cursor-pointer">
+          <h1
+            className={`md:text-xl text-sm text-left  font-bold text-gray-700`}
           >
-            <h1
-              className={`md:text-xl text-sm text-left  font-bold text-gray-700`}
-            >
-              Projects
-            </h1>
-            {data.projects && data.projects.length > 0 
-            ? (
-              <ul className=" px-5 mt-3 text-gray-700 list-disc"
+            Projects
+          </h1>
+          {data.projects && data.projects.length > 0 ? (
+            <ul
+              className=" px-5 mt-3 text-gray-700 list-disc"
               onClick={() => handleProjectFieldClick("projects", data.projects)}
-              >
+            >
               {data.projects.map((item: any, i: number) => (
                 <li className="mt-2 md:text-lg sm:text-xs text-[10px]" key={i}>
                   <h1 className=" font-bold md:text-[15px] sm:text-xs text-[10px]">
@@ -431,18 +462,17 @@ onClick={() =>
                 </li>
               ))}
             </ul>
-            )
-          :(
-            <div className="mb-10"
-            onClick={() => handleProjectFieldClick("projects", data.projects)}
+          ) : (
+            <div
+              className="mb-10"
+              onClick={() => handleProjectFieldClick("projects", data.projects)}
             >
-              <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects</h1>
+              <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+                Click here to add projects
+              </h1>
             </div>
-          )
-          }
-           
-          </div>
-        
+          )}
+        </div>
 
         {/* Custom Section */}
         {data.customSection2 && data.customSection2.length > 0 ? (
@@ -452,12 +482,14 @@ onClick={() =>
               handleCustomSection2Click("customSection2", data.customSection2)
             }
           >
+
             {data.customSection2.map((item, idx) => (
               <div className="" key={idx}>
-                {data.customSection.length < 1 ? (
-                  <></>
-                ) : (
+                {data.customSection2.length > 0 ? (
                   <div className="h-[1px] w-full bg-gray-700 mt-3"></div>
+                ) : (
+                  <></>
+
                 )}
                 <div className="mt-5 mb-5 cursor-pointer">
                   <h1 className="md:text-xl text-sm text-left  font-bold text-gray-700 capitalize">
@@ -478,11 +510,11 @@ onClick={() =>
             ))}
           </div>
         ) : (
-          <div  
-          className="mt-[70px]"
-          onClick={() =>
-            handleCustomSection2Click("customSection2", data.customSection2)
-          }
+          <div
+            className="mt-[70px]"
+            onClick={() =>
+              handleCustomSection2Click("customSection2", data.customSection2)
+            }
           >
             <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
               Click here and add custom section

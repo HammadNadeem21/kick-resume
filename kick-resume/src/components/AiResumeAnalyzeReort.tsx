@@ -13,13 +13,14 @@ import { IoSchoolSharp } from "react-icons/io5";
 import { GrUserExpert } from "react-icons/gr";
 
 import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import {
   ContentState,
   convertFromRaw,
   EditorState,
   convertToRaw,
 } from "draft-js";
+// @ts-ignore
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { pdf } from "@react-pdf/renderer";
 import CoverLetterPDF from "./pdf/CoverLetterPDF";
 import { MdFileDownload } from "react-icons/md";
@@ -211,7 +212,7 @@ const AiResumeAnalyzeReort = () => {
 
             <div className="grid md:grid-cols-2 grid-cols-1 gap-8 ">
               {/* Keywords Section */}
-              <div className="bg-[linear-gradient(to_top_left,#fff,#8bcadf,#fff)] p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-gray-300">
+              <div className="bg-mySkyBlue/10 p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-gray-300">
                 {keywords && (
                   <div className="mb-6 text-gray-500">
                     <div className="flex justify-between items-center mb-4">
@@ -265,12 +266,11 @@ const AiResumeAnalyzeReort = () => {
                     </div>
 
                     <div>
-                      <ReactMarkdown
-                        components={markdownComponents as any}
-                        rehypePlugins={[rehypeRaw]}
-                      >
-                        {keywords}
-                      </ReactMarkdown>
+                      {keywords.map((item, index) => (
+                        <ul key={index} className="mb-2 list-disc pl-5">
+                          <li>{item}</li>
+                        </ul>
+                      ))}
                     </div>
                     {/* <AccordionSection title="" >
                   <ReactMarkdown
@@ -285,7 +285,7 @@ const AiResumeAnalyzeReort = () => {
               </div>
 
               {/* Formatting Section */}
-              <div className="bg-[linear-gradient(to_top_right,#fff,#8bcadf,#fff)] p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-gray-300">
+              <div className="bg-mySkyBlue/10 p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-gray-300">
                 {formatting && (
                   <div className="mb-6 text-gray-500">
                     <div className="flex justify-between items-center mb-2">
@@ -340,12 +340,11 @@ const AiResumeAnalyzeReort = () => {
                     </div>
 
                     <div className="">
-                      <ReactMarkdown
-                        components={markdownComponents as any}
-                        rehypePlugins={[rehypeRaw]}
-                      >
-                        {formatting}
-                      </ReactMarkdown>
+                      {formatting.map((item, index) => (
+                        <ul key={index} className="mb-2 list-disc pl-5">
+                          <li>{item}</li>
+                        </ul>
+                      ))}
                     </div>
 
                     {/* <AccordionSection title="">
@@ -362,7 +361,7 @@ const AiResumeAnalyzeReort = () => {
               {/* <div className="h-[1px] w-full bg-myMidblue mb-5"></div> */}
 
               {/* Education Section */}
-              <div className="bg-[linear-gradient(to_top_right,#fff,#8bcadf,#fff)] p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-gray-300">
+              <div className="bg-mySkyBlue/10 p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-gray-300">
                 {education && (
                   <div className="mb-6 text-gray-500">
                     <div className="flex justify-between items-center mb-2">
@@ -370,44 +369,6 @@ const AiResumeAnalyzeReort = () => {
                         <IoSchoolSharp className="inline mr-2" />
                         Education
                       </h4>
-                      {/* <div className="relative w-[70px] h-[70px]">
-                        <svg
-                          className="transform -rotate-90"
-                          viewBox="0 0 36 36"
-                        >
-                          <path
-                            className="text-gray-200"
-                            strokeWidth="4"
-                            stroke="currentColor"
-                            fill="none"
-                            d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                          <path
-                            className={
-                              educationScore !== null &&
-                              educationScore !== undefined
-                                ? educationScore <= 50
-                                  ? "text-red-500"
-                                  : educationScore < 70
-                                  ? "text-yellow-500"
-                                  : "text-green-500"
-                                : "text-gray-400"
-                            }
-                            strokeWidth="4"
-                            strokeDasharray={`${educationScore}, 100`}
-                            stroke="currentColor"
-                            fill="none"
-                            d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                        </svg>
-                        <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-myMidblue">
-                          {educationScore}/100
-                        </span>
-                      </div> */}
 
                       <SectionScoreChart
                         score={educationScore}
@@ -417,29 +378,18 @@ const AiResumeAnalyzeReort = () => {
                     </div>
 
                     <div className="">
-                      <ReactMarkdown
-                        components={markdownComponents as any}
-                        rehypePlugins={[rehypeRaw]}
-                      >
-                        {education}
-                      </ReactMarkdown>
+                      {education.map((item, index) => (
+                        <ul key={index} className="mb-2 list-disc pl-5">
+                          <li>{item}</li>
+                        </ul>
+                      ))}
                     </div>
-                    {/* <AccordionSection title="">
-                  <ReactMarkdown
-                    components={markdownComponents as any}
-                    rehypePlugins={[rehypeRaw]}
-                  >
-                    {education}
-                  </ReactMarkdown>
-                </AccordionSection> */}
                   </div>
                 )}
               </div>
 
-              {/* <div className="h-[1px] w-full bg-myMidblue mb-5"></div> */}
-
               {/* Experience Section */}
-              <div className="bg-[linear-gradient(to_top_left,#fff,#8bcadf,#fff)] p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-gray-300">
+              <div className="bg-mySkyBlue/10 p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-gray-300">
                 {experience && (
                   <div className="mb-6 text-gray-500">
                     <div className="flex justify-between items-center mb-2">
@@ -447,44 +397,7 @@ const AiResumeAnalyzeReort = () => {
                         <GrUserExpert className="inline mr-2" />
                         Experience
                       </h4>
-                      {/* <div className="relative w-[70px] h-[70px]">
-                        <svg
-                          className="transform -rotate-90"
-                          viewBox="0 0 36 36"
-                        >
-                          <path
-                            className="text-gray-200"
-                            strokeWidth="4"
-                            stroke="currentColor"
-                            fill="none"
-                            d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                          <path
-                            className={
-                              experienceScore !== null &&
-                              experienceScore !== undefined
-                                ? experienceScore <= 50
-                                  ? "text-red-500"
-                                  : experienceScore < 70
-                                  ? "text-yellow-500"
-                                  : "text-green-500"
-                                : "text-gray-400"
-                            }
-                            strokeWidth="4"
-                            strokeDasharray={`${experienceScore}, 100`}
-                            stroke="currentColor"
-                            fill="none"
-                            d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                        </svg>
-                        <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-myMidblue">
-                          {experienceScore}/100
-                        </span>
-                      </div> */}
+
                       <SectionScoreChart
                         score={experienceScore}
                         textColor="#ffffff"
@@ -493,21 +406,12 @@ const AiResumeAnalyzeReort = () => {
                     </div>
 
                     <div className="">
-                      <ReactMarkdown
-                        components={markdownComponents as any}
-                        rehypePlugins={[rehypeRaw]}
-                      >
-                        {experience}
-                      </ReactMarkdown>
+                      {experience.map((item, index) => (
+                        <ul key={index} className="mb-2 list-disc pl-5">
+                          <li>{item}</li>
+                        </ul>
+                      ))}
                     </div>
-                    {/* <AccordionSection title="">
-                  <ReactMarkdown
-                    components={markdownComponents as any}
-                    rehypePlugins={[rehypeRaw]}
-                  >
-                    {experience}
-                  </ReactMarkdown>
-                </AccordionSection> */}
                   </div>
                 )}
               </div>
@@ -526,7 +430,7 @@ const AiResumeAnalyzeReort = () => {
             <div className="bg-gray-100 p-4 rounded-xl shadow mt-8 text-sm">
               <div
                 ref={editorRef}
-                className="mb-6 p-4 bg-mySkyBlue shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-mySkyBlue/40 rounded-lg text-gray-500"
+                className="mb-6 p-4 bg-myWhite shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-mySkyBlue/40 rounded-lg text-gray-500"
               >
                 <Editor
                   editorState={editorState}
@@ -564,20 +468,32 @@ const AiResumeAnalyzeReort = () => {
                     background-color: #e5e7eb !important; /* Editbar background */
                     border-radius: 0.5rem;
                     border: none !important; /* Remove border */
+                    display: flex;
+                    gap: 0.5rem;
+                    padding: 0.5rem;
                   }
                   .custom-toolbar-bg .rdw-option-wrapper {
                     background-color: #55cef6 !important; /* Editbar option background */
                     border-radius: 0.375rem;
                     border: none !important;
+                    display: flex;
+                    gap: 0.5rem;
+                    padding: 0.5rem;
                   }
                   .custom-toolbar-bg .rdw-option-wrapper:hover,
                   .custom-toolbar-bg .rdw-option-active {
                     background-color: #5191a7 !important; /* Option hover/active */
+                    display: flex;
+                    gap: 0.5rem;
+                    padding: 0.5rem;
                   }
                   .custom-toolbar-bg,
                   .custom-toolbar-bg .rdw-editor-toolbar {
                     border: none !important; /* Remove border from toolbar and its container */
                     box-shadow: none !important;
+                    display: flex;
+                    gap: 0.5rem;
+                    padding: 0.5rem;
                   }
                 `}</style>
               </div>

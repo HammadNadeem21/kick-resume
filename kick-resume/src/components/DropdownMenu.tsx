@@ -21,7 +21,7 @@ export function DropdownMenuRadioGroupDemo() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="flex items-center justify-center gap-1 text-[15px] text-gray-600 active:outline-none border-none shadow-none">
+        <Button className="flex items-center justify-center gap-1 text-lg text-gray-600 active:outline-none border-none shadow-none">
           Features <RiArrowDropDownLine />
         </Button>
       </DropdownMenuTrigger>

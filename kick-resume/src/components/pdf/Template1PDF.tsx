@@ -11,7 +11,6 @@ import moment from "moment";
 
 const styles = StyleSheet.create({
   page: {
-    // padding: 4,
     fontSize: 12,
     fontFamily: "Helvetica",
     flexDirection: "row",
@@ -19,7 +18,6 @@ const styles = StyleSheet.create({
   },
   left: {
     width: "35%",
-    // backgroundColor: "#193042",
     color: "white",
     paddingTop: 12,
     paddingBottom: 12,
@@ -36,6 +34,10 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     paddingLeft: 12,
     paddingRight: 12,
+  },
+  // Add this new style for sections that can break across pages
+  breakableSection: {
+    minPresenceAhead: 50, // Ensures minimum space before page break
   },
   heading: {
     fontSize: 14,
@@ -54,8 +56,8 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   experienceSection: {
-    marginBottom: 10,
-    marginTop: 16,
+    // marginBottom: 2,
+    marginTop: 4,
   },
   persnolInfoSection: {
     marginBottom: 16,
@@ -67,13 +69,15 @@ const styles = StyleSheet.create({
   },
   rightdivider: {
     borderBottomWidth: 1,
-    borderBottomColor: "#374151",
+    borderBottomColor: "#000",
     marginBottom: 4,
+  },
+  sectionWrapper: {
+    marginTop: 12, // Har naye section ke start me equal space
   },
   listItem: {
     flexDirection: "row",
     alignItems: "center",
-    // marginBottom: 4,
     marginLeft: 0,
     marginTop: 2,
     fontSize: 12,
@@ -109,12 +113,10 @@ const styles = StyleSheet.create({
   ExperienceItem: {
     flexDirection: "row",
     alignItems: "flex-start",
-    // marginBottom: 4,
     marginLeft: 0,
     marginTop: 2,
     fontSize: 12,
     fontWeight: "bold",
-    // lineHeight: 1.5,
     color: "#374151",
   },
   bullet: {
@@ -174,7 +176,6 @@ const styles = StyleSheet.create({
   },
   projectLink: {
     fontSize: 10,
-
     marginRight: 15,
     textDecoration: "none",
     color: "#374151",
@@ -215,7 +216,7 @@ export default function Template1PDF({
           <Text style={styles.name}>{data.name}</Text>
           <View style={styles.divider} />
 
-          <View style={{ ...styles.section, width: "80%" }}>
+          <View style={{ ...styles.section, width: "80%" }} wrap={false}>
             <Text style={styles.heading}>Education</Text>
             {data.education?.map((item: any, i: number) => (
               <View
@@ -267,7 +268,10 @@ export default function Template1PDF({
               {data.customSection?.map((item: any, i: number) => (
                 <View key={i}>
                   <View style={styles.divider} />
-                  <View style={{ ...styles.section, width: "80%" }}>
+                  <View
+                    style={{ ...styles.section, width: "80%" }}
+                    wrap={false}
+                  >
                     <Text
                       style={{ ...styles.heading, textTransform: "capitalize" }}
                     >
@@ -294,7 +298,7 @@ export default function Template1PDF({
           <Text style={styles.position}>{data.role}</Text>
 
           {data.personalInformation && data.personalInformation.length > 0 && (
-            <View style={styles.persnolInfoSection}>
+            <View style={styles.persnolInfoSection} wrap={false}>
               <View style={{ width: "80%" }}>
                 {data.personalInformation.map((item: any, i: number) => (
                   <View
@@ -338,7 +342,7 @@ export default function Template1PDF({
           )}
 
           <View style={styles.rightdivider} />
-          <View style={styles.section}>
+          <View style={{ marginTop: 4, marginBottom: 8 }}>
             <Text style={styles.rightHeading}>Summary</Text>
 
             <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
@@ -360,13 +364,20 @@ export default function Template1PDF({
           </View>
 
           {data.experience.length > 0 && <View style={styles.rightdivider} />}
+          {/* {data.projects.length > 0 && <View style={styles.rightdivider} />} */}
+
           {data.experience.length > 0 && (
-            <View style={styles.experienceSection}>
+            <View style={{ ...styles.experienceSection }}>
               <Text style={styles.rightHeading}>Experience</Text>
               {data.experience?.map((item: any, i: number) => (
                 <View
                   key={i}
-                  style={{ marginBottom: 0, flexDirection: "column" }}
+                  style={{
+                    // marginTop: -2,
+                    flexDirection: "column",
+                  }}
+                  wrap={false}
+                  minPresenceAhead={6}
                 >
                   <View style={styles.ExperienceItem}>
                     <Text style={styles.bulletRight}>
@@ -419,18 +430,19 @@ export default function Template1PDF({
                       fontStyle: "italic",
                       color: "#374151",
                       fontSize: 8,
+                      marginTop: -6,
                     }}
                   >
                     {`
-                    (${moment(item.startDate).format("MMM YYYY")} - ${
+                      (${moment(item.startDate).format("MMM YYYY")} - ${
                       item.endDate === "Currently Working"
                         ? "Currently Working"
                         : moment(item.endDate).isValid()
                         ? moment(item.endDate).format("MMM YYYY")
                         : ""
                     })
-                    
-                    `}
+                      
+                      `}
                   </Text>
                 </View>
               ))}
@@ -440,12 +452,20 @@ export default function Template1PDF({
           {data.projects.length > 0 && <View style={styles.rightdivider} />}
 
           {data.projects.length > 0 && (
-            <View style={styles.section}>
+            <View
+              style={[styles.sectionWrapper, { marginTop: 4, marginBottom: 6 }]}
+            >
               <Text style={styles.rightHeading}>Projects</Text>
               {data.projects?.map((item: any, i: number) => (
                 <View
                   key={i}
-                  style={{ marginBottom: 8, flexDirection: "column" }}
+                  style={{
+                    marginBottom: 8,
+                    marginTop: 2,
+                    flexDirection: "column",
+                  }}
+                  wrap={false}
+                  minPresenceAhead={20}
                 >
                   <View style={styles.listItem}>
                     <Text style={styles.bulletRight}>
@@ -482,7 +502,10 @@ export default function Template1PDF({
               {data.customSection2.map((item: any, i: number) => (
                 <View key={i}>
                   <View style={styles.rightdivider} />
-                  <View style={styles.section}>
+                  <View
+                    style={[styles.section, styles.sectionWrapper]}
+                    wrap={false}
+                  >
                     <Text
                       style={{
                         ...styles.rightHeading,
@@ -492,7 +515,12 @@ export default function Template1PDF({
                       {item.title}
                     </Text>
                     {item.value.map((item: any, i: number) => (
-                      <View style={styles.listItem} key={i}>
+                      <View
+                        style={styles.listItem}
+                        key={i}
+                        wrap={false}
+                        minPresenceAhead={60}
+                      >
                         <Text style={styles.bulletRight}>
                           {getBulletChar("#193042")}
                         </Text>
@@ -501,7 +529,6 @@ export default function Template1PDF({
                             lineHeight: 1.2,
                             color: "#374151",
                             fontSize: 11,
-                            // letterSpacing: 0.2,
                             fontWeight: 400,
                           }}
                         >

@@ -1,40 +1,49 @@
-import { Page, Text, View, Document, StyleSheet, Link } from '@react-pdf/renderer';
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Link,
+} from "@react-pdf/renderer";
 import type { PageProps } from "@react-pdf/renderer";
+import moment from "moment";
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     fontSize: 12,
-    fontFamily: 'Helvetica',
+    fontFamily: "Helvetica",
     paddingHorizontal: 28,
     paddingVertical: 28,
-    color: '#000', // Default text color
+    color: "#000", // Default text color
   },
   // Header Section
   headerContainer: {
     marginBottom: 20,
-    width: '70%', // Matches Tailwind w-[70%]
+    width: "100%", // Matches Tailwind w-[70%]
   },
   fullName: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 4,
   },
   position: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#4a4a4a', // gray-700
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#4a4a4a", // gray-700
     marginBottom: 10,
+    marginTop: 8,
   },
   contactRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 5,
     fontSize: 11,
   },
   contactItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 4,
   },
   contactIcon: {
@@ -44,38 +53,38 @@ const styles = StyleSheet.create({
   // Main Divider
   mainDivider: {
     borderBottomWidth: 2,
-    borderBottomColor: '#a0aec0', // gray-400
-    marginVertical: 20,
+    borderBottomColor: "#a0aec0", // gray-400
+    marginVertical: 10,
   },
   // Grid Layout
   gridContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   leftColumn: {
-    width: '65%',
-    paddingRight: 15,
+    width: "65%",
+    paddingRight: 10,
   },
   rightColumn: {
-    width: '35%',
-    paddingLeft: 15,
+    width: "35%",
+    paddingLeft: 10,
   },
   // Section Titles
   sectionTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#2d3748', // gray-800
+    fontWeight: "bold",
+    color: "#1f2937", // gray-800
     marginBottom: 8,
   },
   sectionTitleSmall: {
-    fontSize: 13,
-    fontWeight: 'bold',
-    color: '#2d3748', // gray-800
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#000", // gray-800
     marginBottom: 8,
   },
   // Summary
   summaryText: {
     fontSize: 11,
-    color: '#000',
+    color: "#000",
     lineHeight: 1.4,
   },
   // List Items (Education, Skills, Languages, Certifications)
@@ -83,12 +92,13 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   listItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
     marginBottom: 3,
     fontSize: 10,
-    color: '#000',
-
+    color: "#000",
+    marginTop: 4,
+    marginLeft: 8,
   },
   bullet: {
     marginRight: 6,
@@ -96,60 +106,69 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   educationItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 4,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
   },
   educationDegree: {
-    fontSize: 11,
+    fontSize: 10,
   },
   educationYear: {
     fontSize: 10,
-    color: '#718096',
+    color: "#718096",
   },
   // Experience
   experienceItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
     marginBottom: 5,
   },
   experienceTitle: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: '#000',
+    fontSize: 11,
+    fontWeight: "bold",
+    color: "#000",
   },
   experienceDate: {
     fontSize: 10,
-    color: '#000',
+    color: "#000",
   },
   // Projects
   projectItem: {
-    marginBottom: 15,
+    // marginBottom: 15,
+    marginTop: 17,
   },
   projectTitle: {
     fontSize: 13,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 2,
   },
   projectDescription: {
     fontSize: 11,
     marginBottom: 3,
+    marginTop: 2,
   },
   projectLinkContainer: {
-    flexDirection: 'row',
-    marginTop: 5,
+    flexDirection: "row",
+    marginTop: 10,
   },
   projectLink: {
-    fontSize: 11,
-    color: '#000',
-    textDecoration: 'underline',
+    fontSize: 10,
+    fontWeight: "600",
+    color: "#000",
+    textDecoration: "none",
     marginRight: 20,
   },
 });
 
-export default function Template3PDF({ data, size }: { data: any, size: PageProps["size"] }) {
+export default function Template3PDF({
+  data,
+  size,
+}: {
+  data: any;
+  size: PageProps["size"];
+}) {
   if (!data) return null;
 
   return (
@@ -160,20 +179,49 @@ export default function Template3PDF({ data, size }: { data: any, size: PageProp
           <Text style={styles.fullName}>{data.name}</Text>
           <Text style={styles.position}>{data.role}</Text>
 
-          <View style={styles.contactRow}>
-            <View style={styles.contactItem}>
-              <Text style={{ fontWeight: "bold", color: "#6b7280" }}>Email: </Text>
-              <Text>{data.email}</Text>
+          {data.personalInformation && data.personalInformation.length > 0 && (
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                width: "100%",
+              }}
+            >
+              {data.personalInformation.map((item: any, i: number) => (
+                <View
+                  key={i}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "flex-start",
+                    justifyContent: "flex-start",
+                    gap: 2,
+                    width: "50%",
+                    marginTop: 6,
+                    color: "#374151",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      fontWeight: "600",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {item.title}:{" "}
+                  </Text>
+                  <Text
+                    style={{ fontSize: 10, fontWeight: "400", width: "80%" }}
+                  >
+                    {item.value}
+                  </Text>
+                </View>
+              ))}
             </View>
-            <View style={styles.contactItem}>
-              <Text style={{ fontWeight: "bold", color: "#6b7280" }}>Phone: </Text>
-              <Text>{data.phone}</Text>
-            </View>
-          </View>
-          <View style={styles.contactItem}>
-            <Text style={{ fontWeight: "bold", color: "#6b7280" }}>Address: </Text>
-            <Text>{data.address}</Text>
-          </View>
+          )}
         </View>
 
         {/* Main Divider */}
@@ -186,103 +234,262 @@ export default function Template3PDF({ data, size }: { data: any, size: PageProp
             {/* Summary */}
             <Text style={styles.sectionTitle}>Summary</Text>
             <Text style={styles.summaryText}>{data.summary}</Text>
-            <View style={styles.mainDivider} /> {/* Internal Divider */}
-
             {/* Experience */}
-            <Text style={styles.sectionTitle}>Experience</Text>
-            <View style={styles.list}>
-              {data.experience?.map((item: any, i: number) => (
-                <View key={i} style={{ display: "flex", flexDirection: "column", marginTop: 10 }}>
-                  <View style={styles.experienceItem}>
-
-
-                    <View style={styles.listItem}>
-                      <Text style={styles.bullet}>•</Text>
-                      <Text style={styles.experienceTitle}>{item.title}</Text>
-                    </View>
-                    <Text style={styles.experienceDate}>
+            {data.experience && data.experience.length > 0 && (
+              <View>
+                <View style={styles.mainDivider} /> {/* Internal Divider */}
+                <Text style={styles.sectionTitle}>Experience</Text>
+                <View style={styles.list}>
+                  {data.experience?.map((item: any, i: number) => (
+                    <View
+                      key={i}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        marginTop: 10,
+                      }}
+                    >
+                      <View style={styles.experienceItem}>
+                        <View
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 12,
+                          }}
+                        >
+                          <View
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Text style={styles.bullet}>•</Text>
+                            <Text style={styles.experienceTitle}>
+                              {item.companyName}
+                            </Text>
+                          </View>
+                          <Text
+                            style={{
+                              fontSize: 10,
+                              fontWeight: "500",
+                              color: "#000",
+                            }}
+                          >
+                            {item.title}
+                          </Text>
+                        </View>
+                        {/* <Text style={styles.experienceDate}>
                       ({item.startDate} - {item.endDate})
-                    </Text>
-                  </View>
-                  <Text style={{ fontSize: 10, lineHeight: 1 }}>{item.description}</Text>
+                    </Text> */}
+                      </View>
+                      <Text style={styles.projectDescription}>
+                        {item.description}
+                      </Text>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "flex-end",
+                        }}
+                      >
+                        {item.startDate && item.endDate && (
+                          <Text
+                            style={{
+                              marginLeft: 4,
+                              // fontStyle: "italic",
+                              fontSize: 9,
+                              marginTop: 4,
+                            }}
+                          >
+                            {`(${moment(item.startDate).format("MMM YYYY")} - ${
+                              item.endDate === "Currently Working"
+                                ? "Currently Working"
+                                : moment(item.endDate).isValid()
+                                ? moment(item.endDate).format("MMM YYYY")
+                                : ""
+                            })`}
+                          </Text>
+                        )}
+                      </View>
+                    </View>
+                  ))}
                 </View>
-              ))}
-            </View>
-            <View style={styles.mainDivider} /> {/* Internal Divider */}
-
+              </View>
+            )}
             {/* Projects */}
-            <Text style={styles.sectionTitle}>Projects</Text>
-            <View style={styles.list}>
-              {data.projects?.map((item: any, i: number) => (
-                <View key={i} style={styles.projectItem}>
-                  <Text style={styles.projectTitle}>{item.name}</Text>
-                  <Text style={styles.projectDescription}>{item.description}</Text>
-                  <View style={styles.projectLinkContainer}>
-                    <Link style={styles.projectLink} src={item.github}>
-                      GitHub
-                    </Link>
-                    <Link style={styles.projectLink} src={item.live}>
-                      Live Demo
-                    </Link>
-                  </View>
+            {data.projects && data.projects.length > 0 && (
+              <View>
+                <View style={styles.mainDivider} /> {/* Internal Divider */}
+                <Text style={styles.sectionTitle}>Projects</Text>
+                <View style={styles.list}>
+                  {data.projects?.map((item: any, i: number) => (
+                    <View key={i} style={styles.projectItem}>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "flex-start",
+                          gap: 7,
+                        }}
+                      >
+                        <Text style={styles.projectTitle}>•</Text>
+                        <Text style={styles.projectTitle}>{item.name}</Text>
+                      </View>
+                      <Text style={styles.projectDescription}>
+                        {item.description}
+                      </Text>
+                      <View style={styles.projectLinkContainer}>
+                        <Link style={styles.projectLink} src={item.github}>
+                          GitHub
+                        </Link>
+                        <Link style={styles.projectLink} src={item.live}>
+                          Live Demo
+                        </Link>
+                      </View>
+                    </View>
+                  ))}
                 </View>
-              ))}
-            </View>
+              </View>
+            )}
+
+            {/* Custom-Section */}
+            {data.customSection2 && data.customSection2.length > 0 && (
+              <View>
+                {data.customSection2.map((item: any, i: number) => (
+                  <View key={i}>
+                    <View style={styles.mainDivider} />
+                    <Text
+                      style={{
+                        ...styles.sectionTitle,
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {item.title}
+                    </Text>
+                    {item.value.map((item: any, i: number) => (
+                      <View
+                        key={i}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "flex-start",
+                          gap: 4,
+                          marginLeft: 6,
+                          fontSize: 12,
+                          fontWeight: "400",
+                        }}
+                      >
+                        <Text>•</Text>
+                        <Text style={{}}>{item}</Text>
+                      </View>
+                    ))}
+                  </View>
+                ))}
+              </View>
+            )}
           </View>
 
           {/* Right Column (Education, Skills, Languages, Certifications) */}
           <View style={styles.rightColumn}>
             {/* Education */}
-            <Text style={styles.sectionTitleSmall}>Education</Text>
-            <View style={styles.list}>
-              {data.education?.map((item: any, i: number) => (
-                <View key={i} style={styles.educationItem}>
-                  <View style={styles.listItem}>
-                    <Text style={styles.bullet}>•</Text>
-                    <Text style={styles.educationDegree}>{item.degree}</Text>
-                  </View>
-                  {/* <Text style={styles.educationYear}>
-                    ({item.startYear} - {item.endYear})
-                  </Text> */}
+            {data.education && data.education.length > 0 && (
+              <View>
+                <Text style={styles.sectionTitleSmall}>Education</Text>
+                <View style={styles.list}>
+                  {data.education?.map((item: any, i: number) => (
+                    <View key={i} style={styles.educationItem}>
+                      <View style={styles.listItem}>
+                        <Text style={styles.bullet}>•</Text>
+                        <Text style={styles.educationDegree}>
+                          {item.degree}
+                        </Text>
+                      </View>
+                    </View>
+                  ))}
                 </View>
-              ))}
-            </View>
-            <View style={styles.mainDivider} /> {/* Internal Divider */}
-
+              </View>
+            )}
             {/* Skills */}
-            <Text style={styles.sectionTitleSmall}>Skills</Text>
-            <View style={styles.list}>
-              {data.skills?.map((item: string, i: number) => (
-                <View key={i} style={styles.listItem}>
-                  <Text style={styles.bullet}>•</Text>
-                  <Text>{item}</Text>
+            {data.skills && data.skills.length > 0 && (
+              <View>
+                <View style={styles.mainDivider} /> {/* Internal Divider */}
+                <Text style={styles.sectionTitleSmall}>Skills</Text>
+                <View style={styles.list}>
+                  {data.skills?.map((item: string, i: number) => (
+                    <View key={i} style={styles.listItem}>
+                      <Text style={styles.bullet}>•</Text>
+                      <Text>{item}</Text>
+                    </View>
+                  ))}
                 </View>
-              ))}
-            </View>
-            <View style={styles.mainDivider} /> {/* Internal Divider */}
-
+              </View>
+            )}
             {/* Languages */}
-            <Text style={styles.sectionTitleSmall}>Languages</Text>
-            <View style={styles.list}>
-              {data.languages?.map((item: string, i: number) => (
-                <View key={i} style={styles.listItem}>
-                  <Text style={styles.bullet}>•</Text>
-                  <Text>{item}</Text>
+            {data.language && data.language.length > 0 && (
+              <View>
+                <View style={styles.mainDivider} /> {/* Internal Divider */}
+                <Text style={styles.sectionTitleSmall}>Languages</Text>
+                <View style={styles.list}>
+                  {data.languages?.map((item: string, i: number) => (
+                    <View key={i} style={styles.listItem}>
+                      <Text style={styles.bullet}>•</Text>
+                      <Text>{item}</Text>
+                    </View>
+                  ))}
                 </View>
-              ))}
-            </View>
-            <View style={styles.mainDivider} /> {/* Internal Divider */}
-
+              </View>
+            )}
             {/* Certifications */}
-            <Text style={styles.sectionTitleSmall}>Certifications</Text>
-            <View style={styles.list}>
-              {data.certifications?.map((item: string, i: number) => (
-                <View key={i} style={styles.listItem}>
-                  <Text style={styles.bullet}>•</Text>
-                  <Text>{item}</Text>
+            {data.certifications && data.certifications.length > 0 && (
+              <View>
+                <View style={styles.mainDivider} /> {/* Internal Divider */}
+                <Text style={styles.sectionTitleSmall}>Certifications</Text>
+                <View style={styles.list}>
+                  {data.certifications?.map((item: string, i: number) => (
+                    <View key={i} style={styles.listItem}>
+                      <Text style={styles.bullet}>•</Text>
+                      <Text>{item}</Text>
+                    </View>
+                  ))}
                 </View>
-              ))}
-            </View>
+              </View>
+            )}
+
+            {/* custom section */}
+            {data.customSection && data.customSection.length > 0 && (
+              <View>
+                {data.customSection.map((item: any, i: number) => (
+                  <View key={i}>
+                    <View style={styles.mainDivider} />
+
+                    <Text
+                      style={{
+                        ...styles.sectionTitleSmall,
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {item.title}
+                    </Text>
+                    <View style={styles.list}>
+                      {item.value.map((item: string, i: number) => (
+                        <View key={i} style={styles.listItem}>
+                          <Text style={styles.bullet}>•</Text>
+                          <Text style={{ textTransform: "capitalize" }}>
+                            {item}
+                          </Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                ))}
+              </View>
+            )}
           </View>
         </View>
       </Page>

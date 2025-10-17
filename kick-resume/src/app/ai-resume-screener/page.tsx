@@ -5,6 +5,7 @@ import { TrendingUp } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { LuUpload } from "react-icons/lu";
 import { FaFileAlt } from "react-icons/fa";
+import { TableDemo } from "@/components/Table";
 
 const AiResumeScreenersPage = () => {
   const [pdfFiles, setPdfFiles] = useState<any[]>([]);
@@ -12,14 +13,14 @@ const AiResumeScreenersPage = () => {
   const [files, setFiles] = useState<any[]>([]);
   const [jobDescription, setJobDescription] = useState("");
   const [loading, setLoading] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState(null); // New state for analysis result
+  const [analysisResult, setAnalysisResult] = useState<any>(); // New state for analysis result
 
   const onDrop = useCallback((acceptedFiles: any[]) => {
     const newPdfFiles = acceptedFiles.filter(
       (file) =>
         file.type === "application/pdf" ||
         file.type ===
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
         file.type === "application/msword"
     );
 
@@ -63,10 +64,14 @@ const AiResumeScreenersPage = () => {
     formData.append("jobDescription", jobDescription);
 
     try {
-      const response = await fetch("/api/resume-screeners", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_FLASK_BULK_UPLOAD_API_URL ||
+          "http://127.0.0.1:5000/api/bulkUpload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -75,9 +80,14 @@ const AiResumeScreenersPage = () => {
       const result = await response.json();
       setAnalysisResult(result); // Store the analysis result
       console.log("Analysis Result:", result);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error analyzing resumes:", error);
-      alert("Failed to analyze resumes. Please try again.");
+      setAnalysisResult(null); // Clear previous results on error
+      alert(
+        `Failed to analyze resumes: ${
+          error.message || "Unknown error"
+        }. Please try again.`
+      );
     } finally {
       setLoading(false);
     }
@@ -134,11 +144,14 @@ const AiResumeScreenersPage = () => {
             </div>
             <input {...getInputProps()} />
             {isDragActive ? (
-              <p className="text-mySkyBlue">Drop the PDF or DOC/DOCX here ...</p>
+              <p className="text-mySkyBlue">
+                Drop the PDF or DOC/DOCX here ...
+              </p>
             ) : (
               <>
                 <p className="text-mySkyBlue font-semibold">
-                  Drag & drop your PDF or DOC/DOCX resume here, or click to select
+                  Drag & drop your PDF or DOC/DOCX resume here, or click to
+                  select
                 </p>
                 <p className="text-gray-500 text-sm mt-2">
                   Only PDF and DOC/DOCX files are accepted
@@ -147,7 +160,6 @@ const AiResumeScreenersPage = () => {
             )}
           </div>
           {fileNames.length > 0 && (
-
             <div className="border border-mySkyBlue bg-mySkyBlue/20 mt-5 rounded-lg py-3 px-3 flex items-center justify-between">
               <div className="flex items-center justify-center gap-2">
                 <FaFileAlt size={20} className="text-mySkyBlue" />
@@ -201,13 +213,21 @@ const AiResumeScreenersPage = () => {
             </p>
           </div>
 
-          <div className="flex flex-col bg-gray-200 items-center justify-center h-[550px] mt-5 rounded-lg">
-            <TrendingUp size={40} className="text-gray-500" />
-            <p className="text-gray-500 text-center">
-              Upload your resume and job description to see the analysis results
-              here.
-            </p>
-          </div>
+          {loading ? (
+            <TableDemo tableData={[]} loading={true} />
+          ) : analysisResult &&
+            analysisResult.resumeTexts &&
+            analysisResult.resumeTexts.length > 0 ? (
+            <TableDemo tableData={analysisResult.resumeTexts} loading={false} />
+          ) : (
+            <div className="flex flex-col bg-gray-200 items-center justify-center h-[550px] mt-5 rounded-lg">
+              <TrendingUp size={40} className="text-gray-500" />
+              <p className="text-gray-500 text-center">
+                Upload your resume and job description to see the analysis
+                results here.
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </div>

@@ -74,8 +74,10 @@ const Template10 = ({
 }) => {
   return (
     <div
-      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7  mx-auto ${isLegal ? "max-w-[794px]" : "max-w-[842px]"
-        }`}
+      style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+      className={`bg-myWhite shadow-lg shadow-mySkyBlue px-7 py-7  mx-auto ${
+        isLegal ? "max-w-[794px]" : "max-w-[842px]"
+      }`}
     >
       <div className="flex flex-col gap-2 items-start justify-center w-full">
         <div className="text-center w-full">
@@ -92,8 +94,6 @@ const Template10 = ({
             {data.role}
           </h2>
         </div>
-
-
 
         {/* personal information */}
         <div
@@ -207,33 +207,35 @@ md:text-sm
                   </div>
 
                   <div className="flex justify-end items-center gap-2 md:text-xs text-[7px]">
-                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${item.endDate === "Currently working"
-                      ? "Currently working"
-                      : moment(item.endDate).isValid()
+                    <span>{`(${moment(item.startDate).format("MMM YYYY")} - ${
+                      item.endDate === "Currently working"
+                        ? "Currently working"
+                        : moment(item.endDate).isValid()
                         ? moment(item.endDate).format("MMM YYYY")
                         : ""
-                      })`}</span>
+                    })`}</span>
                   </div>
                 </div>
 
-                <li className="md:text-sm text-xs mt-1">{item.description}</li>
+                <li className="md:text-sm text-xs mt-1 ml-[18px]">
+                  {item.description}
+                </li>
               </div>
             ))}
           </div>
-        ) : (<div
-          className="mb-5 mt-5"
-          onClick={() =>
-            handleExperienceFieldClick("experience", data.experience)
-          }
-        >
-          <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
-            Click here to add experience
-          </h1>
-        </div>)}
-
-
+        ) : (
+          <div
+            className="mb-5 mt-5"
+            onClick={() =>
+              handleExperienceFieldClick("experience", data.experience)
+            }
+          >
+            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+              Click here to add experience
+            </h1>
+          </div>
+        )}
       </div>
-
 
       {/* Education */}
       {data.education && data.education.length > 0 && (
@@ -363,17 +365,16 @@ md:text-sm
             ))}
           </ul>
         ) : (
-          <div className="mb-5 mt-5"
+          <div
+            className="mb-5 mt-5"
             onClick={() => handleProjectFieldClick("projects", data.projects)}
           >
-            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">Click here to add projects
-
+            <h1 className="font-normal text-center text-gray-400 cursor-pointer italic">
+              Click here to add projects
             </h1>
           </div>
         )}
-
       </div>
-
 
       {/* Custom Section */}
       {data.customSection2 && data.customSection2.length > 0 ? (
