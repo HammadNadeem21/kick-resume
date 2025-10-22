@@ -20,10 +20,11 @@ export default withAuth({
 // See "Matching Paths" below to learn more
 export const config = {
   matcher: [
-    // "/ai-resume-analyzer/:path*",
-    // "/ai-resume-builder/:path*",
-    // "/job-matcher/:path*",
-    // "/resume-job-analysis/:path*",
+    "/ai-resume-analyzer/:path*",
+    "/ai-resume-builder/:path*",
+    "/job-matcher/:path*",
+    "/resume-job-analysis/:path*",
+    "/ai-resume-screener"
   ],
 };
 

@@ -664,10 +664,10 @@ const AiPromptPage = () => {
   const handleDownloadPDF = async () => {
     if (!parsedData || !selectedTemplate) return;
 
-    // if (credit < 5) {
-    //   alert("Not enough credits.");
-    //   return;
-    // }
+    if (credit < 5) {
+      alert("Not enough credits.");
+      return;
+    }
 
     let DocumentComponent;
 
@@ -1102,7 +1102,7 @@ const AiPromptPage = () => {
                 }
                 className=" p-3 w-[100%]  text-gray-500 resize-none focus:outline-none bg-transparent"
                 rows={3}
-                // disabled={credit < 3} // Disable if no credits
+                disabled={credit < 3} // Disable if no credits
               />
               <button
                 className="w-[100%] border border-[#a9adb5]  text-gray-800 mt-2 px-4 py-2 rounded-xl flex items-center justify-center gap-1"
@@ -1185,7 +1185,7 @@ const AiPromptPage = () => {
               {/* {showTemplate && parsedData && ( */}
               <button
                 onClick={handleDownloadPDF}
-                // disabled={credit < 5}
+                disabled={credit < 5}
                 className="bg-mySkyBlue hover:shadow-xl md:text-lg sm:text-sm text-[12px] font-bold text-white sm:px-5 px-3 sm:py-2 py-1 rounded-lg"
               >
                 Download PDF
