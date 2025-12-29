@@ -19,7 +19,7 @@ interface ResumeContextType {
   educationScore: number | null;
   experienceScore: number | null;
   actualSummary: string | null;
-  summaryMistakes: string | null;
+  summaryMistakes: string[];
   improvedSummary: string | null;
   coverLetter: string | null;
   setSuggestions: (val: string | null) => void;
@@ -34,7 +34,7 @@ interface ResumeContextType {
   setEducationScore: (val: number | null) => void;
   setExperienceScore: (val: number | null) => void;
   setActualSummary: (val: string | null) => void;
-  setSummaryMistakes: (val: string | null) => void;
+  setSummaryMistakes: (val: string[]) => void;
   setImprovedSummary: (val: string | null) => void;
   setCoverLetter: (val: string | null) => void;
 }
@@ -54,7 +54,7 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
   const [educationScore, setEducationScore] = useState<number | null>(null);
   const [experienceScore, setExperienceScore] = useState<number | null>(null);
   const [actualSummary, setActualSummary] = useState<string | null>(null);
-  const [summaryMistakes, setSummaryMistakes] = useState<string | null>(null);
+  const [summaryMistakes, setSummaryMistakes] = useState<string[]>([]);
   const [improvedSummary, setImprovedSummary] = useState<string | null>(null);
   const [coverLetter, setCoverLetter] = useState<string | null>(null);
   const [resumeData, setResumeData] = useState(null);

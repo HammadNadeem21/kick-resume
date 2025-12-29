@@ -47,7 +47,7 @@ const DropzoneUploader = () => {
       file &&
       (file.type === "application/pdf" ||
         file.type ===
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
     ) {
       setSelectedFile(file);
       setFileName(file.name);
@@ -76,12 +76,12 @@ const DropzoneUploader = () => {
 
       return;
     }
+    setLoading(true);
     const formData = new FormData();
     formData.append("resume", selectedFile);
     try {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_FLASK_RESUME_ANALYZE_API_URL ||
-          "http://127.0.0.1:5000/api/analyzeResume",
+        "/api/analyze-resume",
         {
           method: "POST",
           body: formData,
@@ -93,26 +93,28 @@ const DropzoneUploader = () => {
       }
       const data = await response.json();
 
-      console.log("Response Dataaaa:", data.result[0]);
-      const result = data.result[0];
+      console.log("Response Dataaaa:", data.result);
+      const result = data.result;
       setSuggestions(result.overall_assessment);
       setOverall(result.overall_assessment);
       setScore(result.ats_score);
       setActualSummary(result.actual_summary);
-      setSummaryMistakes(result.summary_mistakes);
+      setSummaryMistakes(result.summary_mistakes || []);
       setImprovedSummary(result.improved_summary);
-      setKeywords(result.keywords_suggestions);
+      setKeywords(result.keywords_suggestions || []);
       setKeywordsScore(result.keywords_suggestions_score);
-      setFormatting(result.formatting_suggestions);
+      setFormatting(result.formatting_suggestions || []);
       setFormattingScore(result.formatting_suggestions_score);
-      setEducation(result.education_suggestions);
+      setEducation(result.education_suggestions || []);
       setEducationScore(result.education_suggestions_score);
-      setExperience(result.experience_suggestions);
+      setExperience(result.experience_suggestions || []);
       setExperienceScore(result.experience_suggestions_score);
       setCoverLetter(result.cover_letter);
     } catch (error) {
       console.error("Error during analysis:", error);
       alert("An error occurred during analysis. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
   return (

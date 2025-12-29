@@ -75,14 +75,14 @@ const AiResumeAnalyzeReort = () => {
   };
 
   const markdownComponents = {
-    h1: ({ node, ...props }: { node: any; [key: string]: any }) => (
+    h1: ({ node, ...props }: { node: any;[key: string]: any }) => (
       <h1
         className="text-xl font-bold text-primaryColor mt-4 mb-2"
         {...props}
       />
     ),
 
-    h2: ({ node, ...props }: { node: any; [key: string]: any }) => {
+    h2: ({ node, ...props }: { node: any;[key: string]: any }) => {
       const headingText = props.children[0];
       const text =
         typeof headingText === "string" ? headingText.toLowerCase() : "";
@@ -112,22 +112,22 @@ const AiResumeAnalyzeReort = () => {
       );
     },
 
-    h3: ({ node, ...props }: { node: any; [key: string]: any }) => (
+    h3: ({ node, ...props }: { node: any;[key: string]: any }) => (
       <h3
         className="text-2xl font-medium text-primaryColor mt-4 mb-2"
         {...props}
       />
     ),
 
-    strong: ({ node, ...props }: { node: any; [key: string]: any }) => (
+    strong: ({ node, ...props }: { node: any;[key: string]: any }) => (
       <strong className="text-gray-600 text-lg font-[400]" {...props} />
     ),
 
-    ul: ({ node, ...props }: { node: any; [key: string]: any }) => (
+    ul: ({ node, ...props }: { node: any;[key: string]: any }) => (
       <ul className="list-disc pl-5 text-gray-600 space-y-1" {...props} />
     ),
 
-    li: ({ node, ...props }: { node: any; [key: string]: any }) => {
+    li: ({ node, ...props }: { node: any;[key: string]: any }) => {
       const content = props.children[0];
       const isImportant =
         typeof content === "string" &&
@@ -135,15 +135,14 @@ const AiResumeAnalyzeReort = () => {
 
       return (
         <li
-          className={`text-gray-600 ${
-            isImportant ? "text-red-600 font-semibold" : ""
-          }`}
+          className={`text-gray-600 ${isImportant ? "text-red-600 font-semibold" : ""
+            }`}
           {...props}
         />
       );
     },
 
-    p: ({ node, ...props }: { node: any; [key: string]: any }) => (
+    p: ({ node, ...props }: { node: any;[key: string]: any }) => (
       <p className="text-gray-800 hidden  mb-2" {...props} />
     ),
   };
@@ -196,7 +195,13 @@ const AiResumeAnalyzeReort = () => {
                 <h4 className="text-xl text-mySkyBlue font-bold  mb-4">
                   Mistakes:
                 </h4>
-                <div className="text-gray-600">{summaryMistakes}</div>
+                <div className="text-gray-600">
+                  {summaryMistakes.map((mistake, index) => (
+                    <ul key={index} className="list-disc pl-5 mb-1">
+                      <li>{mistake}</li>
+                    </ul>
+                  ))}
+                </div>
               </div>
             )}
 
