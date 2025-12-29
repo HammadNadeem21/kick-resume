@@ -4,13 +4,13 @@ import os
 
 load_dotenv()
 
-GEMINI_BATCH_API_KEY = os.getenv("GEMINI_BATCH_API_KEY")
-if not GEMINI_BATCH_API_KEY:
-    raise RuntimeError("GEMINI_BATCH_API_KEY environment variable is not set.")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY2")
+if not GEMINI_API_KEY:
+    raise RuntimeError("GEMINI_API_KEY environment variable is not set.")
 
 
 external_client = AsyncOpenAI(
-    api_key=GEMINI_BATCH_API_KEY,
+    api_key=GEMINI_API_KEY,
     base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
 )
 

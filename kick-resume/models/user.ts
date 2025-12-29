@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 20,
   },
+  
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
