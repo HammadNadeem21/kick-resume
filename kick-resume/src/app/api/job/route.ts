@@ -1,13 +1,13 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse, NextRequest } from "next/server";
 
-const genAi = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+const genAi = new GoogleGenerativeAI(process.env.GEMINI_API_KEY2!);
 
 export async function POST(request: NextRequest) {
   try {
     const { userName, jobDescription } = await request.json();
 
-    const model = genAi.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = genAi.getGenerativeModel({ model: "gemini-flash-latest" });
 
     const fullPrompt = `
     
