@@ -405,7 +405,7 @@ const AiResumeAnalyzeReort = () => {
 
                       <SectionScoreChart
                         score={experienceScore}
-                        textColor="#ffffff"
+                        textColor="#6b7280"
                         scoreText="ATS Score"
                       />
                     </div>
