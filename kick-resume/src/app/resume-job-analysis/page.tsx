@@ -166,15 +166,14 @@ const Page = () => {
     formData.append("resume", pdfFile);
     formData.append("jobDescription", jobDescription);
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_FLASK_RESUME_JOB_ANALYSIS_API_URL || "http://127.0.0.1:5000/api/resumeJobAnalysis", {
+      const response = await fetch("/api/resume-job-analysis", {
         method: "POST",
         body: formData,
       });
 
       const data = await response.json();
-      console.log("AI Response:", data.result[0]);
+      console.log("AI Response:", data.result);
       setAnalysisResult(data.result);
-      // console.log("AI Response:", analysisResult);
     }
     catch (error) {
       console.error("Error analyzing:", error);

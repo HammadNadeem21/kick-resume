@@ -20,7 +20,7 @@ const AiResumeScreenersPage = () => {
       (file) =>
         file.type === "application/pdf" ||
         file.type ===
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
         file.type === "application/msword"
     );
 
@@ -64,14 +64,10 @@ const AiResumeScreenersPage = () => {
     formData.append("jobDescription", jobDescription);
 
     try {
-      const response = await fetch(
-        process.env.NEXT_PUBLIC_FLASK_BULK_UPLOAD_API_URL ||
-          "http://127.0.0.1:5000/api/bulkUpload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch("/api/bulk-upload", {
+        method: "POST",
+        body: formData,
+      });
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -84,8 +80,7 @@ const AiResumeScreenersPage = () => {
       console.error("Error analyzing resumes:", error);
       setAnalysisResult(null); // Clear previous results on error
       alert(
-        `Failed to analyze resumes: ${
-          error.message || "Unknown error"
+        `Failed to analyze resumes: ${error.message || "Unknown error"
         }. Please try again.`
       );
     } finally {

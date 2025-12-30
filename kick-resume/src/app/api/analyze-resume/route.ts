@@ -1,11 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Runner, Agent } from "@openai/agents";
-import { OpenAIChatCompletionsModel } from "@openai/agents-openai";
-import OpenAI from "openai";
+import { z } from "zod";
+import { Agent, Runner } from '@openai/agents';
+import { OpenAIChatCompletionsModel } from '@openai/agents-openai';
+import OpenAI from 'openai';
 
 const geminiApiKey = process.env.GEMINI_API_KEY2;
 
-export async function POST(request: NextRequest) {
+const AnalyzeResumeSchema = z.object({
+    ats_score: z.number().min(0).max(100),
+    overall_assessment: z.string(),
+    actual_summary: z.string(),
+    summary_mistakes: z.array(z.string()),
+    improved_summary: z.string(),
+    cover_letter: z.string(),
+    keywords_suggestions_score: z.number().min(0).max(100),
+    keywords_suggestions: z.array(z.string()),
+    formatting_suggestions_score: z.number().min(0).max(100),
+    formatting_suggestions: z.array(z.string()),
+    education_suggestions_score: z.number().min(0).max(100),
+    education_suggestions: z.array(z.string()),
+    experience_suggestions_score: z.number().min(0).max(100),
+    experience_suggestions: z.array(z.string()),
+});
+
+export async function POST(request: NextRequest, response: NextResponse) {
     try {
         const pdf = require("pdf-parse/lib/pdf-parse.js");
         const mammoth = require("mammoth");
@@ -61,43 +79,30 @@ export async function POST(request: NextRequest) {
             model: model,
             instructions: `
 You are an expert in Applicant Tracking Systems (ATS) and resume optimization.  
-Your task is to analyze the provided resume strictly for ATS compatibility and return your response in **valid JSON format** matching the structure below.  
+Your task is to analyze the provided resume strictly for ATS compatibility.
 
-Return data in this strict JSON format:
-{
-    "ats_score": 0,
-    "overall_assessment": "",
-    "actual_summary": "",
-    "summary_mistakes": [],
-    "improved_summary": "",
-    "cover_letter": "",
-    "keywords_suggestions_score": 0,
-    "keywords_suggestions": [],
-    "formatting_suggestions_score": 0,
-    "formatting_suggestions": [],
-    "education_suggestions_score": 0,
-    "education_suggestions": [],
-    "experience_suggestions_score": 0,
-    "experience_suggestions": []
-}
+Specifically, evaluate:
+1. "ats_score": Overall optimization score.
+2. "overall_assessment": General feedback.
+3. "actual_summary": The existing summary found in the resume.
+4. "summary_mistakes": List of specific issues with the current summary.
+5. "improved_summary": A rewritten, ATS-optimized version of the summary.
+6. "cover_letter": A drafted cover letter based on the resume.
+7. "keywords_suggestions": Missing important keywords.
+8. "formatting_suggestions": Layout/structure improvements.
+9. "education_suggestions": Ways to better present education.
+10. "experience_suggestions": Ways to better present work experience.
       `,
+            outputType: AnalyzeResumeSchema,
         });
 
         const runner = new Runner();
         const result = await runner.run(agent, `Analyze the following resume: ${extractedText}`);
 
-        const text = result.finalOutput as string;
-
-        const match = text?.match(/\{[\s\S]*\}/);
-        if (!match) {
-            throw new Error("No JSON found in response");
-        }
-
-        const jsonData = JSON.parse(match[0]);
         return NextResponse.json({
             success: true,
             filename: file.name,
-            result: jsonData,
+            result: result.finalOutput,
         });
 
     } catch (error) {
