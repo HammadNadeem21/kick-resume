@@ -155,7 +155,7 @@ const ResumeChatBox = () => {
           <div className="h-full flex flex-col items-center justify-center text-center text-gray-400 p-4 opacity-60">
             <Bot size={48} className="mb-2" />
             <p className="text-sm">Start a conversation to build your resume.</p>
-            <p className="text-xs mt-1">Try: "Create a resume for a software engineer"</p>
+          
           </div>
         )}
 
