@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import Image from "next/image";
+
 
 // icons
-import { Briefcase, Sparkles } from "lucide-react";
-import { IoSend } from "react-icons/io5";
+// icons
+import { Briefcase } from "lucide-react";
 import { IoMdArrowDropleftCircle } from "react-icons/io";
+import { Sparkles } from "lucide-react";
 
 // for motion library
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,8 +16,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { pdf } from "@react-pdf/renderer";
 import type { PageProps } from "@react-pdf/renderer";
 
-// for imge uploader
-import { useDropzone } from "react-dropzone";
 
 // Templates
 import Template1 from "@/components/Templates/Template1";
@@ -44,36 +43,20 @@ import Template10PDF from "@/components/pdf/Template10PDF";
 
 // other components
 import { Button } from "@/components/ui/button";
-import { RgbColorPicker } from "react-colorful";
-import { CarouselSize } from "@/components/Carousel";
-import { DatePicker } from "@/components/DatePicker";
+import ResumeBuilderSidebar from "@/components/ResumeBuilderSidebar";
+import ResumeChatBox from "@/components/ResumeChatBox";
 
-const templateData = [
-  { image: "/templates/template1.png", name: "Template 1", id: 1 },
-  { image: "/templates/template2.png", name: "Template 2", id: 2 },
-  { image: "/templates/template3.png", name: "Template 3", id: 3 },
-  { image: "/templates/template4.png", name: "Template 4", id: 4 },
-  { image: "/templates/template5.png", name: "Template 5", id: 5 },
-  { image: "/templates/template6.png", name: "Template 6", id: 6 },
-  { image: "/templates/template7.png", name: "Template 7", id: 7 },
-  { image: "/templates/template8.png", name: "Template 8", id: 8 },
-  { image: "/templates/template9.png", name: "Template 9", id: 9 },
-  { image: "/templates/template10.png", name: "Template 10", id: 10 },
-];
 
 // for credits
 import { useSession } from "next-auth/react";
 import { useCredits } from "@/context/CreditsContext";
 import { useAiResumeBuilder } from "@/context/AiResumeBuilder";
-import { calculateCreditFromTokens } from "../../../utils/commonHelpers";
+// import { calculateCreditFromTokens } from "../../../utils/commonHelpers";
 import { SelectButton } from "@/components/SelectButton";
-import CustomSection from "@/components/Editors/CustomSection/CustomSection";
+
 import { ColorPickerDropdown } from "@/components/ColorPicker";
-import { se } from "date-fns/locale";
-import PersonalInformationEditor from "@/components/Editors/PersonalInformation/PersonalInformationEditor";
-import EducationEditor from "@/components/Editors/Education/EducationEditor";
-import ProjectEditor from "@/components/Editors/ProjectEditor/ProjectEditor";
-import ExperienceEditor from "@/components/Editors/ExperienceEditor/ExperienceEditor";
+
+import ResumeEditorModal from "@/components/ResumeEditorModal";
 
 const AiPromptPage = () => {
   // Context State
@@ -218,19 +201,8 @@ const AiPromptPage = () => {
   const { data: session } = useSession();
   const user = session?.user;
 
-  const onDrop = async (acceptedFiles: File[]) => {
-    const file = acceptedFiles[0];
-    if (file) {
-      setImageFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    }
-  };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: { "image/*": [] },
-    multiple: false,
-  });
+
 
   const handleStringFieldClick = (fieldName: string, value: string) => {
     setInputData(value);
@@ -362,93 +334,7 @@ const AiPromptPage = () => {
   }, [parsedData]);
 
   // for sending prompt
-  const handleSendPrompt = async () => {
-    if (!userPrompt || !selectedTemplate) {
-      alert("Please enter a prompt and select a template!");
-      return;
-    }
-    setIsChatLoading(true);
-    setIsTemplateLoading(true); // <-- start spinner
 
-    setPromptHistory((prev) => [
-      ...prev,
-      { type: "user", message: userPrompt },
-    ]);
-
-    const res = await fetch("/api/generate-resume", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        prompt: userPrompt,
-        existingResume: parsedData || {},
-      }),
-    });
-
-    console.log("response received from /api/generate-resume", res.body);
-
-    if (!res.ok) {
-      const err = await res.json();
-      alert(err.error || "Something went wrong");
-      setIsChatLoading(false);
-      setIsTemplateLoading(false); // <-- stop spinner
-      return;
-    }
-
-    const data = await res.json();
-    console.log("Response Data:", data);
-
-    // Ensure certifications is always an array of strings
-    if (data.certifications && Array.isArray(data.certifications)) {
-      data.certifications = data.certifications.map((item: any) =>
-        typeof item === "string"
-          ? item
-          : [item.name, item.authority, item.date].filter(Boolean).join(" - ")
-      );
-    }
-
-    const { totalTokenCount } = data?.tokensUsed;
-
-    const creditRes = await fetch("/api/credits/deduct", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: session?.user?.email,
-        amount: calculateCreditFromTokens(totalTokenCount),
-      }),
-    });
-
-    if (!creditRes.ok) {
-      const creditErr = await creditRes.json();
-      alert("Resume sent, but failed to deduct credits: " + creditErr.error);
-    } else {
-      const creditData = await creditRes.json();
-      setCredit(creditData.credits); // 👈 Update credits state
-    }
-
-    setShowTemplate(true);
-    setUserPrompt(""); // Clear input
-
-    // 2. AI response message
-    setPromptHistory((prev) => [
-      ...prev,
-      { type: "ai", message: "Resume updated successfully!" },
-    ]);
-    setParsedData(data);
-    setIsChatLoading(false);
-    setIsTemplateLoading(false); // <-- stop spinner
-    if (!hasRenderedTemplate) setHasRenderedTemplate(true);
-  };
-
-  const getTemplateId = (image: number) => {
-    setSelectedTemplate(image);
-  };
-
-  const scrollToBottom = () => {
-    const container = document.querySelector(".chat-container"); // add class below
-    if (container) {
-      container.scrollTop = container.scrollHeight;
-    }
-  };
   const [height, setHeight] = useState(0);
   console.log("height of template 1", height);
 
@@ -647,9 +533,7 @@ const AiPromptPage = () => {
     setHasRenderedTemplate,
   ]);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [promptHistory]);
+
 
   // List Change
   const handleListChange = (data: string[]) => {
@@ -782,11 +666,7 @@ const AiPromptPage = () => {
   console.log("Page size", pageSize);
 
   const boxRef = useRef<HTMLDivElement>(null);
-  // useEffect(() => {
-  //   const react = boxRef.current?.getBoundingClientRect();
-  //   const height = react?.height;
-  //   console.log("height of box", height);
-  // });
+
 
   const [showPageBreak, setShowPageBreak] = useState(false);
 
@@ -816,602 +696,249 @@ const AiPromptPage = () => {
   console.log("height", showPageBreak);
 
   return (
-    <div
-      className="px-[30px] py-[60px] max-w-[1600px] mx-auto min-h-screen"
-      // style={{ background: "linear-gradient(to right, #f3f4f6, #e5e7eb)" }}
-    >
-      <section className="py-16">
+    <div className="px-[30px] py-[60px] max-w-[1600px] mx-auto min-h-screen bg-[#fafbfc] transition-colors duration-500 overflow-x-hidden ">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-blue-50/50 to-transparent -z-10 pointer-events-none" />
+      
+      <section className="pt-8 pb-16 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="md:text-5xl lg:text-6xl text-3xl font-black mb-6 tracking-tight">
-            <span
-              className="bg-gradient-hero bg-clip-text text-transparent"
-              style={{
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                color: "transparent",
-              }}
-            >
-              AI Resume
-            </span>
-            <br />
-            <span className="text-black">Builder</span>
-          </h1>
-          <p className="md:text-xl lg:text-2xl text-[15px] text-gray-500 max-w-3xl mx-auto leading-relaxed">
-            Choose a template and let AI create a professional resume tailored
-            to your career goals.
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tight leading-[1.1]">
+              <span
+                className="bg-gradient-to-r from-mySkyBlue via-blue-600 to-indigo-600 bg-clip-text text-transparent"
+                style={{
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                AI Resume
+              </span>
+              <br />
+              <span className="text-gray-900 drop-shadow-sm">Architect</span>
+            </h1>
+            <p className="text-lg md:text-xl lg:text-2xl text-gray-500 max-w-2xl mx-auto leading-relaxed font-medium">
+              Transform your career path with AI-powered precision. <br className="hidden md:block" />
+              Select a masterpiece template and let intelligence do the rest.
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Select Template */}
-      <div className="grid lg:grid-cols-12 grid-cols-1  lg:h-[350px]  mb-10">
-        {/* Upload Image */}
+      {/* Sidebar */}
+      <ResumeBuilderSidebar />
 
-        <div className="lg:col-span-4 col-span-1 flex flex-col justify-center gap-2">
-          <div className="flex flex-col items-center">
-            <div className="w-[100px] h-[100px] rounded-full border-2 border-white overflow-hidden mb-3">
-              {previewUrl ? (
-                <Image
-                  width={158}
-                  height={158}
-                  src={previewUrl || "/placeholder.png"}
-                  alt="Preview"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full bg-gray-300 flex items-center justify-center text-sm text-gray-600">
-                  No Image
+     {/* chatbox & template preview */}
+      <div className="py-2 grid lg:grid-cols-[30%,70%] grid-cols-1 lg:gap-5 gap-10">
+        <div className="col-span-1 sticky top-8 h-fit">
+      
+             <ResumeChatBox />
+          </div>
+        
+
+        <div className="col-span-1 flex flex-col gap-6">
+          <div className="bg-white/80 backdrop-blur-md sticky top-8 z-30 py-4 px-6 rounded-2xl border border-gray-200 shadow-sm flex flex-wrap items-center justify-between gap-4 w-[97%]">
+            <div className="flex flex-col ">
+              <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                Live Preview
+                <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+              </h2>
+              <p className="text-xs text-gray-500 font-medium tracking-tight">Real-time Professional Visualizer</p>
+            </div>
+
+            <div className="flex items-center gap-3 ">
+              {/* Page Size Selector - Clean Integration */}
+              <div className="hidden sm:block">
+                <SelectButton onchange={setPageSize} />
+              </div>
+
+              {/* Theme/Color Controls */}
+              {(selectedTemplate === 4 ||
+                selectedTemplate === 1 ||
+                selectedTemplate === 7 ||
+                selectedTemplate === 10) && (
+                <div className="relative">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowColorPicker((prev) => !prev)}
+                    className="h-10 px-4 rounded-xl border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-bold transition-all flex items-center gap-2 shadow-sm"
+                  >
+                    <div 
+                      className="w-4 h-4 rounded-full border border-gray-200 ring-2 ring-white shadow-sm"
+                      style={{ 
+                        backgroundColor: 
+                          selectedTemplate === 1 ? `rgb(${color1.r}, ${color1.g}, ${color1.b})` :
+                          selectedTemplate === 4 ? `rgb(${color4.r}, ${color4.g}, ${color4.b})` :
+                          selectedTemplate === 7 ? `rgb(${color1.r}, ${color1.g}, ${color1.b})` :
+                          selectedTemplate === 10 ? `rgb(${color10.r}, ${color10.g}, ${color10.b})` : 
+                          '#55CEF6'
+                      }}
+                    />
+                    <span className="hidden sm:inline">Customize Theme</span>
+                    <span className="sm:hidden text-xs">Theme</span>
+                  </Button>
+
+                  <AnimatePresence>
+                    {showColorPicker && (
+                      <div className="absolute top-5 mt-2 right-44 z-[60]">
+                        <ColorPickerDropdown
+                          selectedTemplate={selectedTemplate}
+                          color1={color1}
+                          setColor1={setColor1}
+                          color4={color4}
+                          setColor4={setColor4}
+                          color7={color7}
+                          setColor7={setColor7}
+                          color10={color10}
+                          setColor10={setColor10}
+                          setShowColorPicker={setShowColorPicker}
+                        />
+                      </div>
+                    )}
+                  </AnimatePresence>
                 </div>
               )}
-            </div>
 
-            {/* Dropzone uploader */}
-            <div
-              {...getRootProps()}
-              className="text-center cursor-pointer border border-dashed border-gray-400 rounded-md p-2 hover:bg-white/10 transition-all"
-            >
-              <input {...getInputProps()} />
-              <p className="text-xs text-gray-300">
-                {isDragActive
-                  ? "Drop the image here..."
-                  : "Click or drag an image to upload"}
-              </p>
-            </div>
-          </div>
-
-          <Button
-            className="bg-mySkyBlue/60 hover:bg-mySkyBlue font-bold text-white mx-auto "
-            onClick={async () => {
-              if (!imageFile) return alert("Please upload an image!");
-
-              const fd = new FormData();
-              fd.append("image", imageFile);
-
-              const res = await fetch("/api/process-image", {
-                method: "POST",
-                body: fd,
-              });
-
-              const json = await res.json();
-
-              if (json.url) {
-                setProcessedUrl(json.url); // set processed image (no bg + colored bg)
-              } else {
-                alert("Failed to process image");
-              }
-            }}
-          >
-            Remove BG
-          </Button>
-
-          {processedUrl && (
-            <div className="lg:grid grid-cols-5 flex items-center justify-center gap-2 w-[100%] mx-auto flex-wrap mt-2 mb-2">
-              {/* Original Image */}
-              <div
-                onClick={() => {
-                  setSelectedProcessedImage(previewUrl);
-                  setSelectedImageBgColor(undefined); // Reset background color on click
-                }}
-                className={`w-[50px] h-[50px] rounded-full flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${
-                  selectedProcessedImage === previewUrl && !selectedImageBgColor
-                    ? "ring-4 ring-mySkyBlue"
-                    : ""
-                }`}
-              >
-                <Image
-                  src={previewUrl ?? "/dummy.jpg"}
-                  width={170}
-                  height={170}
-                  alt="Original"
-                  className="object-contain"
-                />
-              </div>
-              {/* Processed Images (with colored backgrounds) */}
-              {[
-                "bg-blue-500",
-                "bg-white",
-                "bg-green-500",
-                "bg-gray-500",
-                "bg-yellow-600",
-                "bg-black",
-                "bg-purple-500",
-                "bg-yellow-300",
-                "bg-[#28384a]",
-              ].map((bg, index) => (
-                <div
-                  key={index}
-                  onClick={() => {
-                    setSelectedProcessedImage(processedUrl);
-                    setSelectedImageBgColor(bg); // Set background color on click
-                  }}
-                  className={`w-[50px] h-[50px] rounded-full ${bg} flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 ${
-                    selectedProcessedImage === processedUrl &&
-                    selectedImageBgColor === bg
-                      ? "ring-4 ring-mySkyBlue"
-                      : ""
-                  }`}
-                >
-                  <Image
-                    src={processedUrl || "/dummy.jpg"}
-                    width={160}
-                    height={160}
-                    alt={`Processed Image ${index}`}
-                    className="object-fill mt-4"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="lg:col-span-8 col-span-1 flex items-center justify-center lg:mt-0 mt-5">
-          <CarouselSize
-            array={templateData}
-            getTemplateId={(id) => setSelectedTemplate(id)}
-            selectedTemplate={selectedTemplate}
-          />
-        </div>
-      </div>
-
-      <div className="py-8 grid lg:grid-cols-[28%,72%] grid-cols-1 lg:gap-[20px] gap-0">
-        <div className=" col-span-1">
-          {/* Chat Box */}
-
-          <div className="bg-gray-100 mt-3  py-2 sm:px-3 px-2 mb-2 rounded-xl flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-4">
-                <div className="py-2 px-2 text-mySkyBlue bg-mySkyBlue/30 rounded-xl">
-                  <Sparkles size={15} />
-                </div>
-                <h1 className="text-mySkyBlue text-xl font-semibold">
-                  AI Instructions
-                </h1>
-              </div>
-              <h2 className="text-gray-500 sm:text-[15px] text-[12px]">
-                Describe your background, skills, and career goals
-              </h2>
-            </div>
-
-            {promptHistory.length > 0 && (
-              <div className=" mx-auto w-[100%] p-4 h-[300px] overflow-y-auto chat-container custom-scrollbar">
-                {promptHistory.map((entry, index) => (
-                  <div
-                    key={index}
-                    className={`flex items-end mb-2 max-w-[100%] text-xs ${
-                      entry.type === "user"
-                        ? "flex-row-reverse ml-auto"
-                        : "flex-row mr-auto"
-                    } animate-fade-in-up`}
-                  >
-                    {/* Avatar */}
-                    <div
-                      className={`shrink-0 h-[30px] w-[30px] rounded-full flex items-center justify-center font-bold text-xs select-none ${
-                        entry.type === "user"
-                          ? "bg-mySkyBlue text-white ml-2"
-                          : "bg-gray-300 text-gray-700 mr-2"
-                      }`}
-                    >
-                      {entry.type === "user" ? "You" : "Ai"}
-                    </div>
-                    {/* Chat bubble */}
-                    <div
-                      className={`px-2 py-2 rounded-xl ${
-                        entry.type === "user"
-                          ? "bg-mySkyBlue text-white text-xs"
-                          : "bg-gray-300 text-gray-700 text-xs"
-                      }`}
-                    >
-                      {entry.message}
-                    </div>
-                  </div>
-                ))}
-                {isChatLoading && (
-                  <div className="flex items-center mb-2 max-w-[80%] flex-row mr-auto">
-                    {/* Avatar for AI */}
-                    <div className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm select-none bg-gray-300 text-gray-700 mr-2 mb-2">
-                      Ai
-                    </div>
-                    {/* Loading bubble */}
-                    <div className="flex items-center mb-1 px-4 py-2 rounded-xl bg-gray-300 text-gray-700">
-                      <div className="flex gap-1 items-end">
-                        <span className="dot-bounce"></span>
-                        <span className="dot-bounce animation-delay-200"></span>
-                        <span className="dot-bounce animation-delay-400"></span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                <style jsx>{`
-                  .custom-scrollbar {
-                    scrollbar-width: thin;
-                    scrollbar-color: #374151 #f3f4f6;
-                    margin-top: 5px; /* thumb color, then track color */
-                  }
-                  .custom-scrollbar::-webkit-scrollbar {
-                    width: 8px;
-                    background: #c084fc; /* scrollbar track background color */
-                  }
-                  .custom-scrollbar::-webkit-scrollbar-thumb {
-                    background: #a855f7;
-                    border-radius: 8px;
-                  }
-                  .custom-scrollbar::-webkit-scrollbar-button {
-                    display: none;
-                  }
-                  .dot-bounce {
-                    display: inline-block;
-                    width: 8px;
-                    height: 8px;
-                    background: #374151;
-                    border-radius: 50%;
-                    margin: 0 2px;
-                    animation: bounce 1s infinite;
-                  }
-                  .animation-delay-200 {
-                    animation-delay: 0.2s;
-                  }
-                  .animation-delay-400 {
-                    animation-delay: 0.4s;
-                  }
-                  @keyframes bounce {
-                    0%,
-                    80%,
-                    100% {
-                      transform: scale(0.8);
-                      opacity: 0.7;
-                    }
-                    40% {
-                      transform: scale(1.2);
-                      opacity: 1;
-                    }
-                  }
-                `}</style>
-              </div>
-            )}
-
-            {/* Input Field */}
-            <div className=" w-[100%] mx-auto border border-[#a9adb5] rounded-xl px-4 py-2 custom-scrollbar">
-              <textarea
-                value={userPrompt}
-                onChange={(e) => setUserPrompt(e.target.value)}
-                placeholder={
-                  credit < 3
-                    ? "You have no credits left. Please upgrade."
-                    : "Type your prompt here..."
-                }
-                className=" p-3 w-[100%]  text-gray-500 resize-none focus:outline-none bg-transparent"
-                rows={3}
-                disabled={credit < 3} // Disable if no credits
-              />
-              <button
-                className="w-[100%] border border-[#a9adb5]  text-gray-800 mt-2 px-4 py-2 rounded-xl flex items-center justify-center gap-1"
-                onClick={handleSendPrompt}
-              >
-                Send <IoSend />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className=" col-span-1 lg:mt-0 mt-10">
-          <div className="flex sm:flex-row flex-col sm:items-center justify-between items-start ">
-            <div className="text-left">
-              <h2 className="md:text-3xl text-xl font-bold mb-4 text-mySkyBlue">
-                Resume Preview
-              </h2>
-              <p className="md:text-lg text-sm text-gray-500">
-                See your AI-generated resume in real-time
-              </p>
-            </div>
-
-            <div className="flex items-end justify-center gap-2">
-              <div className="relative mt-10 flex flex-col items-center">
-                {/* Theme Selection Section */}
-                {(selectedTemplate === 4 ||
-                  selectedTemplate === 1 ||
-                  selectedTemplate === 7 ||
-                  selectedTemplate === 10) && (
-                  <div className="flex items-center justify-center gap-2">
-                    <div
-                      className={`h-[25px] w-[25px] border cursor-pointer border-white cursor-pointerff rounded-md`}
-                      onClick={() => setShowColorPicker((prev) => !prev)}
-                      style={{
-                        backgroundColor:
-                          selectedTemplate === 1
-                            ? `rgb(${color1.r}, ${color1.g}, ${color1.b})`
-                            : selectedTemplate === 4
-                            ? `rgb(${color4.r}, ${color4.g}, ${color4.b})`
-                            : selectedTemplate === 7
-                            ? `rgb(${color1.r}, ${color1.g}, ${color1.b})`
-                            : selectedTemplate === 10
-                            ? `rgb(${color10.r}, ${color10.g}, ${color10.b})`
-                            : "transparent",
-                      }}
-                    ></div>
-                    <button
-                      className="bg-mySkyBlue hover:shadow-xl md:text-lg sm:text-sm text-[12px] font-bold text-white sm:px-5 px-3 sm:py-2 py-1 rounded-lg"
-                      onClick={() => setShowColorPicker((prev) => !prev)}
-                    >
-                      Choose Color
-                    </button>
-                  </div>
-                )}
-
-                <AnimatePresence>
-                  {showColorPicker &&
-                    (selectedTemplate === 4 ||
-                      selectedTemplate === 1 ||
-                      selectedTemplate === 7 ||
-                      selectedTemplate === 10) && (
-                      <ColorPickerDropdown
-                        selectedTemplate={selectedTemplate}
-                        color1={color1}
-                        setColor1={setColor1}
-                        color4={color4}
-                        setColor4={setColor4}
-                        color7={color7}
-                        setColor7={setColor7}
-                        color10={color10}
-                        setColor10={setColor10}
-                        setShowColorPicker={setShowColorPicker}
-                      />
-                    )}
-                </AnimatePresence>
-
-                {/* <h1>{color10}</h1> */}
-              </div>
-
-              {/* {showTemplate && parsedData && ( */}
-              <button
+              <Button
                 onClick={handleDownloadPDF}
                 disabled={credit < 5}
-                className="bg-mySkyBlue hover:shadow-xl md:text-lg sm:text-sm text-[12px] font-bold text-white sm:px-5 px-3 sm:py-2 py-1 rounded-lg"
+                className="bg-mySkyBlue hover:bg-sky-600 text-white font-bold h-9 px-5 rounded-xl shadow-lg shadow-mySkyBlue/20 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2 text-sm"
               >
-                Download PDF
-              </button>
-              {/* )} */}
+                <span>Export PDF</span>
+              </Button>
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <SelectButton onchange={setPageSize} />
-            </div>
-
-            {height > 1150 && (
-              <p className="text-red-500 text-sm">
-                *Content exceeds one page. Consider reducing text or switching
-                to Legal size.*
-              </p>
+          <div className="rounded-[2.5rem] overflow-hidden min-h-[850px] relative transition-all duration-300">
+            {!isTemplateLoading && !hasRenderedTemplate ? (
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-12 bg-gradient-to-br from-gray-50/50 to-white">
+                <div className="w-24 h-24 bg-white rounded-[2rem] shadow-2xl shadow-gray-200 flex items-center justify-center mb-8 text-gray-200 transform rotate-12 transition-transform hover:rotate-0 duration-500">
+                   <Briefcase size={48} className="text-gray-300" />
+                </div>
+                <h3 className="text-2xl font-black text-gray-800 mb-3 tracking-tight">Architect Your Future</h3>
+                <p className="text-gray-400 text-center max-w-sm leading-relaxed font-medium">
+                  Select a template and describe your professional journey. <br />
+                  AI will craft a compelling resume in seconds.
+                </p>
+              </div>
+            ) : isTemplateLoading && !hasRenderedTemplate ? (
+              <div className="absolute inset-0 flex flex-col gap-6 justify-center items-center bg-white/90 backdrop-blur-md z-20 animate-in fade-in duration-500">
+                <div className="relative">
+                  <svg
+                    className="animate-spin"
+                    width="72"
+                    height="72"
+                    viewBox="0 0 50 50"
+                  >
+                    <circle
+                      className="opacity-5"
+                      cx="25"
+                      cy="25"
+                      r="20"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                    />
+                    <circle
+                      className="opacity-100"
+                      cx="25"
+                      cy="25"
+                      r="20"
+                      fill="none"
+                      stroke="#55CEF6"
+                      strokeWidth="3"
+                      strokeDasharray="90"
+                      strokeDashoffset="30"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-mySkyBlue animate-pulse" size={28} />
+                </div>
+                <div className="text-center">
+                   <h4 className="text-xl font-black text-gray-900 mb-1">Polishing Masterpiece</h4>
+                   <div className="flex items-center justify-center gap-1">
+                      <span className="w-1 h-1 bg-mySkyBlue rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                      <span className="w-1 h-1 bg-mySkyBlue rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                      <span className="w-1 h-1 bg-mySkyBlue rounded-full animate-bounce"></span>
+                      <span className="text-[12px] font-bold text-gray-400 ml-2 uppercase tracking-widest">AI Sync Phase</span>
+                   </div>
+                </div>
+              </div>
+            ) : (
+              showTemplate &&
+              parsedData && (
+                <div
+                  ref={boxRef}
+                  className="relative flex flex-col items-center py-6 px-2 min-h-[900px] group/preview"
+                >
+                  <div className="transition-all duration-1000 ease-out transform animate-in fade-in zoom-in-95 slide-in-from-bottom-5">
+                    {renderSelectedTemplate()}
+                  </div>
+                  
+                  {showPageBreak && (
+                    <div
+                      className="absolute w-full px-12 pointer-events-none transition-opacity duration-300 group-hover/preview:opacity-100 opacity-40"
+                      style={{ top: "1100px" }}
+                    >
+                      <div className="flex items-center gap-2 text-gray-400 border-t border-dashed border-gray-300 pt-3">
+                        <IoMdArrowDropleftCircle size={24} className="text-mySkyBlue" />
+                        <span className="text-[11px] uppercase tracking-[0.2em] font-black text-gray-500">Section Break • Auto Overflow</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )
             )}
           </div>
-
-          {!isTemplateLoading && !hasRenderedTemplate ? (
-            <div className="w-[100%] bg-gray-200 mt-2 h-[350px] flex flex-col items-center justify-center rounded-lg px-2">
-              <Briefcase size={40} className="text-gray-500" />
-              <p className="sm:text-lg text-sm text-gray-500 text-center  ">
-                Paste a job description to generate a tailored resume
-              </p>
-            </div>
-          ) : isTemplateLoading && !hasRenderedTemplate ? (
-            <div className="flex flex-col gap-1 justify-center items-center h-[350px]">
-              <svg
-                className="animate-spin"
-                width="48"
-                height="48"
-                viewBox="0 0 50 50"
+          
+          {height > 1150 && (
+            <div className="flex justify-end p-2">
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="bg-red-50 text-red-600 text-xs px-3 py-2 rounded-xl border border-red-100 flex items-center gap-2 font-bold shadow-sm"
               >
-                <circle
-                  className="opacity-20"
-                  cx="25"
-                  cy="25"
-                  r="20"
-                  fill="none"
-                  stroke="#6366f1"
-                  strokeWidth="8"
-                />
-                <circle
-                  className="opacity-100"
-                  cx="25"
-                  cy="25"
-                  r="20"
-                  fill="none"
-                  stroke="#55CEF6"
-                  strokeWidth="8"
-                  strokeDasharray="90"
-                  strokeDashoffset="30"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <p className="text-sm text-mySkyBlue">Generating Resume...</p>
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                Content Overflow Warning
+              </motion.div>
             </div>
-          ) : (
-            showTemplate &&
-            parsedData && (
-              <div
-                ref={boxRef}
-                className="relative flex items-center justify-between"
-              >
-                <div className="mt-5">{renderSelectedTemplate()}</div>
-                {showPageBreak && (
-                  <div
-                    className=" absolute w-full flex items-center justify-end text-[12px] text-gray-600 mlg:-left-1 left-0"
-                    style={{ top: "1100px" }} // exactly 1123px pe line
-                  >
-                    <div className="md:flex items-center hidden">
-                      <IoMdArrowDropleftCircle className="mr-1" />
-                      <span className="hidden mlg:block">Page Break</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )
           )}
         </div>
       </div>
 
       {/* Editor Modal */}
 
-      {showEditor && (
-        <div
-          className={`fixed top-0 right-0 h-full w-[400px] bg-myWhite shadow-lg z-50 transition-transform duration-500 ease-in-out transform ${
-            showEditor ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
-          <div className="p-6">
-            <h2 className="text-lg font-bold mb-4 text-black">
-              {/* {editType === "summary" ? "Edit Summary" : "Edit Skills"} */}
-              Editor
-            </h2>
-
-            {/* Summary Textarea */}
-            {editType === "string" && (
-              <>
-                <textarea
-                  value={inputData as string}
-                  onChange={handleStringFieldChange}
-                  className="w-full h-[100px] resize-none border border-primaryColor rounded-md p-2 text-black bg-transparent"
-                />
-              </>
-            )}
-
-            {/* Skills, language and certifications Badge UI */}
-            {editType === "array" && (
-              <>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {(inputData as string[]).map((item, i) => (
-                    <span
-                      key={i}
-                      className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full flex items-center"
-                    >
-                      {item}
-                      <button
-                        onClick={() => handleRemoveItem(i)}
-                        className="ml-2 text-gray-500 font-bold"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={newItem}
-                    onChange={(e) => setNewItem(e.target.value)}
-                    placeholder="Add new"
-                    className="flex-1 p-2 border border-primaryColor rounded text-black"
-                  />
-                  <Button
-                    onClick={handleAddItem}
-                    className="bg-myDarkBlue text-white hover:bg-myDarkBlue"
-                  >
-                    Add
-                  </Button>
-                </div>
-              </>
-            )}
-
-            {/* Experience */}
-            {editType === "experience" && (
-              <ExperienceEditor
-                currentExperienceField={currentExperienceField as string}
-                experienceData={experienceData}
-                setExperienceData={setExperienceData}
-                setParsedData={setParsedData}
-                setShowEditor={setShowEditor}
-              />
-            )}
-
-            {/* Project */}
-
-            {editType === "projects" && (
-              <ProjectEditor
-                currentProjectField={currentProjectField as string}
-                projectData={projectData}
-                setProjectData={setProjectData}
-                setParsedData={setParsedData}
-                setShowEditor={setShowEditor}
-              />
-            )}
-
-            {/* Education */}
-            {editType === "education" && (
-              <EducationEditor
-                currentEducationField={currentEducationField as string}
-                educationData={educationData}
-                setEducationData={setEducationData}
-                setParsedData={setParsedData}
-                setShowEditor={setShowEditor}
-              />
-            )}
-
-            {/* Personal Information Editor */}
-            {editType === "personal" && (
-              <PersonalInformationEditor
-                currentPersonalField={currentPersonalField as string}
-                personalInfoData={personalInfoData}
-                setParsedData={setParsedData}
-                setPersonalInfoData={setPersonalInfoData}
-                setShowEditor={setShowEditor}
-              />
-            )}
-
-            {/* Custom Section */}
-            {editType === "customSection" && (
-              <CustomSection
-                customSectionData={customSectionData}
-                setCustomSectionData={setCustomSectionData}
-                currentcustomField="customSection"
-                setParsedData={setParsedData}
-                setShowEditor={setShowEditor}
-              />
-            )}
-
-            {/* Custom Section 2 */}
-            {editType === "customSection2" && (
-              <CustomSection
-                customSectionData={customSection2Data}
-                setCustomSectionData={setCustomSection2Data}
-                currentcustomField="customSection2"
-                setParsedData={setParsedData}
-                setShowEditor={setShowEditor}
-              />
-            )}
-
-            <div className="flex justify-end mt-4">
-              <button
-                className="bg-myDarkBlue text-white px-4 py-2 rounded"
-                onClick={() => setShowEditor(false)}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ResumeEditorModal
+        showEditor={showEditor}
+        setShowEditor={setShowEditor}
+        editType={editType}
+        inputData={inputData}
+        handleStringFieldChange={handleStringFieldChange}
+        newItem={newItem}
+        setNewItem={setNewItem}
+        handleAddItem={handleAddItem}
+        handleRemoveItem={handleRemoveItem}
+        currentExperienceField={currentExperienceField}
+        experienceData={experienceData}
+        setExperienceData={setExperienceData}
+        currentProjectField={currentProjectField}
+        projectData={projectData}
+        setProjectData={setProjectData}
+        currentEducationField={currentEducationField}
+        educationData={educationData}
+        setEducationData={setEducationData}
+        currentPersonalField={currentPersonalField}
+        personalInfoData={personalInfoData}
+        setPersonalInfoData={setPersonalInfoData}
+        customSectionData={customSectionData}
+        setCustomSectionData={setCustomSectionData}
+        customSection2Data={customSection2Data}
+        setCustomSection2Data={setCustomSection2Data}
+        setParsedData={setParsedData}
+      />
     </div>
   );
 };

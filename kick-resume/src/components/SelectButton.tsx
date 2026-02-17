@@ -19,26 +19,34 @@ type selectButtonType = {
   onchange: (value: React.SetStateAction<PageProps["size"]>) => void;
 }
 
-export function SelectButton({onchange}: selectButtonType) {
+export function SelectButton({ onchange }: selectButtonType) {
   const [selected, setSelected] = useState<string>("A4");
 
   const handleChange = (value: string) => {
     setSelected(value);
     onchange(value as PageProps["size"]);
-  }
+  };
 
-  
   return (
     <Select value={selected} onValueChange={handleChange}>
-     <label htmlFor="select-page-size" className="mt-1 text-gray-500 text-sm">Select page size</label>
-      <SelectTrigger className="w-[180px] border border-gray-400 text-gray-500">
-        <SelectValue placeholder="Select page size" />
+      <SelectTrigger className="w-[120px] h-9 border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-bold text-xs rounded-lg transition-all focus:ring-1 focus:ring-mySkyBlue focus:ring-offset-0 gap-2 shadow-sm">
+        <SelectValue placeholder="Format" />
       </SelectTrigger>
-      <SelectContent className="bg-gray-200 text-gray-500">
+      <SelectContent className="bg-white/95 backdrop-blur-md border-gray-100 shadow-2xl rounded-xl overflow-hidden min-w-[120px]">
         <SelectGroup>
-          {/* <SelectLabel>Fruits</SelectLabel> */}
-          <SelectItem value="A4">A4</SelectItem>
-          <SelectItem value="LEGAL">Legal</SelectItem>
+          <SelectLabel className="text-[10px] uppercase text-gray-400 font-black px-3 py-2">Page Format</SelectLabel>
+          <SelectItem 
+            value="A4" 
+            className="text-sm font-medium focus:bg-mySkyBlue/10 focus:text-mySkyBlue cursor-pointer py-2.5 px-3"
+          >
+            A4 
+          </SelectItem>
+          <SelectItem 
+            value="LEGAL" 
+            className="text-sm font-medium focus:bg-mySkyBlue/10 focus:text-mySkyBlue cursor-pointer py-2.5 px-3"
+          >
+            Legal
+          </SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
