@@ -729,7 +729,20 @@ const AiPromptPage = () => {
       </section>
 
       {/* Sidebar */}
-      <ResumeBuilderSidebar />
+      <ResumeBuilderSidebar
+        selectedTemplate={selectedTemplate}
+        setSelectedTemplate={setSelectedTemplate}
+        imageFile={imageFile}
+        setImageFile={setImageFile}
+        previewUrl={previewUrl}
+        setPreviewUrl={setPreviewUrl}
+        processedUrl={processedUrl}
+        setProcessedUrl={setProcessedUrl}
+        selectedProcessedImage={selectedProcessedImage}
+        setSelectedProcessedImage={setSelectedProcessedImage}
+        selectedImageBgColor={selectedImageBgColor}
+        setSelectedImageBgColor={setSelectedImageBgColor}
+      />
 
      {/* chatbox & template preview */}
       <div className="py-2 grid lg:grid-cols-[30%,70%] grid-cols-1 lg:gap-5 gap-10">

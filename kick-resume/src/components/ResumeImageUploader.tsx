@@ -7,19 +7,47 @@ import { Button } from "@/components/ui/button";
 import { useAiResumeBuilder } from "@/context/AiResumeBuilder";
 import { X } from "lucide-react";
 
-const ResumeImageUploader = () => {
-  const {
-    imageFile,
-    setImageFile,
-    previewUrl,
-    setPreviewUrl,
-    processedUrl,
-    setProcessedUrl,
-    selectedProcessedImage,
-    setSelectedProcessedImage,
-    selectedImageBgColor,
-    setSelectedImageBgColor,
-  } = useAiResumeBuilder();
+interface ResumeImageUploaderProps {
+  imageFile?: File | null;
+  setImageFile?: (file: File | null) => void;
+  previewUrl?: string | null;
+  setPreviewUrl?: (url: string | null) => void;
+  processedUrl?: string | null;
+  setProcessedUrl?: (url: string | null) => void;
+  selectedProcessedImage?: string | null;
+  setSelectedProcessedImage?: (url: string | null) => void;
+  selectedImageBgColor?: string | undefined;
+  setSelectedImageBgColor?: (color: string | undefined) => void;
+}
+
+const ResumeImageUploader: React.FC<ResumeImageUploaderProps> = ({
+  imageFile: propImageFile,
+  setImageFile: propSetImageFile,
+  previewUrl: propPreviewUrl,
+  setPreviewUrl: propSetPreviewUrl,
+  processedUrl: propProcessedUrl,
+  setProcessedUrl: propSetProcessedUrl,
+  selectedProcessedImage: propSelectedProcessedImage,
+  setSelectedProcessedImage: propSetSelectedProcessedImage,
+  selectedImageBgColor: propSelectedImageBgColor,
+  setSelectedImageBgColor: propSetSelectedImageBgColor,
+}) => {
+  const context = useAiResumeBuilder();
+
+  const imageFile = propImageFile ?? context.imageFile;
+  const setImageFile = propSetImageFile ?? context.setImageFile;
+  const previewUrl = propPreviewUrl ?? context.previewUrl;
+  const setPreviewUrl = propSetPreviewUrl ?? context.setPreviewUrl;
+  const processedUrl = propProcessedUrl ?? context.processedUrl;
+  const setProcessedUrl = propSetProcessedUrl ?? context.setProcessedUrl;
+  const selectedProcessedImage =
+    propSelectedProcessedImage ?? context.selectedProcessedImage;
+  const setSelectedProcessedImage =
+    propSetSelectedProcessedImage ?? context.setSelectedProcessedImage;
+  const selectedImageBgColor =
+    propSelectedImageBgColor ?? context.selectedImageBgColor;
+  const setSelectedImageBgColor =
+    propSetSelectedImageBgColor ?? context.setSelectedImageBgColor;
 
   const onDrop = async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];

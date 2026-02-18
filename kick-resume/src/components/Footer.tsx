@@ -27,120 +27,108 @@ import Image from "next/image";
 import { HoverButton } from "./HoverButton";
 
 const socialIcons = [
-  { icon: LuTwitter, href: "/" },
-  { icon: FaLinkedinIn, href: "/" },
-  { icon: LuGithub, href: "/" },
+  { icon: LuTwitter, href: "#" },
+  { icon: FaLinkedinIn, href: "#" },
+  { icon: LuGithub, href: "#" },
 ];
 
 const Footer = () => {
   return (
-    <div className="bg-mySkyBlue/40 ">
-      <div className=" max-w-[1600px] mx-auto py-6  flex flex-col lg:gap-7 gap-4 px-5">
-        <div className="grid md:grid-cols-4 grid-cols-2 gap-7">
-          <div className="flex flex-col justify-center gap-2">
-            <Link href={"/"}>
-              <div className=" h-10 sm:w-[180px] w-auto flex items-center">
-                <h1 className="md:text-2xl text-lg font-extrabold bg-gradient-to-r from-blue-400 via-purple-400 to-orange-400 bg-clip-text text-transparent">
-                  AI Resume{" "}
-                </h1>
-              </div>
+    <footer className="bg-white border-t border-gray-100 pt-20 pb-10">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-12 mb-16">
+          {/* Brand Section */}
+          <div className="col-span-2 md:col-span-4 flex flex-col gap-6">
+            <Link href="/" className="flex items-center gap-2">
+              <h1 className="text-2xl font-black tracking-tighter text-gray-900">
+                AI<span className="text-mySkyBlue">Resume</span>
+              </h1>
             </Link>
-            <p className="lg:text-[15px] sm:text-sm text-xs text-gray-500">
-              Transform your career with AI-powered resume optimization and job
-              matching technology.
+            <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
+              Empowering careers with state-of-the-art AI technology for resume optimization and intelligent job matching.
             </p>
-            <div className="flex items-center justify-start gap-2 mt-5">
+            <div className="flex items-center gap-3">
               {socialIcons.map((item, index) => (
-                <div
-                  className="py-2 px-2 bg-gray-100/50 text-gray-500 hover:bg-mySkyBlue/40 hover:text-mySkyBlue rounded-xl hover:-translate-y-1 transition-all duration-300"
+                <Link
                   key={index}
+                  href={item.href}
+                  className="p-2.5 bg-gray-50 text-gray-400 hover:text-mySkyBlue hover:bg-mySkyBlue/10 rounded-xl transition-all duration-300"
                 >
-                  {React.createElement(item.icon)}
-                </div>
+                  <item.icon size={18} />
+                </Link>
               ))}
             </div>
           </div>
-          <div className="flex flex-col justify-center gap-2">
-            <h1 className="lg:text-lg sm:text-[15px] text-sm font-semibold text-gray-800">
-              Features
-            </h1>
-            {[
-              "Ai Resume Analyzer",
-              "Ai Resume Builder",
-              "Job Matcher",
-              "Resume vs Job",
-            ].map((item, index) => (
-              <h1
-                key={index}
-                className="lg:text-[15px] sm:text-sm text-xs font-normal text-gray-500 cursor-pointer hover:text-black hover:underline hover:underline-offset-2"
-              >
-                {item}
-              </h1>
-            ))}
+
+          {/* Links Sections */}
+          <div className="md:col-span-2 flex flex-col gap-6">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-gray-900">Features</h4>
+            <ul className="flex flex-col gap-4">
+              {["Resume Analyzer", "Resume Builder", "Job Matcher", "Interview Prep"].map((item) => (
+                <li key={item}>
+                  <Link href="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="flex flex-col justify-center gap-2">
-            <h1 className="lg:text-lg sm:text-[15px] text-sm font-semibold text-gray-800">
-              Company
-            </h1>
-            {["About us", "Pricing", "Blog", "Careers"].map((item, index) => (
-              <h1
-                key={index}
-                className="lg:text-[15px] sm:text-sm text-xs font-normal text-gray-500 cursor-pointer hover:text-black hover:underline hover:underline-offset-2"
-              >
-                {item}
-              </h1>
-            ))}
+
+          <div className="md:col-span-2 flex flex-col gap-6">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-gray-900">Company</h4>
+            <ul className="flex flex-col gap-4">
+              {["About us", "Pricing", "Blog", "Careers"].map((item) => (
+                <li key={item}>
+                  <Link href="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className=" flex flex-col justify-center gap-2">
-            <h1 className="lg:text-lg sm:text-[15px] text-sm font-semibold text-gray-800 cursor-pointer">
-              Support
-            </h1>
-            {[
-              "Help Center",
-              "Contact us",
-              "Privacy Policy",
-              "Terms of Service",
-            ].map((item, index) => (
-              <h1
-                key={index}
-                className="lg:text-[15px] sm:text-sm text-xs font-normal text-gray-500 cursor-pointer hover:text-black hover:underline hover:underline-offset-2"
-              >
-                {item}
-              </h1>
-            ))}
+
+          <div className="md:col-span-2 flex flex-col gap-6">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-gray-900">Support</h4>
+            <ul className="flex flex-col gap-4">
+              {["Help Center", "Privacy Policy", "Terms", "Cookie Policy"].map((item) => (
+                <li key={item}>
+                  <Link href="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Section */}
+          <div className="md:col-span-2 flex flex-col gap-6">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-gray-900">Contact</h4>
+            <ul className="flex flex-col gap-4">
+              <li className="flex items-center gap-3 text-sm text-gray-500">
+                <MdOutlineMailOutline size={16} className="text-mySkyBlue" />
+                <span>airesume@gmail.com</span>
+              </li>
+              <li className="flex items-center gap-3 text-sm text-gray-500">
+                <GrPhone size={14} className="text-mySkyBlue" />
+                <span>+92 322 1835452</span>
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div className="bg-gray-300 h-[1px] w-full"></div>
-        <div className=" flex items-center justify-between flex-wrap gap-3 w-[70%]">
-          {[
-            { icon: MdOutlineMailOutline, value: "airesume@gmail.com" },
-            { icon: GrPhone, value: "923221835452" },
-            { icon: IoLocationOutline, value: "Saudia Arabia" },
-          ].map((item, index) => (
-            <div key={index} className="flex items-center justify-center gap-5">
-              <h1 className="text-mySkyBlue">
-                {React.createElement(item.icon)}
-              </h1>
-              <h2 className="text-gray-500">{item.value}</h2>
-            </div>
-          ))}
-        </div>
-        <div className="bg-gray-300 h-[1px] w-full"></div>
-
-        <div className="flex items-center justify-between gap-3 flex-wrap">
-          <h1 className="text-sm text-gray-500">
-            © 2025 AI TalentTune. All rights reserved.
-          </h1>
-
-          <div className="flex items-center justify-center gap-3 text-sm text-gray-500 flex-wrap">
-            <h1>Privacy Policy</h1>
-            <h1>Terms of Service</h1>
-            <h1>Cookie Policy</h1>
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-gray-50 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-[13px] text-gray-400 font-medium">
+            © {new Date().getFullYear()} AI Resume. Built for the future of work.
+          </p>
+          <div className="flex items-center gap-6 text-[13px] text-gray-400 font-medium">
+             <Link href="#" className="hover:text-gray-900">Privacy</Link>
+             <Link href="#" className="hover:text-gray-900">Terms</Link>
+             <Link href="#" className="hover:text-gray-900">Cookies</Link>
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

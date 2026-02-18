@@ -1,3 +1,7 @@
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -11,22 +15,28 @@ interface ToolCardProps {
 
 const ToolCard = ({ title, description, icon: Icon, link }: ToolCardProps) => {
   return (
-    <div className="bg-gray-200 flex flex-col justify-center gap-4 h-[250px] px-2 shadow-xl rounded-lg hover:scale-105 hover:shadow-mySkyBlue/50 transition-all duration-300 ">
-      <div className="flex items-center justify-center gap-1">
-        <div className="py-2 px-2 bg-mySkyBlue/30 rounded-lg">
-          <Icon className="h-5 w-5" color="#55cef6" />
+    <motion.div
+      whileHover={{ y: -6, scale: 1.02 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="group bg-white border-2 border-gray-100 hover:border-mySkyBlue/30 flex flex-col justify-between gap-4 h-[260px] p-6 shadow-sm hover:shadow-xl hover:shadow-mySkyBlue/10 rounded-2xl transition-all duration-300 cursor-pointer"
+    >
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 bg-mySkyBlue/10 group-hover:bg-mySkyBlue/20 rounded-xl transition-colors">
+            <Icon className="h-5 w-5 text-mySkyBlue" />
+          </div>
+          <h2 className="text-lg font-bold text-gray-900 group-hover:text-mySkyBlue transition-colors">
+            {title}
+          </h2>
         </div>
-        <h1 className="text-xl font-bold group-hover:text-primary text-mySkyBlue">
-          {title}{" "}
-        </h1>
+        <p className="text-gray-500 text-sm leading-relaxed">{description}</p>
       </div>
-      <p className="text-gray-500 text-xs">{description}</p>
       <Link href={link}>
-        <button className=" text-white font-bold bg-gradient-hero rounded-lg py-1 px-2 w-full">
+        <button className="w-full text-white font-bold bg-gradient-to-r from-mySkyBlue to-blue-600 rounded-xl py-2.5 px-4 shadow-md shadow-mySkyBlue/20 hover:shadow-lg hover:shadow-mySkyBlue/30 transition-all duration-200 active:scale-95">
           Get Started
         </button>
       </Link>
-    </div>
+    </motion.div>
   );
 };
 

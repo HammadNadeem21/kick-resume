@@ -100,25 +100,19 @@ export const options: NextAuthOptions = {
         // ✅ Connect to DB
         await connectToDatabase();
 
-        // ✅ Check if user already exists
-        let user = await User.findOne({ email });
+        // ✅ Check if user exists
+        const user = await User.findOne({ email });
 
         if (!user) {
-          // ✅ Create new user
-          const hashedPassword = await bcrypt.hash(password, 10);
-          user = await User.create({
-            email,
-            password: hashedPassword,
-          });
-
-          return { id: user._id.toString(), email: user.email };
+          // ❌ If user doesn't exist, throw error (No auto-signup)
+          throw new Error("No account found with this email. Please sign up first.");
         }
 
-        // ✅ If user exists, check password
+        // ✅ Check password
         const isValid = await bcrypt.compare(password, user.password);
 
         if (!isValid) {
-          throw new Error("Invalid password");
+          throw new Error("Invalid password.");
         }
 
         return { id: user._id.toString(), email: user.email };
@@ -134,16 +128,17 @@ export const options: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === "google") {
-        const { email } = user;
+        const { email, name } = user;
         await connectToDatabase();
 
         let existingUser = await User.findOne({ email });
 
         if (!existingUser) {
-          // ✅ Create new user
+          // ✅ Create new user with 20 credits
           existingUser = await User.create({
             email,
-            credits: 100,
+            name,
+            credits: 20,
           });
         }
 

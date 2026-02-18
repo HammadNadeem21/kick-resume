@@ -17,6 +17,10 @@ import mongoose from "mongoose";
 // });
 
 const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: false,
+  },
   email: {
     type: String,
     required: [true, "Email is required"],
@@ -24,7 +28,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: false, // 👈 Change this
+    required: false, // Optional to allow Google Auth users
   },
   credits: {
     type: Number,

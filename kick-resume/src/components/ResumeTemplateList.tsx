@@ -18,8 +18,19 @@ const templateData = [
   { image: "/templates/template10.png", name: "Template 10", id: 10 },
 ];
 
-const ResumeTemplateList = () => {
-  const { selectedTemplate, setSelectedTemplate } = useAiResumeBuilder();
+interface ResumeTemplateListProps {
+  selectedTemplate?: number | null;
+  setSelectedTemplate?: (id: number | null) => void;
+}
+
+const ResumeTemplateList: React.FC<ResumeTemplateListProps> = ({
+  selectedTemplate: propTemplate,
+  setSelectedTemplate: propSetTemplate,
+}) => {
+  const context = useAiResumeBuilder();
+  
+  const selectedTemplate = propTemplate ?? context.selectedTemplate;
+  const setSelectedTemplate = propSetTemplate ?? context.setSelectedTemplate;
 
   return (
     <div className="grid grid-cols-1 gap-4 px-10 py-4 h-full overflow-y-auto custom-scrollbar">

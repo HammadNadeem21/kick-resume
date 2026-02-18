@@ -3,28 +3,35 @@
 import { useResumeContext } from "../context/ReaumeContext";
 import React, { useEffect, useRef, useState } from "react";
 import ATSCircleChart from "./ATSCircleChart";
-import AccordionSection from "./AccordianSection";
-import rehypeRaw from "rehype-raw";
-import ReactMarkdown from "react-markdown";
-// import rehypeRaw from "rehype-raw";
-import { FaKey } from "react-icons/fa6";
-import { IoIosInformationCircle } from "react-icons/io";
-import { IoSchoolSharp } from "react-icons/io5";
-import { GrUserExpert } from "react-icons/gr";
-
+import { 
+  Key, 
+  Info, 
+  GraduationCap, 
+  Briefcase, 
+  AlertTriangle, 
+  Sparkles, 
+  FileDown,
+  Layout
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Editor } from "react-draft-wysiwyg";
-import {
-  ContentState,
-  convertFromRaw,
-  EditorState,
-  convertToRaw,
-} from "draft-js";
+import { ContentState, EditorState } from "draft-js";
+import { Button } from "@/components/ui/button";
 // @ts-ignore
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { pdf } from "@react-pdf/renderer";
 import CoverLetterPDF from "./pdf/CoverLetterPDF";
-import { MdFileDownload } from "react-icons/md";
 import SectionScoreChart from "./SectionScoreChart";
+
+const formatBackendText = (text: string | undefined | null) => {
+  if (!text) return "";
+  return text
+    .replace(/,([^\s])/g, ", $1")          // Space after comma
+    .replace(/([a-z])([A-Z])/g, "$1 $2")   // Space between CamelCase
+    .replace(/([a-zA-Z])([0-9])/g, "$1 $2") // Space between letter and digit
+    .replace(/([0-9])([a-zA-Z])/g, "$1 $2"); // Space between digit and letter
+};
+
 const AiResumeAnalyzeReort = () => {
   const {
     actualSummary,
@@ -74,445 +81,232 @@ const AiResumeAnalyzeReort = () => {
     URL.revokeObjectURL(url);
   };
 
-  const markdownComponents = {
-    h1: ({ node, ...props }: { node: any;[key: string]: any }) => (
-      <h1
-        className="text-xl font-bold text-primaryColor mt-4 mb-2"
-        {...props}
-      />
-    ),
-
-    h2: ({ node, ...props }: { node: any;[key: string]: any }) => {
-      const headingText = props.children[0];
-      const text =
-        typeof headingText === "string" ? headingText.toLowerCase() : "";
-
-      let style = "text-primaryColor";
-      let icon = "";
-
-      if (text.includes("keywords")) {
-        style = "text-yellow-600 border-l-4 border-yellow-400 pl-3";
-        icon = "🗝️ ";
-      } else if (text.includes("formatting")) {
-        style = "text-purple-600 border-l-4 border-purple-400 pl-3";
-        icon = "🖋️ ";
-      } else if (text.includes("experience")) {
-        style = "text-green-600 border-l-4 border-green-400 pl-3";
-        icon = "💼 ";
-      } else if (text.includes("education")) {
-        style = "text-blue-600 border-l-4 border-blue-400 pl-3";
-        icon = "🎓 ";
-      }
-
-      return (
-        <h2 className={`text-xl font-semibold mt-4 mb-2 ${style}`} {...props}>
-          {icon}
-          {headingText}
-        </h2>
-      );
-    },
-
-    h3: ({ node, ...props }: { node: any;[key: string]: any }) => (
-      <h3
-        className="text-2xl font-medium text-primaryColor mt-4 mb-2"
-        {...props}
-      />
-    ),
-
-    strong: ({ node, ...props }: { node: any;[key: string]: any }) => (
-      <strong className="text-gray-600 text-lg font-[400]" {...props} />
-    ),
-
-    ul: ({ node, ...props }: { node: any;[key: string]: any }) => (
-      <ul className="list-disc pl-5 text-gray-600 space-y-1" {...props} />
-    ),
-
-    li: ({ node, ...props }: { node: any;[key: string]: any }) => {
-      const content = props.children[0];
-      const isImportant =
-        typeof content === "string" &&
-        content.toLowerCase().includes("missing");
-
-      return (
-        <li
-          className={`text-gray-600 ${isImportant ? "text-red-600 font-semibold" : ""
-            }`}
-          {...props}
-        />
-      );
-    },
-
-    p: ({ node, ...props }: { node: any;[key: string]: any }) => (
-      <p className="text-gray-800 hidden  mb-2" {...props} />
-    ),
-  };
+  if (!suggestions) {
+    return (
+      <div className="h-full flex flex-col items-center justify-center p-12 bg-white/50 backdrop-blur-md rounded-3xl border border-dashed border-gray-200">
+        <div className="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 text-mySkyBlue animate-pulse">
+          <Layout size={40} />
+        </div>
+        <h3 className="text-xl font-black text-gray-800 mb-2">Analysis Results</h3>
+        <p className="text-gray-400 text-center max-w-xs font-medium leading-relaxed">
+          Upload your resume in the panel on the left to see your AI-powered analysis report here.
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-5">
-      <div>
-        {suggestions && (
-          <div className="mt-6 p-6 bg-gray-200 rounded-xl w-full">
-            <h3 className="text-3xl font-bold mb-4 text-mySkyBlue text-center">
-              Resume Analysis
-            </h3>
+    <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-right-10 duration-700">
+      
+      {/* ── ATS Score & Summary ── */}
+      <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-xl shadow-blue-500/5">
+        <div className="flex items-center gap-3 mb-10">
+          <div className="p-2.5 text-mySkyBlue bg-blue-50 rounded-xl">
+            <Sparkles size={22} />
+          </div>
+          <h2 className="text-3xl font-black text-gray-900 tracking-tight">Report Overview</h2>
+        </div>
 
-            {/* ATS Score Chart and Summary */}
-            {score !== null && overall && (
-              <div className="mb-6 flex flex-col sm:flex-row items-center sm:items-start justify-between px-6">
-                <div className="sm:w-1/2 w-full flex flex-col">
-                  <h4 className="text-xl font-bold text-mySkyBlue mb-1">
-                    Overall ATS Score
-                  </h4>
-                  <ATSCircleChart score={score} />
-                </div>
-                <div className="sm:w-1/2 w-full">
-                  <h4 className="text-xl font-bold mb-2 text-mySkyBlue">
-                    Summary
-                  </h4>
-                  <p className="text-gray-600">{overall}</p>
-                </div>
+        <div className="grid lg:grid-cols-12 gap-10 items-center">
+          <div className="lg:col-span-5 flex flex-col items-center gap-5 bg-gray-50/50 p-8 rounded-3xl border border-gray-100">
+            <div className="w-full flex justify-between items-center mb-2 px-2">
+               <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Overall ATS Score</h4>
+               <span className="text-[10px] font-black text-mySkyBlue bg-mySkyBlue/10 px-2 py-0.5 rounded-full uppercase tracking-widest">Live Analysis</span>
+            </div>
+            <ATSCircleChart score={score ?? 0} />
+          </div>
+          
+          <div className="lg:col-span-7">
+            <div className="relative">
+              <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-mySkyBlue via-blue-400 to-transparent rounded-full opacity-50" />
+              <div className="pl-6">
+                <h4 className="text-xs font-black text-mySkyBlue uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                  <Info size={14} className="stroke-[2.5px]" />
+                  AI Assessment
+                </h4>
+                <p className="text-gray-600 text-[15px] leading-[1.8] font-medium">
+                  {overall}
+                </p>
               </div>
-            )}
-            <div className="h-[1px] w-full bg-gray-500 mb-5"></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <h4 className="text-2xl font-bold text-mySkyBlue mb-4">
-              AI Suggested Updates
+      {/* ── Summary & Improvements ── */}
+      <div className="grid md:grid-cols-2 gap-8">
+        {/* Actual Summary */}
+        {actualSummary && (
+          <div className="bg-white border border-gray-200 rounded-[2rem] p-8 sm:p-10 shadow-xl shadow-gray-200/20 relative overflow-hidden flex flex-col">
+            <div className="flex items-center gap-2 mb-6 text-gray-400">
+              <div className="p-1.5 bg-gray-50 rounded-lg">
+                <Layout size={14} />
+              </div>
+              <h4 className="text-[10px] font-black uppercase tracking-[0.2em]">Actual Summary</h4>
+            </div>
+            <p className="text-gray-600 text-[15px] leading-[1.8] font-medium break-all relative z-10">
+              {formatBackendText(actualSummary)}
+            </p>
+          </div>
+        )}
+
+        {/* Improved Summary */}
+        {improvedSummary && (
+          <div className="bg-white border border-gray-200 rounded-[2rem] p-8 sm:p-10 shadow-xl shadow-gray-200/20 relative overflow-hidden flex flex-col group">
+            <div className="absolute top-0 right-0 p-4 text-mySkyBlue/10 group-hover:text-mySkyBlue/20 transition-colors -mr-2 -mt-2">
+              <Sparkles size={80} />
+            </div>
+            <div className="flex items-center gap-2 mb-6 text-mySkyBlue">
+              <div className="p-1.5 bg-mySkyBlue/10 rounded-lg">
+                <Sparkles size={14} />
+              </div>
+              <h4 className="text-[10px] font-black uppercase tracking-[0.2em]">Improved by AI</h4>
+            </div>
+            <p className="text-gray-600 text-[15px] leading-[1.8] font-medium break-all relative z-10">
+              {formatBackendText(improvedSummary)}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Mistakes List */}
+      {summaryMistakes && summaryMistakes.length > 0 && (
+        <div className="bg-red-50/30 border border-red-100 rounded-[2.5rem] p-8 sm:p-10 shadow-sm">
+          <div className="flex items-center justify-between mb-8">
+            <h4 className="text-[11px] font-black text-red-500 uppercase tracking-[0.2em] flex items-center gap-2">
+              <AlertTriangle size={18} />
+              Identified Weaknesses
             </h4>
+            <span className="text-[10px] font-black text-red-400 bg-red-100 px-3 py-1 rounded-full uppercase tracking-widest">Action Required</span>
+          </div>
+          <ul className="grid md:grid-cols-2 gap-x-12 gap-y-5">
+            {summaryMistakes.map((mistake, index) => (
+              <li key={index} className="flex gap-4 text-[14px] text-gray-600 font-medium group">
+                <span className="shrink-0 w-2 h-2 bg-red-400 rounded-full mt-1.5 group-hover:scale-125 transition-transform" />
+                <span className="break-all">{formatBackendText(mistake)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
-            {/* Suggestion */}
-            {actualSummary && (
-              <div className="mb-8">
-                <h4 className="text-xl font-bold mb-4 text-mySkyBlue">
-                  Actual Summary
-                </h4>
-                <div className="text-gray-600">{actualSummary}</div>
-              </div>
-            )}
-
-            {/* summary mistakes  */}
-            {summaryMistakes && (
-              <div className="mb-8">
-                <h4 className="text-xl text-mySkyBlue font-bold  mb-4">
-                  Mistakes:
-                </h4>
-                <div className="text-gray-600">
-                  {summaryMistakes.map((mistake, index) => (
-                    <ul key={index} className="list-disc pl-5 mb-1">
-                      <li>{mistake}</li>
-                    </ul>
-                  ))}
+      {/* ── Scoring Sections ── */}
+      <div className="grid md:grid-cols-2 gap-8">
+        {/* Section Cards Utility */}
+        {[
+          { icon: <Key size={22} />, title: "Keywords", data: keywords, score: keywordsScore },
+          { icon: <Info size={22} />, title: "Formatting", data: formatting, score: formattingScore },
+          { icon: <GraduationCap size={22} />, title: "Education", data: education, score: educationScore },
+          { icon: <Briefcase size={22} />, title: "Experience", data: experience, score: experienceScore },
+        ].map((section, idx) => (
+          section.data && section.data.length > 0 && (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * idx }}
+              className="bg-white border border-gray-100 rounded-[2.5rem] p-8 sm:p-10 shadow-xl shadow-gray-200/40 h-full flex flex-col"
+            >
+              <div className="flex justify-between items-start mb-8 border-b border-gray-50 pb-6">
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-3 text-gray-800">
+                    <span className="text-mySkyBlue p-2 bg-blue-50 rounded-xl">{section.icon}</span>
+                    <h3 className="text-2xl font-black tracking-tight">{section.title}</h3>
+                  </div>
+                </div>
+                <div className="scale-90 sm:scale-100 origin-top-right">
+                  <SectionScoreChart 
+                    score={section.score ?? 0} 
+                    textColor="#94a3b8" 
+                    scoreText="Score" 
+                  />
                 </div>
               </div>
-            )}
 
-            {/* improved summary */}
-            {improvedSummary && (
-              <div className="mb-8 ">
-                <h4 className="text-xl text-mySkyBlue font-bold mb-4">
-                  Improvements:
-                </h4>
-                <div className="text-gray-600">{improvedSummary}</div>
-              </div>
-            )}
-
-            <div className="grid md:grid-cols-2 grid-cols-1 gap-8 ">
-              {/* Keywords Section */}
-              <div className="bg-mySkyBlue/10 p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-gray-300">
-                {keywords && (
-                  <div className="mb-6 text-gray-500">
-                    <div className="flex justify-between items-center mb-4">
-                      <h4 className="text-2xl font-bold  mb-2 flex items-center ">
-                        <FaKey className="inline mr-2" />
-                        Keywords
-                      </h4>
-                      {/* <div className="relative w-[100px] h-[100px]">
-                        <svg
-                          className="transform -rotate-90"
-                          viewBox="0 0 36 36"
-                        >
-                          <path
-                            className="text-gray-200"
-                            strokeWidth="4"
-                            stroke="currentColor"
-                            fill="none"
-                            d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                          <path
-                            className={
-                              keywordsScore !== null &&
-                              keywordsScore !== undefined
-                                ? keywordsScore <= 50
-                                  ? "text-red-500"
-                                  : keywordsScore < 70
-                                  ? "text-yellow-500"
-                                  : "text-green-500"
-                                : "text-gray-400"
-                            }
-                            strokeWidth="4"
-                            strokeDasharray={`${keywordsScore}, 100`}
-                            stroke="currentColor"
-                            fill="none"
-                            d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                        </svg>
-                        <span className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-myMidblue">
-                          {keywordsScore}/100
-                        </span>
-                      </div> */}
-                      <SectionScoreChart
-                        score={keywordsScore}
-                        textColor="#6b7280"
-                        scoreText="ATS Score"
-                      />
-                    </div>
-
-                    <div>
-                      {keywords.map((item, index) => (
-                        <ul key={index} className="mb-2 list-disc pl-5">
-                          <li>{item}</li>
-                        </ul>
-                      ))}
-                    </div>
-                    {/* <AccordionSection title="" >
-                  <ReactMarkdown
-                    components={markdownComponents as any}
-                    rehypePlugins={[rehypeRaw]}
-                  >
-                    {keywords}
-                  </ReactMarkdown>
-                </AccordionSection> */}
-                  </div>
-                )}
-              </div>
-
-              {/* Formatting Section */}
-              <div className="bg-mySkyBlue/10 p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-gray-300">
-                {formatting && (
-                  <div className="mb-6 text-gray-500">
-                    <div className="flex justify-between items-center mb-2">
-                      <h4 className="text-xl font-bold  mb-2 flex items-center">
-                        <IoIosInformationCircle className="inline mr-2" />
-                        Formating
-                      </h4>
-                      {/* <div className="relative w-[70px] h-[70px]">
-                        <svg
-                          className="transform -rotate-90"
-                          viewBox="0 0 36 36"
-                        >
-                          <path
-                            className="text-gray-200"
-                            strokeWidth="4"
-                            stroke="currentColor"
-                            fill="none"
-                            d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                          <path
-                            className={
-                              formattingScore !== null &&
-                              formattingScore !== undefined
-                                ? formattingScore <= 50
-                                  ? "text-red-500"
-                                  : formattingScore < 70
-                                  ? "text-yellow-500"
-                                  : "text-green-500"
-                                : "text-gray-400"
-                            }
-                            strokeWidth="4"
-                            strokeDasharray={`${formattingScore}, 100`}
-                            stroke="currentColor"
-                            fill="none"
-                            d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                        </svg>
-                        <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-myMidblue">
-                          {formattingScore}/100
-                        </span>
-                      </div> */}
-
-                      <SectionScoreChart
-                        score={formattingScore}
-                        textColor="#6b7280"
-                        scoreText="ATS Score"
-                      />
-                    </div>
-
-                    <div className="">
-                      {formatting.map((item, index) => (
-                        <ul key={index} className="mb-2 list-disc pl-5">
-                          <li>{item}</li>
-                        </ul>
-                      ))}
-                    </div>
-
-                    {/* <AccordionSection title="">
-                  <ReactMarkdown
-                    components={markdownComponents as any}
-                    rehypePlugins={[rehypeRaw]}
-                  >
-                    {formatting}
-                  </ReactMarkdown>
-                </AccordionSection> */}
-                  </div>
-                )}
-              </div>
-              {/* <div className="h-[1px] w-full bg-myMidblue mb-5"></div> */}
-
-              {/* Education Section */}
-              <div className="bg-mySkyBlue/10 p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-gray-300">
-                {education && (
-                  <div className="mb-6 text-gray-500">
-                    <div className="flex justify-between items-center mb-2">
-                      <h4 className="text-xl font-bold  mb-2 flex items-center">
-                        <IoSchoolSharp className="inline mr-2" />
-                        Education
-                      </h4>
-
-                      <SectionScoreChart
-                        score={educationScore}
-                        textColor="#6b7280 "
-                        scoreText="ATS Score"
-                      />
-                    </div>
-
-                    <div className="">
-                      {education.map((item, index) => (
-                        <ul key={index} className="mb-2 list-disc pl-5">
-                          <li>{item}</li>
-                        </ul>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Experience Section */}
-              <div className="bg-mySkyBlue/10 p-6 rounded-xl shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-gray-300">
-                {experience && (
-                  <div className="mb-6 text-gray-500">
-                    <div className="flex justify-between items-center mb-2">
-                      <h4 className="text-xl font-bold  mb-2 flex items-center">
-                        <GrUserExpert className="inline mr-2" />
-                        Experience
-                      </h4>
-
-                      <SectionScoreChart
-                        score={experienceScore}
-                        textColor="#6b7280"
-                        scoreText="ATS Score"
-                      />
-                    </div>
-
-                    <div className="">
-                      {experience.map((item, index) => (
-                        <ul key={index} className="mb-2 list-disc pl-5">
-                          <li>{item}</li>
-                        </ul>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
+              <ul className="flex flex-col gap-5">
+                {section.data.map((item, i) => (
+                    <li key={i} className="flex gap-4 text-[14px] text-gray-500 font-medium group">
+                      <span className="shrink-0 w-6 h-6 bg-blue-50 text-mySkyBlue rounded-full flex items-center justify-center text-[10px] font-black group-hover:bg-mySkyBlue group-hover:text-white transition-colors">
+                        {i + 1}
+                      </span>
+                      <span className="break-all leading-relaxed">{formatBackendText(item)}</span>
+                    </li>
+                ))}
+              </ul>
+            </motion.div>
+          )
+        ))}
       </div>
 
-      <div className="mt-6 rounded-xl w-[80%] mx-auto">
-        {coverLetter && suggestions && (
-          <div>
-            <h3 className="text-3xl font-bold mb-4 text-mySkyBlue text-center">
-              AI Suggested Cover Letter
-            </h3>
-            {/* Separate div for the editable cover letter */}
-            <div className="bg-gray-100 p-4 rounded-xl shadow mt-8 text-sm">
-              <div
-                ref={editorRef}
-                className="mb-6 p-4 bg-myWhite shadow-[0px_0px_20px_5px_rgba(66,_220,_219,_0.5)] shadow-mySkyBlue/40 rounded-lg text-gray-500"
-              >
-                <Editor
-                  editorState={editorState}
-                  onEditorStateChange={handleEditorChange}
-                  toolbarClassName="toolbarClassName custom-toolbar-bg"
-                  wrapperClassName="wrapperClassName"
-                  editorClassName="editorClassName"
-                  toolbar={{
-                    options: [
-                      "inline",
-                      "list",
-                      "textAlign",
-                      "link",
-                      "history",
-                      "emoji",
-                      "image",
-                      "remove",
-                      "colorPicker",
-                    ],
-                    inline: {
-                      options: [
-                        "italic",
-                        "underline",
-                        "strikethrough",
-                        "monospace",
-                        "superscript",
-                        "subscript",
-                      ],
-                      bold: false,
-                    },
-                  }}
-                />
-                <style jsx global>{`
-                  .custom-toolbar-bg {
-                    background-color: #e5e7eb !important; /* Editbar background */
-                    border-radius: 0.5rem;
-                    border: none !important; /* Remove border */
-                    display: flex;
-                    gap: 0.5rem;
-                    padding: 0.5rem;
-                  }
-                  .custom-toolbar-bg .rdw-option-wrapper {
-                    background-color: #55cef6 !important; /* Editbar option background */
-                    border-radius: 0.375rem;
-                    border: none !important;
-                    display: flex;
-                    gap: 0.5rem;
-                    padding: 0.5rem;
-                  }
-                  .custom-toolbar-bg .rdw-option-wrapper:hover,
-                  .custom-toolbar-bg .rdw-option-active {
-                    background-color: #5191a7 !important; /* Option hover/active */
-                    display: flex;
-                    gap: 0.5rem;
-                    padding: 0.5rem;
-                  }
-                  .custom-toolbar-bg,
-                  .custom-toolbar-bg .rdw-editor-toolbar {
-                    border: none !important; /* Remove border from toolbar and its container */
-                    box-shadow: none !important;
-                    display: flex;
-                    gap: 0.5rem;
-                    padding: 0.5rem;
-                  }
-                `}</style>
+      {/* ── AI Cover Letter ── */}
+      {coverLetter && (
+        <div className="bg-white border border-gray-200 rounded-3xl p-8 shadow-xl shadow-blue-500/5 mt-4">
+          <div className="flex items-center justify-between gap-3 mb-8 border-b border-gray-100 pb-6">
+            <div className="flex items-center gap-3">
+              <div className="p-2 text-mySkyBlue bg-blue-50 rounded-lg">
+                <FileDown size={20} />
+              </div>
+              <div>
+                <h2 className="text-2xl font-black text-gray-900 tracking-tight">AI Cover Letter</h2>
+                <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Generated Draft</p>
               </div>
             </div>
-            <button
+            
+            <Button
               onClick={downloadPDF}
-              className="mt-5 text-xl  flex items-center gap-2 py-1 px-4 rounded-lg text-white font-semibold bg-mySkyBlue/60 hover:bg-mySkyBlue  transition-all duration-300"
+              className="bg-mySkyBlue hover:bg-sky-600 text-white font-bold h-11 px-6 rounded-xl shadow-lg shadow-mySkyBlue/20 transition-all active:scale-95 flex items-center gap-2"
             >
-              <MdFileDownload />
-              Download as PDF
-            </button>
+              <FileDown size={18} />
+              Export PDF
+            </Button>
           </div>
-        )}
-      </div>
+
+          <div className="bg-gray-50/50 p-6 rounded-2xl border border-gray-100">
+            <div className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-inner min-h-[400px]">
+              <Editor
+                editorState={editorState}
+                onEditorStateChange={handleEditorChange}
+                toolbarClassName="custom-toolbar !border-0 !border-b !bg-gray-50/80 !backdrop-blur"
+                wrapperClassName="cover-letter-wrapper"
+                editorClassName="cover-letter-editor !p-8 text-gray-700 leading-relaxed font-medium"
+                toolbar={{
+                  options: ["inline", "list", "textAlign", "link", "history"],
+                  inline: {
+                    options: ["italic", "underline", "strikethrough"],
+                  },
+                }}
+              />
+            </div>
+          </div>
+          
+          <style jsx global>{`
+            .custom-toolbar {
+              padding: 0.75rem 1rem !important;
+            }
+            .rdw-option-wrapper {
+              border-radius: 8px !important;
+              border: 1px solid #f1f5f9 !important;
+              padding: 6px !important;
+              margin: 2px !important;
+              background: white !important;
+              transition: all 0.2s !important;
+            }
+            .rdw-option-wrapper:hover {
+              box-shadow: 0 2px 8px -2px rgba(0,0,0,0.1) !important;
+              background-color: #f8fafc !important;
+              border-color: #55cef6 !important;
+            }
+            .rdw-option-active {
+              background-color: #55cef6 !important;
+              border-color: #55cef6 !important;
+              box-shadow: 0 2px 10px -2px rgba(85,206,246,0.3) !important;
+            }
+            .rdw-option-active img {
+              filter: brightness(0) invert(1) !important;
+            }
+          `}</style>
+        </div>
+      )}
     </div>
   );
 };

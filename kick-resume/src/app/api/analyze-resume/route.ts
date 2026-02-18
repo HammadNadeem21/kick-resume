@@ -81,10 +81,18 @@ export async function POST(request: NextRequest, response: NextResponse) {
 You are an expert in Applicant Tracking Systems (ATS) and resume optimization.  
 Your task is to analyze the provided resume strictly for ATS compatibility.
 
+### CRITICAL INSTRUCTION ON TEXT NORMALIZATION:
+The provided extracted text may contain "squashed" words due to PDF parsing errors (e.g., "Results-drivenSenior" or "withover8years"). 
+When extracting the "actual_summary", you MUST:
+1. Normalize the text: Reconstruct missing spaces between words.
+2. Fix punctuation spacing: Ensure spaces exist after commas, periods, and colons.
+3. Fix digit-letter boundaries: Ensure spaces exist between numbers and words (e.g., "8years" -> "8 years").
+Always return clean, human-readable text for all fields.
+
 Specifically, evaluate:
 1. "ats_score": Overall optimization score.
 2. "overall_assessment": General feedback.
-3. "actual_summary": The existing summary found in the resume.
+3. "actual_summary": The existing summary found in the resume (FIX SPACING AND NORMALIZE).
 4. "summary_mistakes": List of specific issues with the current summary.
 5. "improved_summary": A rewritten, ATS-optimized version of the summary.
 6. "cover_letter": A drafted cover letter based on the resume.

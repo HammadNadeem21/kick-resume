@@ -3,6 +3,8 @@
 import React from "react";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 const ToolboxCard = (props: {
   image: StaticImageData;
@@ -10,21 +12,30 @@ const ToolboxCard = (props: {
   paragraph: string;
 }) => {
   return (
-    <Link href="/">
-      <div className="max-w-[300px] flex flex-col gap-3 justify-center items-center text-center mt-10 px-2 py-3 hover:bg-mySkyBlue/20 transition-all duration-300 hover:-translate-y-3 rounded-lg">
+    <motion.div
+      whileHover={{ y: -8, scale: 1.02 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="group max-w-[280px] flex flex-col gap-4 items-center text-center bg-white border-2 border-gray-100 hover:border-mySkyBlue/30 px-6 py-8 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-mySkyBlue/10 transition-all duration-300 cursor-pointer"
+    >
+      <div className="p-3 bg-mySkyBlue/10 group-hover:bg-mySkyBlue/20 rounded-2xl transition-colors">
         <Image
           src={props.image}
-          alt="icon"
+          alt={props.heading}
           height={300}
           width={300}
-          className="h-[80px] w-[150px]"
+          className="h-[60px] w-[60px] object-contain"
         />
-        <h1 className="text-mySkyBlue sm:text-xl font-bold text-xl">
-          {props.heading}
-        </h1>
-        <p className="text-gray-500 sm:text-lg text-sm">{props.paragraph}</p>
       </div>
-    </Link>
+      <div>
+        <h3 className="text-mySkyBlue font-bold text-lg group-hover:text-blue-600 transition-colors">
+          {props.heading}
+        </h3>
+        <p className="text-gray-500 text-sm mt-1 leading-relaxed">{props.paragraph}</p>
+      </div>
+      <div className="flex items-center gap-1 text-mySkyBlue text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+        Explore <ArrowRight size={14} />
+      </div>
+    </motion.div>
   );
 };
 

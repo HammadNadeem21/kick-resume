@@ -7,7 +7,22 @@ import ResumeTemplateList from "@/components/ResumeTemplateList";
 import ResumeImageUploader from "@/components/ResumeImageUploader";
 import { Button } from "@/components/ui/button";
 
-const ResumeBuilderSidebar = () => {
+interface ResumeBuilderSidebarProps {
+  selectedTemplate?: number | null;
+  setSelectedTemplate?: (id: number | null) => void;
+  imageFile?: File | null;
+  setImageFile?: (file: File | null) => void;
+  previewUrl?: string | null;
+  setPreviewUrl?: (url: string | null) => void;
+  processedUrl?: string | null;
+  setProcessedUrl?: (url: string | null) => void;
+  selectedProcessedImage?: string | null;
+  setSelectedProcessedImage?: (url: string | null) => void;
+  selectedImageBgColor?: string | undefined;
+  setSelectedImageBgColor?: (color: string | undefined) => void;
+}
+
+const ResumeBuilderSidebar: React.FC<ResumeBuilderSidebarProps> = (props) => {
   const [activePanel, setActivePanel] = useState<"none" | "template" | "image">(
     "none"
   );
@@ -56,7 +71,7 @@ const ResumeBuilderSidebar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setActivePanel("none")}
-              className="fixed inset-0 bg-black/20 z-40 lg:hidden"
+              className="fixed inset-0 bg-black/40 z-[110]"
             />
             
             <motion.div
@@ -64,7 +79,7 @@ const ResumeBuilderSidebar = () => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed right-0 top-0 h-full w-[350px] bg-white shadow-2xl z-50 border-l border-gray-200 flex flex-col"
+              className="fixed right-0 top-0 h-full w-[350px] bg-white shadow-2xl z-[120] border-l border-gray-200 flex flex-col"
             >
               <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gray-50/50 backdrop-blur-sm">
                 <h3 className="font-bold text-lg text-gray-800">
@@ -81,11 +96,27 @@ const ResumeBuilderSidebar = () => {
               </div>
 
               <div className="flex-1 overflow-hidden relative">
-                {activePanel === "template" && <ResumeTemplateList />}
+                {activePanel === "template" && (
+                  <ResumeTemplateList
+                    selectedTemplate={props.selectedTemplate}
+                    setSelectedTemplate={props.setSelectedTemplate}
+                  />
+                )}
                 {activePanel === "image" && (
-                   <div className="p-6 h-full overflow-y-auto">
-                     <ResumeImageUploader />
-                   </div>
+                  <div className="p-6 h-full overflow-y-auto">
+                    <ResumeImageUploader
+                      imageFile={props.imageFile}
+                      setImageFile={props.setImageFile}
+                      previewUrl={props.previewUrl}
+                      setPreviewUrl={props.setPreviewUrl}
+                      processedUrl={props.processedUrl}
+                      setProcessedUrl={props.setProcessedUrl}
+                      selectedProcessedImage={props.selectedProcessedImage}
+                      setSelectedProcessedImage={props.setSelectedProcessedImage}
+                      selectedImageBgColor={props.selectedImageBgColor}
+                      setSelectedImageBgColor={props.setSelectedImageBgColor}
+                    />
+                  </div>
                 )}
               </div>
             </motion.div>
