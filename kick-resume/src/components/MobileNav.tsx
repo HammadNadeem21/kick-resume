@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, X, ChevronDown, Rocket, Sparkles, Layout, PenTool, Search, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { signOut, useSession } from "next-auth/react";
@@ -9,6 +9,18 @@ const MobileNav = () => {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [showFeatures, setShowFeatures] = useState(false);
+
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
 
   const featureLinks = [
     { title: "Resume Analyzer", href: "/ai-resume-analyzer", icon: Search },
@@ -27,17 +39,17 @@ const MobileNav = () => {
         <Menu size={24} />
       </button>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isOpen && (
           <motion.div 
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[200] bg-white flex flex-col"
+            className="fixed inset-0 z-[9999] bg-white flex flex-col w-screen h-[100dvh]"
           >
             {/* Header */}
-            <div className="flex justify-between items-center px-6 py-5 border-b border-gray-100">
+            <div className="flex justify-between items-center px-6 py-5 border-b border-gray-100 bg-white sticky top-0 z-10">
                <div className="flex items-center gap-2">
                 <div className="p-1.5 bg-mySkyBlue rounded-lg">
                   <Rocket className="text-white w-4 h-4" />
@@ -53,10 +65,10 @@ const MobileNav = () => {
             </div>
 
             {/* Links */}
-            <div className="flex-1 overflow-y-auto px-6 py-8">
+            <div className="flex-1 overflow-y-auto px-6 py-8 bg-white">
               {session && (
                 <div className="mb-8 p-4 bg-gray-50 rounded-3xl border border-gray-100 flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-full ring-4 ring-white shadow-sm overflow-hidden bg-mySkyBlue/10 flex items-center justify-center">
+                  <div className="h-12 w-12 rounded-full ring-4 ring-white shadow-sm overflow-hidden bg-white flex items-center justify-center">
                     {session.user?.image ? (
                       <Image
                         src={session.user.image}
@@ -91,7 +103,7 @@ const MobileNav = () => {
                 <li>
                   <button 
                     onClick={() => setShowFeatures(!showFeatures)}
-                    className="w-full flex items-center justify-between py-4 text-xl font-bold text-gray-900 border-b border-gray-50"
+                    className="w-full flex items-center justify-between py-4 text-xl font-bold text-gray-900 border-b border-gray-50 bg-white"
                   >
                     Features
                     <ChevronDown size={20} className={`transition-transform duration-300 ${showFeatures ? "rotate-180" : ""}`} />
@@ -102,7 +114,7 @@ const MobileNav = () => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden"
+                        className="overflow-hidden bg-white"
                       >
                         <ul className="py-2 pl-4 flex flex-col gap-1">
                           {featureLinks.map((item) => (
@@ -128,7 +140,7 @@ const MobileNav = () => {
                   <Link 
                     href="/pricing"
                     onClick={() => setIsOpen(false)}
-                    className="block py-4 text-xl font-bold text-gray-900 border-b border-gray-50"
+                    className="block py-4 text-xl font-bold text-gray-900 border-b border-gray-50 bg-white"
                   >
                     Pricing
                   </Link>
@@ -137,7 +149,7 @@ const MobileNav = () => {
                   <Link 
                     href="/auth/login"
                     onClick={() => setIsOpen(false)}
-                    className="block py-4 text-xl font-bold text-gray-900 border-b border-gray-50"
+                    className="block py-4 text-xl font-bold text-gray-900 border-b border-gray-50 bg-white"
                   >
                     Log In
                   </Link>
@@ -146,11 +158,11 @@ const MobileNav = () => {
             </div>
 
             {/* Footer */}
-            <div className="p-6 border-t border-gray-100">
+            <div className="p-6 border-t border-gray-100 bg-white sticky bottom-0">
               <Link 
                 href="/auth/signup"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center w-full py-4 bg-mySkyBlue text-white font-black rounded-2xl shadow-xl shadow-blue-500/20"
+                className="flex items-center justify-center w-full py-4 bg-mySkyBlue text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 active:scale-95 transition-transform"
               >
                 Get Started for Free
               </Link>
